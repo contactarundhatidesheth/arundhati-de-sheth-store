@@ -1,0 +1,3 @@
+# Video frames directory
+# Run: npm run extract-frames
+# to populate this folder with extracted frames from lib/Media/Gems_of_different_shapes_sizes_202608180938.mp4
