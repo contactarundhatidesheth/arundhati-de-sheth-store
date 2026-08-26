@@ -1,9 +1,18 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Link from 'next/link';
 
 export const Hero: React.FC = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      // Force playback for browsers that might block standard autoPlay
+      videoRef.current.play().catch((e) => console.log('Video autoplay prevented:', e));
+    }
+  }, []);
+
   return (
     <section style={{ 
       position: 'sticky', 
@@ -20,6 +29,7 @@ export const Hero: React.FC = () => {
       
       {/* Background Video */}
       <video
+        ref={videoRef}
         src="https://cdn.shopify.com/videos/c/o/v/6d27410b952b4975a39cd2451f0ec4ec.mp4"
         autoPlay
         loop
