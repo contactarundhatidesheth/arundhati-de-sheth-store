@@ -1,1 +1,1 @@
-Removed falling diamond particles from Hero and deleted the unused DiamondParticles component.
+export default function DiamondParticles() { return null; }

@@ -75,7 +75,7 @@ export default function NewProductPage() {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <input type="checkbox" name="isNew" id="isNew" />
-          <label htmlFor="isNew" style={{ fontSize: '0.9rem', fontWeight: '500', cursor: 'pointer' }}>Mark as "New Arrival"</label>
+          <label htmlFor="isNew" style={{ fontSize: '0.9rem', fontWeight: '500', cursor: 'pointer' }}>Mark as &quot;New Arrival&quot;</label>
         </div>
 
         <div style={{ marginTop: '24px' }}>
