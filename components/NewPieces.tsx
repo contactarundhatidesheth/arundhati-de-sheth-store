@@ -10,14 +10,14 @@ export const NewPieces: React.FC = () => {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0' }}>
           
           {/* Top Left: Text Panel */}
-          <div style={{ padding: '64px', display: 'flex', flexDirection: 'column', justifyContent: 'center', background: 'var(--bg-secondary)' }}>
+          <div style={{ padding: '64px', display: 'flex', flexDirection: 'column', justifyContent: 'center', background: 'var(--accent)', color: 'var(--text-main)' }}>
             <h2 style={{ fontSize: '2.5rem', fontFamily: 'var(--font-serif)', marginBottom: '24px' }}>
               New Pieces
             </h2>
-            <p style={{ fontSize: '1rem', color: 'var(--text-muted)', lineHeight: '1.6', marginBottom: '32px', maxWidth: '400px' }}>
+            <p style={{ fontSize: '1rem', color: 'var(--text-main)', lineHeight: '1.6', marginBottom: '32px', maxWidth: '400px' }}>
               Discover our latest fine jewellery acquisitions, crafted with precious gemstones and hallmarked gold.
             </p>
-            <Link href="/collections" className="btn-primary" style={{ alignSelf: 'flex-start' }}>
+            <Link href="/collections" className="btn-primary" style={{ alignSelf: 'flex-start', background: 'var(--text-main)', color: 'var(--bg-primary)', borderColor: 'var(--text-main)' }}>
               View Lookbooks
             </Link>
           </div>

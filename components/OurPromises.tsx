@@ -72,8 +72,8 @@ export const OurPromises: React.FC = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   margin: '0 auto 20px',
-                  color: 'var(--accent-gold)',
-                  border: '1px solid var(--accent-gold)',
+                  color: 'var(--accent-green)',
+                  border: '1px solid var(--accent-green)',
                 }}
               >
                 {promise.icon}

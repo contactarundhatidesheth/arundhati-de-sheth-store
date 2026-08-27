@@ -1,10 +1,18 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { PRODUCTS } from '@/lib/data/products';
 
+const TABS = [
+  { label: 'EPHEMERALS', value: 'EPHEMERALS' },
+  { label: 'PERENNIALS: GOLD', value: 'PERENNIALS - Gold' },
+  { label: 'PERENNIALS: SILVER', value: 'PERENNIALS - Silver' },
+  { label: 'HIGH JEWELLERY', value: 'HIGH JEWELLERY' },
+];
+
 export const CuratedCollections: React.FC = () => {
+  const [activeTab, setActiveTab] = useState(TABS[0].value);
   const collections = [
     {
       id: 'garden-beads',
@@ -38,91 +46,132 @@ export const CuratedCollections: React.FC = () => {
   ];
 
   return (
-    <section style={{ position: 'relative', zIndex: 1, padding: '120px 24px', background: 'var(--bg-primary)' }}>
-      <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto' }}>
+    <section style={{ position: 'relative', zIndex: 1, padding: '80px 0', background: 'var(--bg-primary)' }}>
+      <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: '0 24px' }}>
         
-        {/* Editorial Asymmetrical Layout */}
-        <div className="editorial-grid">
+        {/* Top Navigation for Categories */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px', borderBottom: '1px solid var(--border)' }}>
+          {TABS.map((tab) => (
+            <button
+              key={tab.value}
+              onClick={() => setActiveTab(tab.value)}
+              style={{
+                paddingBottom: '16px',
+                borderBottom: activeTab === tab.value ? '2px solid var(--accent)' : '2px solid transparent',
+                color: activeTab === tab.value ? 'var(--text-main)' : 'var(--text-muted)',
+                letterSpacing: '0.1em',
+                fontSize: '0.9rem',
+                background: 'none',
+                borderTop: 'none',
+                borderLeft: 'none',
+                borderRight: 'none',
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+                textTransform: 'uppercase'
+              }}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* 5-Column Sub-Collections Grid (Dynamic Products) */}
+        <div className="pdf-sub-grid">
+          {PRODUCTS.filter(p => p.collection === activeTab).slice(0, 5).map((product) => (
+            <div className="pdf-sub-item" key={product.id}>
+              <Link href={`/product/${product.handle}`} className="sub-image-container">
+                <img src={product.images[0]} alt={product.name} />
+              </Link>
+              <div className="sub-title">{product.name}</div>
+            </div>
+          ))}
           
-          {/* Item 1 */}
-          <div className="editorial-item item-1">
-            <Link href={collections[0].link} className="image-container">
-              <img src={collections[0].image} alt={collections[0].title} className="hover-scale" />
-            </Link>
-            <div className="minimal-content">
-              <span className="minimal-count">01</span>
-              <h3 className="minimal-title">{collections[0].title}</h3>
+          {/* Fallback if a category has no products in DB yet */}
+          {PRODUCTS.filter(p => p.collection === activeTab).length === 0 && (
+            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px 0', color: 'var(--text-muted)' }}>
+              New pieces arriving soon.
             </div>
+          )}
+        </div>
+
+        {/* Full Bleed Image Grid */}
+        <div className="pdf-grid" style={{ marginTop: '40px' }}>
+          
+          <div className="pdf-item" style={{ position: 'relative' }}>
+            <Link href="/category/earrings" className="image-container" style={{ position: 'relative', display: 'block' }}>
+              <img src="https://www.arundhatidesheth.com/cdn/shop/files/Call_for_the_cocktails_compressed_1__page-0001.jpg?v=1708934384&width=800" alt="Earrings" />
+              <div className="overlay-text">EARRINGS</div>
+            </Link>
           </div>
 
-          {/* Item 2 */}
-          <div className="editorial-item item-2">
-             <Link href={collections[1].link} className="image-container">
-              <img src={collections[1].image} alt={collections[1].title} className="hover-scale" />
+          <div className="pdf-item" style={{ position: 'relative' }}>
+            <Link href="/category/rings" className="image-container" style={{ position: 'relative', display: 'block' }}>
+              <img src="https://www.arundhatidesheth.com/cdn/shop/files/6ef918_dda50d76e89e497694803b84c6141c25_mv2.webp?v=1708934384&width=800" alt="Rings" />
+              <div className="overlay-text">RINGS</div>
             </Link>
-            <div className="minimal-content">
-              <span className="minimal-count">02</span>
-              <h3 className="minimal-title">{collections[1].title}</h3>
-            </div>
           </div>
 
-          {/* Item 3 */}
-          <div className="editorial-item item-3">
-             <Link href={collections[2].link} className="image-container">
-              <img src={collections[2].image} alt={collections[2].title} className="hover-scale" />
+          <div className="pdf-item" style={{ position: 'relative' }}>
+            <Link href="/category/necklaces" className="image-container" style={{ position: 'relative', display: 'block' }}>
+              <img src="https://www.arundhatidesheth.com/cdn/shop/files/Screenshot_2024-02-26_at_2.04.21_PM.png?v=1708934384&width=800" alt="Necklaces" />
+              <div className="overlay-text">NECKLACES</div>
             </Link>
-            <div className="minimal-content">
-              <span className="minimal-count">03</span>
-              <h3 className="minimal-title">{collections[2].title}</h3>
-            </div>
-          </div>
-
-          {/* Item 4 */}
-          <div className="editorial-item item-4">
-             <Link href={collections[3].link} className="image-container">
-              <img src={collections[3].image} alt={collections[3].title} className="hover-scale" />
-            </Link>
-            <div className="minimal-content">
-              <span className="minimal-count">04</span>
-              <h3 className="minimal-title">{collections[3].title}</h3>
-            </div>
           </div>
 
         </div>
       </div>
 
       <style jsx>{`
-        .editorial-grid {
+        .pdf-grid {
           display: grid;
-          grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-          gap: 40px;
-          align-items: start;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 16px; /* PDF has slight gap or full bleed depending on interpretation, 16px looks premium */
+          align-items: stretch;
         }
 
-        .editorial-item {
-          display: flex;
-          flex-direction: column;
+        .pdf-sub-grid {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
           gap: 24px;
         }
 
-        .item-1 {
-          grid-column: 1 / 7;
-          margin-top: 40px;
+        .pdf-sub-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 16px;
         }
 
-        .item-2 {
-          grid-column: 8 / 13;
-          margin-top: 0;
+        .sub-image-container {
+          display: block;
+          position: relative;
+          overflow: hidden;
+          width: 100%;
+          aspect-ratio: 3/4;
         }
 
-        .item-3 {
-          grid-column: 2 / 7; 
-          margin-top: 80px;
+        .sub-image-container img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .item-4 {
-          grid-column: 7 / 12;
-          margin-top: 40px;
+        .sub-image-container:hover img {
+          transform: scale(1.05);
+        }
+
+        .sub-title {
+          font-size: 0.75rem;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          color: var(--text-main);
+          text-align: center;
+        }
+
+        .pdf-item {
+          display: flex;
+          flex-direction: column;
         }
 
         .image-container {
@@ -130,63 +179,50 @@ export const CuratedCollections: React.FC = () => {
           position: relative;
           overflow: hidden;
           background: #FFFFFF;
+          aspect-ratio: 3/4;
         }
 
-        .item-1 .image-container { aspect-ratio: 1/1; }
-        .item-2 .image-container { aspect-ratio: 1/1; }
-        .item-3 .image-container { aspect-ratio: 1/1; }
-        .item-4 .image-container { aspect-ratio: 1/1; }
-
-        .hover-scale {
+        .image-container img {
           width: 100%;
           height: 100%;
-          object-fit: contain;
-          padding: 24px;
+          object-fit: cover;
           transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .image-container:hover .hover-scale {
-          transform: scale(1.04);
+        .image-container:hover img {
+          transform: scale(1.05);
         }
 
-        .minimal-content {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          gap: 16px;
-          margin-top: 4px;
-        }
-
-        .minimal-count {
-          font-size: 0.75rem;
-          color: var(--accent-gold);
-          font-family: var(--font-sans);
-          opacity: 0.9;
-        }
-
-        .minimal-title {
-          font-size: 0.8rem;
-          letter-spacing: 0.15em;
+        .overlay-text {
+          position: absolute;
+          bottom: 32px;
+          left: 32px;
+          color: #ffffff;
+          font-size: 1rem;
+          letter-spacing: 0.2em;
           text-transform: uppercase;
-          color: var(--text-main);
-          font-weight: 400;
+          z-index: 2;
         }
-
-        .editorial-item {
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
+        
+        .image-container::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 30%;
+          background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 100%);
+          z-index: 1;
         }
 
         @media (max-width: 900px) {
-          .editorial-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 60px;
+          .pdf-grid {
+            grid-template-columns: 1fr;
+            gap: 24px;
           }
-          .item-1, .item-2, .item-3, .item-4 {
-            margin-top: 0;
-            grid-column: 1 / -1;
+          .pdf-sub-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
           }
         }
       `}</style>

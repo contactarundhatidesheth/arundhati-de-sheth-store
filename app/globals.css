@@ -1,40 +1,30 @@
-/* ─── Brand Fonts: Copperplate CC (self-hosted) + Montserrat ─── */
-@font-face {
-  font-family: 'Copperplate Gothic Bold';
-  src: url('/fonts/CopperplateCC-Bold.ttf') format('truetype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Copperplate Gothic Bold';
-  src: url('/fonts/CopperplateCC-Heavy.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap');
 
 :root {
-  --bg-primary: #FAFAF8; /* Warm ivory */
-  --bg-secondary: #F2F2EF; /* Slightly darker ivory for contrast */
-  --bg-surface: #E8E8E5;
-  --header-bg: rgba(250, 250, 248, 0.85); /* Translucent ivory */
-  --text-main: #1A1A1A; /* Charcoal black */
-  --text-muted: #666666;
-  --text-subtle: #999999;
-  --border: #E5E5E0; /* Soft border */
-  --border-light: #F0F0F0;
-  --accent: #C9A84C; /* Brand gold — ADS guideline */
-  --accent-gold: #C9A84C; /* Brand gold — general use */
-  --accent-green: #5d6533; /* High Jewellery — olive green per brand guideline */
+  /* Brand Colors strictly from PDF */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #FFFFFF; /* Fallback to white as per PDF */
+  --bg-surface: #FFFFFF;
+  --header-bg: rgba(255, 255, 255, 0.95);
+  
+  --text-main: #000000;
+  --text-muted: #504D45; /* Dark grey */
+  --text-subtle: #504D45;
+  
+  --border: #504D45; /* Dark grey */
+  --border-light: rgba(80, 77, 69, 0.2);
+  
+  --accent: #F6D954; /* Yellow */
+  --accent-gold: #F6D954; /* Aliased to Yellow */
+  --accent-green: #5D6533; /* Olive Green */
+  
   --text-on-dark: #FFFFFF;
   --text-on-dark-muted: rgba(255, 255, 255, 0.7);
   --text-on-dark-strong: #FFFFFF;
   
-  --font-serif: 'Copperplate Gothic Bold', Copperplate, 'Copperplate Gothic Light', 'American Typewriter', Georgia, serif;
+  /* Brand Fonts strictly from PDF */
+  --font-serif: 'Source Serif 4', Georgia, serif;
   --font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   
   --radius-sm: 0px;

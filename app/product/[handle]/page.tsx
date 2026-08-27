@@ -32,17 +32,17 @@ export default function ProductDetailPage({ params }: { params: { handle: string
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
-      <div className="product-layout" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr' }}>
+      <div className="product-layout" style={{ display: 'grid', gridTemplateColumns: '54.5% 45.5%', gap: 0 }}>
         
         {/* Left: Scrollable Image Gallery */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'var(--bg-surface)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', background: 'var(--bg-surface)' }}>
           {product.images.map((img, idx) => (
             <div key={idx} style={{ position: 'relative', width: '100%', aspectRatio: '1/1', background: '#FFFFFF', overflow: 'hidden' }}>
               <Image 
                 src={img} 
                 alt={`${product.title} - View ${idx + 1}`} 
                 fill 
-                style={{ objectFit: 'contain', padding: '40px' }}
+                style={{ objectFit: 'cover' }}
                 priority={idx === 0}
               />
             </div>
@@ -51,28 +51,28 @@ export default function ProductDetailPage({ params }: { params: { handle: string
 
         {/* Right: Sticky Product Info */}
         <div style={{ position: 'relative' }}>
-          <div className="sticky-info-panel" style={{ position: 'sticky', top: '80px', padding: 'clamp(48px, 6vw, 80px) clamp(32px, 5vw, 64px)', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 80px)', overflowY: 'auto' }}>
+          <div className="sticky-info-panel" style={{ position: 'sticky', top: '80px', padding: '60px 48px', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 80px)', overflowY: 'auto' }}>
             
             {/* Breadcrumbs */}
-            <nav style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '32px' }}>
-              <Link href="/" style={{ textDecoration: 'none' }}>Home</Link> &nbsp; / &nbsp; 
-              <Link href="/category/all-products" style={{ textDecoration: 'none' }}>Collections</Link> &nbsp; / &nbsp; 
-              <span style={{ color: 'var(--text-main)' }}>{product.category}</span>
+            <nav style={{ fontSize: '11.2px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1.68px', marginBottom: '32px', fontWeight: '400' }}>
+              <Link href="/" style={{ textDecoration: 'none', color: 'inherit' }}>Home</Link> &nbsp; / &nbsp; 
+              <Link href="/category/all-products" style={{ textDecoration: 'none', color: 'inherit' }}>Collections</Link> &nbsp; / &nbsp; 
+              <span style={{ color: '#000000' }}>{product.category}</span>
             </nav>
 
             {/* Title & Metadata */}
             <div style={{ marginBottom: '40px' }}>
-              <p style={{ fontSize: '0.8rem', color: 'var(--accent-gold)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '12px', fontWeight: '500' }}>
+              <p style={{ fontSize: '12.8px', color: 'var(--accent-gold)', letterSpacing: '1.92px', textTransform: 'uppercase', marginBottom: '12px', fontWeight: '500' }}>
                 {product.collection}
               </p>
-              <h1 style={{ fontSize: 'clamp(2rem, 3vw, 2.8rem)', fontFamily: 'var(--font-serif)', marginBottom: '16px', lineHeight: '1.1' }}>
+              <h1 style={{ fontSize: '38.4px', fontFamily: 'var(--font-serif)', marginBottom: '24px', lineHeight: '1.1', letterSpacing: '-0.768px', color: '#000000' }}>
                 {product.title}
               </h1>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border)', paddingBottom: '24px' }}>
-                <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', paddingBottom: '24px', borderBottom: '1px solid var(--border-light)' }}>
+                <p style={{ fontSize: '17.6px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.88px', fontWeight: '400' }}>
                   {product.isPriceOnRequest ? 'Price on Request' : `₹ ${product.price.toLocaleString('en-IN')}`}
                 </p>
-                <p style={{ fontSize: '0.75rem', color: 'var(--text-subtle)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                <p style={{ fontSize: '12px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1.2px', fontWeight: '400' }}>
                   SKU: {product.id.slice(0, 8).toUpperCase()}
                 </p>
               </div>
@@ -84,40 +84,52 @@ export default function ProductDetailPage({ params }: { params: { handle: string
                 href={`https://wa.me/919581822000?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-primary" 
-                style={{ width: '100%', padding: '20px', fontSize: '0.85rem' }}
+                style={{ 
+                  width: '100%', 
+                  padding: '20px', 
+                  fontSize: '13.6px', 
+                  letterSpacing: '1.36px',
+                  background: '#000000',
+                  color: '#ffffff',
+                  border: '0.67px solid #000000',
+                  borderRadius: '0px',
+                  textAlign: 'center',
+                  textTransform: 'uppercase',
+                  textDecoration: 'none',
+                  fontWeight: '400'
+                }}
               >
                 Inquire & Bespoke Commission
               </a>
-              <p style={{ textAlign: 'center', fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.05em' }}>
+              <p style={{ textAlign: 'center', fontSize: '12px', color: 'var(--text-muted)', letterSpacing: '0.6px', fontWeight: '400' }}>
                 Private viewings available at our Mumbai Atelier.
               </p>
             </div>
 
             {/* Detailed Accordions */}
-            <div style={{ borderTop: '1px solid var(--border)' }}>
+            <div style={{ borderTop: '1px solid var(--border-light)' }}>
               
               {/* Product Story */}
-              <div style={{ borderBottom: '1px solid var(--border)' }}>
+              <div style={{ borderBottom: '1px solid var(--border-light)' }}>
                 <button 
                   onClick={() => toggleAccordion('info')}
-                  style={{ width: '100%', padding: '24px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}
+                  style={{ width: '100%', padding: '24px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13.5px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold', background: 'transparent', border: 'none', cursor: 'pointer', color: '#000000', fontFamily: 'inherit' }}
                 >
                   The Story
                   {openAccordion === 'info' ? <ChevronUp size={18} strokeWidth={1.5} /> : <ChevronDown size={18} strokeWidth={1.5} />}
                 </button>
                 {openAccordion === 'info' && (
-                  <div style={{ paddingBottom: '32px', fontSize: '0.95rem', color: 'var(--text-muted)', lineHeight: '1.8', fontWeight: '300' }}>
+                  <div style={{ paddingBottom: '32px', fontSize: '15.2px', color: 'var(--text-muted)', lineHeight: '1.8', fontWeight: '300' }}>
                     <p>{product.description}</p>
                   </div>
                 )}
               </div>
 
               {/* Specifications */}
-              <div style={{ borderBottom: '1px solid var(--border)' }}>
+              <div style={{ borderBottom: '1px solid var(--border-light)' }}>
                 <button 
                   onClick={() => toggleAccordion('specs')}
-                  style={{ width: '100%', padding: '24px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}
+                  style={{ width: '100%', padding: '24px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13.5px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold', background: 'transparent', border: 'none', cursor: 'pointer', color: '#000000', fontFamily: 'inherit' }}
                 >
                   Specifications
                   {openAccordion === 'specs' ? <ChevronUp size={18} strokeWidth={1.5} /> : <ChevronDown size={18} strokeWidth={1.5} />}
@@ -132,9 +144,9 @@ export default function ProductDetailPage({ params }: { params: { handle: string
                         'Weight': product.specs?.weight,
                         'Dimensions': product.specs?.dimensions,
                       }).map(([key, value]) => value && (
-                        <li key={key} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', borderBottom: '1px dashed var(--border-light)', paddingBottom: '8px' }}>
+                        <li key={key} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '15.2px', borderBottom: '1px solid var(--border-light)', paddingBottom: '8px', fontWeight: '300' }}>
                           <span style={{ color: 'var(--text-muted)' }}>{key}</span>
-                          <span style={{ color: 'var(--text-main)', textAlign: 'right', maxWidth: '60%' }}>{value}</span>
+                          <span style={{ color: '#000000', textAlign: 'right', maxWidth: '60%' }}>{value}</span>
                         </li>
                       ))}
                     </ul>
@@ -143,16 +155,16 @@ export default function ProductDetailPage({ params }: { params: { handle: string
               </div>
 
               {/* Delivery */}
-              <div style={{ borderBottom: '1px solid var(--border)' }}>
+              <div style={{ borderBottom: '1px solid var(--border-light)' }}>
                 <button 
                   onClick={() => toggleAccordion('delivery')}
-                  style={{ width: '100%', padding: '24px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}
+                  style={{ width: '100%', padding: '24px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13.5px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold', background: 'transparent', border: 'none', cursor: 'pointer', color: '#000000', fontFamily: 'inherit' }}
                 >
                   Delivery & Returns
                   {openAccordion === 'delivery' ? <ChevronUp size={18} strokeWidth={1.5} /> : <ChevronDown size={18} strokeWidth={1.5} />}
                 </button>
                 {openAccordion === 'delivery' && (
-                  <div style={{ paddingBottom: '32px', fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.7', fontWeight: '300' }}>
+                  <div style={{ paddingBottom: '32px', fontSize: '15.2px', color: 'var(--text-muted)', lineHeight: '1.7', fontWeight: '300' }}>
                     <p style={{ marginBottom: '12px' }}>Each creation is fully insured and delivered via secure couriers worldwide. A signature is required upon delivery.</p>
                     <p>Due to the bespoke nature of our high jewellery, returns are evaluated on a case-by-case basis. Please contact our advisory for specific policies regarding this piece.</p>
                   </div>

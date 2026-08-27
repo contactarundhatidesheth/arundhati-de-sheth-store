@@ -8,8 +8,10 @@ export const AnnouncementBar: React.FC = () => {
     <div style={{
       background: '#1A1A1A',
       color: '#FAF9F7',
-      padding: '10px 24px',
-      textAlign: 'center',
+      height: '40px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       fontSize: '0.7rem',
       letterSpacing: '0.15em',
       textTransform: 'uppercase',

@@ -28,6 +28,8 @@ export const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
+  const isAtTop = lastScrollY <= 10;
+
   // Lock body scroll when menu is open
   useEffect(() => {
     if (isMenuOpen) {
@@ -45,22 +47,27 @@ export const Header: React.FC = () => {
         width: '100%',
         top: isVisible ? '0' : '-80px',
         zIndex: 100,
-        background: 'var(--header-bg)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
+        background: isAtTop ? 'transparent' : 'var(--header-bg)',
+        backdropFilter: isAtTop ? 'none' : 'blur(12px)',
+        WebkitBackdropFilter: isAtTop ? 'none' : 'blur(12px)',
         height: '80px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '0 32px',
-        transition: 'top 0.4s cubic-bezier(0.25, 1, 0.5, 1)',
+        transition: 'all 0.4s cubic-bezier(0.25, 1, 0.5, 1)',
+        color: isAtTop ? '#ffffff' : 'var(--text-main)',
       }}>
-        {/* Left: Log In */}
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-          <button style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem' }}>
-            <User size={20} strokeWidth={1.5} />
-            <span style={{ fontSize: '0.85rem' }} className="hide-on-mobile">Log In</span>
+        {/* Left: Menu & Links */}
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '32px' }}>
+          <button onClick={() => setIsMenuOpen(true)} style={{ color: 'var(--accent)' }}>
+            <Menu size={28} strokeWidth={1.5} />
           </button>
+          
+          <div className="hide-on-mobile" style={{ display: 'flex', gap: '24px', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+            <Link href="/contact" style={{ color: 'inherit' }}>Contact Us</Link>
+            <Link href="/services" style={{ color: 'inherit' }}>Services</Link>
+          </div>
         </div>
 
         {/* Center: Logo */}
@@ -69,15 +76,24 @@ export const Header: React.FC = () => {
             <img 
               src="https://www.arundhatidesheth.com/cdn/shop/files/111.png?v=1708868785" 
               alt="Arundhati De-Sheth" 
-              style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+              style={{ 
+                width: '100%', 
+                height: 'auto', 
+                objectFit: 'contain',
+                filter: isAtTop ? 'brightness(0) invert(1)' : 'none',
+                transition: 'filter 0.4s ease'
+              }}
             />
           </Link>
         </div>
 
-        {/* Right: Cart & Menu */}
+        {/* Right: Cart & User */}
         <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '24px' }}>
+          <button style={{ display: 'flex', alignItems: 'center', color: 'inherit' }} className="hide-on-mobile">
+            <User size={20} strokeWidth={1.5} />
+          </button>
           <button 
-            style={{ position: 'relative', display: 'flex', alignItems: 'center' }}
+            style={{ position: 'relative', display: 'flex', alignItems: 'center', color: 'inherit' }}
             onClick={() => setIsCartOpen(true)}
           >
             <ShoppingBag size={20} strokeWidth={1.5} />
@@ -86,22 +102,20 @@ export const Header: React.FC = () => {
                 position: 'absolute',
                 top: '-6px',
                 right: '-10px',
-                background: 'var(--text-main)',
-                color: 'var(--bg-primary)',
+                background: isAtTop ? '#ffffff' : 'var(--text-main)',
+                color: isAtTop ? '#000000' : 'var(--bg-primary)',
                 fontSize: '10px',
                 width: '16px',
                 height: '16px',
                 borderRadius: '50%',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                transition: 'all 0.4s ease'
               }}>
                 {totalItems}
               </span>
             )}
-          </button>
-          <button onClick={() => setIsMenuOpen(true)} style={{ color: 'var(--accent-gold)' }}>
-            <Menu size={24} strokeWidth={1.5} />
           </button>
         </div>
       </header>
@@ -113,24 +127,26 @@ export const Header: React.FC = () => {
         left: 0,
         width: '100vw',
         height: '100vh',
-        background: '#000000',
+        background: 'rgba(0, 0, 0, 0.85)',
+        backdropFilter: 'blur(8px)',
         zIndex: 1000,
         transform: isMenuOpen ? 'translateX(0)' : 'translateX(100%)',
         transition: 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)',
         display: 'flex',
         flexDirection: 'column',
+        overflowY: 'auto',
       }}>
-        <div style={{ height: '80px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '0 32px' }}>
+        <div style={{ height: '80px', flexShrink: 0, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '0 32px' }}>
           <button onClick={() => setIsMenuOpen(false)}>
             <X size={32} strokeWidth={1} color="#ffffff" />
           </button>
         </div>
-        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '32px' }}>
-          <Link href="/about" className="nav-link" style={{ fontSize: '1.5rem', color: '#ffffff' }} onClick={() => setIsMenuOpen(false)}>ABOUT US</Link>
-          <Link href="/category/all-products" className="nav-link" style={{ fontSize: '1.5rem', color: '#ffffff' }} onClick={() => setIsMenuOpen(false)}>SHOP</Link>
-          <Link href="/collections" className="nav-link" style={{ fontSize: '1.5rem', color: '#ffffff' }} onClick={() => setIsMenuOpen(false)}>CATALOGUES</Link>
-          <Link href="/pages/whats-new" className="nav-link" style={{ fontSize: '1.5rem', color: '#ffffff' }} onClick={() => setIsMenuOpen(false)}>PRESS</Link>
-          <Link href="/contact" className="nav-link" style={{ fontSize: '1.5rem', color: '#ffffff' }} onClick={() => setIsMenuOpen(false)}>CONTACT</Link>
+        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '16px', padding: '40px 0 80px 0', minHeight: 'min-content' }}>
+          <Link href="/about" className="nav-link" style={{ fontSize: '1.8rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>ABOUT US</Link>
+          <Link href="/category/all-products" className="nav-link" style={{ fontSize: '1.8rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>SHOP</Link>
+          <Link href="/collections" className="nav-link" style={{ fontSize: '1.8rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>CATALOGUES</Link>
+          <Link href="/pages/whats-new" className="nav-link" style={{ fontSize: '1.8rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>PRESS</Link>
+          <Link href="/contact" className="nav-link" style={{ fontSize: '1.8rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>CONTACT</Link>
         </nav>
       </div>
 
