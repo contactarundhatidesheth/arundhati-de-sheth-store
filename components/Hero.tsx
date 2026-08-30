@@ -69,6 +69,7 @@ export const Hero: React.FC = () => {
       >
         <source src="/videos/look1.mp4" type="video/mp4" />
         <source src="/videos/look2.mp4" type="video/mp4" />
+        <source src="https://www.arundhatidesheth.com/cdn/shop/videos/c/vp/bd1c0827a8744a549b5e3e7bc2e9f745/bd1c0827a8744a549b5e3e7bc2e9f745.HD-1080p-7.2Mbps-36693499.mp4" type="video/mp4" />
       </video>
 
       {/* Overlay to ensure text readability (if required, subtle) */}
