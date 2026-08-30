@@ -58,16 +58,17 @@ export const Hero: React.FC = () => {
         muted
         loop
         playsInline
-        poster="/images/hero-poster.jpg"
         style={{
           position: 'absolute',
           inset: 0,
           width: '100%',
           height: '100%',
           objectFit: 'cover',
+          objectPosition: 'center',
         }}
       >
-        <source src="/videos/about-video.mp4" type="video/mp4" />
+        <source src="/videos/look1.mp4" type="video/mp4" />
+        <source src="/videos/look2.mp4" type="video/mp4" />
       </video>
 
       {/* Overlay to ensure text readability (if required, subtle) */}
