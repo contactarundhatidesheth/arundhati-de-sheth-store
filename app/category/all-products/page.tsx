@@ -2,112 +2,160 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ProductCard } from '@/components/ui/ProductCard';
+import Image from 'next/image';
 import { useCMSData } from '@/hooks/useCMSData';
 
+const TABS = ['EPHEMERALS', 'PERENNIALS: GOLD', 'PERENNIALS: SILVER', 'HIGH JEWELLERY'];
+
 export default function CategoryAllProductsPage() {
-  const [maxPrice, setMaxPrice] = useState(500000);
   const { data, loading } = useCMSData();
+  const [activeTab, setActiveTab] = useState('EPHEMERALS');
+
+  if (loading) return <div style={{ minHeight: '100vh', background: '#FFFFFF' }} />;
+
   const PRODUCTS = data.products;
+  
+  let filteredProducts = PRODUCTS.filter(p => p.category.toUpperCase().includes(activeTab) || p.collection.toUpperCase().includes(activeTab));
+  
+  if (filteredProducts.length === 0) {
+    filteredProducts = PRODUCTS; // fallback so the UI isn't empty during dev
+  }
 
-  const filteredProducts = PRODUCTS.filter(p => p.price <= maxPrice);
-
-  if (loading) return <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }} />;
+  // Get sample images for the 3-column footer
+  const earrings = PRODUCTS.find(p => p.category.toLowerCase().includes('earring'))?.images[0] || PRODUCTS[0]?.images[0];
+  const rings = PRODUCTS.find(p => p.category.toLowerCase().includes('ring'))?.images[0] || PRODUCTS[1]?.images[0];
+  const necklaces = PRODUCTS.find(p => p.category.toLowerCase().includes('necklace'))?.images[0] || PRODUCTS[2]?.images[0];
 
   return (
-    <div style={{ minHeight: 'calc(100vh - 80px)', background: 'var(--bg-primary)' }}>
+    <div style={{ minHeight: '100vh', background: '#FFFFFF', paddingTop: '40px' }}>
       
-      {/* Header */}
-      <div style={{ textAlign: 'center', padding: '64px 24px', borderBottom: '1px solid var(--border)' }}>
-        <h1 style={{ fontSize: '3rem', fontFamily: 'var(--font-serif)', marginBottom: '16px' }}>
-          All Products
-        </h1>
-        <p style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>
-          {filteredProducts.length} products
-        </p>
+      {/* 1. Category Tabs */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '48px', marginBottom: '80px', overflowX: 'auto', padding: '0 24px' }}>
+        {TABS.map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: '0 0 8px 0',
+              fontSize: '12px',
+              fontWeight: '500',
+              textTransform: 'uppercase',
+              letterSpacing: '1.2px',
+              color: '#000000',
+              cursor: 'pointer',
+              borderBottom: activeTab === tab ? '4px solid #F6D954' : '4px solid transparent',
+              transition: 'border-color 0.2s ease',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            {tab}
+          </button>
+        ))}
       </div>
 
-      <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: '48px 24px', display: 'flex', flexDirection: 'column', gap: '48px' }}>
-        
-        {/* Top Filter Bar */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '40px', paddingBottom: '32px', borderBottom: '1px solid var(--border)' }}>
-          <div style={{ flex: '1', minWidth: '300px' }}>
-            <h3 style={{ fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '20px', color: 'var(--text-muted)' }}>
-              Browse Collections
-            </h3>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexWrap: 'wrap', gap: '32px' }}>
-              <li>
-                <Link href="/category/all-products" style={{ color: 'var(--text-main)', textDecoration: 'none', fontWeight: '500', borderBottom: '1px solid var(--text-main)', paddingBottom: '4px' }}>
-                  All Products
-                </Link>
-              </li>
-              <li>
-                <Link href="/category/garden-beads" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
-                  Garden Beads
-                </Link>
-              </li>
-              <li>
-                <Link href="/category/gilded-gems" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
-                  Gilded Gems
-                </Link>
-              </li>
-              <li>
-                <Link href="/category/silver-water" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
-                  Silver Water
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div style={{ flex: '1', minWidth: '300px', maxWidth: '400px' }}>
-            <h3 style={{ fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '20px', color: 'var(--text-muted)' }}>
-              Filter by Price
-            </h3>
-            <input 
-              type="range" 
-              min="0" 
-              max="500000" 
-              value={maxPrice} 
-              onChange={(e) => setMaxPrice(Number(e.target.value))}
-              style={{ width: '100%', marginBottom: '12px', accentColor: 'var(--text-main)' }}
-            />
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: 'var(--text-main)' }}>
-              <span>₹0</span>
-              <span>₹{maxPrice.toLocaleString('en-IN')}</span>
+      {/* 2. 5-Column Product Grid */}
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(5, 1fr)',
+        gap: '40px 16px',
+        padding: '0 24px',
+        marginBottom: '120px',
+        maxWidth: '2400px',
+        margin: '0 auto 120px'
+      }}>
+        {filteredProducts.map(product => (
+          <Link href={`/product/${product.handle}`} key={product.id} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', background: '#F9F9F9', marginBottom: '16px' }}>
+              <Image 
+                src={product.images[0]} 
+                alt={product.title} 
+                fill 
+                style={{ objectFit: 'cover' }}
+              />
+              {/* Dark Gradient Overlay for Text */}
+              <div style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                width: '100%',
+                height: '50%',
+                background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                padding: '20px'
+              }}>
+                <p style={{ color: '#FFFFFF', fontSize: '12px', fontWeight: '400', letterSpacing: '0.5px', marginBottom: '4px' }}>
+                  {product.title}
+                </p>
+                <p style={{ color: '#FFFFFF', fontSize: '12px', fontWeight: '500' }}>
+                  {product.isPriceOnRequest ? 'Price on Request' : `USD ${(product.price / 83).toLocaleString('en-US', {maximumFractionDigits:0})}`} 
+                </p>
+              </div>
             </div>
-          </div>
-        </div>
+            {/* Product Line / Collection Name below image */}
+            <p style={{ textAlign: 'center', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1.5px', color: '#000000', fontWeight: '500' }}>
+              {product.collection || 'COLLECTION'}
+            </p>
+          </Link>
+        ))}
+      </div>
 
-        {/* Product Grid */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '32px' }}>
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-          
-          <div style={{ textAlign: 'center', marginTop: '32px' }}>
-            <button className="btn-secondary">
-              Load More
-            </button>
-          </div>
-        </div>
+      {/* 3. 3-Column Category Grid */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, width: '100%' }}>
+        
+        {/* Earrings */}
+        <Link href="/category/earrings" style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block' }}>
+          {earrings && <Image src={earrings} alt="Earrings" fill style={{ objectFit: 'cover' }} />}
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.15)' }} />
+          <h2 style={{ position: 'absolute', bottom: '40px', left: '40px', color: '#FFFFFF', fontSize: '28px', fontWeight: '400', letterSpacing: '3px' }}>
+            EARRINGS
+          </h2>
+        </Link>
+
+        {/* Rings */}
+        <Link href="/category/rings" style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block' }}>
+          {rings && <Image src={rings} alt="Rings" fill style={{ objectFit: 'cover' }} />}
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.15)' }} />
+          <h2 style={{ position: 'absolute', bottom: '40px', left: '40px', color: '#FFFFFF', fontSize: '28px', fontWeight: '400', letterSpacing: '3px' }}>
+            RINGS
+          </h2>
+        </Link>
+
+        {/* Necklaces */}
+        <Link href="/category/necklaces" style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block' }}>
+          {necklaces && <Image src={necklaces} alt="Necklaces" fill style={{ objectFit: 'cover' }} />}
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.15)' }} />
+          <h2 style={{ position: 'absolute', bottom: '40px', left: '40px', color: '#FFFFFF', fontSize: '28px', fontWeight: '400', letterSpacing: '3px' }}>
+            NECKLACES
+          </h2>
+        </Link>
 
       </div>
 
       <style jsx>{`
+        @media (max-width: 1400px) {
+          div[style*="grid-template-columns: repeat(5, 1fr)"] {
+            grid-template-columns: repeat(4, 1fr) !important;
+          }
+        }
         @media (max-width: 1100px) {
-          div[style*="grid-template-columns: repeat(4, 1fr)"] {
+          div[style*="grid-template-columns: repeat(5, 1fr)"] {
             grid-template-columns: repeat(3, 1fr) !important;
           }
         }
         @media (max-width: 900px) {
-          div[style*="grid-template-columns: repeat(4, 1fr)"] {
+          div[style*="grid-template-columns: repeat(5, 1fr)"] {
             grid-template-columns: repeat(2, 1fr) !important;
+          }
+          div[style*="grid-template-columns: repeat(3, 1fr)"] {
+            grid-template-columns: 1fr !important;
           }
         }
         @media (max-width: 600px) {
-          div[style*="grid-template-columns: repeat(4, 1fr)"] {
+          div[style*="grid-template-columns: repeat(5, 1fr)"] {
             grid-template-columns: 1fr !important;
           }
         }
