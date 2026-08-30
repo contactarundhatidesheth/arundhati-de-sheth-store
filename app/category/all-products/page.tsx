@@ -75,7 +75,7 @@ export default function CategoryAllProductsPage() {
         
         {/* Earrings */}
         <button onClick={() => { setActiveTab('EARRING'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ border: 'none', padding: 0, position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', display: 'block', cursor: 'pointer' }}>
-          <Image src="https://www.arundhatidesheth.com/cdn/shop/files/unnamed_2.jpg?v=1710836120" alt="Earrings" fill style={{ objectFit: 'cover' }} />
+          <Image src="/products/20.png" alt="Earrings" fill style={{ objectFit: 'cover', objectPosition: 'center' }} />
           <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.2)' }} />
           <h2 style={{ position: 'absolute', bottom: '24px', left: '28px', color: '#FFFFFF', fontSize: '20px', fontWeight: '400', letterSpacing: '3px' }}>
             EARRINGS
@@ -84,7 +84,7 @@ export default function CategoryAllProductsPage() {
 
         {/* Rings */}
         <button onClick={() => { setActiveTab('RING'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ border: 'none', padding: 0, position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', display: 'block', cursor: 'pointer' }}>
-          <Image src="https://www.arundhatidesheth.com/cdn/shop/files/DICERING4.jpg?v=1709288209" alt="Rings" fill style={{ objectFit: 'cover' }} />
+          <Image src="/products/30.png" alt="Rings" fill style={{ objectFit: 'cover', objectPosition: 'center' }} />
           <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.2)' }} />
           <h2 style={{ position: 'absolute', bottom: '24px', left: '28px', color: '#FFFFFF', fontSize: '20px', fontWeight: '400', letterSpacing: '3px' }}>
             RINGS
@@ -93,7 +93,7 @@ export default function CategoryAllProductsPage() {
 
         {/* Necklaces */}
         <button onClick={() => { setActiveTab('NECKLACE'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ border: 'none', padding: 0, position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', display: 'block', cursor: 'pointer' }}>
-          <Image src="https://www.arundhatidesheth.com/cdn/shop/files/40_17ca3ebf-a317-493d-8e73-3be840768944.png?v=1754722208" alt="Necklaces" fill style={{ objectFit: 'cover' }} />
+          <Image src="/products/6.png" alt="Necklaces" fill style={{ objectFit: 'cover', objectPosition: 'center top' }} />
           <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.2)' }} />
           <h2 style={{ position: 'absolute', bottom: '24px', left: '28px', color: '#FFFFFF', fontSize: '20px', fontWeight: '400', letterSpacing: '3px' }}>
             NECKLACES
