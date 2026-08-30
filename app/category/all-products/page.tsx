@@ -17,18 +17,24 @@ export default function CategoryAllProductsPage() {
   if (loading) return <div style={{ minHeight: '100vh', background: '#FFFFFF' }} />;
 
   const PRODUCTS = data.products;
-  
-  const normalize = (str: string) => (str || '').toUpperCase().replace(/[:-]/g, '').replace(/\s+/g, '');
 
-  let filteredProducts = PRODUCTS.filter(p => 
-    normalize(p.category).includes(normalize(activeTab)) || 
-    normalize(p.collection).includes(normalize(activeTab))
-  );
+  const CATEGORY_FILTERS = ['EARRING', 'RING', 'NECKLACE', 'PENDANT', 'BRACELET', 'CUFF'];
 
-  if (filteredProducts.length === 0) {
-    // Show empty state instead of all products
-    filteredProducts = []; 
+  const normalize = (str: string) => (str || '').toUpperCase().replace(/[:\-\s]+/g, '');
+
+  let filteredProducts: typeof PRODUCTS;
+  if (CATEGORY_FILTERS.includes(activeTab)) {
+    // Exact category match (prevents RING matching EARRING)
+    filteredProducts = PRODUCTS.filter(p =>
+      normalize(p.category) === normalize(activeTab)
+    );
+  } else {
+    // Collection / tab match (EPHEMERALS, PERENNIALS: GOLD, etc.)
+    filteredProducts = PRODUCTS.filter(p =>
+      normalize(p.collection).includes(normalize(activeTab))
+    );
   }
+
 
   // Get sample images for the 3-column footer
   const earrings = PRODUCTS.find(p => p.category.toLowerCase().includes('earring'))?.images[0] || PRODUCTS[0]?.images[0];
@@ -68,28 +74,28 @@ export default function CategoryAllProductsPage() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, width: '100%', marginBottom: '80px' }}>
         
         {/* Earrings */}
-        <button onClick={() => { setActiveTab('EARRING'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ border: 'none', padding: 0, position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block', cursor: 'pointer' }}>
-          {earrings && <Image src={earrings} alt="Earrings" fill style={{ objectFit: 'cover' }} />}
-          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.15)' }} />
-          <h2 style={{ position: 'absolute', bottom: '40px', left: '40px', color: '#FFFFFF', fontSize: '28px', fontWeight: '400', letterSpacing: '3px' }}>
+        <button onClick={() => { setActiveTab('EARRING'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ border: 'none', padding: 0, position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', display: 'block', cursor: 'pointer' }}>
+          <Image src="https://www.arundhatidesheth.com/cdn/shop/files/unnamed_2.jpg?v=1710836120" alt="Earrings" fill style={{ objectFit: 'cover' }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.2)' }} />
+          <h2 style={{ position: 'absolute', bottom: '24px', left: '28px', color: '#FFFFFF', fontSize: '20px', fontWeight: '400', letterSpacing: '3px' }}>
             EARRINGS
           </h2>
         </button>
 
         {/* Rings */}
-        <button onClick={() => { setActiveTab('RING'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ border: 'none', padding: 0, position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block', cursor: 'pointer' }}>
-          {rings && <Image src={rings} alt="Rings" fill style={{ objectFit: 'cover' }} />}
-          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.15)' }} />
-          <h2 style={{ position: 'absolute', bottom: '40px', left: '40px', color: '#FFFFFF', fontSize: '28px', fontWeight: '400', letterSpacing: '3px' }}>
+        <button onClick={() => { setActiveTab('RING'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ border: 'none', padding: 0, position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', display: 'block', cursor: 'pointer' }}>
+          <Image src="https://www.arundhatidesheth.com/cdn/shop/files/DICERING4.jpg?v=1709288209" alt="Rings" fill style={{ objectFit: 'cover' }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.2)' }} />
+          <h2 style={{ position: 'absolute', bottom: '24px', left: '28px', color: '#FFFFFF', fontSize: '20px', fontWeight: '400', letterSpacing: '3px' }}>
             RINGS
           </h2>
         </button>
 
         {/* Necklaces */}
-        <button onClick={() => { setActiveTab('NECKLACE'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ border: 'none', padding: 0, position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block', cursor: 'pointer' }}>
-          {necklaces && <Image src={necklaces} alt="Necklaces" fill style={{ objectFit: 'cover' }} />}
-          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.15)' }} />
-          <h2 style={{ position: 'absolute', bottom: '40px', left: '40px', color: '#FFFFFF', fontSize: '28px', fontWeight: '400', letterSpacing: '3px' }}>
+        <button onClick={() => { setActiveTab('NECKLACE'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ border: 'none', padding: 0, position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', display: 'block', cursor: 'pointer' }}>
+          <Image src="https://www.arundhatidesheth.com/cdn/shop/files/40_17ca3ebf-a317-493d-8e73-3be840768944.png?v=1754722208" alt="Necklaces" fill style={{ objectFit: 'cover' }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.2)' }} />
+          <h2 style={{ position: 'absolute', bottom: '24px', left: '28px', color: '#FFFFFF', fontSize: '20px', fontWeight: '400', letterSpacing: '3px' }}>
             NECKLACES
           </h2>
         </button>
