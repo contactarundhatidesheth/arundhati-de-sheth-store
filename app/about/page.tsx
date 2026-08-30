@@ -162,9 +162,9 @@ export default function AboutPage() {
             <div style={{ position: 'relative', width: '100%', height: '70vh', overflow: 'hidden', marginBottom: '80px', borderRadius: '2px' }}>
               <video
                 autoPlay
-                muted
                 loop
                 playsInline
+                controls
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               >
                 <source src="/videos/about-video.mp4" type="video/mp4" />
@@ -187,53 +187,6 @@ export default function AboutPage() {
             </div>
           </section>
 
-        </div>
-      </div>
-
-      {/* ── How We Help (sticky panel) ── */}
-      <HowWeHelpSection />
-
-      {/* ── Annual JewelArt Show + Testimonials ── */}
-      <div style={{ position: 'relative', zIndex: 1, background: 'var(--bg-primary)' }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '120px 24px' }}>
-
-          <section style={{ marginBottom: '160px' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center' }}>
-              <div>
-                <p style={{ fontSize: '0.75rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '16px' }}>Annual Event</p>
-                <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', fontFamily: 'var(--font-serif)', marginBottom: '32px', fontWeight: 400 }}>The JewelArt Show</h2>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', fontSize: '1rem', color: 'var(--text-muted)', lineHeight: '1.9' }}>
-                  <p>Arundhati views jewellery as a form of storytelling through the medium of wearable art — a perspective that has secured her collectors from India and around the world.</p>
-                  <p>The first show in 2018 was a contemporary fine jewellery edit for Cecilia Morelli Parikh&apos;s multi-designer store Le Mill. Since then, the annual show is hosted at the leading Indian auction house Pundoles, in Mumbai&apos;s historic Ballard Estate. Each year is themed differently, spotlighting contemporary fine jewellery designers alongside original pieces Arundhati specially creates for the occasion.</p>
-                  <p>In 2023, Arundhati took her annual show from Mumbai to Bangalore — and continues to bring it to new cities across India.</p>
-                </div>
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                <div style={{ aspectRatio: '3/4', overflow: 'hidden' }}>
-                  <img src="https://www.arundhatidesheth.com/cdn/shop/files/Screenshot_2026-01-27_144230.png?v=1708934384&width=600" alt="Decodent Show" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </div>
-                <div style={{ aspectRatio: '3/4', overflow: 'hidden', marginTop: '32px' }}>
-                  <img src="https://www.arundhatidesheth.com/cdn/shop/files/Screenshot_2025-04-08_130922.png?v=1708934384&width=600" alt="Prismatic Show" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Testimonials */}
-          <section style={{ textAlign: 'center' }}>
-            <p style={{ fontSize: '0.75rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '16px' }}>From Our Clients</p>
-            <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', fontFamily: 'var(--font-serif)', marginBottom: '64px', fontWeight: 400 }}>Testimonials</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px' }}>
-              {!loading && data.testimonials.map(t => (
-                <div key={t.id} className="testimonial-box">
-                  <p style={{ fontStyle: 'italic', fontSize: '1.05rem', lineHeight: '1.8', marginBottom: '24px', color: 'var(--text-main)' }}>
-                    &quot;{t.quote}&quot;
-                  </p>
-                  <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent)' }}>— {t.author}</span>
-                </div>
-              ))}
-            </div>
-          </section>
         </div>
       </div>
 
