@@ -7,17 +7,17 @@ import { ArrowRight } from 'lucide-react';
 import { WHATSAPP_URL } from '@/lib/config/site';
 
 const NEWS_ARTICLES = [
-  { title: "Must-have jewellery pieces for a bridal trousseau, hand-picked by an expert", publisher: "Brides Today", link: "https://www.bridestoday.in/watches-and-jewellery/story/gilded-guidance-743619-2024-02-24" },
-  { title: "Mid-Day Article - 23rd September 2023 - Some of the finest jewellery pieces", publisher: "Mid-Day", link: "https://www.mid-day.com/mumbai/mumbai-news/article/mumbai-diary-sunday-dossier-23306978" },
-  { title: "Jewellery connoisseur, Arundhati De-Sheth sheds light on her love for natural diamonds", publisher: "Only Natural Diamonds", link: "https://www.naturaldiamonds.com/in/love-diamonds/jewellery-journey-inspiration-of-diamond-diva-arundhati-de-sheth/" },
-  { title: "Arundhati De-Sheth's Expert Curation: Elevating Jewellery to Art", publisher: "GJEPC Solitaire International", link: "https://gjepc.org/solitaire/arundhati-de-sheths-expert-curation-elevating-jewellery-to-art/" },
-  { title: "Why jewellery consultants are the new personal shoppers", publisher: "Vogue", link: "https://www.vogue.in/fashion/content/why-jewellery-consultants-are-the-new-personal-shoppers" },
-  { title: "In 2021, Engaged Couples Are Hiring \"Ring Whisperers\" To Source Their Dream Design", publisher: "British Vogue", link: "https://www.vogue.co.uk/fashion/article/engagement-ring-concierge" },
-  { title: "Curator of the exquisite, Arundhati De-Sheth is your go-to person for irresistible jewellery", publisher: "LUXEBOOK", link: "https://luxebook.in/arundhati-de-sheth-is-your-go-to-person-for-irresistible-jewellery/" },
-  { title: "Meet Arundhati De Sheth, the bespoke jewellery consultant", publisher: "The Hindu", link: "https://www.thehindu.com/life-and-style/luxury/meet-arundhati-de-sheth-the-bespoke-jewellery-consultant/article30050420.ece" },
-  { title: "Happy Shiny Things - Feature", publisher: "GRAZIA", link: "#" },
-  { title: "Pieces to Wear at Your Wedding", publisher: "HARPER'S BAZAAR INDIA", link: "#" },
-  { title: "Insider Secrets & the Accessories to Covet", publisher: "HARPER'S BAZAAR INDIA", link: "#" }
+  { title: "Must-have jewellery pieces for a bridal trousseau, hand-picked by an expert", publisher: "Brides Today", link: "https://www.bridestoday.in/watches-and-jewellery/story/gilded-guidance-743619-2024-02-24", image: "https://www.arundhatidesheth.com/cdn/shop/files/659d187356833-n-must-haves-in-a-bridal-trousseau-095706553-16x9.jpg" },
+  { title: "Mid-Day Article - 23rd September 2023 - Some of the finest jewellery pieces", publisher: "Mid-Day", link: "https://www.mid-day.com/mumbai/mumbai-news/article/mumbai-diary-sunday-dossier-23306978", image: "https://www.arundhatidesheth.com/cdn/shop/files/mid_day_article.jpg" },
+  { title: "Jewellery connoisseur, Arundhati De-Sheth sheds light on her love for natural diamonds", publisher: "Only Natural Diamonds", link: "https://www.naturaldiamonds.com/in/love-diamonds/jewellery-journey-inspiration-of-diamond-diva-arundhati-de-sheth/", image: "https://www.arundhatidesheth.com/cdn/shop/files/Hero-Banner-1_bf6ec802-9835-4d98-b949-22801ef3e621.webp" },
+  { title: "Arundhati De-Sheth's Expert Curation: Elevating Jewellery to Art", publisher: "GJEPC Solitaire International", link: "https://gjepc.org/solitaire/arundhati-de-sheths-expert-curation-elevating-jewellery-to-art/", image: "https://www.arundhatidesheth.com/cdn/shop/files/ARUNDHATI.jpg" },
+  { title: "Why jewellery consultants are the new personal shoppers", publisher: "Vogue", link: "https://www.vogue.in/fashion/content/why-jewellery-consultants-are-the-new-personal-shoppers", image: "https://www.arundhatidesheth.com/cdn/shop/files/VOGUE.png" },
+  { title: "In 2021, Engaged Couples Are Hiring \"Ring Whisperers\" To Source Their Dream Design", publisher: "British Vogue", link: "https://www.vogue.co.uk/fashion/article/engagement-ring-concierge", image: "https://www.arundhatidesheth.com/cdn/shop/files/RG_15.2.21_Dina-kamal-engagement-ring-concierge-02.webp" },
+  { title: "Curator of the exquisite, Arundhati De-Sheth is your go-to person for irresistible jewellery", publisher: "LUXEBOOK", link: "https://luxebook.in/arundhati-de-sheth-is-your-go-to-person-for-irresistible-jewellery/", image: "https://www.arundhatidesheth.com/cdn/shop/files/6ef918_c8a89625059f41bfa4c4431017984e3d_mv2_1.jpg" },
+  { title: "Meet Arundhati De Sheth, the bespoke jewellery consultant", publisher: "The Hindu", link: "https://www.thehindu.com/life-and-style/luxury/meet-arundhati-de-sheth-the-bespoke-jewellery-consultant/article30050420.ece", image: "https://www.arundhatidesheth.com/cdn/shop/files/Image_for_THE_HINDU.jpg" },
+  { title: "Happy Shiny Things - Feature", publisher: "GRAZIA", link: "#", image: "https://www.arundhatidesheth.com/cdn/shop/files/6ef918_af843dfeb1ff411d814d72612595a29f_mv2.png" },
+  { title: "Pieces to Wear at Your Wedding", publisher: "HARPER'S BAZAAR INDIA", link: "#", image: "https://www.arundhatidesheth.com/cdn/shop/files/6ef918_c5497b11e7b4424d9b5fe1944602337a_mv2.jpg" },
+  { title: "Insider Secrets & the Accessories to Covet", publisher: "HARPER'S BAZAAR INDIA", link: "#", image: "https://www.arundhatidesheth.com/cdn/shop/files/6ef918_16b52900c968437dafcdb7c0018ccb3c_mv2.jpg" }
 ];
 
 const VIDEOS = [
@@ -39,10 +39,13 @@ export default function WhatsNewPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '48px' }}>
           {NEWS_ARTICLES.map((article, idx) => (
             <a key={idx} href={article.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', marginBottom: '24px', background: '#F5F5F5' }}>
+                <Image src={article.image} alt={article.title} fill style={{ objectFit: 'cover' }} />
+              </div>
               <h3 style={{ fontSize: '15px', fontFamily: 'Figtree, sans-serif', lineHeight: '22.5px', fontWeight: '400', marginBottom: '16px' }}>
                 {article.title}
               </h3>
-              <p style={{ fontSize: '14px', fontFamily: 'var(--font-serif)', color: '#666' }}>
+              <p style={{ fontSize: '14px', fontFamily: 'var(--font-serif)', color: '#666', marginTop: 'auto' }}>
                 {article.publisher}
               </p>
             </a>
