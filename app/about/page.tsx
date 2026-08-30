@@ -81,14 +81,6 @@ function HowWeHelpSection() {
 ───────────────────────────────────────────────────────── */
 export default function AboutPage() {
   const { data, loading } = useCMSData();
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoFailed, setVideoFailed] = useState(false);
-
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {});
-    }
-  }, []);
 
   return (
     <div style={{ background: 'var(--bg-primary)', color: 'var(--text-main)' }}>
@@ -161,21 +153,7 @@ export default function AboutPage() {
           {/* ── Jewellery Confluence: Video Section ── */}
           <section style={{ marginBottom: '160px' }}>
             <div style={{ position: 'relative', width: '100%', height: '70vh', overflow: 'hidden', marginBottom: '80px', borderRadius: '2px' }}>
-              {videoFailed ? (
-                <img src="https://www.arundhatidesheth.com/cdn/shop/files/maxresdefault_1.jpg?v=1710148177" alt="Jewellery Video" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              ) : (
-                <video
-                  autoPlay
-                  loop
-                  playsInline
-                  controls
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  onError={() => setVideoFailed(true)}
-                >
-                  <source src="/videos/about-video.mp4" type="video/mp4" />
-                  <source src="https://www.arundhatidesheth.com/cdn/shop/videos/c/vp/bd1c0827a8744a549b5e3e7bc2e9f745/bd1c0827a8744a549b5e3e7bc2e9f745.HD-1080p-7.2Mbps-36693499.mp4" type="video/mp4" />
-                </video>
-              )}
+              <img src="https://www.arundhatidesheth.com/cdn/shop/files/maxresdefault_1.jpg?v=1710148177" alt="Jewellery Video" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.2)' }} />
               <div style={{ position: 'absolute', bottom: '48px', left: '48px' }}>
                 <p style={{ color: '#FFFFFF', fontSize: '0.75rem', letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '12px', opacity: 0.7 }}>Philosophy</p>
