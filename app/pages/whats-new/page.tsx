@@ -86,7 +86,7 @@ export default function WhatsNewPage() {
         {/* Disha Patani */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '48px', alignItems: 'center', marginBottom: '120px' }}>
           <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', background: '#F5F5F5' }}>
-            <Image src="/whatsnewimages/disha2.jpg" alt="Disha Patani" fill style={{ objectFit: 'cover' }} />
+            <Image src="/pressimages/press-hero.png" alt="Disha Patani placeholder" fill style={{ objectFit: 'cover' }} />
           </div>
           <div style={{ textAlign: 'center', padding: '0 24px' }}>
             <h4 style={{ fontSize: '26.8px', fontFamily: 'var(--font-serif)', marginBottom: '8px' }}>Disha Patani</h4>
@@ -100,14 +100,14 @@ export default function WhatsNewPage() {
             </Link>
           </div>
           <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', background: '#F5F5F5' }}>
-            <Image src="/whatsnewimages/disha1.jpg" alt="Disha Patani" fill style={{ objectFit: 'cover' }} />
+            <Image src="/pressimages/press-1.png" alt="Disha Patani placeholder" fill style={{ objectFit: 'cover' }} />
           </div>
         </div>
 
         {/* Alia Bhatt */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '48px', alignItems: 'center', marginBottom: '120px' }}>
           <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', background: '#F5F5F5' }}>
-            <Image src="/whatsnewimages/alia2.jpg" alt="Alia Bhatt" fill style={{ objectFit: 'cover' }} />
+            <Image src="/pressimages/press-2.jpg" alt="Alia Bhatt placeholder" fill style={{ objectFit: 'cover' }} />
           </div>
           <div style={{ textAlign: 'center', padding: '0 24px' }}>
             <h4 style={{ fontSize: '26.8px', fontFamily: 'var(--font-serif)', marginBottom: '8px' }}>Alia Bhatt</h4>
@@ -121,14 +121,14 @@ export default function WhatsNewPage() {
             </Link>
           </div>
           <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', background: '#F5F5F5' }}>
-            <Image src="/whatsnewimages/alia1.jpg" alt="Alia Bhatt" fill style={{ objectFit: 'cover' }} />
+            <Image src="/pressimages/press-3.jpg" alt="Alia Bhatt placeholder" fill style={{ objectFit: 'cover' }} />
           </div>
         </div>
 
         {/* Priyanka Chopra */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '48px', alignItems: 'center' }}>
           <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', background: '#F5F5F5' }}>
-             <Image src="/whatsnewimages/PC_Reception_Mumbai.jpg" alt="Priyanka Chopra" fill style={{ objectFit: 'cover' }} />
+             <Image src="/pressimages/press-4.png" alt="Priyanka Chopra placeholder" fill style={{ objectFit: 'cover' }} />
           </div>
           <div style={{ textAlign: 'center', padding: '0 24px' }}>
             <h4 style={{ fontSize: '26.8px', fontFamily: 'var(--font-serif)', marginBottom: '32px' }}>Priyanka Chopra Wedding Reception</h4>
@@ -145,7 +145,7 @@ export default function WhatsNewPage() {
           </div>
           <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', background: '#F5F5F5' }}>
             {/* Note: I couldn't find the exact second PC image from the scraper, using a placeholder product image to maintain the strict 3-col layout */}
-             <Image src="/whatsnewimages/IMG-5690.jpg" alt="Jewelry" fill style={{ objectFit: 'cover' }} />
+             <Image src="/pressimages/press-hero.png" alt="Jewelry placeholder" fill style={{ objectFit: 'cover' }} />
           </div>
         </div>
 
