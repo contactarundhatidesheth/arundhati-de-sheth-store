@@ -70,7 +70,7 @@ export default function JewelryLookbooksPage() {
     <div style={{ minHeight: '100vh', background: '#FFFFFF', paddingTop: '40px' }}>
       
       {/* 1. Category Tabs */}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '48px', marginBottom: '80px', overflowX: 'auto', padding: '0 24px' }}>
+      <div style={{ position: 'sticky', top: '80px', zIndex: 40, background: '#FFFFFF', display: 'flex', justifyContent: 'center', gap: '48px', marginBottom: '80px', overflowX: 'auto', padding: '20px 24px', borderBottom: '1px solid #f0f0f0' }}>
         {TABS.map((tab) => (
           <button
             key={tab}
@@ -95,7 +95,39 @@ export default function JewelryLookbooksPage() {
         ))}
       </div>
 
-      {/* 2. Lookbooks Row (5-Column) */}
+      {/* 2. 3-Column Category Grid (Moved to top) */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, width: '100%', marginBottom: '80px' }}>
+        
+        {/* Earrings */}
+        <Link href="/category/all-products?tab=EARRINGS" style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block' }}>
+          {earrings && <Image src={earrings} alt="Earrings" fill style={{ objectFit: 'cover' }} />}
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.15)' }} />
+          <h2 style={{ position: 'absolute', bottom: '40px', left: '40px', color: '#FFFFFF', fontSize: '28px', fontWeight: '400', letterSpacing: '3px' }}>
+            EARRINGS
+          </h2>
+        </Link>
+
+        {/* Rings */}
+        <Link href="/category/all-products?tab=RINGS" style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block' }}>
+          {rings && <Image src={rings} alt="Rings" fill style={{ objectFit: 'cover' }} />}
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.15)' }} />
+          <h2 style={{ position: 'absolute', bottom: '40px', left: '40px', color: '#FFFFFF', fontSize: '28px', fontWeight: '400', letterSpacing: '3px' }}>
+            RINGS
+          </h2>
+        </Link>
+
+        {/* Necklaces */}
+        <Link href="/category/all-products?tab=NECKLACES" style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block' }}>
+          {necklaces && <Image src={necklaces} alt="Necklaces" fill style={{ objectFit: 'cover' }} />}
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.15)' }} />
+          <h2 style={{ position: 'absolute', bottom: '40px', left: '40px', color: '#FFFFFF', fontSize: '28px', fontWeight: '400', letterSpacing: '3px' }}>
+            NECKLACES
+          </h2>
+        </Link>
+
+      </div>
+
+      {/* 3. Lookbooks Row (5-Column) */}
       <div style={{ maxWidth: '1400px', margin: '0 auto 120px', padding: '0 24px' }}>
         {activeTab === 'EPHEMERALS' ? (
           <div style={{ 
@@ -143,38 +175,6 @@ export default function JewelryLookbooksPage() {
             </p>
           </div>
         )}
-      </div>
-
-      {/* 3. 3-Column Category Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, width: '100%' }}>
-        
-        {/* Earrings */}
-        <Link href="/category/earrings" style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block' }}>
-          {earrings && <Image src={earrings} alt="Earrings" fill style={{ objectFit: 'cover' }} />}
-          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.15)' }} />
-          <h2 style={{ position: 'absolute', bottom: '40px', left: '40px', color: '#FFFFFF', fontSize: '28px', fontWeight: '400', letterSpacing: '3px' }}>
-            EARRINGS
-          </h2>
-        </Link>
-
-        {/* Rings */}
-        <Link href="/category/rings" style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block' }}>
-          {rings && <Image src={rings} alt="Rings" fill style={{ objectFit: 'cover' }} />}
-          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.15)' }} />
-          <h2 style={{ position: 'absolute', bottom: '40px', left: '40px', color: '#FFFFFF', fontSize: '28px', fontWeight: '400', letterSpacing: '3px' }}>
-            RINGS
-          </h2>
-        </Link>
-
-        {/* Necklaces */}
-        <Link href="/category/necklaces" style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block' }}>
-          {necklaces && <Image src={necklaces} alt="Necklaces" fill style={{ objectFit: 'cover' }} />}
-          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.15)' }} />
-          <h2 style={{ position: 'absolute', bottom: '40px', left: '40px', color: '#FFFFFF', fontSize: '28px', fontWeight: '400', letterSpacing: '3px' }}>
-            NECKLACES
-          </h2>
-        </Link>
-
       </div>
 
       <style jsx>{`
