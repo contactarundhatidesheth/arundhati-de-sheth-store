@@ -15,10 +15,16 @@ export default function CategoryAllProductsPage() {
 
   const PRODUCTS = data.products;
   
-  let filteredProducts = PRODUCTS.filter(p => p.category.toUpperCase().includes(activeTab) || p.collection.toUpperCase().includes(activeTab));
-  
+  const normalize = (str: string) => (str || '').toUpperCase().replace(/[:-]/g, '').replace(/\s+/g, '');
+
+  let filteredProducts = PRODUCTS.filter(p => 
+    normalize(p.category).includes(normalize(activeTab)) || 
+    normalize(p.collection).includes(normalize(activeTab))
+  );
+
   if (filteredProducts.length === 0) {
-    filteredProducts = PRODUCTS; // fallback so the UI isn't empty during dev
+    // Show empty state instead of all products
+    filteredProducts = []; 
   }
 
   // Get sample images for the 3-column footer
@@ -65,42 +71,48 @@ export default function CategoryAllProductsPage() {
         maxWidth: '2400px',
         margin: '0 auto 120px'
       }}>
-        {filteredProducts.map(product => (
-          <Link href={`/product/${product.handle}`} key={product.id} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', background: '#F9F9F9', marginBottom: '16px' }}>
-              <Image 
-                src={product.images[0]} 
-                alt={product.title} 
-                fill 
-                style={{ objectFit: 'cover' }}
-              />
-              {/* Dark Gradient Overlay for Text */}
-              <div style={{
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                width: '100%',
-                height: '50%',
-                background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%)',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-end',
-                padding: '20px'
-              }}>
-                <p style={{ color: '#FFFFFF', fontSize: '12px', fontWeight: '400', letterSpacing: '0.5px', marginBottom: '4px' }}>
-                  {product.title}
-                </p>
-                <p style={{ color: '#FFFFFF', fontSize: '12px', fontWeight: '500' }}>
-                  {product.isPriceOnRequest ? 'Price on Request' : `USD ${(product.price / 83).toLocaleString('en-US', {maximumFractionDigits:0})}`} 
-                </p>
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map(product => (
+            <Link href={`/product/${product.handle}`} key={product.id} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', background: '#F9F9F9', marginBottom: '16px' }}>
+                <Image 
+                  src={product.images[0]} 
+                  alt={product.title} 
+                  fill 
+                  style={{ objectFit: 'cover' }}
+                />
+                {/* Dark Gradient Overlay for Text */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '50%',
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-end',
+                  padding: '20px'
+                }}>
+                  <p style={{ color: '#FFFFFF', fontSize: '12px', fontWeight: '400', letterSpacing: '0.5px', marginBottom: '4px' }}>
+                    {product.title}
+                  </p>
+                  <p style={{ color: '#FFFFFF', fontSize: '12px', fontWeight: '500' }}>
+                    {product.isPriceOnRequest ? 'Price on Request' : `USD ${(product.price / 83).toLocaleString('en-US', {maximumFractionDigits:0})}`} 
+                  </p>
+                </div>
               </div>
-            </div>
-            {/* Product Line / Collection Name below image */}
-            <p style={{ textAlign: 'center', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1.5px', color: '#000000', fontWeight: '500' }}>
-              {product.collection || 'COLLECTION'}
-            </p>
-          </Link>
-        ))}
+              {/* Product Line / Collection Name below image */}
+              <p style={{ textAlign: 'center', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1.5px', color: '#000000', fontWeight: '500' }}>
+                {product.collection || 'COLLECTION'}
+              </p>
+            </Link>
+          ))
+        ) : (
+          <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '80px 0', color: '#666' }}>
+            <p>No products found for this collection.</p>
+          </div>
+        )}
       </div>
 
       {/* 3. 3-Column Category Grid */}
