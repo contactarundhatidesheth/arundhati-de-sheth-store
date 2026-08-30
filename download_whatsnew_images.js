@@ -8,12 +8,12 @@ if (!fs.existsSync(dir)) {
 }
 
 const images = [
-  { url: 'https://cdn.shopify.com/s/files/1/0275/0287/0572/files/disha2.jpg', name: 'disha2.jpg' },
-  { url: 'https://cdn.shopify.com/s/files/1/0275/0287/0572/files/disha1.jpg', name: 'disha1.jpg' },
-  { url: 'https://cdn.shopify.com/s/files/1/0275/0287/0572/files/alia2.jpg', name: 'alia2.jpg' },
-  { url: 'https://cdn.shopify.com/s/files/1/0275/0287/0572/files/alia1.jpg', name: 'alia1.jpg' },
-  { url: 'https://cdn.shopify.com/s/files/1/0275/0287/0572/files/PC_Reception_Mumbai.jpg', name: 'PC_Reception_Mumbai.jpg' },
-  { url: 'https://cdn.shopify.com/s/files/1/0275/0287/0572/products/IMG-5690.jpg', name: 'IMG-5690.jpg' },
+  { url: 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Image_for_COSMOPOLITAN_2.png?v=1709671240', name: 'disha2.jpg' },
+  { url: 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Image_for_COSMOPOLITAN_1.png?v=1709671240', name: 'disha1.jpg' },
+  { url: 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/image.jpg?v=1709644310', name: 'alia2.jpg' },
+  { url: 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Alia.png?v=1709645225', name: 'alia1.jpg' },
+  { url: 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/image_15_6331350e-bd1e-48a8-b4dd-274e04ac034c.jpg?v=1689599173', name: 'PC_Reception_Mumbai.jpg' },
+  { url: 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/6ef918_f69fd5cb35184225ae4e24ec8cdcf7ad_mv2.jpg?v=1709674066', name: 'IMG-5690.jpg' },
 ];
 
 const download = (url, dest) => {
