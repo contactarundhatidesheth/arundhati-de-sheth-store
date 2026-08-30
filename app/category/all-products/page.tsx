@@ -36,7 +36,7 @@ export default function CategoryAllProductsPage() {
   const necklaces = PRODUCTS.find(p => p.category.toLowerCase().includes('necklace'))?.images[0] || PRODUCTS[2]?.images[0];
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FFFFFF', paddingTop: '40px' }}>
+    <div style={{ minHeight: '100vh', background: '#FFFFFF', paddingTop: '120px' }}>
       
       {/* 1. Category Tabs */}
       <div style={{ display: 'flex', justifyContent: 'center', gap: '48px', marginBottom: '80px', overflowX: 'auto', padding: '0 24px' }}>
