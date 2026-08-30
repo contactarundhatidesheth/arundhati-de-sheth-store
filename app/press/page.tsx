@@ -17,7 +17,7 @@ const PRESS = [
     title: 'The New Guard of Indian High Jewellery',
     excerpt: 'Arundhati De-Sheth is redefining what it means to be a contemporary high jewellery designer in India.',
     date: 'March 2025',
-    image: 'https://www.arundhatidesheth.com/cdn/shop/files/Screenshot_2025-04-08_130922.png?v=1708934384&width=800',
+    image: '/pressimages/press-1.png',
     link: '#',
   },
   {
@@ -26,7 +26,7 @@ const PRESS = [
     title: 'Sculptural Silver: The Perennials Collection',
     excerpt: 'Rock crystals and architectural forms collide in this stunning new collection from Mumbai-based Arundhati De-Sheth.',
     date: 'January 2025',
-    image: 'https://www.arundhatidesheth.com/cdn/shop/files/PASTELGIRANDOLEEARRINGS1_1.jpg?v=1708934384&width=800',
+    image: '/pressimages/press-2.jpg',
     link: '#',
   },
   {
@@ -35,7 +35,7 @@ const PRESS = [
     title: 'Bespoke by Design: A Conversation with Arundhati De-Sheth',
     excerpt: 'On building a consultancy-first model, gemstone provenance, and the art of the private client relationship.',
     date: 'November 2024',
-    image: 'https://www.arundhatidesheth.com/cdn/shop/files/DICERING4.jpg?v=1709288209&width=800',
+    image: '/pressimages/press-3.jpg',
     link: '#',
   },
   {
@@ -44,7 +44,7 @@ const PRESS = [
     title: 'JewelArt 2024: The Highlights',
     excerpt: "A curated selection of the most compelling pieces from this year's edition of JewelArt, featuring Arundhati De-Sheth.",
     date: 'October 2024',
-    image: 'https://www.arundhatidesheth.com/cdn/shop/files/Screenshot_2024-02-26_at_2.04.21_PM.png?v=1708934384&width=800',
+    image: '/pressimages/press-4.png',
     link: '#',
   },
 ];
@@ -59,7 +59,7 @@ export default function PressPage() {
       <section style={{ position: 'relative', minHeight: '50vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#1A1A1A', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
           <img
-            src="https://www.arundhatidesheth.com/cdn/shop/files/Screenshot_2025-04-08_130922.png?v=1708934384&width=1600"
+            src="/pressimages/press-hero.png"
             alt="Prismatic Collection Editorial"
             style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4 }}
           />
