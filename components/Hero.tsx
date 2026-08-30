@@ -2,17 +2,40 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { Play, Pause } from 'lucide-react';
-import { CanvasVideoPlayer } from './CanvasVideoPlayer';
 
 export const Hero: React.FC = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
-    setIsPlaying(true);
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.play().catch(() => {
+      setIsPlaying(false);
+    });
+
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
+
+    return () => {
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
+    };
   }, []);
 
   const togglePlay = () => {
-    setIsPlaying(!isPlaying);
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
   };
 
   return (
@@ -29,9 +52,25 @@ export const Hero: React.FC = () => {
       background: '#000000'
     }}>
       
-      <CanvasVideoPlayer totalFrames={300} isPlaying={isPlaying} />
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        loop
+        playsInline
+        poster="/images/hero-poster.jpg"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+        }}
+      >
+        <source src="/videos/about-video.mp4" type="video/mp4" />
+      </video>
 
-      {/* Overlay */}
+      {/* Overlay to ensure text readability (if required, subtle) */}
       <div style={{
         position: 'absolute',
         top: 0, 
