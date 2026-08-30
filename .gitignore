@@ -45,3 +45,10 @@ next-env.d.ts
 # media binaries
 /ffmpeg/
 
+# downloaded drive assets (large binaries - regenerate with download scripts)
+/public/videos/
+/public/images/
+/public/decodent/
+/public/timeline/
+/public/brand/
+

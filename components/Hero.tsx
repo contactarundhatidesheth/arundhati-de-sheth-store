@@ -1,21 +1,41 @@
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
-import Link from 'next/link';
 import { Play, Pause } from 'lucide-react';
-import { CanvasVideoPlayer } from './CanvasVideoPlayer';
 
 export const Hero: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
-    // We rely on native HTML autoplay, but we'll set the initial state
-    setIsPlaying(true);
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.play().catch(() => {
+      setIsPlaying(false);
+    });
+
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
+
+    return () => {
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
+    };
   }, []);
 
   const togglePlay = () => {
-    setIsPlaying(!isPlaying);
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
   };
 
   return (
@@ -32,8 +52,23 @@ export const Hero: React.FC = () => {
       background: '#000000'
     }}>
       
-      {/* Bulletproof Canvas Video Player utilizing local frame sequence */}
-      <CanvasVideoPlayer totalFrames={300} isPlaying={isPlaying} />
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        loop
+        playsInline
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+        }}
+      >
+        <source src="/videos/look1.mp4" type="video/mp4" />
+        <source src="/videos/look2.mp4" type="video/mp4" />
+      </video>
 
       {/* Overlay to ensure text readability (if required, subtle) */}
       <div style={{

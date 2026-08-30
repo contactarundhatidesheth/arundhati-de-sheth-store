@@ -13,7 +13,7 @@ export const Footer: React.FC = () => {
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '80px' }}>
           <Link href="/" style={{ display: 'block', width: '240px' }}>
             <img 
-              src="https://www.arundhatidesheth.com/cdn/shop/files/111.png?v=1708868785" 
+              src="/brand/logo-black.png" 
               alt="Arundhati De-Sheth" 
               style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
             />
