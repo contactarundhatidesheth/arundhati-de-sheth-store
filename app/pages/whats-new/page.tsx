@@ -90,7 +90,7 @@ export default function WhatsNewPage() {
           </div>
           <div style={{ textAlign: 'center', padding: '0 24px' }}>
             <h4 style={{ fontSize: '26.8px', fontFamily: 'var(--font-serif)', marginBottom: '8px' }}>Disha Patani</h4>
-            <h6 style={{ fontSize: '19.1px', fontFamily: 'var(--font-serif)', marginBottom: '32px', color: '#666' }}>for Cosmopolitan, Feb '20</h6>
+            <h6 style={{ fontSize: '19.1px', fontFamily: 'var(--font-serif)', marginBottom: '32px', color: '#666' }}>for Cosmopolitan, Feb &apos;20</h6>
             <hr style={{ width: '50px', border: 'none', borderTop: '1px solid #000', margin: '0 auto 32px' }} />
             <p style={{ fontSize: '15px', fontFamily: 'Figtree, sans-serif', lineHeight: '22.5px', marginBottom: '40px' }}>
               Disha Patani is on the cover of Cosmopolitan India in rings from the Arundhati De-Sheth line currently available exclusively at Le Mill boutique, Mumbai. Each piece is set in 18k gold, with black enamel detailing and colourless diamond solitaires.
@@ -111,7 +111,7 @@ export default function WhatsNewPage() {
           </div>
           <div style={{ textAlign: 'center', padding: '0 24px' }}>
             <h4 style={{ fontSize: '26.8px', fontFamily: 'var(--font-serif)', marginBottom: '8px' }}>Alia Bhatt</h4>
-            <h6 style={{ fontSize: '19.1px', fontFamily: 'var(--font-serif)', marginBottom: '32px', color: '#666' }}>styled in Rings from Arundhati's line at Le Mill<br/>for Filmfare 2019</h6>
+            <h6 style={{ fontSize: '19.1px', fontFamily: 'var(--font-serif)', marginBottom: '32px', color: '#666' }}>styled in Rings from Arundhati&apos;s line at Le Mill<br/>for Filmfare 2019</h6>
             <hr style={{ width: '50px', border: 'none', borderTop: '1px solid #000', margin: '0 auto 32px' }} />
             <p style={{ fontSize: '15px', fontFamily: 'Figtree, sans-serif', lineHeight: '22.5px', marginBottom: '40px' }}>
               She is wearing multiple rings from the Arundhati De-Sheth line currently available exclusively at Le Mill boutique, Mumbai. Each piece is set in 18k gold, with black and white enamel detailing and colourless diamond solitaires. The pieces are contemporary and extremely easy to wear daily, or for occasions.
@@ -134,7 +134,7 @@ export default function WhatsNewPage() {
             <h4 style={{ fontSize: '26.8px', fontFamily: 'var(--font-serif)', marginBottom: '32px' }}>Priyanka Chopra Wedding Reception</h4>
             <hr style={{ width: '50px', border: 'none', borderTop: '1px solid #000', margin: '0 auto 32px' }} />
             <p style={{ fontSize: '15px', fontFamily: 'Figtree, sans-serif', lineHeight: '22.5px', marginBottom: '16px' }}>
-              A last-minute phone call from Bride - Priyanka Chopra’s garment designers, led to a 48-hour hunt, identifying jewellery pieces for the ace actor’s glamorous Mumbai reception for her Bollywood fraternity.
+              A last-minute phone call from Bride - Priyanka Chopra&apos;s garment designers, led to a 48-hour hunt, identifying jewellery pieces for the ace actor&apos;s glamorous Mumbai reception for her Bollywood fraternity.
             </p>
             <p style={{ fontSize: '15px', fontFamily: 'Figtree, sans-serif', lineHeight: '22.5px', marginBottom: '40px' }}>
               She wore a two-row diamond rivière necklace with two magnificent, yellow cut-cornered Cushion-shaped diamonds, Classic Diamond drop earrings featuring a pair of stellar natural Yellow hexagonal-shaped diamonds and a ring with a fancy yellow 7 carat cushion-cut diamond center.

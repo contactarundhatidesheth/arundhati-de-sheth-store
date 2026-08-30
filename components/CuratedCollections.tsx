@@ -80,9 +80,9 @@ export const CuratedCollections: React.FC = () => {
           {PRODUCTS.filter(p => p.collection === activeTab).slice(0, 5).map((product) => (
             <div className="pdf-sub-item" key={product.id}>
               <Link href={`/product/${product.handle}`} className="sub-image-container">
-                <img src={product.images[0]} alt={product.name} />
+                <img src={product.images[0]} alt={product.title} />
               </Link>
-              <div className="sub-title">{product.name}</div>
+              <div className="sub-title">{product.title}</div>
             </div>
           ))}
           
