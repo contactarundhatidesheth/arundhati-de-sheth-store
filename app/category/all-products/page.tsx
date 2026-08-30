@@ -39,7 +39,7 @@ export default function CategoryAllProductsPage() {
     <div style={{ minHeight: '100vh', background: '#FFFFFF', paddingTop: '40px' }}>
       
       {/* 1. Category Tabs */}
-      <div style={{ position: 'sticky', top: '80px', zIndex: 40, background: '#FFFFFF', display: 'flex', justifyContent: 'center', gap: '48px', marginBottom: '80px', overflowX: 'auto', padding: '20px 24px', borderBottom: '1px solid #f0f0f0' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '48px', marginBottom: '80px', overflowX: 'auto', padding: '0 24px' }}>
         {TABS.map((tab) => (
           <button
             key={tab}
@@ -68,7 +68,7 @@ export default function CategoryAllProductsPage() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, width: '100%', marginBottom: '80px' }}>
         
         {/* Earrings */}
-        <button onClick={() => { setActiveTab('EARRINGS'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ border: 'none', padding: 0, position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block', cursor: 'pointer' }}>
+        <button onClick={() => { setActiveTab('EARRING'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ border: 'none', padding: 0, position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block', cursor: 'pointer' }}>
           {earrings && <Image src={earrings} alt="Earrings" fill style={{ objectFit: 'cover' }} />}
           <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.15)' }} />
           <h2 style={{ position: 'absolute', bottom: '40px', left: '40px', color: '#FFFFFF', fontSize: '28px', fontWeight: '400', letterSpacing: '3px' }}>
@@ -77,7 +77,7 @@ export default function CategoryAllProductsPage() {
         </button>
 
         {/* Rings */}
-        <button onClick={() => { setActiveTab('RINGS'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ border: 'none', padding: 0, position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block', cursor: 'pointer' }}>
+        <button onClick={() => { setActiveTab('RING'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ border: 'none', padding: 0, position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block', cursor: 'pointer' }}>
           {rings && <Image src={rings} alt="Rings" fill style={{ objectFit: 'cover' }} />}
           <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.15)' }} />
           <h2 style={{ position: 'absolute', bottom: '40px', left: '40px', color: '#FFFFFF', fontSize: '28px', fontWeight: '400', letterSpacing: '3px' }}>
@@ -86,7 +86,7 @@ export default function CategoryAllProductsPage() {
         </button>
 
         {/* Necklaces */}
-        <button onClick={() => { setActiveTab('NECKLACES'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ border: 'none', padding: 0, position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block', cursor: 'pointer' }}>
+        <button onClick={() => { setActiveTab('NECKLACE'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ border: 'none', padding: 0, position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block', cursor: 'pointer' }}>
           {necklaces && <Image src={necklaces} alt="Necklaces" fill style={{ objectFit: 'cover' }} />}
           <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.15)' }} />
           <h2 style={{ position: 'absolute', bottom: '40px', left: '40px', color: '#FFFFFF', fontSize: '28px', fontWeight: '400', letterSpacing: '3px' }}>
