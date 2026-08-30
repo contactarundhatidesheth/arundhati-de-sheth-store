@@ -81,6 +81,13 @@ function HowWeHelpSection() {
 ───────────────────────────────────────────────────────── */
 export default function AboutPage() {
   const { data, loading } = useCMSData();
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(e => console.error("Video autoplay failed:", e));
+    }
+  }, []);
 
   return (
     <div style={{ background: 'var(--bg-primary)', color: 'var(--text-main)' }}>
@@ -91,36 +98,28 @@ export default function AboutPage() {
         <video
           ref={videoRef}
           autoPlay
-          muted
           loop
           playsInline
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
         >
           {/* Use local video once downloaded via download_about_assets.js */}
-          <source src="/videos/look1.mp4" type="video/mp4" />
+          <source src="/videos/about-video.mp4" type="video/mp4" />
           {/* Fallback to Shopify CDN video */}
           <source src="https://www.arundhatidesheth.com/cdn/shop/videos/c/vp/bd1c0827a8744a549b5e3e7bc2e9f745/bd1c0827a8744a549b5e3e7bc2e9f745.HD-1080p-7.2Mbps-36693499.mp4" type="video/mp4" />
         </video>
 
-        {/* Dark overlay */}
-        <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.45)' }} />
+        {/* Dark overlay - changed to subtle bottom gradient for text readability */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 25%)' }} />
 
-        {/* Hero text */}
-        <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', color: '#FFFFFF', padding: '0 24px' }}>
-          <p style={{ fontSize: '0.75rem', letterSpacing: '0.35em', textTransform: 'uppercase', marginBottom: '20px', opacity: 0.7 }}>Fine Jewellery Consultancy</p>
-          <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1, marginBottom: '32px' }}>
+        {/* Hero text - Minimal and placed at bottom-left */}
+        <div style={{ position: 'absolute', bottom: '48px', left: '48px', zIndex: 2, textAlign: 'left', color: '#FFFFFF' }}>
+          <p style={{ fontSize: '0.65rem', letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '12px', opacity: 0.7 }}>
+            Fine Jewellery Consultancy
+          </p>
+          <h1 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1, marginBottom: '16px' }}>
             Arundhati<br />De-Sheth
           </h1>
-          <div style={{ width: '48px', height: '1px', background: '#d4af37', margin: '0 auto 32px' }} />
-          <p style={{ fontSize: '1rem', lineHeight: 1.8, maxWidth: '520px', margin: '0 auto', opacity: 0.85 }}>
-            Bridging the world&apos;s most exceptional jewellery with discerning collectors globally.
-          </p>
-        </div>
-
-        {/* Scroll cue */}
-        <div style={{ position: 'absolute', bottom: '40px', left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', color: '#ffffff', opacity: 0.5 }}>
-          <span style={{ fontSize: '0.65rem', letterSpacing: '0.3em', textTransform: 'uppercase' }}>Scroll</span>
-          <div style={{ width: '1px', height: '40px', background: '#ffffff', animation: 'scrollPulse 2s ease-in-out infinite' }} />
+          <div style={{ width: '32px', height: '1px', background: '#d4af37' }} />
         </div>
       </div>
 

@@ -63,11 +63,6 @@ export const Header: React.FC = () => {
           <button onClick={() => setIsMenuOpen(true)} style={{ color: 'var(--accent)' }}>
             <Menu size={28} strokeWidth={1.5} />
           </button>
-          
-          <div className="hide-on-mobile" style={{ display: 'flex', gap: '24px', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-            <Link href="/contact" style={{ color: 'inherit' }}>Contact Us</Link>
-            <Link href="/services" style={{ color: 'inherit' }}>Services</Link>
-          </div>
         </div>
 
         {/* Center: Logo */}
@@ -141,12 +136,12 @@ export const Header: React.FC = () => {
             <X size={32} strokeWidth={1} color="#ffffff" />
           </button>
         </div>
-        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '16px', padding: '40px 0 80px 0', minHeight: 'min-content' }}>
-          <Link href="/about" className="nav-link" style={{ fontSize: '1.8rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>ABOUT US</Link>
-          <Link href="/category/all-products" className="nav-link" style={{ fontSize: '1.8rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>SHOP</Link>
-          <Link href="/collections" className="nav-link" style={{ fontSize: '1.8rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>CATALOGUES</Link>
-          <Link href="/pages/whats-new" className="nav-link" style={{ fontSize: '1.8rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>PRESS</Link>
-          <Link href="/contact" className="nav-link" style={{ fontSize: '1.8rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>CONTACT</Link>
+        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '24px', padding: '20px 0 60px 0' }}>
+          <Link href="/about" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>ABOUT US</Link>
+          <Link href="/category/all-products" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>SHOP</Link>
+          <Link href="/collections" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>CATALOGUES</Link>
+          <Link href="/pages/whats-new" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>PRESS</Link>
+          <Link href="/contact" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>CONTACT</Link>
         </nav>
       </div>
 

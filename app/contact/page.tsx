@@ -54,15 +54,14 @@ export default function ContactPage() {
         <FadeInSection>
         <Section background="primary" padding="lg">
           <Container>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '64px' }}>
-
-              {/* Left - Contact Details */}
-              <div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
+              {/* Contact Details */}
+              <div style={{ width: '100%' }}>
                 <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2rem)', color: 'var(--text-main)', fontWeight: '300', marginBottom: '40px', fontFamily: 'var(--font-serif)' }}>
                   Studio & Advisory
                 </h2>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', marginBottom: '48px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', marginBottom: '48px', textAlign: 'left' }}>
                   <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
                     <MapPin size={20} style={{ marginTop: '4px', flexShrink: 0, color: 'var(--text-main)', opacity: 0.6 }} />
                     <div>
@@ -108,114 +107,12 @@ export default function ContactPage() {
                 </div>
 
                 {/* WhatsApp CTA */}
-                <Button href={WHATSAPP_URL} variant="primary" target="_blank" rel="noopener noreferrer" icon={<Shield size={16} />}>
-                  <span>Chat on WhatsApp</span>
-                </Button>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Button href={WHATSAPP_URL} variant="primary" target="_blank" rel="noopener noreferrer" icon={<Shield size={16} />}>
+                    <span>Chat on WhatsApp</span>
+                  </Button>
+                </div>
               </div>
-
-               {/* Right - Form */}
-               <div>
-                {submitted ? (
-                  <div style={{ textAlign: 'center', padding: '80px 20px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)' }}>
-                    <CheckCircle2 size={40} style={{ margin: '0 auto 20px', color: 'var(--text-main)' }} />
-                    <h3 style={{ fontSize: '1.5rem', marginBottom: '12px', fontFamily: 'var(--font-serif)', fontWeight: '400' }}>Message Sent</h3>
-                    <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.7', marginBottom: '32px' }}>
-                      Thank you for contacting Arundhati De-Sheth. We have received your inquiry and will respond within 24 hours.
-                    </p>
-                    <Button onClick={() => setSubmitted(false)} variant="primary">
-                      Send Another Message
-                    </Button>
-                  </div>
-                 ) : (
-                   <form onSubmit={handleSubmit} style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', padding: '48px', borderRadius: 'var(--radius-md)' }}>
-                    <h2 style={{ fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)', marginBottom: '8px', color: 'var(--text-main)', fontWeight: '300', fontFamily: 'var(--font-serif)' }}>
-                      Send a Message
-                    </h2>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '32px', fontWeight: '300' }}>
-                      All inquiries are confidential. For immediate assistance, please WhatsApp us.
-                    </p>
-
-                   <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                     <div>
-                       <label style={{ display: 'block', fontSize: '0.7rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px', fontWeight: '500', color: 'var(--text-muted)' }}>
-                         Full Name *
-                       </label>
-                       <input
-                         type="text"
-                         required
-                         placeholder="Your Name"
-                         value={formData.name}
-                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                         style={{ width: '100%', padding: '14px 16px', border: '1px solid var(--border)', fontSize: '0.9rem', background: 'transparent', color: 'var(--text-main)', outline: 'none', fontFamily: 'var(--font-sans)', borderRadius: 'var(--radius-sm)' }}
-                       />
-                     </div>
-
-                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                       <div>
-                         <label style={{ display: 'block', fontSize: '0.7rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px', fontWeight: '500', color: 'var(--text-muted)' }}>
-                           Email *
-                         </label>
-                         <input
-                           type="email"
-                           required
-                           placeholder="email@domain.com"
-                           value={formData.email}
-                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                           style={{ width: '100%', padding: '14px 16px', border: '1px solid var(--border)', fontSize: '0.9rem', background: 'transparent', color: 'var(--text-main)', outline: 'none', fontFamily: 'var(--font-sans)', borderRadius: 'var(--radius-sm)' }}
-                         />
-                       </div>
-                       <div>
-                         <label style={{ display: 'block', fontSize: '0.7rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px', fontWeight: '500', color: 'var(--text-muted)' }}>
-                           Phone / WhatsApp
-                         </label>
-                         <input
-                           type="tel"
-                            placeholder="+91 95818 22000"
-                           value={formData.phone}
-                           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                           style={{ width: '100%', padding: '14px 16px', border: '1px solid var(--border)', fontSize: '0.9rem', background: 'transparent', color: 'var(--text-main)', outline: 'none', fontFamily: 'var(--font-sans)', borderRadius: 'var(--radius-sm)' }}
-                         />
-                       </div>
-                     </div>
-
-                     <div>
-                       <label style={{ display: 'block', fontSize: '0.7rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px', fontWeight: '500', color: 'var(--text-muted)' }}>
-                         Subject
-                       </label>
-                       <select
-                         value={formData.subject}
-                         onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                         style={{ width: '100%', padding: '14px 16px', border: '1px solid var(--border)', fontSize: '0.9rem', background: 'transparent', color: 'var(--text-main)', outline: 'none', fontFamily: 'var(--font-sans)', borderRadius: 'var(--radius-sm)' }}
-                       >
-                         <option>General Inquiry</option>
-                         <option>Bespoke Commission</option>
-                         <option>Price / Sizing Request</option>
-                         <option>Press & Media</option>
-                         <option>Private Viewing</option>
-                       </select>
-                     </div>
-
-                     <div>
-                       <label style={{ display: 'block', fontSize: '0.7rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '10px', fontWeight: '500', color: 'var(--text-muted)' }}>
-                         Message *
-                       </label>
-                       <textarea
-                         rows={5}
-                         required
-                         placeholder="How can we assist you?"
-                         value={formData.message}
-                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                         style={{ width: '100%', padding: '14px 16px', border: '1px solid var(--border)', fontSize: '0.9rem', background: 'transparent', color: 'var(--text-main)', outline: 'none', resize: 'vertical', lineHeight: '1.7', fontFamily: 'var(--font-sans)', borderRadius: 'var(--radius-sm)' }}
-                       />
-                     </div>
-
-                        <button type="submit" style={{ width: '100%', marginTop: '8px', padding: '16px', background: 'var(--accent)', color: 'var(--text-on-dark)', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: '500', borderRadius: 'var(--radius-sm)' }}>
-                         Submit Inquiry
-                       </button>
-                   </div>
-                 </form>
-               )}
-             </div>
             </div>
           </Container>
         </Section>

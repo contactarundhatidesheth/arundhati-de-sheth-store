@@ -2,16 +2,26 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { Play, Pause } from 'lucide-react';
-import { CanvasVideoPlayer } from './CanvasVideoPlayer';
 
 export const Hero: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     setIsPlaying(true);
+    if (videoRef.current) {
+      videoRef.current.play().catch(e => console.error("Auto-play failed", e));
+    }
   }, []);
 
   const togglePlay = () => {
+    if (!videoRef.current) return;
+    
+    if (isPlaying) {
+      videoRef.current.pause();
+    } else {
+      videoRef.current.play();
+    }
     setIsPlaying(!isPlaying);
   };
 
@@ -29,7 +39,23 @@ export const Hero: React.FC = () => {
       background: '#000000'
     }}>
       
-      <CanvasVideoPlayer totalFrames={300} isPlaying={isPlaying} />
+      <video
+        ref={videoRef}
+        src="/videos/look1.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          zIndex: 0
+        }}
+      />
 
       {/* Overlay */}
       <div style={{
