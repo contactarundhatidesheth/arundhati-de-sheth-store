@@ -95,7 +95,7 @@ export default function LoginPage() {
 
         <div style={{ marginTop: '48px', borderTop: '1px solid var(--border-light)', paddingTop: '24px' }}>
           <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link href="#" style={{ color: '#000', textDecoration: 'underline' }}>
               Request Access
             </Link>
