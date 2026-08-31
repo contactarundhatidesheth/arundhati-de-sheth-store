@@ -31,11 +31,17 @@ export default function WhatsNewPage() {
   return (
     <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#000000', paddingBottom: '120px' }}>
       
+      {/* Hero Header */}
+      <section style={{ position: 'relative', minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000000', overflow: 'hidden' }}>
+        <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', paddingTop: '80px', paddingBottom: '80px', maxWidth: '800px', padding: '0 24px', width: '100%' }}>
+          <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: '300', marginBottom: '0', fontFamily: 'var(--font-serif)', lineHeight: '1.05', letterSpacing: '-0.02em', color: '#FFFFFF' }}>
+            Press
+          </h1>
+        </div>
+      </section>
+
       {/* 1. In The News */}
       <section style={{ maxWidth: '1400px', margin: '0 auto', padding: '120px 24px 80px' }}>
-        <h2 style={{ fontSize: '34.5px', fontFamily: 'var(--font-serif)', fontStyle: 'italic', marginBottom: '64px', textAlign: 'center' }}>
-          In The News
-        </h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '48px' }}>
           {NEWS_ARTICLES.map((article, idx) => (
             <a key={idx} href={article.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column' }}>

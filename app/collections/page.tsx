@@ -80,19 +80,9 @@ export default function CollectionsPage() {
       <section style={{ position: 'relative', minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000000', overflow: 'hidden' }}>
         {/* Background removed */}
         <Container maxWidth="800px" padding="0 24px" style={{ position: 'relative', zIndex: 10, textAlign: 'center', paddingTop: '80px', paddingBottom: '80px' }}>
-          <p style={{ fontSize: '0.7rem', color: 'var(--text-on-dark-muted)', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: '500', marginBottom: '12px' }}>
-            High Jewellery
-          </p>
-          <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: '300', marginBottom: '24px', fontFamily: 'var(--font-serif)', lineHeight: '1.05', letterSpacing: '-0.02em', color: 'var(--text-on-dark)' }}>
+          <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: '300', marginBottom: '0', fontFamily: 'var(--font-serif)', lineHeight: '1.05', letterSpacing: '-0.02em', color: 'var(--text-on-dark)' }}>
             High Jewellery
           </h1>
-          <p style={{ fontSize: '1.05rem', color: 'var(--text-on-dark-muted)', lineHeight: '1.8', fontWeight: '300', maxWidth: '520px', margin: '0 auto 40px' }}>
-            Eight High Jewellery collections spanning Art Deco, high jewellery, and contemporary sculptural forms.
-          </p>
-          <Link href={whatsappLink} style={{ background: '#FFF', color: '#000', border: '1px solid #FFF', padding: '16px 36px', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase', borderRadius: 'var(--radius-sm)', display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
-            <span>Request High Jewellery</span>
-            <ArrowRight size={14} />
-          </Link>
         </Container>
       </section>
 

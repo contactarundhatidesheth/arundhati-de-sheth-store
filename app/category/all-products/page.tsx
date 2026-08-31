@@ -94,7 +94,16 @@ export default function CategoryAllProductsPage() {
 
   /* ── Render ── */
   return (
-    <div className="shop-wrapper" style={{ minHeight: '100vh', background: '#FFF', paddingTop: '80px' }}>
+    <div className="shop-wrapper" style={{ minHeight: '100vh', background: '#FFF' }}>
+
+      {/* Hero Header */}
+      <section style={{ position: 'relative', minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000000', overflow: 'hidden' }}>
+        <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', paddingTop: '80px', paddingBottom: '80px', maxWidth: '800px', padding: '0 24px', width: '100%' }}>
+          <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: '300', marginBottom: '0', fontFamily: 'var(--font-serif)', lineHeight: '1.05', letterSpacing: '-0.02em', color: '#FFFFFF' }}>
+            {step === 'collection' ? 'Choose a Collection' : collectionLabel}
+          </h1>
+        </div>
+      </section>
 
       {/* ── Breadcrumb / Back ── */}
       <div style={{ padding: '32px 40px 0', display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -125,15 +134,6 @@ export default function CategoryAllProductsPage() {
       ══════════════════════════════════ */}
       {step === 'collection' && (
         <div style={{ padding: '48px 40px 80px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 400, color: '#000', lineHeight: 1.1, marginBottom: '12px' }}>
-              Choose a Collection
-            </h1>
-            <p style={{ fontSize: '0.9rem', color: '#888', fontWeight: 300 }}>
-              Select the world you&apos;d like to explore.
-            </p>
-          </div>
-
           <div className="collection-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2px', maxWidth: '1600px', margin: '0 auto' }}>
             {COLLECTIONS.map(col => (
                 <button
@@ -171,15 +171,6 @@ export default function CategoryAllProductsPage() {
       ══════════════════════════════════ */}
       {step === 'products' && (
         <div style={{ padding: '48px 40px 120px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 400, color: '#000', lineHeight: 1.1 }}>
-              {collectionLabel}
-            </h1>
-            <p style={{ fontSize: '0.85rem', color: '#888', marginTop: '12px', fontWeight: 300 }}>
-              {filteredProducts.length} {filteredProducts.length === 1 ? 'piece' : 'pieces'} — all inquiries price on request
-            </p>
-          </div>
-
           {/* Filters Bar */}
           {typesInCollection.length > 0 && (
             <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '48px' }}>
