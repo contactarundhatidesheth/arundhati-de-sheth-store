@@ -15,22 +15,10 @@ const COLLECTIONS = [
     image: '/products/20.png',
   },
   {
-    id: 'PERENNIALS: GOLD',
-    label: 'Perennials: Gold',
-    subtitle: 'Timeless Gold Creations',
+    id: 'PERENNIALS',
+    label: 'Perennials',
+    subtitle: 'Timeless Creations',
     image: '/products/30.png',
-  },
-  {
-    id: 'PERENNIALS: SILVER',
-    label: 'Perennials: Silver',
-    subtitle: 'Enduring Silver Pieces',
-    image: '/products/6.png',
-  },
-  {
-    id: 'HIGH JEWELLERY',
-    label: 'High Jewellery',
-    subtitle: 'One-of-a-Kind Masterworks',
-    image: '/products/20.png',
   },
 ];
 
@@ -43,14 +31,14 @@ const JEWELLERY_TYPES = [
   { id: 'CUFF',     label: 'Cuffs',     image: '/products/20.png' },
 ];
 
-type Step = 'collection' | 'type' | 'products';
+type Step = 'collection' | 'products';
 
 export default function CategoryAllProductsPage() {
   const { data, loading } = useCMSData();
 
   const [step, setStep]             = useState<Step>('collection');
   const [selectedCollection, setSelectedCollection] = useState<string | null>(null);
-  const [selectedType, setSelectedType]             = useState<string | null>(null);
+  const [selectedType, setSelectedType]             = useState<string | null>(null); // null = All
 
   if (loading) return <div style={{ minHeight: '100vh', background: '#FFF' }} />;
 
@@ -69,34 +57,40 @@ export default function CategoryAllProductsPage() {
       )
     : JEWELLERY_TYPES;
 
+  if (selectedCollection === 'EPHEMERALS') {
+    typesInCollection.push({ id: 'COLLAB', label: 'Collab Collection', image: '' });
+  }
+
   /* Final filtered products */
-  const filteredProducts = selectedCollection && selectedType
-    ? PRODUCTS.filter(
-        p =>
-          normalize(p.collection).includes(normalize(selectedCollection)) &&
-          normalize(p.category) === normalize(selectedType),
-      )
+  const filteredProducts = selectedCollection
+    ? PRODUCTS.filter(p => {
+        if (!normalize(p.collection).includes(normalize(selectedCollection))) return false;
+        if (!selectedType) return true;
+        if (selectedType === 'COLLAB') {
+          return normalize(p.collection).includes('COLLAB') || 
+                 normalize(p.category).includes('COLLAB') || 
+                 normalize(p.title).includes('COLLAB');
+        }
+        return normalize(p.category) === normalize(selectedType);
+      })
     : [];
 
   /* ── Handlers ── */
   const pickCollection = (id: string) => {
     setSelectedCollection(id);
     setSelectedType(null);
-    setStep('type');
-  };
-
-  const pickType = (id: string) => {
-    setSelectedType(id);
     setStep('products');
   };
 
   const goBack = () => {
-    if (step === 'products') { setStep('type'); setSelectedType(null); }
-    else if (step === 'type') { setStep('collection'); setSelectedCollection(null); }
+    if (step === 'products') { 
+      setStep('collection'); 
+      setSelectedCollection(null); 
+      setSelectedType(null);
+    }
   };
 
   const collectionLabel = COLLECTIONS.find(c => c.id === selectedCollection)?.label ?? '';
-  const typeLabel       = JEWELLERY_TYPES.find(t => t.id === selectedType)?.label ?? '';
 
   /* ── Render ── */
   return (
@@ -120,15 +114,7 @@ export default function CategoryAllProductsPage() {
           {selectedCollection && (
             <>
               <span>/</span>
-              <button onClick={() => { setStep('type'); setSelectedType(null); }} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 'inherit', letterSpacing: 'inherit', textTransform: 'inherit', color: step === 'type' ? '#000' : '#888', padding: 0 }}>
-                {collectionLabel}
-              </button>
-            </>
-          )}
-          {selectedType && (
-            <>
-              <span>/</span>
-              <span style={{ color: '#000' }}>{typeLabel}</span>
+              <span style={{ color: '#000' }}>{collectionLabel}</span>
             </>
           )}
         </nav>
@@ -140,9 +126,6 @@ export default function CategoryAllProductsPage() {
       {step === 'collection' && (
         <div style={{ padding: '48px 40px 80px' }}>
           <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-            <p style={{ fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#888', marginBottom: '12px' }}>
-              Step 1 of 2
-            </p>
             <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 400, color: '#000', lineHeight: 1.1, marginBottom: '12px' }}>
               Choose a Collection
             </h1>
@@ -151,12 +134,12 @@ export default function CategoryAllProductsPage() {
             </p>
           </div>
 
-          <div className="collection-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2px' }}>
+          <div className="collection-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2px', maxWidth: '1600px', margin: '0 auto' }}>
             {COLLECTIONS.map(col => (
               <button
                 key={col.id}
                 onClick={() => pickCollection(col.id)}
-                style={{ border: 'none', padding: 0, cursor: 'pointer', position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block', background: '#000' }}
+                style={{ border: 'none', padding: 0, cursor: 'pointer', position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', display: 'block', background: '#000' }}
                 className="collection-card"
               >
                 <Image
@@ -171,11 +154,10 @@ export default function CategoryAllProductsPage() {
                   <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '8px' }}>
                     {col.subtitle}
                   </p>
-                  <h2 style={{ color: '#FFF', fontSize: 'clamp(1.1rem, 1.6vw, 1.5rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1 }}>
+                  <h2 style={{ color: '#FFF', fontSize: 'clamp(1.3rem, 2vw, 2rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1 }}>
                     {col.label}
                   </h2>
                 </div>
-                {/* Hover arrow */}
                 <div className="collection-arrow" style={{ position: 'absolute', top: '24px', right: '24px', opacity: 0, transition: 'opacity 0.3s ease' }}>
                   <ArrowRight size={20} color="#fff" strokeWidth={1.5} />
                 </div>
@@ -186,93 +168,65 @@ export default function CategoryAllProductsPage() {
       )}
 
       {/* ══════════════════════════════════
-          STEP 2 — Choose Jewellery Type
-      ══════════════════════════════════ */}
-      {step === 'type' && (
-        <div style={{ padding: '48px 40px 80px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-            <p style={{ fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#888', marginBottom: '12px' }}>
-              Step 2 of 2 — {collectionLabel}
-            </p>
-            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 400, color: '#000', lineHeight: 1.1, marginBottom: '12px' }}>
-              What are you looking for?
-            </h1>
-            <p style={{ fontSize: '0.9rem', color: '#888', fontWeight: 300 }}>
-              Select a jewellery type to explore within {collectionLabel}.
-            </p>
-          </div>
-
-          {typesInCollection.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '80px 0', color: '#888' }}>
-              <p>No pieces found in this collection yet.</p>
-              <button onClick={goBack} style={{ marginTop: '24px', background: 'none', border: '1px solid #000', padding: '12px 32px', cursor: 'pointer', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                Go Back
-              </button>
-            </div>
-          ) : (
-            <div className="type-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2px' }}>
-              {typesInCollection.map(type => {
-                const count = PRODUCTS.filter(p =>
-                  normalize(p.collection).includes(normalize(selectedCollection!)) &&
-                  normalize(p.category) === normalize(type.id)
-                ).length;
-                return (
-                  <button
-                    key={type.id}
-                    onClick={() => pickType(type.id)}
-                    style={{ border: 'none', padding: 0, cursor: 'pointer', position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', display: 'block', background: '#000' }}
-                    className="type-card"
-                  >
-                    <Image
-                      src={type.image}
-                      alt={type.label}
-                      fill
-                      style={{ objectFit: 'cover', transition: 'transform 0.7s ease' }}
-                      className="type-img"
-                    />
-                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.05) 60%)' }} />
-                    <div style={{ position: 'absolute', bottom: '28px', left: '28px' }}>
-                      <h2 style={{ color: '#FFF', fontSize: 'clamp(1rem, 1.4vw, 1.3rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, letterSpacing: '0.02em', marginBottom: '6px' }}>
-                        {type.label}
-                      </h2>
-                      <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.72rem', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-                        {count} {count === 1 ? 'piece' : 'pieces'}
-                      </p>
-                    </div>
-                    <div className="type-arrow" style={{ position: 'absolute', top: '20px', right: '20px', opacity: 0, transition: 'opacity 0.3s ease' }}>
-                      <ArrowRight size={18} color="#fff" strokeWidth={1.5} />
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* ══════════════════════════════════
-          STEP 3 — Product Grid
+          STEP 2 — Product Grid (with Filters)
       ══════════════════════════════════ */}
       {step === 'products' && (
         <div style={{ padding: '48px 40px 120px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-            <p style={{ fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#888', marginBottom: '12px' }}>
-              {collectionLabel}
-            </p>
+          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
             <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 400, color: '#000', lineHeight: 1.1 }}>
-              {typeLabel}
+              {collectionLabel}
             </h1>
             <p style={{ fontSize: '0.85rem', color: '#888', marginTop: '12px', fontWeight: 300 }}>
               {filteredProducts.length} {filteredProducts.length === 1 ? 'piece' : 'pieces'} — all inquiries price on request
             </p>
           </div>
 
+          {/* Filters Bar */}
+          {typesInCollection.length > 0 && (
+            <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '48px' }}>
+              <button 
+                onClick={() => setSelectedType(null)}
+                style={{ 
+                  background: 'none', 
+                  border: 'none', 
+                  fontSize: '0.75rem', 
+                  letterSpacing: '0.15em', 
+                  textTransform: 'uppercase', 
+                  cursor: 'pointer', 
+                  padding: '8px 16px', 
+                  borderBottom: selectedType === null ? '1px solid #000' : '1px solid transparent',
+                  color: selectedType === null ? '#000' : '#888',
+                  transition: 'color 0.2s, border-color 0.2s'
+                }}
+              >
+                All Pieces
+              </button>
+              {typesInCollection.map(type => (
+                <button 
+                  key={type.id}
+                  onClick={() => setSelectedType(type.id)}
+                  style={{ 
+                    background: 'none', 
+                    border: 'none', 
+                    fontSize: '0.75rem', 
+                    letterSpacing: '0.15em', 
+                    textTransform: 'uppercase', 
+                    cursor: 'pointer', 
+                    padding: '8px 16px', 
+                    borderBottom: selectedType === type.id ? '1px solid #000' : '1px solid transparent',
+                    color: selectedType === type.id ? '#000' : '#888',
+                    transition: 'color 0.2s, border-color 0.2s'
+                  }}
+                >
+                  {type.label}
+                </button>
+              ))}
+            </div>
+          )}
+
           {filteredProducts.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '80px 0', color: '#888' }}>
               <p>No pieces available in this selection.</p>
-              <button onClick={goBack} style={{ marginTop: '24px', background: 'none', border: '1px solid #000', padding: '12px 32px', cursor: 'pointer', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                Go Back
-              </button>
             </div>
           ) : (
             <div className="product-5col" style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '40px 16px', maxWidth: '2400px', margin: '0 auto' }}>
@@ -287,7 +241,6 @@ export default function CategoryAllProductsPage() {
                       {product.isPriceOnRequest ? 'Price on Request' : `₹ ${product.price.toLocaleString('en-IN')}`}
                     </p>
                   </div>
-
                 </Link>
               ))}
             </div>
@@ -303,23 +256,18 @@ export default function CategoryAllProductsPage() {
 
       <style>{`
         .collection-card:hover .collection-img,
-        .type-card:hover .type-img,
         .product-img:hover { transform: scale(1.05); }
-        .collection-card:hover .collection-arrow,
-        .type-card:hover .type-arrow { opacity: 1 !important; }
+        .collection-card:hover .collection-arrow { opacity: 1 !important; }
 
         @media (max-width: 1400px) { .product-5col { grid-template-columns: repeat(4,1fr) !important; } }
         @media (max-width: 1100px) { .product-5col { grid-template-columns: repeat(3,1fr) !important; } }
         @media (max-width: 768px) {
           .shop-wrapper { padding-top: 80px !important; }
           .shop-wrapper > div { padding: 32px 16px 80px !important; }
-          .collection-grid { grid-template-columns: repeat(2,1fr) !important; }
-          .type-grid { grid-template-columns: repeat(2,1fr) !important; }
+          .collection-grid { grid-template-columns: 1fr !important; }
           .product-5col { grid-template-columns: repeat(2,1fr) !important; gap: 24px 10px !important; }
         }
         @media (max-width: 420px) {
-          .collection-grid { grid-template-columns: 1fr !important; }
-          .type-grid { grid-template-columns: 1fr !important; }
           .product-5col { grid-template-columns: 1fr !important; }
         }
       `}</style>

@@ -84,13 +84,13 @@ export default function CollectionsPage() {
             Editorial Collections
           </p>
           <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: '300', marginBottom: '24px', fontFamily: 'var(--font-serif)', lineHeight: '1.05', letterSpacing: '-0.02em', color: 'var(--text-on-dark)' }}>
-            Jewelry Lookbooks
+            High Jewellery
           </h1>
           <p style={{ fontSize: '1.05rem', color: 'var(--text-on-dark-muted)', lineHeight: '1.8', fontWeight: '300', maxWidth: '520px', margin: '0 auto 40px' }}>
-            Eight editorial catalogues spanning Art Deco, high jewellery, and contemporary sculptural forms.
+            Eight editorial lookbooks spanning Art Deco, high jewellery, and contemporary sculptural forms.
           </p>
           <Link href={whatsappLink} style={{ background: '#FFF', color: '#000', border: '1px solid #FFF', padding: '16px 36px', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase', borderRadius: 'var(--radius-sm)', display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
-            <span>Request Catalogue</span>
+            <span>Request Lookbook</span>
             <ArrowRight size={14} />
           </Link>
         </Container>
@@ -113,7 +113,7 @@ export default function CollectionsPage() {
                   {filteredProducts.length} {filteredProducts.length === 1 ? 'piece' : 'pieces'} available. All inquiries are price on request.
                 </p>
                 <Link href="/collections" className="btn-secondary" style={{ color: 'var(--text-main)', borderColor: 'var(--border)', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                  <span>← View All Catalogues</span>
+                  <span>← View All High Jewellery</span>
                 </Link>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '48px 24px' }}>
@@ -131,7 +131,7 @@ export default function CollectionsPage() {
         <div>
           {CATALOGUES.map((catalogue, idx) => {
             const isEven = idx % 2 === 0;
-            const catalogueWhatsappLink = `${WHATSAPP_URL}?text=${encodeURIComponent(`Hi, I'm interested in the "${catalogue.title}" catalogue. Could you please share more details?`)}`;
+            const catalogueWhatsappLink = `${WHATSAPP_URL}?text=${encodeURIComponent(`Hi, I'm interested in the "${catalogue.title}" high jewellery collection. Could you please share more details?`)}`;
 
             return (
               <section key={catalogue.id} style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', padding: 'var(--section-padding)', background: isEven ? 'var(--bg-primary)' : 'var(--bg-secondary)', overflow: 'hidden' }}>
@@ -165,7 +165,7 @@ export default function CollectionsPage() {
                         </p>
                         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                           <button onClick={() => setActivePdf(getEmbedLink(catalogue.link))} className="btn-primary" style={{ borderRadius: 'var(--radius-sm)', display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer', border: 'none' }}>
-                            <span>View Catalogue</span>
+                            <span>View Lookbook</span>
                             <ArrowRight size={14} />
                           </button>
                           <Link href={catalogueWhatsappLink} className="btn-secondary" style={{ color: 'var(--text-main)', borderColor: 'var(--border)', display: 'inline-flex', alignItems: 'center' }}>
@@ -240,7 +240,7 @@ export default function CollectionsPage() {
               width="100%" 
               height="100%" 
               style={{ border: 'none', position: 'relative', zIndex: 1, backgroundColor: 'transparent' }}
-              title="Catalogue Viewer"
+              title="High Jewellery Viewer"
             />
           </div>
         </div>

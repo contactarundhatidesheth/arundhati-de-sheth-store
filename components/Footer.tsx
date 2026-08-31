@@ -30,7 +30,7 @@ export const Footer: React.FC = () => {
               <Link href="/category/all-products" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity='0.6')} onMouseOut={e => (e.currentTarget.style.opacity='1')}>Shop</Link>
               <Link href="/category/ephemerals" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity='0.6')} onMouseOut={e => (e.currentTarget.style.opacity='1')}>Ephemerals</Link>
               <Link href="/category/perennials" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity='0.6')} onMouseOut={e => (e.currentTarget.style.opacity='1')}>Perennials</Link>
-              <Link href="/collections" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity='0.6')} onMouseOut={e => (e.currentTarget.style.opacity='1')}>Catalogues</Link>
+              <Link href="/collections" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity='0.6')} onMouseOut={e => (e.currentTarget.style.opacity='1')}>High Jewellery</Link>
               <Link href="/pages/whats-new" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity='0.6')} onMouseOut={e => (e.currentTarget.style.opacity='1')}>Press</Link>
             </nav>
           </div>
