@@ -136,32 +136,31 @@ export default function CategoryAllProductsPage() {
 
           <div className="collection-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2px', maxWidth: '1600px', margin: '0 auto' }}>
             {COLLECTIONS.map(col => (
-              <button
-                key={col.id}
-                onClick={() => pickCollection(col.id)}
-                style={{ border: 'none', padding: 0, cursor: 'pointer', position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', display: 'block', background: '#000' }}
-                className="collection-card"
-              >
-                <Image
-                  src={col.image}
-                  alt={col.label}
-                  fill
-                  style={{ objectFit: 'cover', transition: 'transform 0.7s ease', opacity: 0.85 }}
-                  className="collection-img"
-                />
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 60%)' }} />
-                <div style={{ position: 'absolute', bottom: '32px', left: '28px', right: '28px', textAlign: 'left' }}>
-                  <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '8px' }}>
-                    {col.subtitle}
-                  </p>
-                  <h2 style={{ color: '#FFF', fontSize: 'clamp(1.3rem, 2vw, 2rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1 }}>
-                    {col.label}
-                  </h2>
-                </div>
-                <div className="collection-arrow" style={{ position: 'absolute', top: '24px', right: '24px', opacity: 0, transition: 'opacity 0.3s ease' }}>
-                  <ArrowRight size={20} color="#fff" strokeWidth={1.5} />
-                </div>
-              </button>
+                <button
+                  key={col.id}
+                  onClick={() => pickCollection(col.id)}
+                  style={{ border: 'none', padding: 0, cursor: 'pointer', position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', display: 'block', background: 'transparent' }}
+                  className="collection-card"
+                >
+                  <Image
+                    src={col.image}
+                    alt={col.label}
+                    fill
+                    style={{ objectFit: 'cover', transition: 'transform 0.7s ease', opacity: 1 }}
+                    className="collection-img"
+                  />
+                  <div style={{ position: 'absolute', bottom: '32px', left: '28px', right: '28px', textAlign: 'left' }}>
+                    <p style={{ color: 'rgba(0,0,0,0.6)', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '8px', fontWeight: 500 }}>
+                      {col.subtitle}
+                    </p>
+                    <h2 style={{ color: '#000', fontSize: 'clamp(1.3rem, 2vw, 2rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1 }}>
+                      {col.label}
+                    </h2>
+                  </div>
+                  <div className="collection-arrow" style={{ position: 'absolute', top: '24px', right: '24px', opacity: 0, transition: 'opacity 0.3s ease' }}>
+                    <ArrowRight size={20} color="#000" strokeWidth={1.5} />
+                  </div>
+                </button>
             ))}
           </div>
         </div>
