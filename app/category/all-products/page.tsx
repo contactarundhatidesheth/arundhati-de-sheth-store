@@ -3,174 +3,317 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useCMSData } from '@/hooks/useCMSData';
 
-const TABS = ['EPHEMERALS', 'PERENNIALS: GOLD', 'PERENNIALS: SILVER', 'HIGH JEWELLERY'];
+/* ─── Data ─── */
+const COLLECTIONS = [
+  {
+    id: 'EPHEMERALS',
+    label: 'Ephemerals',
+    subtitle: 'Seasonal & Limited Edition',
+    image: '/products/20.png',
+  },
+  {
+    id: 'PERENNIALS: GOLD',
+    label: 'Perennials: Gold',
+    subtitle: 'Timeless Gold Creations',
+    image: '/products/30.png',
+  },
+  {
+    id: 'PERENNIALS: SILVER',
+    label: 'Perennials: Silver',
+    subtitle: 'Enduring Silver Pieces',
+    image: '/products/6.png',
+  },
+  {
+    id: 'HIGH JEWELLERY',
+    label: 'High Jewellery',
+    subtitle: 'One-of-a-Kind Masterworks',
+    image: '/products/20.png',
+  },
+];
+
+const JEWELLERY_TYPES = [
+  { id: 'EARRING',  label: 'Earrings',  image: '/products/20.png' },
+  { id: 'RING',     label: 'Rings',     image: '/products/30.png' },
+  { id: 'NECKLACE', label: 'Necklaces', image: '/products/6.png'  },
+  { id: 'PENDANT',  label: 'Pendants',  image: '/products/6.png'  },
+  { id: 'BRACELET', label: 'Bracelets', image: '/products/30.png' },
+  { id: 'CUFF',     label: 'Cuffs',     image: '/products/20.png' },
+];
+
+type Step = 'collection' | 'type' | 'products';
 
 export default function CategoryAllProductsPage() {
   const { data, loading } = useCMSData();
-  const searchParams = useSearchParams();
-  const initialTab = searchParams.get('tab') || 'EPHEMERALS';
-  const [activeTab, setActiveTab] = useState(initialTab);
 
-  if (loading) return <div style={{ minHeight: '100vh', background: '#FFFFFF' }} />;
+  const [step, setStep]             = useState<Step>('collection');
+  const [selectedCollection, setSelectedCollection] = useState<string | null>(null);
+  const [selectedType, setSelectedType]             = useState<string | null>(null);
+
+  if (loading) return <div style={{ minHeight: '100vh', background: '#FFF' }} />;
 
   const PRODUCTS = data.products;
 
-  const CATEGORY_FILTERS = ['EARRING', 'RING', 'NECKLACE', 'PENDANT', 'BRACELET', 'CUFF'];
-
   const normalize = (str: string) => (str || '').toUpperCase().replace(/[:\-\s]+/g, '');
 
-  let filteredProducts: typeof PRODUCTS;
-  if (CATEGORY_FILTERS.includes(activeTab)) {
-    // Exact category match (prevents RING matching EARRING)
-    filteredProducts = PRODUCTS.filter(p =>
-      normalize(p.category) === normalize(activeTab)
-    );
-  } else {
-    // Collection / tab match (EPHEMERALS, PERENNIALS: GOLD, etc.)
-    filteredProducts = PRODUCTS.filter(p =>
-      normalize(p.collection).includes(normalize(activeTab))
-    );
-  }
+  /* Which types exist in the chosen collection? */
+  const typesInCollection = selectedCollection
+    ? JEWELLERY_TYPES.filter(t =>
+        PRODUCTS.some(
+          p =>
+            normalize(p.collection).includes(normalize(selectedCollection)) &&
+            normalize(p.category) === normalize(t.id),
+        ),
+      )
+    : JEWELLERY_TYPES;
 
+  /* Final filtered products */
+  const filteredProducts = selectedCollection && selectedType
+    ? PRODUCTS.filter(
+        p =>
+          normalize(p.collection).includes(normalize(selectedCollection)) &&
+          normalize(p.category) === normalize(selectedType),
+      )
+    : [];
 
-  // Get sample images for the 3-column footer
-  const earrings = PRODUCTS.find(p => p.category.toLowerCase().includes('earring'))?.images[0] || PRODUCTS[0]?.images[0];
-  const rings = PRODUCTS.find(p => p.category.toLowerCase().includes('ring'))?.images[0] || PRODUCTS[1]?.images[0];
-  const necklaces = PRODUCTS.find(p => p.category.toLowerCase().includes('necklace'))?.images[0] || PRODUCTS[2]?.images[0];
+  /* ── Handlers ── */
+  const pickCollection = (id: string) => {
+    setSelectedCollection(id);
+    setSelectedType(null);
+    setStep('type');
+  };
 
+  const pickType = (id: string) => {
+    setSelectedType(id);
+    setStep('products');
+  };
+
+  const goBack = () => {
+    if (step === 'products') { setStep('type'); setSelectedType(null); }
+    else if (step === 'type') { setStep('collection'); setSelectedCollection(null); }
+  };
+
+  const collectionLabel = COLLECTIONS.find(c => c.id === selectedCollection)?.label ?? '';
+  const typeLabel       = JEWELLERY_TYPES.find(t => t.id === selectedType)?.label ?? '';
+
+  /* ── Render ── */
   return (
-    <div className="shop-wrapper" style={{ minHeight: '100vh', background: '#FFFFFF', paddingTop: '120px' }}>
-      
-      {/* 1. Category Tabs */}
-      <div className="shop-tabs" style={{ display: 'flex', justifyContent: 'center', gap: '48px', marginBottom: '80px', overflowX: 'auto', padding: '0 24px' }}>
-        {TABS.map((tab) => (
+    <div className="shop-wrapper" style={{ minHeight: '100vh', background: '#FFF', paddingTop: '80px' }}>
+
+      {/* ── Breadcrumb / Back ── */}
+      <div style={{ padding: '32px 40px 0', display: 'flex', alignItems: 'center', gap: '12px' }}>
+        {step !== 'collection' && (
           <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            style={{
-              background: 'none',
-              border: 'none',
-              padding: '0 0 8px 0',
-              fontSize: '12px',
-              fontWeight: '500',
-              textTransform: 'uppercase',
-              letterSpacing: '1.2px',
-              color: '#000000',
-              cursor: 'pointer',
-              borderBottom: activeTab === tab ? '4px solid #F6D954' : '4px solid transparent',
-              transition: 'border-color 0.2s ease',
-              whiteSpace: 'nowrap'
-            }}
+            onClick={goBack}
+            style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.75rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#000', padding: 0 }}
           >
-            {tab}
+            <ArrowLeft size={14} strokeWidth={1.5} />
+            Back
           </button>
-        ))}
-      </div>
-
-      {/* 2. 3-Column Category Grid (Moved to top) */}
-      <div className="category-3col" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, width: '100%', marginBottom: '80px' }}>
-        
-        {/* Earrings */}
-        <button onClick={() => { setActiveTab('EARRING'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ border: 'none', padding: 0, position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', display: 'block', cursor: 'pointer' }}>
-          <Image src="/products/20.png" alt="Earrings" fill style={{ objectFit: 'cover', objectPosition: 'center' }} />
-          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.2)' }} />
-          <h2 style={{ position: 'absolute', bottom: '24px', left: '28px', color: '#FFFFFF', fontSize: '20px', fontWeight: '400', letterSpacing: '3px' }}>
-            EARRINGS
-          </h2>
-        </button>
-
-        {/* Rings */}
-        <button onClick={() => { setActiveTab('RING'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ border: 'none', padding: 0, position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', display: 'block', cursor: 'pointer' }}>
-          <Image src="/products/30.png" alt="Rings" fill style={{ objectFit: 'cover', objectPosition: 'center' }} />
-          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.2)' }} />
-          <h2 style={{ position: 'absolute', bottom: '24px', left: '28px', color: '#FFFFFF', fontSize: '20px', fontWeight: '400', letterSpacing: '3px' }}>
-            RINGS
-          </h2>
-        </button>
-
-        {/* Necklaces */}
-        <button onClick={() => { setActiveTab('NECKLACE'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ border: 'none', padding: 0, position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', display: 'block', cursor: 'pointer' }}>
-          <Image src="/products/6.png" alt="Necklaces" fill style={{ objectFit: 'cover', objectPosition: 'center top' }} />
-          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.2)' }} />
-          <h2 style={{ position: 'absolute', bottom: '24px', left: '28px', color: '#FFFFFF', fontSize: '20px', fontWeight: '400', letterSpacing: '3px' }}>
-            NECKLACES
-          </h2>
-        </button>
-
-      </div>
-
-      {/* 3. 5-Column Product Grid */}
-      <div className="product-5col" style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(5, 1fr)',
-        gap: '40px 16px',
-        padding: '0 24px',
-        marginBottom: '120px',
-        maxWidth: '2400px',
-        margin: '0 auto 120px'
-      }}>
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map(product => (
-            <Link href={`/product/${product.handle}`} key={product.id} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
-              <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', background: '#F9F9F9', marginBottom: '16px' }}>
-                <Image 
-                  src={product.images[0]} 
-                  alt={product.title} 
-                  fill 
-                  style={{ objectFit: 'cover' }}
-                />
-                {/* Dark Gradient Overlay for Text */}
-                <div style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '50%',
-                  background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-end',
-                  padding: '20px'
-                }}>
-                  <p style={{ color: '#FFFFFF', fontSize: '12px', fontWeight: '400', letterSpacing: '0.5px', marginBottom: '4px' }}>
-                    {product.title}
-                  </p>
-                  <p style={{ color: '#FFFFFF', fontSize: '12px', fontWeight: '500' }}>
-                    {product.isPriceOnRequest ? 'Price on Request' : `USD ${(product.price / 83).toLocaleString('en-US', {maximumFractionDigits:0})}`} 
-                  </p>
-                </div>
-              </div>
-              {/* Product Line / Collection Name below image */}
-              <p style={{ textAlign: 'center', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1.5px', color: '#000000', fontWeight: '500' }}>
-                {product.collection || 'COLLECTION'}
-              </p>
-            </Link>
-          ))
-        ) : (
-          <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '80px 0', color: '#666' }}>
-            <p>No products found for this collection.</p>
-          </div>
         )}
+        <nav style={{ fontSize: '0.72rem', color: '#888', letterSpacing: '0.1em', textTransform: 'uppercase', display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <button onClick={() => { setStep('collection'); setSelectedCollection(null); setSelectedType(null); }} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 'inherit', letterSpacing: 'inherit', textTransform: 'inherit', color: step === 'collection' ? '#000' : '#888', padding: 0 }}>
+            Shop
+          </button>
+          {selectedCollection && (
+            <>
+              <span>/</span>
+              <button onClick={() => { setStep('type'); setSelectedType(null); }} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 'inherit', letterSpacing: 'inherit', textTransform: 'inherit', color: step === 'type' ? '#000' : '#888', padding: 0 }}>
+                {collectionLabel}
+              </button>
+            </>
+          )}
+          {selectedType && (
+            <>
+              <span>/</span>
+              <span style={{ color: '#000' }}>{typeLabel}</span>
+            </>
+          )}
+        </nav>
       </div>
+
+      {/* ══════════════════════════════════
+          STEP 1 — Choose Collection
+      ══════════════════════════════════ */}
+      {step === 'collection' && (
+        <div style={{ padding: '48px 40px 80px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '56px' }}>
+            <p style={{ fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#888', marginBottom: '12px' }}>
+              Step 1 of 2
+            </p>
+            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 400, color: '#000', lineHeight: 1.1, marginBottom: '12px' }}>
+              Choose a Collection
+            </h1>
+            <p style={{ fontSize: '0.9rem', color: '#888', fontWeight: 300 }}>
+              Select the world you&apos;d like to explore.
+            </p>
+          </div>
+
+          <div className="collection-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2px' }}>
+            {COLLECTIONS.map(col => (
+              <button
+                key={col.id}
+                onClick={() => pickCollection(col.id)}
+                style={{ border: 'none', padding: 0, cursor: 'pointer', position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block', background: '#000' }}
+                className="collection-card"
+              >
+                <Image
+                  src={col.image}
+                  alt={col.label}
+                  fill
+                  style={{ objectFit: 'cover', transition: 'transform 0.7s ease', opacity: 0.85 }}
+                  className="collection-img"
+                />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 60%)' }} />
+                <div style={{ position: 'absolute', bottom: '32px', left: '28px', right: '28px', textAlign: 'left' }}>
+                  <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '8px' }}>
+                    {col.subtitle}
+                  </p>
+                  <h2 style={{ color: '#FFF', fontSize: 'clamp(1.1rem, 1.6vw, 1.5rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1 }}>
+                    {col.label}
+                  </h2>
+                </div>
+                {/* Hover arrow */}
+                <div className="collection-arrow" style={{ position: 'absolute', top: '24px', right: '24px', opacity: 0, transition: 'opacity 0.3s ease' }}>
+                  <ArrowRight size={20} color="#fff" strokeWidth={1.5} />
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ══════════════════════════════════
+          STEP 2 — Choose Jewellery Type
+      ══════════════════════════════════ */}
+      {step === 'type' && (
+        <div style={{ padding: '48px 40px 80px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '56px' }}>
+            <p style={{ fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#888', marginBottom: '12px' }}>
+              Step 2 of 2 — {collectionLabel}
+            </p>
+            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 400, color: '#000', lineHeight: 1.1, marginBottom: '12px' }}>
+              What are you looking for?
+            </h1>
+            <p style={{ fontSize: '0.9rem', color: '#888', fontWeight: 300 }}>
+              Select a jewellery type to explore within {collectionLabel}.
+            </p>
+          </div>
+
+          {typesInCollection.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '80px 0', color: '#888' }}>
+              <p>No pieces found in this collection yet.</p>
+              <button onClick={goBack} style={{ marginTop: '24px', background: 'none', border: '1px solid #000', padding: '12px 32px', cursor: 'pointer', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                Go Back
+              </button>
+            </div>
+          ) : (
+            <div className="type-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2px' }}>
+              {typesInCollection.map(type => {
+                const count = PRODUCTS.filter(p =>
+                  normalize(p.collection).includes(normalize(selectedCollection!)) &&
+                  normalize(p.category) === normalize(type.id)
+                ).length;
+                return (
+                  <button
+                    key={type.id}
+                    onClick={() => pickType(type.id)}
+                    style={{ border: 'none', padding: 0, cursor: 'pointer', position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', display: 'block', background: '#000' }}
+                    className="type-card"
+                  >
+                    <Image
+                      src={type.image}
+                      alt={type.label}
+                      fill
+                      style={{ objectFit: 'cover', transition: 'transform 0.7s ease' }}
+                      className="type-img"
+                    />
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.05) 60%)' }} />
+                    <div style={{ position: 'absolute', bottom: '28px', left: '28px' }}>
+                      <h2 style={{ color: '#FFF', fontSize: 'clamp(1rem, 1.4vw, 1.3rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, letterSpacing: '0.02em', marginBottom: '6px' }}>
+                        {type.label}
+                      </h2>
+                      <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.72rem', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+                        {count} {count === 1 ? 'piece' : 'pieces'}
+                      </p>
+                    </div>
+                    <div className="type-arrow" style={{ position: 'absolute', top: '20px', right: '20px', opacity: 0, transition: 'opacity 0.3s ease' }}>
+                      <ArrowRight size={18} color="#fff" strokeWidth={1.5} />
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ══════════════════════════════════
+          STEP 3 — Product Grid
+      ══════════════════════════════════ */}
+      {step === 'products' && (
+        <div style={{ padding: '48px 40px 120px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '56px' }}>
+            <p style={{ fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#888', marginBottom: '12px' }}>
+              {collectionLabel}
+            </p>
+            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.8rem, 3vw, 2.8rem)', fontWeight: 400, color: '#000', lineHeight: 1.1 }}>
+              {typeLabel}
+            </h1>
+            <p style={{ fontSize: '0.85rem', color: '#888', marginTop: '12px', fontWeight: 300 }}>
+              {filteredProducts.length} {filteredProducts.length === 1 ? 'piece' : 'pieces'} — all inquiries price on request
+            </p>
+          </div>
+
+          {filteredProducts.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '80px 0', color: '#888' }}>
+              <p>No pieces available in this selection.</p>
+              <button onClick={goBack} style={{ marginTop: '24px', background: 'none', border: '1px solid #000', padding: '12px 32px', cursor: 'pointer', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                Go Back
+              </button>
+            </div>
+          ) : (
+            <div className="product-5col" style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '40px 16px', maxWidth: '2400px', margin: '0 auto' }}>
+              {filteredProducts.map(product => (
+                <Link href={`/product/${product.handle}`} key={product.id} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', marginBottom: '14px' }}>
+                    <Image src={product.images[0]} alt={product.title} fill style={{ objectFit: 'cover', transition: 'transform 0.8s ease' }} className="product-img" />
+                  </div>
+                  <div style={{ padding: '0 4px 4px' }}>
+                    <p style={{ color: '#000', fontSize: '12px', fontWeight: 400, letterSpacing: '0.3px', marginBottom: '3px' }}>{product.title}</p>
+                    <p style={{ color: '#666', fontSize: '11px', fontWeight: 400 }}>
+                      {product.isPriceOnRequest ? 'Price on Request' : `₹ ${product.price.toLocaleString('en-IN')}`}
+                    </p>
+                  </div>
+
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       <style>{`
-        @media (max-width: 1400px) {
-          .product-5col { grid-template-columns: repeat(4, 1fr) !important; }
-        }
-        @media (max-width: 1100px) {
-          .product-5col { grid-template-columns: repeat(3, 1fr) !important; }
-        }
+        .collection-card:hover .collection-img,
+        .type-card:hover .type-img,
+        .product-img:hover { transform: scale(1.05); }
+        .collection-card:hover .collection-arrow,
+        .type-card:hover .type-arrow { opacity: 1 !important; }
+
+        @media (max-width: 1400px) { .product-5col { grid-template-columns: repeat(4,1fr) !important; } }
+        @media (max-width: 1100px) { .product-5col { grid-template-columns: repeat(3,1fr) !important; } }
         @media (max-width: 768px) {
-          .shop-tabs { gap: 16px !important; padding: 0 16px !important; margin-bottom: 48px !important; }
-          .shop-tabs button { font-size: 10px !important; letter-spacing: 0.8px !important; padding: 0 0 8px 0 !important; }
-          .category-3col { grid-template-columns: 1fr !important; }
-          .product-5col { grid-template-columns: repeat(2, 1fr) !important; gap: 24px 12px !important; padding: 0 16px !important; }
-          .shop-wrapper { padding-top: 100px !important; }
+          .shop-wrapper { padding-top: 80px !important; }
+          .shop-wrapper > div { padding: 32px 16px 80px !important; }
+          .collection-grid { grid-template-columns: repeat(2,1fr) !important; }
+          .type-grid { grid-template-columns: repeat(2,1fr) !important; }
+          .product-5col { grid-template-columns: repeat(2,1fr) !important; gap: 24px 10px !important; }
         }
         @media (max-width: 420px) {
+          .collection-grid { grid-template-columns: 1fr !important; }
+          .type-grid { grid-template-columns: 1fr !important; }
           .product-5col { grid-template-columns: 1fr !important; }
         }
       `}</style>
