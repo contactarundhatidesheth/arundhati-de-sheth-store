@@ -139,19 +139,17 @@ export default function CollectionsPage() {
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'center' }}>
 
                       {/* Image */}
-                      <div style={{ position: 'relative', width: '100%', order: isEven ? 2 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <div style={{ position: 'relative', width: '100%', height: '70vh', transition: 'transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)' }} className="catalogue-image">
-                          <img
-                            src={catalogue.image}
-                            alt={catalogue.title}
-                            style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: 'var(--radius-md)', display: 'block' }}
-                          />
-                          {catalogue.featured && (
-                            <div style={{ position: 'absolute', top: '16px', left: '16px', padding: '6px 12px', background: 'var(--text-main)', color: 'var(--text-on-dark)', fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: '500', borderRadius: 'var(--radius-sm)' }}>
-                              Featured
-                            </div>
-                          )}
-                        </div>
+                      <div style={{ position: 'relative', width: '100%', order: isEven ? 2 : 1 }} className="catalogue-image">
+                        <img
+                          src={catalogue.image}
+                          alt={catalogue.title}
+                          style={{ width: '100%', height: 'auto', display: 'block', maxHeight: '90vh', objectFit: 'contain' }}
+                        />
+                        {catalogue.featured && (
+                          <div style={{ position: 'absolute', top: '16px', left: '16px', padding: '6px 12px', background: 'var(--text-main)', color: 'var(--text-on-dark)', fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: '500' }}>
+                            Featured
+                          </div>
+                        )}
                       </div>
 
                       {/* Text Content */}

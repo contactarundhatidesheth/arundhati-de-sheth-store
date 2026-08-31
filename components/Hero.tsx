@@ -1,82 +1,129 @@
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
-import { Play, Pause } from 'lucide-react';
+import { Pause, Play } from 'lucide-react';
 
 export const Hero: React.FC = () => {
+  const video1Ref = useRef<HTMLVideoElement>(null);
+  const video2Ref = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
-  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    setIsPlaying(true);
-    if (videoRef.current) {
-      videoRef.current.play().catch(e => console.error("Auto-play failed", e));
-    }
+    const playVideos = async () => {
+      try {
+        if (video1Ref.current) await video1Ref.current.play();
+        if (video2Ref.current) await video2Ref.current.play();
+        setIsPlaying(true);
+      } catch (e) {
+        console.error('Autoplay failed', e);
+      }
+    };
+    playVideos();
   }, []);
 
   const togglePlay = () => {
-    if (!videoRef.current) return;
-    
+    const v1 = video1Ref.current;
+    const v2 = video2Ref.current;
+    if (!v1 || !v2) return;
+
     if (isPlaying) {
-      videoRef.current.pause();
+      v1.pause();
+      v2.pause();
     } else {
-      videoRef.current.play();
+      v1.play();
+      v2.play();
     }
     setIsPlaying(!isPlaying);
   };
 
   return (
-    <section style={{ 
-      position: 'sticky', 
-      top: 0, 
-      zIndex: 0, 
-      width: '100%', 
-      height: '100vh', 
-      display: 'flex', 
-      alignItems: 'center', 
-      justifyContent: 'center', 
-      overflow: 'hidden',
-      background: '#000000'
-    }}>
-      
-      <video
-        ref={videoRef}
-        src="/videos/look1.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
+    <section
+      style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 0,
+        width: '100%',
+        height: '100vh',
+        display: 'flex',
+        overflow: 'hidden',
+        background: '#000',
+      }}
+    >
+      {/* Left Video */}
+      <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+        <video
+          ref={video1Ref}
+          src="/videos/look1.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            display: 'block',
+          }}
+        />
+        {/* subtle dark overlay */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'rgba(0,0,0,0.12)',
+          }}
+        />
+      </div>
+
+      {/* Centre Divider */}
+      <div
         style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          zIndex: 0
+          width: '1px',
+          flexShrink: 0,
+          background: 'rgba(255,255,255,0.25)',
+          zIndex: 2,
         }}
       />
 
-      {/* Overlay */}
-      <div style={{
-        position: 'absolute',
-        top: 0, 
-        left: 0, 
-        width: '100%', 
-        height: '100%',
-        background: 'rgba(0, 0, 0, 0.15)',
-        zIndex: 1
-      }} />
+      {/* Right Video */}
+      <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+        <video
+          ref={video2Ref}
+          src="/videos/look2.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            display: 'block',
+          }}
+        />
+        {/* subtle dark overlay */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'rgba(0,0,0,0.12)',
+          }}
+        />
+      </div>
 
-      {/* Bottom Left: Play/Pause Controls */}
-      <div style={{
-        position: 'absolute',
-        bottom: '40px',
-        left: '40px',
-        zIndex: 2,
-      }}>
-        <button 
+
+      {/* Play / Pause — bottom left */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '40px',
+          left: '40px',
+          zIndex: 4,
+        }}
+      >
+        <button
           onClick={togglePlay}
+          aria-label={isPlaying ? 'Pause' : 'Play'}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -84,25 +131,28 @@ export const Hero: React.FC = () => {
             width: '48px',
             height: '48px',
             borderRadius: '50%',
-            border: '1px solid rgba(255, 255, 255, 0.5)',
+            border: '1px solid rgba(255,255,255,0.5)',
             color: '#ffffff',
             background: 'transparent',
-            transition: 'all 0.3s ease',
             cursor: 'pointer',
+            transition: 'all 0.3s ease',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-            e.currentTarget.style.borderColor = '#ffffff';
+            e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
+            e.currentTarget.style.borderColor = '#fff';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.background = 'transparent';
-            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)';
           }}
         >
-          {isPlaying ? <Pause size={18} strokeWidth={1.5} /> : <Play size={18} strokeWidth={1.5} style={{ marginLeft: '2px' }} />}
+          {isPlaying ? (
+            <Pause size={18} strokeWidth={1.5} />
+          ) : (
+            <Play size={18} strokeWidth={1.5} style={{ marginLeft: '2px' }} />
+          )}
         </button>
       </div>
-
     </section>
   );
 };
