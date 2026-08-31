@@ -92,9 +92,9 @@ export const Header: React.FC = () => {
 
         {/* Right: Cart & User */}
         <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '24px' }}>
-          <button style={{ display: 'flex', alignItems: 'center', color: 'inherit' }} className="hide-on-mobile">
+          <Link href="/login" style={{ display: 'flex', alignItems: 'center', color: 'inherit' }} className="hide-on-mobile">
             <User size={20} strokeWidth={1.5} />
-          </button>
+          </Link>
           <button 
             style={{ position: 'relative', display: 'flex', alignItems: 'center', color: 'inherit' }}
             onClick={() => setIsCartOpen(true)}

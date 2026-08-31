@@ -105,6 +105,26 @@ export default function ProductDetailPage({ params }: { params: { handle: string
 
             {/* Action Buttons */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '48px' }}>
+              <button
+                onClick={() => addToCart(product)}
+                style={{
+                  width: '100%',
+                  padding: '20px',
+                  fontSize: '13.6px',
+                  letterSpacing: '1.36px',
+                  background: 'var(--accent-gold)',
+                  color: '#000000',
+                  border: '0.67px solid var(--accent-gold)',
+                  borderRadius: '0px',
+                  textAlign: 'center',
+                  textTransform: 'uppercase',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  transition: 'opacity 0.3s'
+                }}
+              >
+                Add to Cart
+              </button>
               <a 
                 href={`https://wa.me/919581822000?text=${whatsappMessage}`}
                 target="_blank"

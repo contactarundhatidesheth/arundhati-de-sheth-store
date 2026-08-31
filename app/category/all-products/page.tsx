@@ -237,7 +237,7 @@ export default function CategoryAllProductsPage() {
                   <div style={{ padding: '0 4px 4px' }}>
                     <p style={{ color: '#000', fontSize: '12px', fontWeight: 400, letterSpacing: '0.3px', marginBottom: '3px' }}>{product.title}</p>
                     <p style={{ color: '#666', fontSize: '11px', fontWeight: 400 }}>
-                      {product.isPriceOnRequest ? 'Price on Request' : `₹ ${product.price.toLocaleString('en-IN')}`}
+                      ₹ {product.price.toLocaleString('en-IN')}
                     </p>
                   </div>
                 </Link>
