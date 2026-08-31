@@ -11,6 +11,7 @@ export default function ProductDetailPage({ params }: { params: { handle: string
   const { data, loading } = useCMSData();
   const { addToCart } = useCart();
   const [openAccordion, setOpenAccordion] = useState<string | null>('info');
+  const [activeImage, setActiveImage] = useState(0);
 
   if (loading) return <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }} />;
 
@@ -34,19 +35,43 @@ export default function ProductDetailPage({ params }: { params: { handle: string
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
       <div className="product-layout" style={{ display: 'grid', gridTemplateColumns: '54.5% 45.5%', gap: 0 }}>
         
-        {/* Left: Scrollable Image Gallery */}
-        <div style={{ display: 'flex', flexDirection: 'column', background: 'var(--bg-surface)' }}>
-          {product.images.map((img, idx) => (
-            <div key={idx} style={{ position: 'relative', width: '100%', aspectRatio: '1/1', background: '#FFFFFF', overflow: 'hidden' }}>
-              <Image 
-                src={img} 
-                alt={`${product.title} - View ${idx + 1}`} 
-                fill 
-                style={{ objectFit: 'cover' }}
-                priority={idx === 0}
-              />
+        {/* Left: Image Gallery with thumbnail switcher */}
+        <div style={{ display: 'flex', flexDirection: 'column', background: 'var(--bg-surface)', position: 'sticky', top: '80px', height: 'calc(100vh - 80px)' }}>
+          {/* Main Image */}
+          <div style={{ position: 'relative', flex: 1, overflow: 'hidden' }}>
+            <Image
+              src={product.images[activeImage]}
+              alt={`${product.title} - View ${activeImage + 1}`}
+              fill
+              style={{ objectFit: 'contain', background: '#fff' }}
+              priority
+            />
+          </div>
+          {/* Thumbnails */}
+          {product.images.length > 1 && (
+            <div style={{ display: 'flex', gap: '2px', padding: '12px', background: '#fff', overflowX: 'auto', flexShrink: 0 }}>
+              {product.images.map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveImage(idx)}
+                  style={{
+                    flexShrink: 0,
+                    width: '72px',
+                    height: '72px',
+                    position: 'relative',
+                    border: activeImage === idx ? '2px solid #000' : '2px solid transparent',
+                    padding: 0,
+                    cursor: 'pointer',
+                    background: '#f5f5f5',
+                    overflow: 'hidden',
+                    transition: 'border-color 0.2s ease',
+                  }}
+                >
+                  <Image src={img} alt={`Thumbnail ${idx + 1}`} fill style={{ objectFit: 'cover' }} />
+                </button>
+              ))}
             </div>
-          ))}
+          )}
         </div>
 
         {/* Right: Sticky Product Info */}
@@ -68,12 +93,12 @@ export default function ProductDetailPage({ params }: { params: { handle: string
               <h1 style={{ fontSize: '38.4px', fontFamily: 'var(--font-serif)', marginBottom: '24px', lineHeight: '1.1', letterSpacing: '-0.768px', color: '#000000' }}>
                 {product.title}
               </h1>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', paddingBottom: '24px', borderBottom: '1px solid var(--border-light)' }}>
-                <p style={{ fontSize: '17.6px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.88px', fontWeight: '400' }}>
-                  {product.isPriceOnRequest ? 'Price on Request' : `₹ ${product.price.toLocaleString('en-IN')}`}
+              <div style={{ paddingBottom: '24px', borderBottom: '1px solid var(--border-light)' }}>
+                <p style={{ fontSize: '17.6px', color: 'var(--text-main)', letterSpacing: '0.88px', fontWeight: '500', marginBottom: '8px' }}>
+                  ₹ {product.price.toLocaleString('en-IN')}
                 </p>
-                <p style={{ fontSize: '12px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1.2px', fontWeight: '400' }}>
-                  SKU: {product.id.slice(0, 8).toUpperCase()}
+                <p style={{ fontSize: '13.5px', color: 'var(--text-muted)', fontWeight: '300', lineHeight: '1.6', display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                  {product.description}
                 </p>
               </div>
             </div>
@@ -176,22 +201,13 @@ export default function ProductDetailPage({ params }: { params: { handle: string
         </div>
       </div>
 
-      <style jsx>{`
-        .sticky-info-panel::-webkit-scrollbar {
-          width: 0px;
-          background: transparent;
-        }
+      <style>{`
+        .sticky-info-panel::-webkit-scrollbar { width: 0; background: transparent; }
         @media (max-width: 900px) {
-          .product-layout {
-            grid-template-columns: 1fr !important;
-          }
-          .sticky-info-panel {
-            position: relative !important;
-            top: 0 !important;
-            height: auto !important;
-            overflow-y: visible !important;
-            padding: 40px 24px !important;
-          }
+          .product-layout { grid-template-columns: 1fr !important; }
+          .product-image-panel { position: relative !important; top: 0 !important; height: auto !important; }
+          .product-image-panel > div:first-child { height: 60vw !important; min-height: 280px; }
+          .sticky-info-panel { position: relative !important; top: 0 !important; height: auto !important; overflow-y: visible !important; padding: 40px 24px !important; }
         }
       `}</style>
     </div>
