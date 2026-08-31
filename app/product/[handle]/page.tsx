@@ -146,9 +146,6 @@ export default function ProductDetailPage({ params }: { params: { handle: string
               >
                 Inquire & Bespoke Commission
               </a>
-              <p style={{ textAlign: 'center', fontSize: '12px', color: 'var(--text-muted)', letterSpacing: '0.6px', fontWeight: '400' }}>
-                Private viewings available at our Mumbai Atelier.
-              </p>
             </div>
 
             {/* Detailed Accordions */}
