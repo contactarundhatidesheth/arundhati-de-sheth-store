@@ -64,8 +64,8 @@ export default function TimelinePage() {
         <div 
           style={{ 
             position: 'sticky', 
-            top: 0, 
-            height: '100vh', 
+            top: '80px', 
+            height: 'calc(100vh - 80px)', 
             overflow: 'hidden',
             display: 'flex',
             alignItems: 'center'
@@ -114,6 +114,7 @@ export default function TimelinePage() {
                     src={event.image}
                     alt={event.title}
                     fill
+                    unoptimized
                     style={{ objectFit: 'cover' }}
                   />
                 </div>
