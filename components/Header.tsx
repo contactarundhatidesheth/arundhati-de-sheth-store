@@ -146,6 +146,7 @@ export const Header: React.FC = () => {
         </div>
         <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '24px', padding: '20px 0 60px 0' }}>
           <Link href="/about" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>ABOUT US</Link>
+          <Link href="/timeline" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>JOURNEY</Link>
           <Link href="/category/all-products" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>SHOP</Link>
           <Link href="/collections" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>HIGH JEWELLERY</Link>
           <Link href="/pages/whats-new" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>PRESS</Link>
