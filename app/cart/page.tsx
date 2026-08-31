@@ -10,7 +10,7 @@ export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, subtotal } = useCart();
 
   return (
-    <div style={{ minHeight: 'calc(100vh - 80px)', background: 'var(--bg-primary)', padding: '64px 24px' }}>
+    <div style={{ minHeight: 'calc(100vh - 80px)', background: 'var(--bg-primary)', padding: '144px 24px 64px' }}>
       <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
         
         <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '64px' }}>
