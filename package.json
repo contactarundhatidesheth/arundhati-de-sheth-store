@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node download_about_assets.js && next build",
+    "build": "node download_about_assets.js && node download_brand_assets.js && node download_timeline_images.js && next build",
     "start": "next start",
     "lint": "next lint",
     "extract-frames": "powershell -ExecutionPolicy Bypass -File scripts/extract-frames.ps1"
