@@ -295,6 +295,12 @@ export default function CategoryAllProductsPage() {
         </div>
       )}
 
+      {step !== 'products' && (
+        <style>{`
+          footer { display: none !important; }
+        `}</style>
+      )}
+
       <style>{`
         .collection-card:hover .collection-img,
         .type-card:hover .type-img,
