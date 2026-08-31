@@ -6,7 +6,6 @@ import { Section } from '@/components/ui/Section';
 import { Container } from '@/components/ui/Container';
 import { FadeInSection } from '@/components/ui/FadeInSection';
 import { MessageCircle, Plus, Minus } from 'lucide-react';
-
 interface FAQItem {
   question: string;
   answer: string;
@@ -272,6 +271,7 @@ export default function FAQPage() {
         >
           <Container>
             <div
+              className="faq-tab-bar"
               style={{
                 display: 'flex',
                 gap: '0',
@@ -376,7 +376,7 @@ export default function FAQPage() {
               >
                 Our team is available to assist with any inquiry — from order details to bespoke consultations. We endeavour to respond within a few hours.
               </p>
-              <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <div className="faq-cta-buttons" style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <a
                   href="https://wa.me/919581822000"
                   target="_blank"
@@ -441,6 +441,14 @@ export default function FAQPage() {
         </Section>
       </FadeInSection>
 
+      <style>{`
+        @media (max-width: 768px) {
+          .faq-tab-bar { justify-content: flex-start !important; }
+          .faq-tab-bar::-webkit-scrollbar { display: none; }
+          .faq-cta-buttons { flex-direction: column !important; }
+          .faq-cta-buttons a { width: 100% !important; justify-content: center !important; }
+        }
+      `}</style>
     </div>
   );
 }

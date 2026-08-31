@@ -42,10 +42,10 @@ export default function CategoryAllProductsPage() {
   const necklaces = PRODUCTS.find(p => p.category.toLowerCase().includes('necklace'))?.images[0] || PRODUCTS[2]?.images[0];
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FFFFFF', paddingTop: '120px' }}>
+    <div className="shop-wrapper" style={{ minHeight: '100vh', background: '#FFFFFF', paddingTop: '120px' }}>
       
       {/* 1. Category Tabs */}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '48px', marginBottom: '80px', overflowX: 'auto', padding: '0 24px' }}>
+      <div className="shop-tabs" style={{ display: 'flex', justifyContent: 'center', gap: '48px', marginBottom: '80px', overflowX: 'auto', padding: '0 24px' }}>
         {TABS.map((tab) => (
           <button
             key={tab}
@@ -71,7 +71,7 @@ export default function CategoryAllProductsPage() {
       </div>
 
       {/* 2. 3-Column Category Grid (Moved to top) */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, width: '100%', marginBottom: '80px' }}>
+      <div className="category-3col" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, width: '100%', marginBottom: '80px' }}>
         
         {/* Earrings */}
         <button onClick={() => { setActiveTab('EARRING'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ border: 'none', padding: 0, position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', display: 'block', cursor: 'pointer' }}>
@@ -103,7 +103,7 @@ export default function CategoryAllProductsPage() {
       </div>
 
       {/* 3. 5-Column Product Grid */}
-      <div style={{ 
+      <div className="product-5col" style={{ 
         display: 'grid', 
         gridTemplateColumns: 'repeat(5, 1fr)',
         gap: '40px 16px',
@@ -156,29 +156,22 @@ export default function CategoryAllProductsPage() {
         )}
       </div>
 
-      <style jsx>{`
+      <style>{`
         @media (max-width: 1400px) {
-          div[style*="grid-template-columns: repeat(5, 1fr)"] {
-            grid-template-columns: repeat(4, 1fr) !important;
-          }
+          .product-5col { grid-template-columns: repeat(4, 1fr) !important; }
         }
         @media (max-width: 1100px) {
-          div[style*="grid-template-columns: repeat(5, 1fr)"] {
-            grid-template-columns: repeat(3, 1fr) !important;
-          }
+          .product-5col { grid-template-columns: repeat(3, 1fr) !important; }
         }
-        @media (max-width: 900px) {
-          div[style*="grid-template-columns: repeat(5, 1fr)"] {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-          div[style*="grid-template-columns: repeat(3, 1fr)"] {
-            grid-template-columns: 1fr !important;
-          }
+        @media (max-width: 768px) {
+          .shop-tabs { gap: 16px !important; padding: 0 16px !important; margin-bottom: 48px !important; }
+          .shop-tabs button { font-size: 10px !important; letter-spacing: 0.8px !important; padding: 0 0 8px 0 !important; }
+          .category-3col { grid-template-columns: 1fr !important; }
+          .product-5col { grid-template-columns: repeat(2, 1fr) !important; gap: 24px 12px !important; padding: 0 16px !important; }
+          .shop-wrapper { padding-top: 100px !important; }
         }
-        @media (max-width: 600px) {
-          div[style*="grid-template-columns: repeat(5, 1fr)"] {
-            grid-template-columns: 1fr !important;
-          }
+        @media (max-width: 420px) {
+          .product-5col { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </div>

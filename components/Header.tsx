@@ -2,14 +2,22 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ShoppingBag, User, Menu, X } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
+// Pages with a light/white background at the top — logo must always be black
+const LIGHT_BG_PATHS = ['/category', '/collections', '/faq', '/shipping', '/terms', '/privacy', '/payment', '/contact', '/about', '/press', '/cart', '/product', '/shop-the-look', '/pages'];
+
 export const Header: React.FC = () => {
   const { totalItems, setIsCartOpen } = useCart();
+  const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Force opaque white header + black logo on light-background pages
+  const isLightPage = LIGHT_BG_PATHS.some((p) => pathname.startsWith(p));
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,7 +36,7 @@ export const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-  const isAtTop = lastScrollY <= 10;
+  const isAtTop = lastScrollY <= 10 && !isLightPage;
 
   // Lock body scroll when menu is open
   useEffect(() => {

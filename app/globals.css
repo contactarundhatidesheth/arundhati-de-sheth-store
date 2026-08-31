@@ -297,3 +297,38 @@ img {
 .dropdown-link:hover {
   background: var(--bg-secondary);
 }
+
+/* ─── Mobile Responsive ─── */
+@media (max-width: 768px) {
+
+  /* Typography */
+  h1 { font-size: clamp(1.8rem, 8vw, 2.8rem); }
+  h2 { font-size: clamp(1.5rem, 6vw, 2.2rem); }
+  h3 { font-size: clamp(1.2rem, 5vw, 1.8rem); }
+
+  /* Buttons - full width on mobile */
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    padding: 16px 24px;
+  }
+
+  /* Container padding */
+  .container {
+    padding: 0 16px;
+  }
+
+  /* Footer: stack columns */
+  footer > div > div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 40px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  footer > div > div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+}

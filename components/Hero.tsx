@@ -49,8 +49,9 @@ export const Hero: React.FC = () => {
         background: '#000',
       }}
     >
+      <div className="hero-inner" style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100%', position: 'absolute', inset: 0 }}>
       {/* Left Video */}
-      <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+      <div className="hero-panel" style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
         <video
           ref={video1Ref}
           src="/videos/look1.mp4"
@@ -77,6 +78,7 @@ export const Hero: React.FC = () => {
 
       {/* Centre Divider */}
       <div
+        className="hero-divider"
         style={{
           width: '1px',
           flexShrink: 0,
@@ -86,7 +88,7 @@ export const Hero: React.FC = () => {
       />
 
       {/* Right Video */}
-      <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+      <div className="hero-panel" style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
         <video
           ref={video2Ref}
           src="/videos/look2.mp4"
@@ -111,6 +113,8 @@ export const Hero: React.FC = () => {
         />
       </div>
 
+
+      </div>{/* end hero-inner */}
 
       {/* Play / Pause — bottom left */}
       <div
@@ -153,6 +157,14 @@ export const Hero: React.FC = () => {
           )}
         </button>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .hero-inner { flex-direction: column !important; }
+          .hero-divider { width: 100% !important; height: 1px !important; }
+          .hero-panel { flex: none !important; width: 100% !important; height: 50vh !important; }
+        }
+      `}</style>
     </section>
   );
 };

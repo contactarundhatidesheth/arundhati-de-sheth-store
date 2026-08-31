@@ -136,7 +136,7 @@ export default function CollectionsPage() {
             return (
               <section key={catalogue.id} style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', padding: 'var(--section-padding)', background: isEven ? 'var(--bg-primary)' : 'var(--bg-secondary)', overflow: 'hidden' }}>
                   <Container>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'center' }}>
+                    <div className="catalogue-section-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'center' }}>
 
                       {/* Image */}
                       <div style={{ position: 'relative', width: '100%', order: isEven ? 2 : 1 }} className="catalogue-image">
@@ -246,9 +246,24 @@ export default function CollectionsPage() {
         </div>
       )}
 
-      <style jsx global>{`
-        .catalogue-image:hover {
-          transform: scale(1.03);
+      <style>{`
+        .catalogue-image:hover { transform: scale(1.02); }
+
+        @media (max-width: 900px) {
+          .catalogue-section-grid {
+            grid-template-columns: 1fr !important;
+            gap: 40px !important;
+          }
+          .catalogue-section-grid > div:first-child {
+            order: 1 !important;
+          }
+          .catalogue-section-grid > div:last-child {
+            order: 2 !important;
+          }
+          .catalogue-tab-bar {
+            gap: 0 !important;
+            padding: 0 !important;
+          }
         }
       `}</style>
     </div>

@@ -39,7 +39,7 @@ function HowWeHelpSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} style={{ position: 'sticky', top: 0, zIndex: 0, height: '100vh', display: 'grid', gridTemplateColumns: '1fr 1fr', background: 'var(--bg-secondary)', overflow: 'hidden' }}>
+    <section ref={sectionRef} className="hwh-section" style={{ position: 'sticky', top: 0, zIndex: 0, height: '100vh', display: 'grid', gridTemplateColumns: '1fr 1fr', background: 'var(--bg-secondary)', overflow: 'hidden' }}>
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: '36px', padding: 'clamp(48px, 8vw, 96px)' }}>
         <div style={{ overflow: 'hidden' }}>
           <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 3rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.15, transform: visible ? 'translateY(0)' : 'translateY(110%)', opacity: visible ? 1 : 0, transition: 'transform 1s cubic-bezier(0.16,1,0.3,1), opacity 1s ease' }}>
@@ -67,10 +67,13 @@ function HowWeHelpSection() {
           <img src="https://www.arundhatidesheth.com/cdn/shop/files/image_1_0caa02f1-d125-49c8-8ff5-12951894228a.jpg?v=1710832955" alt="How we help our clients" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </div>
       </div>
-      <style jsx>{`
+      <style>{`
         .hwh-cta { display: inline-block; padding: 15px 32px; border: 1px solid #d4af37; color: #d4af37; text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.78rem; font-family: var(--font-sans); text-decoration: none; transition: background 0.35s ease, color 0.35s ease; }
         .hwh-cta:hover { background: #d4af37; color: #fff; opacity: 1; }
-        @media (max-width: 900px) { .hwh-section { grid-template-columns: 1fr !important; height: auto !important; min-height: 100vh; } }
+        @media (max-width: 768px) {
+          .hwh-section { grid-template-columns: 1fr !important; height: auto !important; min-height: 100svh; }
+          .hwh-section > div:last-child { display: none; }
+        }
       `}</style>
     </section>
   );
@@ -111,8 +114,8 @@ export default function AboutPage() {
         {/* Dark overlay - changed to subtle bottom gradient for text readability */}
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 25%)' }} />
 
-        {/* Hero text - Minimal and placed at bottom-left */}
-        <div style={{ position: 'absolute', bottom: '48px', left: '48px', zIndex: 2, textAlign: 'left', color: '#FFFFFF' }}>
+        {/* Hero text - bottom-left */}
+        <div className="about-hero-text" style={{ position: 'absolute', bottom: '48px', left: '48px', zIndex: 2, textAlign: 'left', color: '#FFFFFF' }}>
           <p style={{ fontSize: '0.65rem', letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '12px', opacity: 0.7 }}>
             Fine Jewellery Consultancy
           </p>
@@ -125,7 +128,7 @@ export default function AboutPage() {
 
       {/* ── Arundhati&apos;s Journey ── */}
       <div style={{ position: 'relative', zIndex: 1, background: 'var(--bg-primary)' }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '120px 24px' }}>
+        <div className="about-journey" style={{ maxWidth: '1400px', margin: '0 auto', padding: '120px 24px' }}>
 
           <section className="editorial-block" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center', marginBottom: '160px' }}>
             <div style={{ aspectRatio: '3/4', width: '100%', overflow: 'hidden' }}>
@@ -151,15 +154,15 @@ export default function AboutPage() {
 
           {/* ── Jewellery Confluence: Video Section ── */}
           <section style={{ marginBottom: '160px' }}>
-            <div style={{ position: 'relative', width: '100%', height: '70vh', overflow: 'hidden', marginBottom: '80px', borderRadius: '2px' }}>
+            <div className="confluence-video" style={{ position: 'relative', width: '100%', height: '70vh', overflow: 'hidden', marginBottom: '80px', borderRadius: '2px' }}>
               <img src="https://www.arundhatidesheth.com/cdn/shop/files/maxresdefault_1.jpg?v=1710148177" alt="Jewellery Video" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.2)' }} />
-              <div style={{ position: 'absolute', bottom: '48px', left: '48px' }}>
+              <div className="confluence-caption" style={{ position: 'absolute', bottom: '48px', left: '48px' }}>
                 <p style={{ color: '#FFFFFF', fontSize: '0.75rem', letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '12px', opacity: 0.7 }}>Philosophy</p>
                 <h2 style={{ color: '#FFFFFF', fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', fontFamily: 'var(--font-serif)', fontWeight: 400 }}>Jewellery Confluence</h2>
               </div>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', maxWidth: '1100px', margin: '0 auto' }}>
+            <div className="confluence-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', maxWidth: '1100px', margin: '0 auto' }}>
               <p style={{ fontSize: '1rem', color: 'var(--text-muted)', lineHeight: '1.9' }}>
                 Armed with over a decade of knowledge and experience, enhanced by a natural eye for inimitable design, Arundhati De-Sheth has been consistently committed to bringing together fine jewellery pieces from a variety of sources under her platform. She fuses her appreciation for masterful pieces with a carefully honed network of handpicked designers.
               </p>
@@ -172,11 +175,16 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .testimonial-box { background: var(--bg-secondary); padding: 48px 32px; border-radius: 2px; display: flex; flex-direction: column; justify-content: center; border-left: 2px solid #d4af37; }
         @keyframes scrollPulse { 0%,100% { opacity: 0.3; transform: scaleY(1); } 50% { opacity: 0.8; transform: scaleY(1.2); } }
         @media (max-width: 900px) {
           .editorial-block { grid-template-columns: 1fr !important; gap: 40px !important; }
+          .confluence-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+          .about-journey { padding: 60px 16px !important; }
+          .about-hero-text { bottom: 24px !important; left: 24px !important; }
+          .confluence-video { height: 50vh !important; }
+          .confluence-caption { bottom: 24px !important; left: 24px !important; }
         }
       `}</style>
     </div>
