@@ -47,7 +47,6 @@ next-env.d.ts
 
 # downloaded drive assets (large binaries - regenerate with download scripts)
 /public/videos/
-/public/images/
 /public/decodent/
 /public/timeline/
 /public/brand/

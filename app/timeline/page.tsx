@@ -58,7 +58,7 @@ export default function TimelinePage() {
         ref={containerRef} 
         style={{ 
           position: 'relative', 
-          height: `${TIMELINE_EVENTS.length * 100}vh`,
+          height: `${(TIMELINE_EVENTS.length + 1) * 100}vh`,
           background: 'var(--bg-primary)'
         }}
       >
@@ -77,7 +77,7 @@ export default function TimelinePage() {
             style={{ 
               display: 'flex',
               gap: '120px',
-              padding: '0 50vw 0 10vw', // Start with offset, end with offset
+              padding: '0 10vw 0 10vw', // Start with offset, end with standard offset
               transform: `translateX(${translateX}px)`,
               willChange: 'transform',
               transition: 'transform 0.1s ease-out' // Small smoothing
@@ -101,38 +101,38 @@ export default function TimelinePage() {
               <div 
                 key={event.id} 
                 style={{ 
-                  width: '600px', 
+                  width: 'clamp(800px, 85vw, 1400px)', 
                   flexShrink: 0, 
                   display: 'flex', 
-                  flexDirection: index % 2 === 0 ? 'column' : 'column-reverse',
-                  gap: '40px',
-                  justifyContent: 'center',
-                  height: '80vh'
+                  flexDirection: index % 2 === 0 ? 'row' : 'row-reverse',
+                  gap: '60px',
+                  alignItems: 'center',
+                  height: 'calc(100vh - 80px)'
                 }}
               >
                 {event.images && event.images.length > 0 && (
-                  <div style={{ display: 'flex', gap: '20px', width: '100%', height: '50vh', background: 'transparent', overflowX: 'auto', overflowY: 'hidden', paddingBottom: '10px', scrollbarWidth: 'thin' }}>
+                  <div style={{ display: 'flex', gap: '20px', width: '55%', height: '75vh', background: 'transparent', overflowX: 'auto', overflowY: 'hidden', paddingBottom: '0', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                     {event.images.map((imgSrc, imgIndex) => (
-                      <div key={imgIndex} style={{ position: 'relative', height: '100%', minWidth: event.images.length > 1 ? '85%' : '100%', flexShrink: 0 }}>
+                      <div key={imgIndex} style={{ position: 'relative', height: '100%', minWidth: event.images.length > 1 ? '85%' : '100%', flexShrink: 0, overflow: 'hidden' }}>
                         <Image 
                           src={imgSrc}
                           alt={`${event.title} image ${imgIndex + 1}`}
                           fill
                           unoptimized
-                          style={{ objectFit: 'contain' }}
+                          style={{ objectFit: 'contain', borderRadius: '4px' }}
                         />
                       </div>
                     ))}
                   </div>
                 )}
-                <div>
-                  <h3 style={{ fontSize: '1.2rem', fontFamily: 'var(--font-serif)', color: 'var(--text-main)', marginBottom: '8px' }}>
+                <div style={{ width: event.images && event.images.length > 0 ? '45%' : '100%', padding: '0 20px' }}>
+                  <h3 style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2.2rem)', fontFamily: 'var(--font-serif)', color: 'var(--text-main)', marginBottom: '12px', lineHeight: 1.1 }}>
                     {event.title}
                   </h3>
-                  <p style={{ fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--accent-gold)', marginBottom: '16px', fontWeight: 500 }}>
+                  <p style={{ fontSize: '0.85rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--accent-gold)', marginBottom: '24px', fontWeight: 500 }}>
                     {event.date}
                   </p>
-                  <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', lineHeight: 1.6, fontWeight: 300, marginBottom: '24px' }}>
+                  <p style={{ fontSize: '1rem', color: 'var(--text-muted)', lineHeight: 1.8, fontWeight: 300, marginBottom: '32px', maxWidth: '500px' }}>
                     {event.description}
                   </p>
                   {event.link && event.link !== '#' && (
@@ -146,7 +146,7 @@ export default function TimelinePage() {
                         fontSize: '0.75rem',
                         textDecoration: 'none',
                         borderBottom: '1px solid var(--accent-gold)',
-                        paddingBottom: '4px',
+                        paddingBottom: '6px',
                         transition: 'opacity 0.3s ease'
                       }}
                       onMouseOver={(e) => e.currentTarget.style.opacity = '0.6'}
@@ -158,6 +158,19 @@ export default function TimelinePage() {
                 </div>
               </div>
             ))}
+
+            {/* Outro Logo Slide */}
+            <div style={{ width: '40vw', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ position: 'relative', width: 'clamp(300px, 40vw, 600px)', height: 'clamp(300px, 40vw, 600px)', opacity: 0.9 }}>
+                <Image 
+                  src="/brand/logo-black.png" 
+                  alt="Arundhati De-Sheth Logo" 
+                  fill 
+                  unoptimized
+                  style={{ objectFit: 'contain' }} 
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
