@@ -6,7 +6,7 @@ import { URL } from 'url';
 
 const OUTPUT_DIR = path.join(process.cwd(), 'public', 'timeline');
 
-export const DRIVE_FILES = [
+const DRIVE_FILES = [
   { name: 'timeline-kamyen.jpg', id: '1USgAyhsc8QdeZcCzl_0ddF10CMXPMSWa' },
   { name: 'timeline-ads-masaba-amrapali.jpg', id: '17gthYbxzzV7OHw-Q6umlRNAifCbWcR_4' },
   { name: 'timeline-british-vogue.webp', id: '1zvMXYCXJaLO-pq-wiedIhclszmyztICD' },
