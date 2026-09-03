@@ -97,10 +97,23 @@ export default function CategoryAllProductsPage() {
     <div className="shop-wrapper" style={{ minHeight: '100vh', background: '#FFF' }}>
 
       {/* Hero Header */}
-      <section style={{ position: 'relative', minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000000', overflow: 'hidden' }}>
-        <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', paddingTop: '80px', paddingBottom: '80px', maxWidth: '800px', padding: '0 24px', width: '100%' }}>
-          <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: '300', marginBottom: '0', fontFamily: 'var(--font-serif)', lineHeight: '1.05', letterSpacing: '-0.02em', color: '#FFFFFF' }}>
-            {step === 'collection' ? 'Choose a Collection' : collectionLabel}
+      <section style={{ position: 'relative', minHeight: '85vh', display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-start', background: '#000000', overflow: 'hidden' }}>
+        <Image
+          src={
+            step === 'collection' 
+              ? '/images/Explore%20.png' 
+              : selectedCollection === 'EPHEMERALS' 
+              ? '/images/Ephemerals%20.png' 
+              : '/images/Perennials%20.png'
+          }
+          alt={step === 'collection' ? 'Explore Collections' : collectionLabel}
+          fill
+          priority
+          style={{ objectFit: 'cover', objectPosition: 'center' }}
+        />
+        <div style={{ position: 'relative', zIndex: 10, padding: '0 clamp(20px, 5vw, 60px) clamp(30px, 5vw, 60px)', width: '100%' }}>
+          <h1 style={{ fontSize: 'clamp(2.5rem, 8vw, 5.5rem)', fontWeight: '300', marginBottom: '0', fontFamily: 'var(--font-serif)', fontStyle: 'italic', lineHeight: '1', letterSpacing: '0.02em', color: '#FFFFFF', textShadow: '0 4px 12px rgba(0,0,0,0.4)' }}>
+            {step === 'collection' ? 'Explore' : collectionLabel}
           </h1>
         </div>
       </section>
@@ -257,9 +270,7 @@ export default function CategoryAllProductsPage() {
           .collection-grid { grid-template-columns: 1fr !important; }
           .product-5col { grid-template-columns: repeat(2,1fr) !important; gap: 24px 10px !important; }
         }
-        @media (max-width: 420px) {
-          .product-5col { grid-template-columns: 1fr !important; }
-        }
+        /* Removed 420px 1-column breakpoint to maintain 2-columns on small screens */
       `}</style>
     </div>
   );

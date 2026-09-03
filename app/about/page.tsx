@@ -155,7 +155,7 @@ export default function AboutPage() {
           {/* ── Jewellery Confluence: Video Section ── */}
           <section style={{ marginBottom: '160px' }}>
             <div className="confluence-video" style={{ position: 'relative', width: '100%', height: '70vh', overflow: 'hidden', marginBottom: '80px', borderRadius: '2px' }}>
-              <img src="https://www.arundhatidesheth.com/cdn/shop/files/maxresdefault_1.jpg?v=1710148177" alt="Jewellery Video" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src="/images/WhatsApp%20Image%202026-08-31%20at%203.11.01%20PM.jpeg" alt="Jewellery Confluence" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%' }} />
               <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.2)' }} />
               <div className="confluence-caption" style={{ position: 'absolute', bottom: '48px', left: '48px' }}>
                 <p style={{ color: '#FFFFFF', fontSize: '0.75rem', letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '12px', opacity: 0.7 }}>Philosophy</p>

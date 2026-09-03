@@ -214,49 +214,38 @@ export default function FAQPage() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
 
-      {/* Dark Hero Header */}
-      <FadeInSection>
-        <Section background="dark" padding="lg">
-          <Container maxWidth="800px" center>
-            <p
-              style={{
-                fontSize: '0.7rem',
-                color: 'rgba(255,255,255,0.5)',
-                letterSpacing: '0.2em',
-                textTransform: 'uppercase',
-                fontWeight: 500,
-                marginBottom: '16px',
-              }}
-            >
-              Client Support
-            </p>
-            <h1
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: 'clamp(2rem, 4vw, 2.8rem)',
-                fontWeight: 300,
-                color: '#FAF9F7',
-                lineHeight: 1.15,
-                marginBottom: '20px',
-                letterSpacing: '-0.01em',
-              }}
-            >
-              Frequently Asked Questions
-            </h1>
-            <p
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '0.95rem',
-                color: 'rgba(255,255,255,0.6)',
-                lineHeight: 1.7,
-                fontWeight: 300,
-              }}
-            >
-              Answers to the questions we are most often asked. If you cannot find what you are looking for, our concierge team is always happy to assist.
-            </p>
-          </Container>
-        </Section>
-      </FadeInSection>
+      {/* Hero */}
+      <section style={{ position: 'relative', width: '100%', height: '85vh', overflow: 'hidden', background: '#000' }}>
+        {/* Dense SVG Logo Pattern */}
+        <div style={{ position: 'absolute', inset: 0, zIndex: 1, opacity: 0.15 }}>
+          <svg width="100%" height="100%">
+            <defs>
+              {/* The pattern width/height is the spacing between logos. We make it tight (50px). */}
+              <pattern id="dense-logo-pattern" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
+                {/* We scale the image up (100px) inside the 50px cell to eliminate any padding in the file */}
+                <image href="/brand/logo-white.png" x="-25" y="-25" width="100" height="100" preserveAspectRatio="xMidYMid slice" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#dense-logo-pattern)" />
+          </svg>
+        </div>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 60%)', zIndex: 2 }} />
+        
+        <div style={{ position: 'absolute', bottom: 'clamp(30px, 5vw, 60px)', left: 'clamp(20px, 5vw, 60px)', right: '20px', zIndex: 10 }}>
+          <h1 style={{ 
+            fontSize: 'clamp(2.5rem, 8vw, 6rem)', 
+            fontWeight: '300', 
+            fontFamily: 'var(--font-serif)', 
+            color: '#fff', 
+            margin: 0,
+            lineHeight: 1,
+            letterSpacing: '-0.02em',
+            fontStyle: 'italic'
+          }}>
+            FAQ
+          </h1>
+        </div>
+      </section>
 
       {/* Category Tabs */}
       <FadeInSection>

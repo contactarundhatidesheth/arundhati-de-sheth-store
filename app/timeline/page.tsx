@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { TIMELINE_EVENTS } from '@/lib/data/timeline';
 
 export default function TimelinePage() {
@@ -109,15 +110,21 @@ export default function TimelinePage() {
                   height: '80vh'
                 }}
               >
-                <div style={{ position: 'relative', width: '100%', height: '50vh', background: 'var(--bg-secondary)', overflow: 'hidden' }}>
-                  <Image 
-                    src={event.image}
-                    alt={event.title}
-                    fill
-                    unoptimized
-                    style={{ objectFit: 'cover' }}
-                  />
-                </div>
+                {event.images && event.images.length > 0 && (
+                  <div style={{ display: 'flex', gap: '20px', width: '100%', height: '50vh', background: 'transparent', overflowX: 'auto', overflowY: 'hidden', paddingBottom: '10px', scrollbarWidth: 'thin' }}>
+                    {event.images.map((imgSrc, imgIndex) => (
+                      <div key={imgIndex} style={{ position: 'relative', height: '100%', minWidth: event.images.length > 1 ? '85%' : '100%', flexShrink: 0 }}>
+                        <Image 
+                          src={imgSrc}
+                          alt={`${event.title} image ${imgIndex + 1}`}
+                          fill
+                          unoptimized
+                          style={{ objectFit: 'contain' }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
                 <div>
                   <h3 style={{ fontSize: '1.2rem', fontFamily: 'var(--font-serif)', color: 'var(--text-main)', marginBottom: '8px' }}>
                     {event.title}
@@ -125,9 +132,29 @@ export default function TimelinePage() {
                   <p style={{ fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--accent-gold)', marginBottom: '16px', fontWeight: 500 }}>
                     {event.date}
                   </p>
-                  <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', lineHeight: 1.6, fontWeight: 300 }}>
+                  <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', lineHeight: 1.6, fontWeight: 300, marginBottom: '24px' }}>
                     {event.description}
                   </p>
+                  {event.link && event.link !== '#' && (
+                    <Link 
+                      href={event.link}
+                      style={{
+                        display: 'inline-block',
+                        color: 'var(--text-main)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        fontSize: '0.75rem',
+                        textDecoration: 'none',
+                        borderBottom: '1px solid var(--accent-gold)',
+                        paddingBottom: '4px',
+                        transition: 'opacity 0.3s ease'
+                      }}
+                      onMouseOver={(e) => e.currentTarget.style.opacity = '0.6'}
+                      onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
+                    >
+                      Discover More
+                    </Link>
+                  )}
                 </div>
               </div>
             ))}

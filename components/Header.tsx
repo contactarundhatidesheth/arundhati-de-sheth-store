@@ -50,10 +50,29 @@ export const Header: React.FC = () => {
 
   return (
     <>
+      {/* Announcement Banner */}
+      <div style={{
+        background: 'var(--accent-gold, #D4AF37)',
+        color: '#000000',
+        textAlign: 'center',
+        padding: '10px clamp(10px, 3vw, 20px)',
+        fontSize: 'clamp(8px, 2.5vw, 11px)',
+        letterSpacing: '0.1em',
+        textTransform: 'uppercase',
+        fontWeight: 500,
+        position: 'fixed',
+        top: isVisible ? '0' : '-40px',
+        width: '100%',
+        zIndex: 101,
+        transition: 'top 0.4s cubic-bezier(0.25, 1, 0.5, 1)',
+      }}>
+        Complimentary Shipping on All Orders Across India
+      </div>
+
       <header style={{
         position: 'fixed',
         width: '100%',
-        top: isVisible ? '0' : '-80px',
+        top: isVisible ? '32px' : '-80px',
         zIndex: 100,
         background: isAtTop ? 'transparent' : 'var(--header-bg)',
         backdropFilter: isAtTop ? 'none' : 'blur(12px)',
@@ -144,7 +163,7 @@ export const Header: React.FC = () => {
             <X size={32} strokeWidth={1} color="#ffffff" />
           </button>
         </div>
-        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '24px', padding: '20px 0 60px 0' }}>
+        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '24px', padding: '20px 0 calc(60px + env(safe-area-inset-bottom, 0px)) 0' }}>
           <Link href="/about" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>ABOUT US</Link>
           <Link href="/timeline" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>JOURNEY</Link>
           <Link href="/category/all-products" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>SHOP</Link>

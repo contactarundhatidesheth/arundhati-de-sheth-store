@@ -27,26 +27,29 @@ export default function ContactPage() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
       {/* Hero */}
-      <section style={{ position: 'sticky', top: 0, zIndex: 0, minHeight: '50vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000000', overflow: 'hidden' }}>
+      <section style={{ position: 'relative', width: '100%', height: '85vh', overflow: 'hidden', background: '#000' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
           <img
             src="https://www.arundhatidesheth.com/cdn/shop/files/Screenshot_2026-01-27_144230.png?v=1708934384&width=1600"
             alt="Arundhati De-Sheth Atelier"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4 }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 1 }}
           />
-          <div style={{ position: 'absolute', inset: 0, background: 'rgba(26,26,26,0.6)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 25%)' }} />
         </div>
-        <Container maxWidth="800px" style={{ position: 'relative', zIndex: 10, textAlign: 'center', paddingTop: '80px', paddingBottom: '80px' }}>
-          <p style={{ fontSize: '0.7rem', color: 'var(--text-on-dark-muted)', letterSpacing: '0.3em', textTransform: 'uppercase', fontWeight: '500', marginBottom: '24px' }}>
-            Connect
-          </p>
-          <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: '300', marginBottom: '24px', fontFamily: 'var(--font-serif)', lineHeight: '1.05', letterSpacing: '-0.02em', color: 'var(--text-on-dark)' }}>
-            Contact & Private Consultations
+        <div style={{ position: 'absolute', bottom: 'clamp(30px, 5vw, 60px)', left: 'clamp(20px, 5vw, 60px)', right: '20px', zIndex: 10 }}>
+          <h1 style={{ 
+            fontSize: 'clamp(2.5rem, 8vw, 6rem)', 
+            fontWeight: '300', 
+            fontFamily: 'var(--font-serif)', 
+            color: '#fff', 
+            margin: 0,
+            lineHeight: 1,
+            letterSpacing: '-0.02em',
+            fontStyle: 'italic'
+          }}>
+            Contact
           </h1>
-          <p style={{ fontSize: '1.05rem', color: 'var(--text-on-dark-muted)', lineHeight: '1.8', fontWeight: '300', maxWidth: '560px', margin: '0 auto' }}>
-            We invite you to reach out for bespoke commissions, price inquiries, or private studio walkthroughs.
-          </p>
-        </Container>
+        </div>
       </section>
 
       {/* Main Content */}
@@ -65,11 +68,10 @@ export default function ContactPage() {
                   <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
                     <MapPin size={20} style={{ marginTop: '4px', flexShrink: 0, color: 'var(--text-main)', opacity: 0.6 }} />
                     <div>
-                      <strong style={{ color: 'var(--text-main)', display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '0.85rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Mumbai Atelier</strong>
+                      <strong style={{ color: 'var(--text-main)', display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '0.85rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>The Salon</strong>
                       <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.7', fontWeight: '300' }}>
-                        Sashaa Global LLP, Ground Floor, 2A, Plot-15 Iindira Niwas<br />
-                        Avantikabai Gokhale Marg, New Bhatwadi, Ggirgaon<br />
-                        Mumbai City, Maharashtra, 400004
+                        Private Viewings by Request<br />
+                        Reach out to arrange a visit.
                       </p>
                     </div>
                   </div>
@@ -135,69 +137,39 @@ export default function ContactPage() {
         </Section>
       </FadeInSection>
 
-      {/* Map / International */}
+
+
+      {/* FAQ Link */}
       <FadeInSection>
         <Section background="primary" padding="lg" borderTop>
-          <Container>
-            <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-              <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: '500', marginBottom: '16px' }}>
-                Global Reach
-              </p>
-              <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2rem)', color: 'var(--text-main)', fontWeight: '300', fontFamily: 'var(--font-serif)' }}>
-                Worldwide Presence
-              </h2>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '32px' }}>
-              {[
-                { city: 'Mumbai', country: 'India', role: 'Headquarters & Atelier', hours: 'Mon – Sat, 10 AM – 7 PM IST' },
-                { city: 'Pune', country: 'India', role: 'Design Studio', hours: 'By Appointment' },
-                { city: 'London', country: 'United Kingdom', role: 'Private Viewings', hours: 'By Appointment' },
-                { city: 'New York', country: 'USA', role: 'Client Liaison', hours: 'By Appointment' },
-              ].map((office, idx) => (
-                <div key={idx} style={{ padding: '32px', border: '1px solid var(--border)', background: 'var(--bg-secondary)', textAlign: 'center', borderRadius: 'var(--radius-md)' }}>
-                  <Globe size={20} style={{ color: 'var(--text-main)', opacity: 0.4, marginBottom: '16px' }} />
-                  <h3 style={{ fontSize: '1.1rem', color: 'var(--text-main)', marginBottom: '4px', fontFamily: 'var(--font-serif)', fontWeight: '400' }}>{office.city}</h3>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>{office.country}</p>
-                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '4px', fontWeight: '500' }}>{office.role}</p>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--text-subtle)' }}>{office.hours}</p>
-                </div>
-              ))}
-            </div>
+          <Container maxWidth="800px" style={{ textAlign: 'center' }}>
+            <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2rem)', color: 'var(--text-main)', fontWeight: '300', fontFamily: 'var(--font-serif)', marginBottom: '24px' }}>
+              Have Questions?
+            </h2>
+            <p style={{ fontSize: '1rem', color: 'var(--text-muted)', marginBottom: '40px', fontWeight: '300' }}>
+              Find details about shipping, bespoke commissions, and pricing in our comprehensive FAQ.
+            </p>
+            <Link href="/faq" style={{ 
+              display: 'inline-flex', 
+              alignItems: 'center', 
+              padding: '16px 32px', 
+              border: '1px solid var(--text-main)', 
+              color: 'var(--text-main)', 
+              textDecoration: 'none', 
+              textTransform: 'uppercase', 
+              letterSpacing: '0.1em', 
+              fontSize: '0.85rem', 
+              fontWeight: 500,
+              transition: 'all 0.3s ease'
+            }}
+            onMouseOver={(e) => { e.currentTarget.style.background = 'var(--text-main)'; e.currentTarget.style.color = 'var(--bg-primary)'; }}
+            onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-main)'; }}
+            >
+              View All FAQs
+            </Link>
           </Container>
         </Section>
       </FadeInSection>
-
-      {/* FAQ */}
-      <FadeInSection>
-        <Section background="primary" padding="lg" borderTop id="faq">
-          <Container maxWidth="800px">
-            <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-              <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: '500', marginBottom: '16px' }}>
-                FAQ
-              </p>
-              <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2rem)', color: 'var(--text-main)', fontWeight: '300', fontFamily: 'var(--font-serif)' }}>
-                Frequently Asked Questions
-              </h2>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
-              {[
-                { q: 'Are all pieces price on request?', a: 'Yes. Each piece is individually priced based on metal weight, gemstone quality, and craftsmanship complexity. We provide detailed quotes upon request.' },
-                { q: 'Do you ship internationally?', a: 'Yes, we offer worldwide insured shipping via secure couriers. All shipments are fully insured and require signature upon delivery.' },
-                { q: 'Can I visit the atelier?', a: 'Private viewings are available by appointment in Mumbai and Pune. For international clients, we offer virtual consultations via video call.' },
-                { q: 'What is the bespoke process?', a: 'The process begins with a consultation to understand your vision. Our master artisans then create a detailed rendering before proceeding to handcraft the piece.' },
-              ].map((faq, idx) => (
-                <details key={idx} style={{ padding: '24px', background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)' }}>
-                  <summary style={{ fontSize: '0.95rem', color: 'var(--text-main)', fontWeight: '500', cursor: 'pointer', fontFamily: 'var(--font-serif)', listStyle: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    {faq.q}
-                    <span style={{ fontSize: '1.2rem', fontWeight: '300', color: 'var(--text-muted)' }}>+</span>
-                  </summary>
-                  <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.7', marginTop: '16px', fontWeight: '300' }}>{faq.a}</p>
-                </details>
-              ))}
-            </div>
-          </Container>
-        </Section>
-        </FadeInSection>
       </div>
     </div>
   );
