@@ -6,6 +6,7 @@ import SequenceEditor from '../SequenceEditor';
 
 export default function AdminCatalogues() {
   const db = readDB();
+  const sortedCatalogues = [...db.catalogues].sort((a, b) => (a.sequence || 999) - (b.sequence || 999));
   
   return (
     <div>
@@ -35,7 +36,7 @@ export default function AdminCatalogues() {
                 </td>
               </tr>
             ) : (
-              db.catalogues.map(c => (
+              sortedCatalogues.map(c => (
                 <tr key={c.id} style={{ borderBottom: '1px solid #eaeaea' }}>
                   <td style={{ padding: '16px 24px' }}>
                     <SequenceEditor collection="catalogues" id={c.id} initialSequence={c.sequence || 999} />

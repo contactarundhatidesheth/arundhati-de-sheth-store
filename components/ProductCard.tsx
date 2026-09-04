@@ -60,6 +60,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             href={whatsappLink}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => {
+              fetch('/api/track', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type: 'whatsapp_click', id: product.id })
+              }).catch(() => {});
+            }}
             style={{
               flex: 1, padding: '12px',
               background: product.collection?.toLowerCase().includes('high jewellery') || product.collection?.toLowerCase().includes('high jewelry')

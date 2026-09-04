@@ -8,7 +8,7 @@ import { FadeInSection } from '@/components/ui/FadeInSection';
 import { MessageCircle, Plus, Minus } from 'lucide-react';
 interface FAQItem {
   question: string;
-  answer: string;
+  answer: React.ReactNode;
 }
 
 interface FAQCategory {
@@ -24,8 +24,11 @@ const faqCategories: FAQCategory[] = [
     items: [
       {
         question: 'How do I place an order?',
-        answer:
-          'You may browse our collections online and add pieces to your cart. For high-jewellery acquisitions or bespoke commissions, we warmly invite you to connect with our concierge team directly via WhatsApp or email for a private, personalised consultation.',
+        answer: (
+          <>
+            You may browse our collections online and add pieces to your cart. For High Jewellery acquisitions, you may connect with our sales team via <a href="https://wa.me/919581822000" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline', color: 'inherit' }}>whatsapp</a>.
+          </>
+        ),
       },
       {
         question: 'What payment methods do you accept?',
@@ -40,7 +43,7 @@ const faqCategories: FAQCategory[] = [
       {
         question: 'Will I receive an order confirmation?',
         answer:
-          'Yes. A detailed order confirmation will be sent to your registered email address within moments of your purchase. This will include your order summary, estimated dispatch timeline, and your personal concierge contact for any queries.',
+          'Yes. A detailed order confirmation will be sent to your registered email address within moments of your purchase. This will include your order summary, estimated dispatch timeline, and your personal sales contact for any queries.',
       },
     ],
   },
@@ -51,7 +54,7 @@ const faqCategories: FAQCategory[] = [
       {
         question: 'Do you offer international shipping?',
         answer:
-          'Yes, we ship globally. All international orders are dispatched via DHL Express or FedEx Insured Courier, fully insured and with real-time tracking. Shipping fees and timelines vary by destination and will be confirmed at checkout or by our concierge team.',
+          'Yes, we ship globally. All international orders are dispatched via DHL Express or FedEx Insured Courier, fully insured and with real-time tracking. Shipping fees and timelines vary by destination and will be confirmed at checkout or by sales team.',
       },
       {
         question: 'How long will my order take to arrive?',
@@ -61,7 +64,7 @@ const faqCategories: FAQCategory[] = [
       {
         question: 'How can I track my order?',
         answer:
-          'Once your piece is dispatched, you will receive an email with your tracking number and a direct link to the courier\'s live tracking portal. Our concierge is also available at any time to assist with delivery updates.',
+          'Once your piece is dispatched, you will receive an email with your tracking number and a direct link to the courier\'s live tracking portal. Our sales team is also available at any time to assist with delivery updates.',
       },
       {
         question: 'Is my jewellery insured during transit?',
@@ -77,43 +80,12 @@ const faqCategories: FAQCategory[] = [
       {
         question: 'What is your return policy?',
         answer:
-          'Standard pieces may be exchanged within 7 days of delivery in their pristine, unworn condition with all original packaging, certificates, and seals intact. Please note that bespoke, engraved, personalized, and resized pieces are final sale.',
+          'As a general policy, all purchases made through us are considered final sale. However, should you notice any defect or issue with your piece upon delivery, please notify us within 48 hours of receipt, and we will be happy to assist you.',
       },
       {
         question: 'How do I initiate a return or exchange?',
         answer:
-          'Please contact our concierge team at contact@arundhatidesheth.com with your order number and reason for return. We will arrange a fully insured reverse pickup at no cost to you within India. International returns may be subject to shipping fees.',
-      },
-      {
-        question: 'Do you offer ring resizing?',
-        answer:
-          'Complimentary ring resizing is available within 14 days of purchase for selected gold and silver ring styles. Please reach out with your order details and we will assess the feasibility and arrange the process at our Mumbai atelier.',
-      },
-    ],
-  },
-  {
-    id: 'jewellery',
-    label: 'Our Jewellery',
-    items: [
-      {
-        question: 'Can I request a bespoke or custom piece?',
-        answer:
-          'We specialize in creating entirely bespoke jewellery tailored to your vision. Our design process begins with a private consultation, followed by hand-drawn sketches and 3D renderings before a single gram of metal is cast. Please reach out via our contact page to begin.',
-      },
-      {
-        question: 'Are your diamonds and gemstones ethically sourced?',
-        answer:
-          'Yes. All diamonds are conflict-free and comply with the Kimberley Process Certification Scheme. Our gemstones are sourced from traceable, responsible suppliers. Each piece is accompanied by a full certificate of authenticity and a BIS hallmark.',
-      },
-      {
-        question: 'How should I care for my fine jewellery?',
-        answer:
-          'Store each piece individually in the provided soft pouch or lined jewellery box to prevent abrasion. Avoid contact with perfumes, lotions, chlorine, and extreme temperatures. For regular maintenance, use a soft microfibre cloth. We recommend professional polishing every 12 months.',
-      },
-      {
-        question: 'Do you offer jewellery repairs?',
-        answer:
-          'Yes. We stand behind the integrity of every piece that leaves our atelier. Should your jewellery require repair, polishing, or re-setting, please contact us with your order details. An assessment will be arranged at our Mumbai studio.',
+          'Please contact our sales team at contact@arundhatidesheth.com with your order number and reason for return. We will arrange a fully insured reverse pickup at no cost to you within India. International returns may be subject to shipping fees.',
       },
     ],
   },
@@ -326,19 +298,6 @@ export default function FAQPage() {
                 textAlign: 'center',
               }}
             >
-              <span
-                style={{
-                  display: 'inline-block',
-                  marginBottom: '12px',
-                  color: 'var(--text-muted)',
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  fontSize: '0.7rem',
-                  fontWeight: 500,
-                }}
-              >
-                Still have questions?
-              </span>
               <h2
                 style={{
                   fontFamily: 'var(--font-serif)',
@@ -349,7 +308,7 @@ export default function FAQPage() {
                   lineHeight: 1.2,
                 }}
               >
-                Speak with Our Concierge
+                Still have questions?
               </h2>
               <p
                 style={{

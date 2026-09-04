@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
 import { StorefrontLayout } from '@/components/StorefrontLayout';
+import { Tracker } from '@/components/Tracker';
 
 export const metadata: Metadata = {
   title: 'Arundhati De-Sheth | Fine Jewellery Consultancy',
@@ -31,6 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <Tracker />
         <CartProvider>
           <StorefrontLayout>
             {children}

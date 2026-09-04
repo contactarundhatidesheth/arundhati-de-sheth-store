@@ -6,6 +6,40 @@ import Link from 'next/link';
 import { useCMSData } from '@/hooks/useCMSData';
 import { useCart } from '@/context/CartContext';
 import { ChevronDown, ChevronUp, ShieldCheck, Truck, BadgeCheck } from 'lucide-react';
+import { Metadata } from 'next';
+import { readDB } from '@/lib/db';
+
+export async function generateMetadata({ params }: { params: { handle: string } }): Promise<Metadata> {
+  const db = readDB();
+  const product = db.products.find(p => p.handle === params.handle);
+  
+  if (!product) {
+    return { title: 'Product Not Found | Arundhati De-Sheth' };
+  }
+  
+  return {
+    title: \`\${product.title} | Arundhati De-Sheth\`,
+    description: product.description.replace(/<[^>]+>/g, ''), // Strip HTML for description
+    openGraph: {
+      title: product.title,
+      description: product.description.replace(/<[^>]+>/g, ''),
+      images: [
+        {
+          url: product.images[0],
+          width: 800,
+          height: 800,
+          alt: product.title,
+        }
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: product.title,
+      description: product.description.replace(/<[^>]+>/g, ''),
+      images: [product.images[0]],
+    }
+  };
+}
 
 export default function ProductDetailPage({ params }: { params: { handle: string } }) {
   const { data, loading } = useCMSData();
@@ -143,6 +177,13 @@ export default function ProductDetailPage({ params }: { params: { handle: string
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inquire-btn"
+                onClick={() => {
+                  fetch('/api/track', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type: 'whatsapp_click', id: product.id })
+                  }).catch(() => {});
+                }}
               >
                 Inquire & Bespoke Commission
               </a>

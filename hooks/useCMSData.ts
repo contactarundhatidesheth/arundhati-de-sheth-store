@@ -15,7 +15,7 @@ export function useCMSData() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/db')
+    fetch(`/api/db?t=${Date.now()}`)
       .then(res => res.json())
       .then(json => {
         setData(json);

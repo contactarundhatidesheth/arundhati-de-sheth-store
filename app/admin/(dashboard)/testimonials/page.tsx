@@ -6,6 +6,7 @@ import SequenceEditor from '../SequenceEditor';
 
 export default function AdminTestimonials() {
   const db = readDB();
+  const sortedTestimonials = [...db.testimonials].sort((a, b) => (a.sequence || 999) - (b.sequence || 999));
   
   return (
     <div>
@@ -35,7 +36,7 @@ export default function AdminTestimonials() {
                 </td>
               </tr>
             ) : (
-              db.testimonials.map(t => (
+              sortedTestimonials.map(t => (
                 <tr key={t.id} style={{ borderBottom: '1px solid #eaeaea' }}>
                   <td style={{ padding: '16px 24px' }}>
                     <SequenceEditor collection="testimonials" id={t.id} initialSequence={t.sequence || 999} />

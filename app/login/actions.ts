@@ -51,3 +51,21 @@ export async function signup(formData: FormData) {
   revalidatePath('/', 'layout')
   redirect('/login?message=Check your email to continue sign in process')
 }
+
+export async function signInWithGoogle() {
+  const supabase = createClient()
+  
+  // Try to use NEXT_PUBLIC_SITE_URL, fallback to localhost for local dev
+  const origin = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+  
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${origin}/auth/callback`,
+    },
+  })
+
+  if (data.url) {
+    redirect(data.url)
+  }
+}

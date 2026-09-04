@@ -84,7 +84,7 @@ export default function CategoryAllProductsPage() {
         if (searchQuery && !p.title.toLowerCase().includes(searchQuery.toLowerCase())) return false;
 
         // Metal Filter
-        if (metalFilter && normalize(p.metal) !== normalize(metalFilter)) return false;
+        if (metalFilter && !normalize(p.metal).includes(normalize(metalFilter))) return false;
 
         return true;
       })

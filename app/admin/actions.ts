@@ -27,7 +27,10 @@ export async function saveProduct(formData: FormData) {
     finalImageUrl = await saveUpload(imageFile);
   }
 
+  const existingProduct = id ? db.products.find(p => p.id === id) : null;
+
   const product: Product = {
+    ...(existingProduct as any || {}),
     id: id || Date.now().toString(),
     handle: formData.get('handle') as string || Date.now().toString(),
     title: formData.get('title') as string,
@@ -37,10 +40,8 @@ export async function saveProduct(formData: FormData) {
     metal: formData.get('metal') as any,
     collection: formData.get('collection') as any,
     tags: (formData.get('tags') as string).split(',').map(t => t.trim()),
-    images: [finalImageUrl],
-    specs: {},
+    images: finalImageUrl ? [finalImageUrl] : (existingProduct?.images || []),
     isNew: formData.get('isNew') === 'on',
-    inStock: true,
     sequence: formData.get('sequence') ? parseInt(formData.get('sequence') as string) : 999
   };
   
@@ -80,11 +81,14 @@ export async function saveCatalogue(formData: FormData) {
     finalImageUrl = await saveUpload(imageFile);
   }
 
+  const existingCatalogue = id ? db.catalogues.find(c => c.id === id) : null;
+
   const catalogue: Catalogue = {
+    ...(existingCatalogue as any || {}),
     id: id || Date.now().toString(),
     title: formData.get('title') as string,
     description: formData.get('description') as string,
-    image: finalImageUrl,
+    image: finalImageUrl || existingCatalogue?.image || '',
     link: formData.get('link') as string,
     year: formData.get('year') as string,
     featured: formData.get('featured') === 'on',
@@ -126,13 +130,16 @@ export async function saveBlog(formData: FormData) {
     finalImageUrl = await saveUpload(imageFile);
   }
 
+  const existingBlog = id ? db.blogs.find(b => b.id === id) : null;
+
   const blog: Blog = {
+    ...(existingBlog as any || {}),
     id: id || Date.now().toString(),
     publication: formData.get('publication') as string,
     date: formData.get('date') as string,
     title: formData.get('title') as string,
     excerpt: formData.get('excerpt') as string,
-    image: finalImageUrl,
+    image: finalImageUrl || existingBlog?.image || '',
     sequence: formData.get('sequence') ? parseInt(formData.get('sequence') as string) : 999
   };
 
@@ -171,12 +178,15 @@ export async function saveTestimonial(formData: FormData) {
     finalImageUrl = await saveUpload(imageFile);
   }
 
+  const existingTestimonial = id ? db.testimonials.find(t => t.id === id) : null;
+
   const testimonial: Testimonial = {
+    ...(existingTestimonial as any || {}),
     id: id || Date.now().toString(),
     quote: formData.get('quote') as string,
     author: formData.get('author') as string,
     location: formData.get('location') as string,
-    image: finalImageUrl,
+    image: finalImageUrl || existingTestimonial?.image || '',
     sequence: formData.get('sequence') ? parseInt(formData.get('sequence') as string) : 999
   };
 
@@ -219,12 +229,16 @@ export async function saveTimelineEvent(formData: FormData) {
     }
   }
   
+  const existingEvent = id ? db.timelineEvents.find(t => t.id === id) : null;
+  const finalImages = parsedImages.length > 0 ? parsedImages : (existingEvent?.images || []);
+
   const timelineEvent = {
+    ...(existingEvent as any || {}),
     id: id || Date.now().toString(),
     date: formData.get('date') as string,
     title: formData.get('title') as string,
     description: formData.get('description') as string,
-    images: parsedImages,
+    images: finalImages,
     link: formData.get('link') as string || undefined,
     sequence: formData.get('sequence') ? parseInt(formData.get('sequence') as string) : 999
   };

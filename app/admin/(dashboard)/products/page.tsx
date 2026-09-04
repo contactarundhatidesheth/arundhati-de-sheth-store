@@ -6,6 +6,7 @@ import SequenceEditor from '../SequenceEditor';
 
 export default function AdminProducts() {
   const db = readDB();
+  const sortedProducts = [...db.products].sort((a, b) => (a.sequence || 999) - (b.sequence || 999));
 
   return (
     <div>
@@ -23,6 +24,7 @@ export default function AdminProducts() {
               <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Seq</th>
               <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Image</th>
               <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Product Name</th>
+              <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Metal</th>
               <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Collection</th>
               <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Price</th>
               <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Actions</th>
@@ -36,7 +38,7 @@ export default function AdminProducts() {
                 </td>
               </tr>
             ) : (
-              db.products.map(p => (
+              sortedProducts.map(p => (
                 <tr key={p.id} style={{ borderBottom: '1px solid #eaeaea' }}>
                   <td style={{ padding: '16px 24px' }}>
                     <SequenceEditor collection="products" id={p.id} initialSequence={p.sequence || 999} />
@@ -45,6 +47,7 @@ export default function AdminProducts() {
                     <img src={p.images[0]} alt={p.title} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
                   </td>
                   <td style={{ padding: '16px 24px', fontWeight: '500' }}>{p.title}</td>
+                  <td style={{ padding: '16px 24px', color: '#666' }}>{p.metal}</td>
                   <td style={{ padding: '16px 24px', color: '#666' }}>{p.collection}</td>
                   <td style={{ padding: '16px 24px', color: '#666' }}>₹{p.price.toLocaleString('en-IN')}</td>
                   <td style={{ padding: '16px 24px', display: 'flex', gap: '16px' }}>

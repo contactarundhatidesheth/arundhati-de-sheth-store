@@ -69,12 +69,21 @@ export interface TimelineEvent {
   sequence?: number;
 }
 
+export interface AnalyticsData {
+  visitors: number;
+  whatsappClicks: number;
+  productViews: Record<string, number>;
+  dailyVisitors: Record<string, number>;
+  referrers: Record<string, number>;
+}
+
 export interface Database {
   products: Product[];
   catalogues: Catalogue[];
   blogs: Blog[];
   testimonials: Testimonial[];
   timelineEvents: TimelineEvent[];
+  analytics: AnalyticsData;
 }
 
 const DB_PATH = path.join(process.cwd(), '.data', 'db.json');
@@ -90,6 +99,13 @@ export function initDB() {
     const initialData: Database = {
       products: [], // We will populate this from products.ts
       timelineEvents: [], // We will populate this from timeline.ts initially
+      analytics: {
+        visitors: 0,
+        whatsappClicks: 0,
+        productViews: {},
+        dailyVisitors: {},
+        referrers: {}
+      },
       catalogues: [
         {
           id: 'decodent',
@@ -235,6 +251,18 @@ export function readDB(): Database {
     } catch (e) {
       db.timelineEvents = [];
     }
+  }
+
+  // Auto-migrate: Add analytics if missing
+  if (!db.analytics) {
+    db.analytics = {
+      visitors: 0,
+      whatsappClicks: 0,
+      productViews: {},
+      dailyVisitors: {},
+      referrers: {}
+    };
+    migrated = true;
   }
 
   // Auto-migrate: Ensure sequence field exists on all items

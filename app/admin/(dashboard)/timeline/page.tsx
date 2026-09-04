@@ -6,6 +6,7 @@ import SequenceEditor from '../SequenceEditor';
 
 export default function AdminTimeline() {
   const db = readDB();
+  const sortedTimelineEvents = [...db.timelineEvents].sort((a, b) => (a.sequence || 999) - (b.sequence || 999));
   
   return (
     <div>
@@ -35,7 +36,7 @@ export default function AdminTimeline() {
                 </td>
               </tr>
             ) : (
-              db.timelineEvents.map(t => (
+              sortedTimelineEvents.map(t => (
                 <tr key={t.id} style={{ borderBottom: '1px solid #eaeaea' }}>
                   <td style={{ padding: '16px 24px' }}>
                     <SequenceEditor collection="timelineEvents" id={t.id} initialSequence={t.sequence || 999} />

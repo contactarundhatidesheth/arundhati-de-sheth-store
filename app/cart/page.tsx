@@ -3,15 +3,60 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import Script from 'next/script';
 import { useCart } from '@/context/CartContext';
 import { Lock, X } from 'lucide-react';
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, subtotal } = useCart();
+  const [isProcessing, setIsProcessing] = React.useState(false);
+
+  const handleCheckout = async () => {
+    setIsProcessing(true);
+    try {
+      const res = await fetch('/api/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: subtotal })
+      });
+      
+      const data = await res.json();
+      
+      if (!res.ok) throw new Error(data.error);
+
+      const options = {
+        key: data.keyId,
+        amount: subtotal * 100,
+        currency: "INR",
+        name: "Arundhati De-Sheth",
+        description: "Fine Jewellery Transaction",
+        order_id: data.orderId,
+        handler: function (response: any) {
+          // Future: Verify payment on backend and clear cart
+          alert('Payment Successful! Payment ID: ' + response.razorpay_payment_id);
+        },
+        theme: {
+          color: "#000000"
+        }
+      };
+
+      const rzp = new (window as any).Razorpay(options);
+      rzp.on('payment.failed', function (response: any) {
+        alert('Payment Failed: ' + response.error.description);
+      });
+      rzp.open();
+    } catch (err: any) {
+      alert('Secure Checkout is currently initializing or unavailable: ' + err.message);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   return (
-    <div style={{ minHeight: 'calc(100vh - 80px)', background: 'var(--bg-primary)', padding: '144px 24px 64px' }}>
-      <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+    <>
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
+      <div style={{ minHeight: 'calc(100vh - 80px)', background: 'var(--bg-primary)', padding: '144px 24px 64px' }}>
+        <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
         
         <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '64px' }}>
           
@@ -112,8 +157,13 @@ export default function CartPage() {
                 <span>₹{subtotal.toLocaleString('en-IN')}</span>
               </div>
 
-              <button className="btn-primary" style={{ width: '100%', marginBottom: '16px' }}>
-                Checkout
+              <button 
+                className="btn-primary" 
+                style={{ width: '100%', marginBottom: '16px', opacity: isProcessing ? 0.7 : 1 }}
+                onClick={handleCheckout}
+                disabled={isProcessing}
+              >
+                {isProcessing ? 'Processing...' : 'Checkout'}
               </button>
 
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
@@ -133,6 +183,7 @@ export default function CartPage() {
           }
         }
       `}</style>
-    </div>
+      </div>
+    </>
   );
 }

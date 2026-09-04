@@ -54,8 +54,7 @@ export default function ShippingPolicyPage() {
                   1. Dispatch Timelines
                 </h3>
                 <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.8' }}>
-                  <strong style={{ color: 'var(--text-main)', fontWeight: '500' }}>In-Stock Perennials:</strong> Orders are dispatched within 2 to 4 business days following payment verification.<br />
-                  <strong style={{ color: 'var(--text-main)', fontWeight: '500' }}>Made-to-Order & Custom Signet Rings:</strong> Require approximately 3 to 4 weeks of artisan casting, stone-setting, and hallmarking.
+                  In-Stock pieces ordered are dispatched within 2 to 4 business days following payment verification. Made-to-Order pieces Require approximately 3 to 4 weeks of artisan casting, stone-setting, and hallmarking.
                 </p>
               </div>
 
@@ -64,7 +63,7 @@ export default function ShippingPolicyPage() {
                   2. Domestic & International Shipping Rates
                 </h3>
                 <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.8' }}>
-                  Complimentary shipping is included for all orders across India. International orders are shipped via DHL Express / FedEx Insured Courier with real-time tracking provided upon dispatch.
+                  Complimentary shipping is included for all orders across India.
                 </p>
               </div>
 
@@ -72,14 +71,9 @@ export default function ShippingPolicyPage() {
                 <h3 style={{ fontSize: '1.2rem', marginBottom: '16px', color: 'var(--text-main)', fontFamily: 'var(--font-serif)', fontWeight: '400' }} id="returns">
                   3. Returns, Exchanges & Resizing
                 </h3>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.8', marginBottom: '16px' }}>
-                  Due to the bespoke and precious metal nature of our pieces:
+                <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.8' }}>
+                  All purchases made through us are considered final sale and are not eligible for return or exchange. In the unlikely event that a piece is received with a defect, damage, or any issue, the same must be brought to our attention within 48 hours of delivery. Please share details and supporting photographs within this period so that we may assess the concern and assist you accordingly.
                 </p>
-                <ul style={{ paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <li style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.7' }}>Standard pieces may be exchanged within 7 days of delivery in pristine, unworn condition with original seals intact.</li>
-                  <li style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.7' }}>Customized, engraved, or altered pieces (such as bespoke signet rings or resized bands) are final sale.</li>
-                  <li style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.7' }}>Complimentary ring resizing is available within 14 days of purchase for selected gold and silver ring styles.</li>
-                </ul>
               </div>
             </div>
 

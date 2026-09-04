@@ -6,6 +6,7 @@ import SequenceEditor from '../SequenceEditor';
 
 export default function AdminBlogs() {
   const db = readDB();
+  const sortedBlogs = [...db.blogs].sort((a, b) => (a.sequence || 999) - (b.sequence || 999));
   
   return (
     <div>
@@ -35,7 +36,7 @@ export default function AdminBlogs() {
                 </td>
               </tr>
             ) : (
-              db.blogs.map(b => (
+              sortedBlogs.map(b => (
                 <tr key={b.id} style={{ borderBottom: '1px solid #eaeaea' }}>
                   <td style={{ padding: '16px 24px' }}>
                     <SequenceEditor collection="blogs" id={b.id} initialSequence={b.sequence || 999} />

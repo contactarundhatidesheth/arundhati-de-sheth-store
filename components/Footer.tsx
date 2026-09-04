@@ -53,11 +53,6 @@ export const Footer: React.FC = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.95rem', color: 'var(--text-main)', lineHeight: '1.6' }}>
               <a href="mailto:contact@arundhatidesheth.com" style={{ textDecoration: 'none', color: 'inherit' }} className="nav-link">contact@arundhatidesheth.com</a>
               <p>+91 95818 22000</p>
-              <div style={{ marginTop: '12px' }}>
-                <p>Sashaa Global LLP, Ground Floor, 2A, Plot-15 Iindira Niwas</p>
-                <p>Avantikabai Gokhale Marg, New Bhatwadi, Girgaon</p>
-                <p>Mumbai City, Maharashtra, 400004</p>
-              </div>
               <div style={{ display: 'flex', gap: '20px', marginTop: '24px' }}>
                 <a href="#" style={{ color: 'var(--text-main)', transition: 'opacity 0.3s' }} className="hover-opacity" aria-label="Facebook">
                   <Facebook size={20} strokeWidth={1.5} />
