@@ -62,6 +62,7 @@ export const Header: React.FC = () => {
   }, [isMenuOpen]);
 
   return (
+    <>
       <div style={{
         position: 'fixed',
         top: isVisible ? '0' : '-140px',
