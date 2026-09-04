@@ -125,7 +125,7 @@ export default function ContactPage() {
         <Section background="primary" padding="none">
           <div style={{ width: '100%', height: '450px', filter: 'grayscale(100%) opacity(0.9)' }}>
             <iframe
-              src="https://maps.google.com/maps?q=Churchgate,Mumbai&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              src="https://maps.google.com/maps?q=Churchgate,Mumbai&t=&z=15&ie=UTF8&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0 }}
