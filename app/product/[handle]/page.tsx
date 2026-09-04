@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: { handle: string } 
   }
   
   return {
-    title: \`\${product.title} | Arundhati De-Sheth\`,
+    title: `${product.title} | Arundhati De-Sheth`,
     description: product.description.replace(/<[^>]+>/g, ''), // Strip HTML for description
     openGraph: {
       title: product.title,
