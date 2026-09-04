@@ -39,11 +39,9 @@ export const Hero: React.FC = () => {
   return (
     <section
       style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 0,
+        position: 'relative',
         width: '100%',
-        height: '100vh',
+        height: '100%',
         display: 'flex',
         overflow: 'hidden',
         background: '#000',

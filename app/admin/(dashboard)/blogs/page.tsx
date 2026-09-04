@@ -4,8 +4,8 @@ import { readDB } from '@/lib/db';
 import { deleteBlog } from '@/app/admin/actions';
 import SequenceEditor from '../SequenceEditor';
 
-export default function AdminBlogs() {
-  const db = readDB();
+export default async function AdminBlogs() {
+  const db = await readDB();
   const sortedBlogs = [...db.blogs].sort((a, b) => (a.sequence || 999) - (b.sequence || 999));
   
   return (
@@ -39,7 +39,7 @@ export default function AdminBlogs() {
               sortedBlogs.map(b => (
                 <tr key={b.id} style={{ borderBottom: '1px solid #eaeaea' }}>
                   <td style={{ padding: '16px 24px' }}>
-                    <SequenceEditor collection="blogs" id={b.id} initialSequence={b.sequence || 999} />
+                    <SequenceEditor collection="blogs" id={b.id} initialSequence={b.sequence ?? ''} />
                   </td>
                   <td style={{ padding: '16px 24px' }}>
                     <img src={b.image} alt={b.title} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />

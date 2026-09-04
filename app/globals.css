@@ -97,6 +97,9 @@ button {
   background: none;
   font-family: inherit;
   transition: var(--transition-smooth);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 img {

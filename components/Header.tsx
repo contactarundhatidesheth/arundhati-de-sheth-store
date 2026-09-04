@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ShoppingBag, User, Menu, X } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { createClient } from '@/utils/supabase/client';
 
 // Pages with a light/white background at the top — logo must always be black
 const LIGHT_BG_PATHS = ['/category/ephemerals', '/category/perennials', '/shipping', '/terms', '/privacy', '/payment', '/press', '/cart', '/product', '/shop-the-look', '/pages/jewelry-lookbooks', '/timeline'];
@@ -15,6 +16,18 @@ export const Header: React.FC = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   // Force opaque white header + black logo on light-background pages
   const isLightPage = LIGHT_BG_PATHS.some((p) => pathname.startsWith(p));
@@ -87,7 +100,7 @@ export const Header: React.FC = () => {
       }}>
         {/* Left: Menu & Links */}
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '32px' }}>
-          <button onClick={() => setIsMenuOpen(true)} style={{ color: 'inherit' }}>
+          <button onClick={() => setIsMenuOpen(true)} style={{ color: 'inherit', background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', display: 'flex' }}>
             <Menu size={28} strokeWidth={1.5} />
           </button>
         </div>
@@ -111,11 +124,11 @@ export const Header: React.FC = () => {
 
         {/* Right: Cart & User */}
         <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '24px' }}>
-          <Link href="/login" style={{ display: 'flex', alignItems: 'center', color: 'inherit' }} className="hide-on-mobile">
+          <Link href={user ? "/account" : "/login"} style={{ display: 'flex', alignItems: 'center', color: 'inherit', background: 'transparent', border: 'none', padding: 0 }} className="hide-on-mobile">
             <User size={20} strokeWidth={1.5} />
           </Link>
           <button 
-            style={{ position: 'relative', display: 'flex', alignItems: 'center', color: 'inherit' }}
+            style={{ position: 'relative', display: 'flex', alignItems: 'center', color: 'inherit', background: 'transparent', border: 'none', padding: 0, cursor: 'pointer' }}
             onClick={() => setIsCartOpen(true)}
           >
             <ShoppingBag size={20} strokeWidth={1.5} />
@@ -149,8 +162,9 @@ export const Header: React.FC = () => {
         left: 0,
         width: '100vw',
         height: '100vh',
-        background: 'rgba(0, 0, 0, 0.85)',
-        backdropFilter: 'blur(8px)',
+        background: 'rgba(10, 10, 10, 0.95)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
         zIndex: 1000,
         transform: isMenuOpen ? 'translateX(0)' : 'translateX(100%)',
         transition: 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)',
@@ -159,7 +173,7 @@ export const Header: React.FC = () => {
         overflowY: 'auto',
       }}>
         <div style={{ height: '80px', flexShrink: 0, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '0 32px' }}>
-          <button onClick={() => setIsMenuOpen(false)}>
+          <button onClick={() => setIsMenuOpen(false)} style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', display: 'flex' }}>
             <X size={32} strokeWidth={1} color="#ffffff" />
           </button>
         </div>

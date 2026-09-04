@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { type, id, referrer } = body;
     
-    const db = readDB();
+    const db = await readDB();
     if (!db.analytics) return NextResponse.json({ error: 'DB not ready' }, { status: 500 });
     
     // Get today's date string (e.g. YYYY-MM-DD)

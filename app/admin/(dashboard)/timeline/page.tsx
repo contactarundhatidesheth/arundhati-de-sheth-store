@@ -4,8 +4,8 @@ import { readDB } from '@/lib/db';
 import { deleteTimelineEvent } from '@/app/admin/actions';
 import SequenceEditor from '../SequenceEditor';
 
-export default function AdminTimeline() {
-  const db = readDB();
+export default async function AdminTimeline() {
+  const db = await readDB();
   const sortedTimelineEvents = [...db.timelineEvents].sort((a, b) => (a.sequence || 999) - (b.sequence || 999));
   
   return (
@@ -39,7 +39,7 @@ export default function AdminTimeline() {
               sortedTimelineEvents.map(t => (
                 <tr key={t.id} style={{ borderBottom: '1px solid #eaeaea' }}>
                   <td style={{ padding: '16px 24px' }}>
-                    <SequenceEditor collection="timelineEvents" id={t.id} initialSequence={t.sequence || 999} />
+                    <SequenceEditor collection="timelineEvents" id={t.id} initialSequence={t.sequence ?? ''} />
                   </td>
                   <td style={{ padding: '16px 24px' }}>
                     <div style={{ display: 'flex', gap: '8px' }}>

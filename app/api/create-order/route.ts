@@ -1,8 +1,16 @@
 import { NextResponse } from 'next/server';
+import { createClient } from '@/utils/supabase/server';
 
 export async function POST(req: Request) {
   try {
-    const { amount } = await req.json();
+    const { amount, cartItems, shippingAddress } = await req.json();
+
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
     // Check if keys exist
     if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
@@ -30,6 +38,22 @@ export async function POST(req: Request) {
 
     if (!response.ok) {
       throw new Error(data.error?.description || 'Razorpay Order Creation Failed');
+    }
+
+    // Insert pending order into Supabase
+    const { error: dbError } = await supabase.from('orders').insert({
+      user_id: user.id,
+      user_email: user.email,
+      razorpay_order_id: data.id,
+      amount: amount,
+      status: 'Pending',
+      shipping_address: shippingAddress,
+      items: cartItems
+    });
+
+    if (dbError) {
+      console.error('Database Error:', dbError);
+      throw new Error('Failed to save order to database');
     }
 
     return NextResponse.json({ orderId: data.id, keyId: process.env.RAZORPAY_KEY_ID });

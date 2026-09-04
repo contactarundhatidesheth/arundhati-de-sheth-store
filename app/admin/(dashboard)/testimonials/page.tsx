@@ -4,8 +4,8 @@ import { readDB } from '@/lib/db';
 import { deleteTestimonial } from '@/app/admin/actions';
 import SequenceEditor from '../SequenceEditor';
 
-export default function AdminTestimonials() {
-  const db = readDB();
+export default async function AdminTestimonials() {
+  const db = await readDB();
   const sortedTestimonials = [...db.testimonials].sort((a, b) => (a.sequence || 999) - (b.sequence || 999));
   
   return (
@@ -39,7 +39,7 @@ export default function AdminTestimonials() {
               sortedTestimonials.map(t => (
                 <tr key={t.id} style={{ borderBottom: '1px solid #eaeaea' }}>
                   <td style={{ padding: '16px 24px' }}>
-                    <SequenceEditor collection="testimonials" id={t.id} initialSequence={t.sequence || 999} />
+                    <SequenceEditor collection="testimonials" id={t.id} initialSequence={t.sequence ?? ''} />
                   </td>
                   <td style={{ padding: '16px 24px' }}>
                     <img src={t.image} alt={t.author} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '50%' }} />

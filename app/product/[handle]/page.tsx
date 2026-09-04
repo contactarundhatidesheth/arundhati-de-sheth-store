@@ -3,7 +3,7 @@ import { readDB } from '@/lib/db';
 import ProductDetailClient from './ProductDetailClient';
 
 export async function generateMetadata({ params }: { params: { handle: string } }): Promise<Metadata> {
-  const db = readDB();
+  const db = await readDB();
   const product = db.products.find(p => p.handle === params.handle);
   
   if (!product) {
@@ -34,6 +34,7 @@ export async function generateMetadata({ params }: { params: { handle: string } 
   };
 }
 
-export default function ProductDetailPage({ params }: { params: { handle: string } }) {
+export default async function ProductPage({ params }: { params: { handle: string } }) {
+  const db = await readDB();
   return <ProductDetailClient params={params} />;
 }

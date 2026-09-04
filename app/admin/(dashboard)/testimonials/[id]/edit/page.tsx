@@ -4,8 +4,8 @@ import { notFound } from 'next/navigation';
 import { readDB } from '@/lib/db';
 import { saveTestimonial } from '@/app/admin/actions';
 
-export default function EditTestimonialPage({ params }: { params: { id: string } }) {
-  const db = readDB();
+export default async function EditTestimonialPage({ params }: { params: { id: string } }) {
+  const db = await readDB();
   const testimonial = db.testimonials.find(t => t.id === params.id);
   
   if (!testimonial) {

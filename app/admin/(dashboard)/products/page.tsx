@@ -4,8 +4,8 @@ import { readDB } from '@/lib/db';
 import { deleteProduct } from '@/app/admin/actions';
 import SequenceEditor from '../SequenceEditor';
 
-export default function AdminProducts() {
-  const db = readDB();
+export default async function AdminProducts() {
+  const db = await readDB();
   const sortedProducts = [...db.products].sort((a, b) => (a.sequence || 999) - (b.sequence || 999));
 
   return (
@@ -41,7 +41,7 @@ export default function AdminProducts() {
               sortedProducts.map(p => (
                 <tr key={p.id} style={{ borderBottom: '1px solid #eaeaea' }}>
                   <td style={{ padding: '16px 24px' }}>
-                    <SequenceEditor collection="products" id={p.id} initialSequence={p.sequence || 999} />
+                    <SequenceEditor collection="products" id={p.id} initialSequence={p.sequence ?? ''} />
                   </td>
                   <td style={{ padding: '16px 24px' }}>
                     <img src={p.images[0]} alt={p.title} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />

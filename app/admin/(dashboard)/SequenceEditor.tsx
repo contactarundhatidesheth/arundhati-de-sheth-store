@@ -3,7 +3,7 @@
 import React, { useTransition } from 'react';
 import { updateSequence } from '@/app/admin/actions';
 
-export default function SequenceEditor({ collection, id, initialSequence }: { collection: string, id: string, initialSequence: number }) {
+export default function SequenceEditor({ collection, id, initialSequence }: { collection: string, id: string, initialSequence: number | '' }) {
   const [isPending, startTransition] = useTransition();
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {

@@ -5,11 +5,26 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
 import { useCart } from '@/context/CartContext';
-import { Lock, X } from 'lucide-react';
+import { Lock, X, LogIn } from 'lucide-react';
+import { createClient } from '@/utils/supabase/client';
+import { useRouter } from 'next/navigation';
 
 export default function CartPage() {
-  const { cart, removeFromCart, updateQuantity, subtotal } = useCart();
+  const { cart, removeFromCart, updateQuantity, subtotal, clearCart } = useCart();
   const [isProcessing, setIsProcessing] = React.useState(false);
+  const [user, setUser] = React.useState<any>(null);
+  const router = useRouter();
+
+  React.useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleCheckout = async () => {
     setIsProcessing(true);
@@ -17,7 +32,11 @@ export default function CartPage() {
       const res = await fetch('/api/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: subtotal })
+        body: JSON.stringify({ 
+          amount: subtotal,
+          cartItems: cart,
+          shippingAddress: user?.user_metadata?.shipping_address || {}
+        })
       });
       
       const data = await res.json();
@@ -31,9 +50,25 @@ export default function CartPage() {
         name: "Arundhati De-Sheth",
         description: "Fine Jewellery Transaction",
         order_id: data.orderId,
-        handler: function (response: any) {
-          // Future: Verify payment on backend and clear cart
-          alert('Payment Successful! Payment ID: ' + response.razorpay_payment_id);
+        handler: async function (response: any) {
+          try {
+            const verifyRes = await fetch('/api/verify-payment', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(response)
+            });
+            const verifyData = await verifyRes.json();
+            
+            if (verifyRes.ok) {
+              alert('Payment Successful! Your order has been placed.');
+              clearCart();
+              router.push('/account');
+            } else {
+              alert('Payment Verification Failed: ' + verifyData.error);
+            }
+          } catch (err) {
+            alert('Error verifying payment.');
+          }
         },
         theme: {
           color: "#000000"
@@ -157,14 +192,25 @@ export default function CartPage() {
                 <span>₹{subtotal.toLocaleString('en-IN')}</span>
               </div>
 
-              <button 
-                className="btn-primary" 
-                style={{ width: '100%', marginBottom: '16px', opacity: isProcessing ? 0.7 : 1 }}
-                onClick={handleCheckout}
-                disabled={isProcessing}
-              >
-                {isProcessing ? 'Processing...' : 'Checkout'}
-              </button>
+              {user ? (
+                <button 
+                  className="btn-primary" 
+                  style={{ width: '100%', marginBottom: '16px', opacity: isProcessing ? 0.7 : 1 }}
+                  onClick={handleCheckout}
+                  disabled={isProcessing}
+                >
+                  {isProcessing ? 'Processing...' : 'Checkout'}
+                </button>
+              ) : (
+                <button 
+                  className="btn-primary" 
+                  style={{ width: '100%', marginBottom: '16px', display: 'flex', gap: '8px', alignItems: 'center' }}
+                  onClick={() => router.push('/login')}
+                >
+                  <LogIn size={18} />
+                  Login to Checkout
+                </button>
+              )}
 
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                 <Lock size={14} />

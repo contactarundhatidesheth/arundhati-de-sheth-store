@@ -21,8 +21,15 @@ export async function login(formData: FormData) {
     return error.message
   }
 
+  const ADMIN_EMAILS = ['arundhati@ads.com', 'contactarundhatidesheth@gmail.com'];
+  
   revalidatePath('/', 'layout')
-  redirect('/category/all-products') // Redirect to shop after login
+  
+  if (ADMIN_EMAILS.includes(email)) {
+    redirect('/admin') // Redirect to admin dashboard
+  } else {
+    redirect('/account') // Redirect to private dashboard after login
+  }
 }
 
 export async function signup(formData: FormData) {

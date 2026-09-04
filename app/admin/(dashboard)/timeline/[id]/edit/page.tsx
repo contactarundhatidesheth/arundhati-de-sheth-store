@@ -4,8 +4,8 @@ import { notFound } from 'next/navigation';
 import { readDB } from '@/lib/db';
 import { saveTimelineEvent } from '@/app/admin/actions';
 
-export default function EditTimelinePage({ params }: { params: { id: string } }) {
-  const db = readDB();
+export default async function EditTimelinePage({ params }: { params: { id: string } }) {
+  const db = await readDB();
   const event = db.timelineEvents.find(t => t.id === params.id);
   
   if (!event) {

@@ -2,8 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import { readDB } from '@/lib/db';
 
-export default function AdminDashboard() {
-  const db = readDB();
+export default async function AdminDashboard() {
+  const db = await readDB();
   
   const totalProducts = db.products.length;
   const totalCatalogues = db.catalogues.length;

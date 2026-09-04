@@ -4,8 +4,8 @@ import { readDB } from '@/lib/db';
 import { deleteCatalogue } from '@/app/admin/actions';
 import SequenceEditor from '../SequenceEditor';
 
-export default function AdminCatalogues() {
-  const db = readDB();
+export default async function AdminCatalogues() {
+  const db = await readDB();
   const sortedCatalogues = [...db.catalogues].sort((a, b) => (a.sequence || 999) - (b.sequence || 999));
   
   return (
@@ -39,7 +39,7 @@ export default function AdminCatalogues() {
               sortedCatalogues.map(c => (
                 <tr key={c.id} style={{ borderBottom: '1px solid #eaeaea' }}>
                   <td style={{ padding: '16px 24px' }}>
-                    <SequenceEditor collection="catalogues" id={c.id} initialSequence={c.sequence || 999} />
+                    <SequenceEditor collection="catalogues" id={c.id} initialSequence={c.sequence ?? ''} />
                   </td>
                   <td style={{ padding: '16px 24px' }}>
                     <img src={c.image} alt={c.title} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />

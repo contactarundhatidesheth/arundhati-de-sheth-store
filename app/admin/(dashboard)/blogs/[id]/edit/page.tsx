@@ -4,8 +4,8 @@ import { notFound } from 'next/navigation';
 import { readDB } from '@/lib/db';
 import { saveBlog } from '@/app/admin/actions';
 
-export default function EditBlogPage({ params }: { params: { id: string } }) {
-  const db = readDB();
+export default async function EditBlogPage({ params }: { params: { id: string } }) {
+  const db = await readDB();
   const blog = db.blogs.find(b => b.id === params.id);
   
   if (!blog) {

@@ -4,8 +4,8 @@ import { notFound } from 'next/navigation';
 import { readDB } from '@/lib/db';
 import { saveCatalogue } from '@/app/admin/actions';
 
-export default function EditCataloguePage({ params }: { params: { id: string } }) {
-  const db = readDB();
+export default async function EditCataloguePage({ params }: { params: { id: string } }) {
+  const db = await readDB();
   const catalogue = db.catalogues.find(c => c.id === params.id);
   
   if (!catalogue) {

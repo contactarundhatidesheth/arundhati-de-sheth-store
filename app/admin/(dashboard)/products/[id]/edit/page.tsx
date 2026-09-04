@@ -5,8 +5,8 @@ import { readDB } from '@/lib/db';
 import { saveProduct } from '@/app/admin/actions';
 import AdminRichText from '@/app/admin/AdminRichText';
 
-export default function EditProductPage({ params }: { params: { id: string } }) {
-  const db = readDB();
+export default async function EditProductPage({ params }: { params: { id: string } }) {
+  const db = await readDB();
   const product = db.products.find(p => p.id === params.id);
   
   if (!product) {
