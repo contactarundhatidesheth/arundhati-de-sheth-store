@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { readDB, writeDB } from '@/lib/db';
+import { readDB } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
       db.analytics.whatsappClicks += 1;
     }
 
-    writeDB(db);
+    // TODO: Implement Supabase analytics tracking
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to track' }, { status: 500 });
