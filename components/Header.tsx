@@ -107,7 +107,7 @@ export const Header: React.FC = () => {
 
         {/* Center: Logo */}
         <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <Link href="/" style={{ display: 'block', width: '220px' }}>
+          <Link href="/" className="logo-wrapper" style={{ display: 'block' }}>
             <img 
               src="https://www.arundhatidesheth.com/cdn/shop/files/111.png?v=1708868785" 
               alt="Arundhati De-Sheth" 
@@ -191,6 +191,14 @@ export const Header: React.FC = () => {
         @media (max-width: 768px) {
           .hide-on-mobile {
             display: none;
+          }
+          .logo-wrapper {
+            width: 140px !important;
+          }
+        }
+        @media (min-width: 769px) {
+          .logo-wrapper {
+            width: 200px;
           }
         }
       `}</style>
