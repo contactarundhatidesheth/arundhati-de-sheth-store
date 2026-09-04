@@ -109,9 +109,9 @@ export default function TimelineClient({ timelineEvents }: { timelineEvents: any
                   height: 'calc(100vh - 80px)'
                 }}
               >
-                <div style={{ width: '55%', height: '75vh', display: 'flex', gap: '20px', background: 'transparent', overflowX: 'auto', overflowY: 'hidden', paddingBottom: '0', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                <div style={{ width: '55%', height: '75vh', display: 'flex', gap: '20px', background: 'transparent', overflow: 'hidden', paddingBottom: '0' }}>
                   {event.images && event.images.length > 0 && event.images.map((imgSrc: string, imgIndex: number) => (
-                    <div key={imgIndex} style={{ position: 'relative', height: '100%', minWidth: event.images.length > 1 ? '85%' : '100%', flexShrink: 0, overflow: 'hidden' }}>
+                    <div key={imgIndex} style={{ position: 'relative', height: '100%', flex: 1, minWidth: 0, overflow: 'hidden' }}>
                       <Image 
                         src={imgSrc}
                         alt={`${event.title} image ${imgIndex + 1}`}
