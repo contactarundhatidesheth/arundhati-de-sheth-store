@@ -39,6 +39,8 @@ export default function CategoryAllProductsPage() {
   const [step, setStep]             = useState<Step>('collection');
   const [selectedCollection, setSelectedCollection] = useState<string | null>(null);
   const [selectedType, setSelectedType]             = useState<string | null>(null); // null = All
+  const [searchQuery, setSearchQuery]               = useState('');
+  const [metalFilter, setMetalFilter]               = useState<string | null>(null);
 
   if (loading) return <div style={{ minHeight: '100vh', background: '#FFF' }} />;
 
@@ -64,14 +66,27 @@ export default function CategoryAllProductsPage() {
   /* Final filtered products */
   const filteredProducts = selectedCollection
     ? PRODUCTS.filter(p => {
+        // Collection Filter
         if (!normalize(p.collection).includes(normalize(selectedCollection))) return false;
-        if (!selectedType) return true;
-        if (selectedType === 'COLLAB') {
-          return normalize(p.collection).includes('COLLAB') || 
-                 normalize(p.category).includes('COLLAB') || 
-                 normalize(p.title).includes('COLLAB');
+        
+        // Type Filter
+        if (selectedType) {
+          if (selectedType === 'COLLAB') {
+            if (!(normalize(p.collection).includes('COLLAB') || 
+                  normalize(p.category).includes('COLLAB') || 
+                  normalize(p.title).includes('COLLAB'))) return false;
+          } else {
+            if (normalize(p.category) !== normalize(selectedType)) return false;
+          }
         }
-        return normalize(p.category) === normalize(selectedType);
+
+        // Search Filter
+        if (searchQuery && !p.title.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+
+        // Metal Filter
+        if (metalFilter && normalize(p.metal) !== normalize(metalFilter)) return false;
+
+        return true;
       })
     : [];
 
@@ -87,6 +102,8 @@ export default function CategoryAllProductsPage() {
       setStep('collection'); 
       setSelectedCollection(null); 
       setSelectedType(null);
+      setSearchQuery('');
+      setMetalFilter(null);
     }
   };
 
@@ -109,12 +126,24 @@ export default function CategoryAllProductsPage() {
           alt={step === 'collection' ? 'Explore Collections' : collectionLabel}
           fill
           priority
-          style={{ objectFit: 'cover', objectPosition: 'center' }}
+          style={{ objectFit: 'cover', objectPosition: 'center', zIndex: 0 }}
         />
+        {/* Gradient Overlay for Text Legibility */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0) 100%)', zIndex: 1, pointerEvents: 'none' }} />
         <div style={{ position: 'relative', zIndex: 10, padding: '0 clamp(20px, 5vw, 60px) clamp(30px, 5vw, 60px)', width: '100%' }}>
           <h1 style={{ fontSize: 'clamp(2.5rem, 8vw, 5.5rem)', fontWeight: '300', marginBottom: '0', fontFamily: 'var(--font-serif)', fontStyle: 'italic', lineHeight: '1', letterSpacing: '0.02em', color: '#FFFFFF', textShadow: '0 4px 12px rgba(0,0,0,0.4)' }}>
             {step === 'collection' ? 'Explore' : collectionLabel}
           </h1>
+          {step === 'products' && selectedCollection === 'EPHEMERALS' && (
+            <p style={{ color: '#FFFFFF', fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', marginTop: '20px', maxWidth: '600px', lineHeight: '1.6', letterSpacing: '0.05em', fontWeight: 300, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+              Existing only briefly, one of a kind pieces created in limited moments
+            </p>
+          )}
+          {step === 'products' && selectedCollection === 'PERENNIALS' && (
+            <p style={{ color: '#FFFFFF', fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', marginTop: '20px', maxWidth: '600px', lineHeight: '1.6', letterSpacing: '0.05em', fontWeight: 300, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+              Lasting a very long time, or happening repeatedly or all the time; recurrent.
+            </p>
+          )}
         </div>
       </section>
 
@@ -185,29 +214,46 @@ export default function CategoryAllProductsPage() {
       {step === 'products' && (
         <div style={{ padding: '48px 40px 120px' }}>
           {/* Filters Bar */}
-          {typesInCollection.length > 0 && (
-            <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '48px' }}>
-              <button 
-                onClick={() => setSelectedType(null)}
-                style={{ 
-                  background: 'none', 
-                  border: 'none', 
-                  fontSize: '0.75rem', 
-                  letterSpacing: '0.15em', 
-                  textTransform: 'uppercase', 
-                  cursor: 'pointer', 
-                  padding: '8px 16px', 
-                  borderBottom: selectedType === null ? '1px solid #000' : '1px solid transparent',
-                  color: selectedType === null ? '#000' : '#888',
-                  transition: 'color 0.2s, border-color 0.2s'
-                }}
-              >
-                All Pieces
-              </button>
-              {typesInCollection.map(type => (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', marginBottom: '48px' }}>
+            
+            {/* Search & Metal Controls */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', borderBottom: '1px solid #eaeaea', paddingBottom: '16px' }}>
+              <input 
+                type="text" 
+                placeholder="Search pieces..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                style={{ padding: '12px 16px', border: '1px solid #eaeaea', borderRadius: '4px', outline: 'none', fontSize: '0.85rem', width: '250px' }}
+              />
+              <div style={{ display: 'flex', gap: '12px' }}>
+                {['Gold', 'Silver'].map(metal => (
+                  <button 
+                    key={metal}
+                    onClick={() => setMetalFilter(metalFilter === metal ? null : metal)}
+                    style={{ 
+                      background: metalFilter === metal ? '#111' : 'transparent',
+                      color: metalFilter === metal ? '#fff' : '#666',
+                      border: '1px solid',
+                      borderColor: metalFilter === metal ? '#111' : '#eaeaea',
+                      padding: '8px 16px',
+                      borderRadius: '4px',
+                      fontSize: '0.75rem',
+                      textTransform: 'uppercase',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    {metal}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Category Tabs */}
+            {typesInCollection.length > 0 && (
+              <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '16px' }}>
                 <button 
-                  key={type.id}
-                  onClick={() => setSelectedType(type.id)}
+                  onClick={() => setSelectedType(null)}
                   style={{ 
                     background: 'none', 
                     border: 'none', 
@@ -216,23 +262,43 @@ export default function CategoryAllProductsPage() {
                     textTransform: 'uppercase', 
                     cursor: 'pointer', 
                     padding: '8px 16px', 
-                    borderBottom: selectedType === type.id ? '1px solid #000' : '1px solid transparent',
-                    color: selectedType === type.id ? '#000' : '#888',
+                    borderBottom: selectedType === null ? '1px solid #000' : '1px solid transparent',
+                    color: selectedType === null ? '#000' : '#888',
                     transition: 'color 0.2s, border-color 0.2s'
                   }}
                 >
-                  {type.label}
+                  All Pieces
                 </button>
-              ))}
-            </div>
-          )}
+                {typesInCollection.map(type => (
+                  <button 
+                    key={type.id}
+                    onClick={() => setSelectedType(type.id)}
+                    style={{ 
+                      background: 'none', 
+                      border: 'none', 
+                      fontSize: '0.75rem', 
+                      letterSpacing: '0.15em', 
+                      textTransform: 'uppercase', 
+                      cursor: 'pointer', 
+                      padding: '8px 16px', 
+                      borderBottom: selectedType === type.id ? '1px solid #000' : '1px solid transparent',
+                      color: selectedType === type.id ? '#000' : '#888',
+                      transition: 'color 0.2s, border-color 0.2s'
+                    }}
+                  >
+                    {type.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
           {filteredProducts.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '80px 0', color: '#888' }}>
               <p>No pieces available in this selection.</p>
             </div>
           ) : (
-            <div className="product-5col" style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '40px 16px', maxWidth: '2400px', margin: '0 auto' }}>
+            <div className="product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '40px 16px', maxWidth: '2400px', margin: '0 auto' }}>
               {filteredProducts.map(product => (
                 <Link href={`/product/${product.handle}`} key={product.id} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
                   <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', marginBottom: '14px' }}>
@@ -262,13 +328,13 @@ export default function CategoryAllProductsPage() {
         .product-img:hover { transform: scale(1.05); }
         .collection-card:hover .collection-arrow { opacity: 1 !important; }
 
-        @media (max-width: 1400px) { .product-5col { grid-template-columns: repeat(4,1fr) !important; } }
-        @media (max-width: 1100px) { .product-5col { grid-template-columns: repeat(3,1fr) !important; } }
+        @media (max-width: 1100px) { .product-grid { grid-template-columns: repeat(3,1fr) !important; } }
+        @media (max-width: 900px) { .product-grid { grid-template-columns: repeat(3,1fr) !important; } }
         @media (max-width: 768px) {
           .shop-wrapper { padding-top: 80px !important; }
           .shop-wrapper > div { padding: 32px 16px 80px !important; }
           .collection-grid { grid-template-columns: 1fr !important; }
-          .product-5col { grid-template-columns: repeat(2,1fr) !important; gap: 24px 10px !important; }
+          .product-grid { grid-template-columns: repeat(2,1fr) !important; gap: 24px 10px !important; }
         }
         /* Removed 420px 1-column breakpoint to maintain 2-columns on small screens */
       `}</style>

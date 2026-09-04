@@ -51,17 +51,18 @@ export default function ProductDetailPage({ params }: { params: { handle: string
         {/* Left: Image Gallery with thumbnail switcher */}
         <div className="product-image-panel" style={{ display: 'flex', flexDirection: 'column', background: 'var(--bg-surface)' }}>
           {/* Main Image */}
-          <div 
-            className="main-image-container" 
-            style={{ position: 'relative', width: '100%', aspectRatio: '4/5', overflow: 'hidden', cursor: 'crosshair' }}
-            onMouseMove={(e) => {
-              const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-              const x = ((e.clientX - left) / width) * 100;
-              const y = ((e.clientY - top) / height) * 100;
-              e.currentTarget.style.setProperty('--x', `${x}%`);
-              e.currentTarget.style.setProperty('--y', `${y}%`);
-            }}
-          >
+          <div style={{ width: '100%', padding: '40px 80px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div 
+              className="main-image-container" 
+              style={{ position: 'relative', width: '100%', maxWidth: '600px', aspectRatio: '4/5', overflow: 'hidden', cursor: 'crosshair' }}
+              onMouseMove={(e) => {
+                const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+                const x = ((e.clientX - left) / width) * 100;
+                const y = ((e.clientY - top) / height) * 100;
+                e.currentTarget.style.setProperty('--x', `${x}%`);
+                e.currentTarget.style.setProperty('--y', `${y}%`);
+              }}
+            >
             <Image
               src={product.images[activeImage]}
               alt={`${product.title} - View ${activeImage + 1}`}
@@ -70,6 +71,7 @@ export default function ProductDetailPage({ params }: { params: { handle: string
               className="main-product-image"
               priority
             />
+          </div>
           </div>
           {/* Thumbnails */}
           {product.images.length > 1 && (
@@ -121,9 +123,10 @@ export default function ProductDetailPage({ params }: { params: { handle: string
                 <p style={{ fontSize: '17.6px', color: 'var(--text-main)', letterSpacing: '0.88px', fontWeight: '500', marginBottom: '16px' }}>
                   ₹ {product.price.toLocaleString('en-IN')}
                 </p>
-                <p style={{ fontSize: '13.5px', color: 'var(--text-muted)', fontWeight: '300', lineHeight: '1.6' }}>
-                  {product.description}
-                </p>
+                <div 
+                  style={{ fontSize: '13.5px', color: 'var(--text-muted)', fontWeight: '300', lineHeight: '1.6', margin: 0, padding: 0 }}
+                  dangerouslySetInnerHTML={{ __html: product.description || '' }}
+                />
               </div>
             </div>
 

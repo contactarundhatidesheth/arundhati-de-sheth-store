@@ -26,6 +26,7 @@ export interface Product {
   isBespoke?: boolean;
   isPriceOnRequest?: boolean;
   inStock: boolean;
+  sequence?: number;
 }
 
 export interface Catalogue {
@@ -36,6 +37,7 @@ export interface Catalogue {
   link: string;
   year: string;
   featured: boolean;
+  sequence?: number;
 }
 
 export interface Blog {
@@ -45,6 +47,7 @@ export interface Blog {
   title: string;
   excerpt: string;
   image: string;
+  sequence?: number;
 }
 
 export interface Testimonial {
@@ -53,6 +56,17 @@ export interface Testimonial {
   author: string;
   location: string;
   image: string;
+  sequence?: number;
+}
+
+export interface TimelineEvent {
+  id: string;
+  date: string;
+  title: string;
+  description: string;
+  images: string[];
+  link?: string;
+  sequence?: number;
 }
 
 export interface Database {
@@ -60,6 +74,7 @@ export interface Database {
   catalogues: Catalogue[];
   blogs: Blog[];
   testimonials: Testimonial[];
+  timelineEvents: TimelineEvent[];
 }
 
 const DB_PATH = path.join(process.cwd(), '.data', 'db.json');
@@ -74,6 +89,7 @@ export function initDB() {
   if (!fs.existsSync(DB_PATH)) {
     const initialData: Database = {
       products: [], // We will populate this from products.ts
+      timelineEvents: [], // We will populate this from timeline.ts initially
       catalogues: [
         {
           id: 'decodent',
@@ -196,6 +212,10 @@ export function initDB() {
     const productsData = require('./data/products').PRODUCTS;
     initialData.products = productsData;
     
+    // Import TIMELINE manually to seed
+    const timelineData = require('./data/timeline').TIMELINE_EVENTS;
+    initialData.timelineEvents = timelineData;
+    
     fs.writeFileSync(DB_PATH, JSON.stringify(initialData, null, 2), 'utf-8');
   }
 }
@@ -203,7 +223,44 @@ export function initDB() {
 export function readDB(): Database {
   initDB();
   const data = fs.readFileSync(DB_PATH, 'utf-8');
-  return JSON.parse(data);
+  const db = JSON.parse(data);
+  let migrated = false;
+
+  // Auto-migrate: Add timelineEvents if missing
+  if (!db.timelineEvents) {
+    try {
+      const timelineData = require('./data/timeline').TIMELINE_EVENTS;
+      db.timelineEvents = timelineData.map((t: any, i: number) => ({...t, sequence: i + 1}));
+      migrated = true;
+    } catch (e) {
+      db.timelineEvents = [];
+    }
+  }
+
+  // Auto-migrate: Ensure sequence field exists on all items
+  ['products', 'catalogues', 'blogs', 'testimonials', 'timelineEvents'].forEach(col => {
+    if (db[col]) {
+      db[col].forEach((item: any) => {
+        if (item.sequence === undefined) {
+          item.sequence = 999;
+          migrated = true;
+        }
+      });
+    }
+  });
+
+  if (migrated) {
+    writeDB(db);
+  }
+
+  // Final sort to guarantee items are always returned ordered by sequence ascending
+  ['products', 'catalogues', 'blogs', 'testimonials', 'timelineEvents'].forEach(col => {
+    if (db[col]) {
+      db[col].sort((a: any, b: any) => (a.sequence || 999) - (b.sequence || 999));
+    }
+  });
+
+  return db;
 }
 
 export function writeDB(data: Database): void {

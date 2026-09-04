@@ -122,14 +122,18 @@ export default function AboutPage() {
           <h1 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1, marginBottom: '16px' }}>
             Arundhati<br />De-Sheth
           </h1>
-          <div style={{ width: '32px', height: '1px', background: '#d4af37' }} />
+          <div style={{ width: '32px', height: '1px', background: '#d4af37', marginBottom: '16px' }} />
+          <p style={{ fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', opacity: 0.6 }}>
+            Video Credits: Only Natural Diamonds
+          </p>
         </div>
       </div>
 
-      {/* ── Arundhati&apos;s Journey ── */}
+      {/* ── Page Content ── */}
       <div style={{ position: 'relative', zIndex: 1, background: 'var(--bg-primary)' }}>
         <div className="about-journey" style={{ maxWidth: '1400px', margin: '0 auto', padding: '120px 24px' }}>
 
+          {/* ── Arundhati's Journey ── */}
           <section className="editorial-block" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center', marginBottom: '160px' }}>
             <div style={{ aspectRatio: '3/4', width: '100%', overflow: 'hidden' }}>
               {/* Portrait — use local file once downloaded, falls back to Shopify CDN */}
@@ -149,6 +153,46 @@ export default function AboutPage() {
                 <p>Having graduated from the top-rated ESSEC Business School in Paris and selected to the prestigious LVMH program to specialise in Luxury Brand Management, Arundhati&apos;s first tryst with exceptional jewellery was in 2008 whilst working at the Cartier Middle-East and Asia Headquarters in Dubai.</p>
                 <p>Her unwavering interest in high jewellery also took her to the Cannes Film Festival in 2011, where she had intimate interviews with the owners and artistic directors of Chopard and De Grisogono. Her next role as a high jewellery sales expert with Nirav Modi allowed her to travel the world, learning about manufacturing and design from the sharpest minds in the business.</p>
               </div>
+            </div>
+          </section>
+
+          {/* ── Core Values: Vision, Mission, Objective ── */}
+          <section className="core-values-section" style={{ marginBottom: '160px' }}>
+            <div className="core-values-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '80px' }}>
+              
+              {/* Mission */}
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <h3 style={{ fontSize: '2rem', fontFamily: 'var(--font-serif)', color: 'var(--text-main)', marginBottom: '20px', fontWeight: 400 }}>
+                  Mission
+                </h3>
+                <div style={{ width: '32px', height: '1px', background: 'var(--accent)', marginBottom: '24px' }} />
+                <p style={{ fontSize: '1.05rem', lineHeight: '1.9', fontWeight: 300, color: 'var(--text-muted)' }}>
+                  To bridge the gap between clients and the world of exceptional jewellery through expert curation, sourcing, customisation, and education.
+                </p>
+              </div>
+
+              {/* Vision */}
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <h3 style={{ fontSize: '2rem', fontFamily: 'var(--font-serif)', color: 'var(--text-main)', marginBottom: '20px', fontWeight: 400 }}>
+                  Vision
+                </h3>
+                <div style={{ width: '32px', height: '1px', background: 'var(--accent)', marginBottom: '24px' }} />
+                <p style={{ fontSize: '1.05rem', lineHeight: '1.9', fontWeight: 300, color: 'var(--text-muted)' }}>
+                  To redefine how people acquire fine jewellery by becoming the trusted authority behind every significant jewellery purchase.
+                </p>
+              </div>
+
+              {/* Objective */}
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <h3 style={{ fontSize: '2rem', fontFamily: 'var(--font-serif)', color: 'var(--text-main)', marginBottom: '20px', fontWeight: 400 }}>
+                  Objective
+                </h3>
+                <div style={{ width: '32px', height: '1px', background: 'var(--accent)', marginBottom: '24px' }} />
+                <p style={{ fontSize: '1.05rem', lineHeight: '1.9', fontWeight: 300, color: 'var(--text-muted)' }}>
+                  To be top of mind as the point of sale for fine jewellery from India to the world.
+                </p>
+              </div>
+
             </div>
           </section>
 
@@ -181,6 +225,7 @@ export default function AboutPage() {
         @media (max-width: 900px) {
           .editorial-block { grid-template-columns: 1fr !important; gap: 40px !important; }
           .confluence-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+          .core-values-grid { grid-template-columns: 1fr !important; gap: 64px !important; }
           .about-journey { padding: 60px 16px !important; }
           .about-hero-text { bottom: 24px !important; left: 24px !important; }
           .confluence-video { height: 50vh !important; }

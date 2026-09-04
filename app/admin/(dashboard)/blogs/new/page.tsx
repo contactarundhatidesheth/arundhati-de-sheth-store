@@ -11,7 +11,10 @@ export default function NewBlogPage() {
       </div>
 
       <form action={saveBlog} style={{ background: '#fff', padding: '32px', borderRadius: '8px', border: '1px solid #eaeaea', display: 'flex', flexDirection: 'column', gap: '24px' }}>
-        
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Sequence / Display Order</label>
+          <input type="number" name="sequence" defaultValue="999" required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="1" />
+        </div>
         <div style={{ display: 'flex', gap: '24px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
             <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Publication Name</label>
@@ -34,8 +37,12 @@ export default function NewBlogPage() {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Article Image URL</label>
-          <input type="url" name="image" required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="https://..." />
+          <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Article Image (Upload or URL)</label>
+          <div style={{ display: 'flex', gap: '16px', flexDirection: 'column' }}>
+            <input type="file" name="imageFile" accept="image/*,video/*" style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} />
+            <span style={{ fontSize: '0.8rem', color: '#666', marginTop: '-8px' }}>OR</span>
+            <input type="url" name="image" style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="Provide Image URL (https://...)" />
+          </div>
         </div>
 
         <div style={{ marginTop: '24px' }}>

@@ -30,7 +30,7 @@ export default function ContactPage() {
       <section style={{ position: 'relative', width: '100%', height: '85vh', overflow: 'hidden', background: '#000' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
           <img
-            src="https://www.arundhatidesheth.com/cdn/shop/files/Screenshot_2026-01-27_144230.png?v=1708934384&width=1600"
+            src="/images/contact%20picture%20.jpg"
             alt="Arundhati De-Sheth Atelier"
             style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 1 }}
           />
@@ -125,7 +125,7 @@ export default function ContactPage() {
         <Section background="primary" padding="none">
           <div style={{ width: '100%', height: '450px', filter: 'grayscale(100%) opacity(0.9)' }}>
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3773.344840871994!2d72.8155981149021!3d18.95924748715486!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7ce0e4b7b3b65%3A0x6b44243b6dc0f8b!2sAvantikabai%20Gokhale%20Marg%2C%20New%20Bhatwadi%2C%20Girgaon%2C%20Mumbai%2C%20Maharashtra%20400004!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+              src="https://maps.google.com/maps?q=Churchgate,Mumbai&t=&z=15&ie=UTF8&iwloc=&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0 }}

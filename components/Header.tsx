@@ -52,8 +52,8 @@ export const Header: React.FC = () => {
     <>
       {/* Announcement Banner */}
       <div style={{
-        background: 'var(--accent-gold, #D4AF37)',
-        color: '#000000',
+        background: '#000000',
+        color: '#ffffff',
         textAlign: 'center',
         padding: '10px clamp(10px, 3vw, 20px)',
         fontSize: 'clamp(8px, 2.5vw, 11px)',
@@ -87,7 +87,7 @@ export const Header: React.FC = () => {
       }}>
         {/* Left: Menu & Links */}
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '32px' }}>
-          <button onClick={() => setIsMenuOpen(true)} style={{ color: 'var(--accent)' }}>
+          <button onClick={() => setIsMenuOpen(true)} style={{ color: 'inherit' }}>
             <Menu size={28} strokeWidth={1.5} />
           </button>
         </div>

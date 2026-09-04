@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { readDB } from '@/lib/db';
 import { deleteProduct } from '@/app/admin/actions';
+import SequenceEditor from '../SequenceEditor';
 
 export default function AdminProducts() {
   const db = readDB();
@@ -19,6 +20,7 @@ export default function AdminProducts() {
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
           <thead>
             <tr style={{ borderBottom: '1px solid #eaeaea', background: '#fafafa' }}>
+              <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Seq</th>
               <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Image</th>
               <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Product Name</th>
               <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Collection</th>
@@ -29,13 +31,16 @@ export default function AdminProducts() {
           <tbody>
             {db.products.length === 0 ? (
               <tr>
-                <td colSpan={5} style={{ padding: '64px', textAlign: 'center', color: '#888', fontStyle: 'italic' }}>
+                <td colSpan={6} style={{ padding: '64px', textAlign: 'center', color: '#888', fontStyle: 'italic' }}>
                   No products found. Create one to get started.
                 </td>
               </tr>
             ) : (
               db.products.map(p => (
                 <tr key={p.id} style={{ borderBottom: '1px solid #eaeaea' }}>
+                  <td style={{ padding: '16px 24px' }}>
+                    <SequenceEditor collection="products" id={p.id} initialSequence={p.sequence || 999} />
+                  </td>
                   <td style={{ padding: '16px 24px' }}>
                     <img src={p.images[0]} alt={p.title} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
                   </td>

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { readDB } from '@/lib/db';
 import { saveProduct } from '@/app/admin/actions';
+import AdminRichText from '@/app/admin/AdminRichText';
 
 export default function EditProductPage({ params }: { params: { id: string } }) {
   const db = readDB();
@@ -22,6 +23,11 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
       <form action={saveProduct} style={{ background: '#fff', padding: '32px', borderRadius: '8px', border: '1px solid #eaeaea', display: 'flex', flexDirection: 'column', gap: '24px' }}>
         <input type="hidden" name="id" value={product.id} />
         
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Sequence / Display Order</label>
+          <input type="number" name="sequence" defaultValue={product.sequence || 999} required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="1" />
+        </div>
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Product Title</label>
           <input type="text" name="title" defaultValue={product.title} required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="e.g. The Gatsby Earrings" />
@@ -70,12 +76,16 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Description</label>
-          <textarea name="description" defaultValue={product.description} required rows={4} style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px', resize: 'vertical' }} placeholder="A brief description of the product..."></textarea>
+          <AdminRichText name="description" defaultValue={product.description} placeholder="A brief description of the product..." />
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Image URL</label>
-          <input type="url" name="image" defaultValue={product.images[0]} required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="https://..." />
+          <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Image (Upload or URL)</label>
+          <div style={{ display: 'flex', gap: '16px', flexDirection: 'column' }}>
+            <input type="file" name="imageFile" accept="image/*,video/*" style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} />
+            <span style={{ fontSize: '0.8rem', color: '#666', marginTop: '-8px' }}>OR</span>
+            <input type="url" name="image" defaultValue={product.images[0]} style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="Provide Image URL (https://...)" />
+          </div>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>

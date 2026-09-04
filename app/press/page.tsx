@@ -56,29 +56,38 @@ export default function PressPage() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
       {/* Hero */}
-      <section style={{ position: 'relative', minHeight: '50vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#1A1A1A', overflow: 'hidden' }}>
+      <section style={{ position: 'relative', width: '100%', height: '85vh', overflow: 'hidden', background: '#000' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
           <img
             src="/pressimages/press-hero.png"
             alt="Prismatic Collection Editorial"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4 }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 1 }}
           />
-          <div style={{ position: 'absolute', inset: 0, background: 'rgba(26,26,26,0.6)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0) 100%)' }} />
         </div>
-        <Container maxWidth="800px" style={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
-          <p style={{ fontSize: '0.7rem', color: 'var(--accent-light)', letterSpacing: '0.3em', textTransform: 'uppercase', fontWeight: '500', marginBottom: '24px' }}>
+        <div style={{ position: 'absolute', bottom: 'clamp(30px, 5vw, 60px)', left: 'clamp(20px, 5vw, 60px)', right: '20px', zIndex: 10 }}>
+          <p style={{ fontSize: '0.7rem', color: 'var(--accent-light)', letterSpacing: '0.3em', textTransform: 'uppercase', fontWeight: '500', marginBottom: '16px' }}>
             Press & Editorial
           </p>
-          <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: '200', marginBottom: '24px', fontFamily: 'var(--font-serif)', lineHeight: '1.05', letterSpacing: '-0.02em', color: 'var(--text-on-dark-strong)' }}>
+          <h1 style={{ 
+            fontSize: 'clamp(2.5rem, 8vw, 6rem)', 
+            fontWeight: '300', 
+            fontFamily: 'var(--font-serif)', 
+            color: '#fff', 
+            margin: '0 0 16px 0',
+            lineHeight: 1,
+            letterSpacing: '-0.02em',
+            fontStyle: 'italic'
+          }}>
             In the Press
           </h1>
-          <p style={{ fontSize: '1.05rem', color: 'var(--text-on-dark-muted)', lineHeight: '1.8', fontWeight: '300', maxWidth: '560px', margin: '0 auto 40px' }}>
+          <p style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.8)', lineHeight: '1.8', fontWeight: '300', maxWidth: '560px', marginBottom: '32px' }}>
             A selection of editorial features, interviews, and exhibition reviews.
           </p>
           <Button href={whatsappLink} variant="primary" icon={<ArrowRight size={14} />}>
             <span>Request Press Kit</span>
           </Button>
-        </Container>
+        </div>
       </section>
 
       {/* Quote */}

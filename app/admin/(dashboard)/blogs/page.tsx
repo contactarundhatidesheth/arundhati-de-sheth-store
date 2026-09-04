@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { readDB } from '@/lib/db';
 import { deleteBlog } from '@/app/admin/actions';
+import SequenceEditor from '../SequenceEditor';
 
 export default function AdminBlogs() {
   const db = readDB();
@@ -19,6 +20,7 @@ export default function AdminBlogs() {
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
           <thead>
             <tr style={{ borderBottom: '1px solid #eaeaea', background: '#fafafa' }}>
+              <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Seq</th>
               <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Cover</th>
               <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Publication</th>
               <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Title</th>
@@ -28,13 +30,16 @@ export default function AdminBlogs() {
           <tbody>
             {db.blogs.length === 0 ? (
               <tr>
-                <td colSpan={4} style={{ padding: '64px', textAlign: 'center', color: '#888', fontStyle: 'italic' }}>
+                <td colSpan={5} style={{ padding: '64px', textAlign: 'center', color: '#888', fontStyle: 'italic' }}>
                   No press articles found. Create one to get started.
                 </td>
               </tr>
             ) : (
               db.blogs.map(b => (
                 <tr key={b.id} style={{ borderBottom: '1px solid #eaeaea' }}>
+                  <td style={{ padding: '16px 24px' }}>
+                    <SequenceEditor collection="blogs" id={b.id} initialSequence={b.sequence || 999} />
+                  </td>
                   <td style={{ padding: '16px 24px' }}>
                     <img src={b.image} alt={b.title} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
                   </td>

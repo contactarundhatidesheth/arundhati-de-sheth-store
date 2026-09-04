@@ -32,11 +32,31 @@ export default function WhatsNewPage() {
     <div style={{ minHeight: '100vh', background: '#FFFFFF', color: '#000000', paddingBottom: '120px' }}>
       
       {/* Hero Header */}
-      <section style={{ position: 'relative', minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000000', overflow: 'hidden' }}>
-        <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', paddingTop: '80px', paddingBottom: '80px', maxWidth: '800px', padding: '0 24px', width: '100%' }}>
-          <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: '300', marginBottom: '0', fontFamily: 'var(--font-serif)', lineHeight: '1.05', letterSpacing: '-0.02em', color: '#FFFFFF' }}>
+      <section style={{ position: 'relative', width: '100%', height: '85vh', overflow: 'hidden', background: '#000' }}>
+        <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
+          <img
+            src="/brand/logo-white.png"
+            alt="Press & Editorial"
+            style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: 1, padding: '40px' }}
+          />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0) 100%)' }} />
+        </div>
+        <div style={{ position: 'absolute', bottom: 'clamp(30px, 5vw, 60px)', left: 'clamp(20px, 5vw, 60px)', right: '20px', zIndex: 10 }}>
+          <h1 style={{ 
+            fontSize: 'clamp(2.5rem, 8vw, 6rem)', 
+            fontWeight: '300', 
+            fontFamily: 'var(--font-serif)', 
+            color: '#fff', 
+            margin: '0 0 16px 0',
+            lineHeight: 1,
+            letterSpacing: '-0.02em',
+            fontStyle: 'italic'
+          }}>
             Press
           </h1>
+          <p style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.8)', lineHeight: '1.8', fontWeight: '300', maxWidth: '560px', marginBottom: '32px' }}>
+            A selection of editorial features, interviews, and celebrity stylings.
+          </p>
         </div>
       </section>
 

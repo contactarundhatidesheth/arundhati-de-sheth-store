@@ -77,13 +77,32 @@ export default function CollectionsPage() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
       {/* Hero Header */}
-      <section style={{ position: 'relative', minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000000', overflow: 'hidden' }}>
-        {/* Background removed */}
-        <Container maxWidth="800px" padding="0 24px" style={{ position: 'relative', zIndex: 10, textAlign: 'center', paddingTop: '80px', paddingBottom: '80px' }}>
-          <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: '300', marginBottom: '0', fontFamily: 'var(--font-serif)', lineHeight: '1.05', letterSpacing: '-0.02em', color: 'var(--text-on-dark)' }}>
+      <section style={{ position: 'relative', width: '100%', height: '85vh', overflow: 'hidden', background: '#000' }}>
+        <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
+          <img
+            src="/images/High%20Jewellery%20.jpg"
+            alt="High Jewellery Collection"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 1 }}
+          />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0) 100%)' }} />
+        </div>
+        <div style={{ position: 'absolute', bottom: 'clamp(30px, 5vw, 60px)', left: 'clamp(20px, 5vw, 60px)', right: '20px', zIndex: 10 }}>
+          <p style={{ fontSize: '0.7rem', color: 'var(--accent-light)', letterSpacing: '0.3em', textTransform: 'uppercase', fontWeight: '500', marginBottom: '16px' }}>
+            Curated Collections
+          </p>
+          <h1 style={{ 
+            fontSize: 'clamp(2.5rem, 8vw, 6rem)', 
+            fontWeight: '300', 
+            fontFamily: 'var(--font-serif)', 
+            color: '#fff', 
+            margin: '0 0 16px 0',
+            lineHeight: 1,
+            letterSpacing: '-0.02em',
+            fontStyle: 'italic'
+          }}>
             High Jewellery
           </h1>
-        </Container>
+        </div>
       </section>
 
       {/* Filtered Product Grid */}

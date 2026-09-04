@@ -23,6 +23,11 @@ export default function EditCataloguePage({ params }: { params: { id: string } }
         <input type="hidden" name="id" value={catalogue.id} />
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Sequence / Display Order</label>
+          <input type="number" name="sequence" defaultValue={catalogue.sequence || 999} required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="1" />
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Catalogue Title</label>
           <input type="text" name="title" defaultValue={catalogue.title} required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="e.g. Wave After Wave" />
         </div>
@@ -38,8 +43,12 @@ export default function EditCataloguePage({ params }: { params: { id: string } }
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Cover Image URL</label>
-          <input type="url" name="image" defaultValue={catalogue.image} required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="https://..." />
+          <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Cover Image (Upload or URL)</label>
+          <div style={{ display: 'flex', gap: '16px', flexDirection: 'column' }}>
+            <input type="file" name="imageFile" accept="image/*,video/*" style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} />
+            <span style={{ fontSize: '0.8rem', color: '#666', marginTop: '-8px' }}>OR</span>
+            <input type="url" name="image" defaultValue={catalogue.image} style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="Provide Image URL (https://...)" />
+          </div>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>

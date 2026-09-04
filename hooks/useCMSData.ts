@@ -6,7 +6,8 @@ const defaultData: Database = {
   products: [],
   catalogues: [],
   blogs: [],
-  testimonials: []
+  testimonials: [],
+  timelineEvents: []
 };
 
 export function useCMSData() {
