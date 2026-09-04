@@ -114,6 +114,19 @@ export const Footer: React.FC = () => {
           <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
             © {new Date().getFullYear()} Arundhati De-Sheth. All Rights Reserved.
           </p>
+          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '8px' }}>
+            designed & developed by{' '}
+            <a 
+              href="https://www.eyepune.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{ color: 'crimson', fontWeight: '500', textDecoration: 'none' }}
+              onMouseOver={(e) => e.currentTarget.style.textDecoration = 'underline'}
+              onMouseOut={(e) => e.currentTarget.style.textDecoration = 'none'}
+            >
+              EyE PunE
+            </a>
+          </p>
         </div>
       </div>
     </footer>
