@@ -7,7 +7,14 @@ const defaultData: Database = {
   catalogues: [],
   blogs: [],
   testimonials: [],
-  timelineEvents: []
+  timelineEvents: [],
+  analytics: {
+    visitors: 0,
+    whatsappClicks: 0,
+    productViews: {},
+    dailyVisitors: {},
+    referrers: {}
+  }
 };
 
 export function useCMSData() {
