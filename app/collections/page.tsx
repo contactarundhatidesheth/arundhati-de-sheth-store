@@ -87,7 +87,7 @@ export default function CollectionsPage() {
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0) 100%)' }} />
         </div>
         <div style={{ position: 'absolute', bottom: 'clamp(30px, 5vw, 60px)', left: 'clamp(20px, 5vw, 60px)', right: '20px', zIndex: 10 }}>
-          <p style={{ fontSize: '0.7rem', color: 'var(--accent-light)', letterSpacing: '0.3em', textTransform: 'uppercase', fontWeight: '500', marginBottom: '16px' }}>
+          <p style={{ fontSize: '0.7rem', color: '#ffffff', letterSpacing: '0.3em', textTransform: 'uppercase', fontWeight: '500', marginBottom: '16px' }}>
             Curated Collections
           </p>
           <h1 style={{ 

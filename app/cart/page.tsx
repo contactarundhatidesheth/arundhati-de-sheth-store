@@ -93,11 +93,11 @@ export default function CartPage() {
       <div style={{ minHeight: 'calc(100vh - 80px)', background: 'var(--bg-primary)', padding: '144px 24px 64px' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
         
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '64px' }}>
+        <div className="cart-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '64px' }}>
           
           {/* Left: Cart Items */}
           <div>
-            <h1 style={{ fontSize: '2rem', fontFamily: 'var(--font-serif)', marginBottom: '32px', borderBottom: '1px solid var(--border)', paddingBottom: '16px' }}>
+            <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontFamily: 'var(--font-serif)', marginBottom: '32px', borderBottom: '1px solid var(--border)', paddingBottom: '16px' }}>
               My Cart
             </h1>
 
@@ -111,8 +111,8 @@ export default function CartPage() {
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
                 {cart.map((item) => (
-                  <div key={item.product.id} style={{ display: 'flex', gap: '24px', borderBottom: '1px solid var(--border)', paddingBottom: '32px' }}>
-                    <div style={{ position: 'relative', width: '120px', aspectRatio: '4/5', background: 'var(--bg-secondary)', flexShrink: 0 }}>
+                  <div key={item.product.id} className="cart-item" style={{ display: 'flex', gap: '24px', borderBottom: '1px solid var(--border)', paddingBottom: '32px' }}>
+                    <div className="cart-item-img" style={{ position: 'relative', width: '120px', aspectRatio: '4/5', background: 'var(--bg-secondary)', flexShrink: 0 }}>
                       <Image 
                         src={item.product.images[0]} 
                         alt={item.product.title} 
@@ -122,11 +122,11 @@ export default function CartPage() {
                     </div>
                     
                     <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
-                        <h3 style={{ fontSize: '1.1rem', fontWeight: '400', fontFamily: 'var(--font-sans)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px', gap: '12px' }}>
+                        <h3 style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', fontWeight: '400', fontFamily: 'var(--font-sans)', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
                           {item.product.title}
                         </h3>
-                        <p style={{ fontSize: '1.1rem' }}>₹{item.product.price.toLocaleString('en-IN')}</p>
+                        <p style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', flexShrink: 0 }}>₹{item.product.price.toLocaleString('en-IN')}</p>
                       </div>
 
                       <div style={{ display: 'flex', alignItems: 'center', marginTop: 'auto', border: '1px solid var(--border)', width: 'fit-content' }}>
@@ -224,8 +224,17 @@ export default function CartPage() {
 
       <style jsx>{`
         @media (max-width: 900px) {
-          div[style*="grid-template-columns: 2fr 1fr"] {
+          .cart-grid {
             grid-template-columns: 1fr !important;
+            gap: 40px !important;
+          }
+        }
+        @media (max-width: 768px) {
+          .cart-item {
+            gap: 16px !important;
+          }
+          .cart-item-img {
+            width: 90px !important;
           }
         }
       `}</style>

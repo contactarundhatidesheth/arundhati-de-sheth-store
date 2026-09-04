@@ -64,9 +64,9 @@ export const CartDrawer: React.FC = () => {
                       style={{ objectFit: 'cover' }}
                     />
                   </div>
-                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                      <h4 style={{ fontSize: '0.9rem', fontWeight: '400', lineHeight: '1.4' }}>
+                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
+                      <h4 style={{ fontSize: '0.9rem', fontWeight: '400', lineHeight: '1.4', wordWrap: 'break-word', overflowWrap: 'break-word', flex: 1 }}>
                         {item.product.title}
                       </h4>
                       <button

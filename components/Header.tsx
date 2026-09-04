@@ -62,42 +62,42 @@ export const Header: React.FC = () => {
   }, [isMenuOpen]);
 
   return (
-    <>
-      {/* Announcement Banner */}
       <div style={{
-        background: '#000000',
-        color: '#ffffff',
-        textAlign: 'center',
-        padding: '10px clamp(10px, 3vw, 20px)',
-        fontSize: 'clamp(8px, 2.5vw, 11px)',
-        letterSpacing: '0.1em',
-        textTransform: 'uppercase',
-        fontWeight: 500,
         position: 'fixed',
-        top: isVisible ? '0' : '-40px',
+        top: isVisible ? '0' : '-140px',
+        left: 0,
         width: '100%',
         zIndex: 101,
         transition: 'top 0.4s cubic-bezier(0.25, 1, 0.5, 1)',
-      }}>
-        Complimentary Shipping on All Orders Across India
-      </div>
-
-      <header style={{
-        position: 'fixed',
-        width: '100%',
-        top: isVisible ? '32px' : '-80px',
-        zIndex: 100,
-        background: isAtTop ? 'transparent' : 'var(--header-bg)',
-        backdropFilter: isAtTop ? 'none' : 'blur(12px)',
-        WebkitBackdropFilter: isAtTop ? 'none' : 'blur(12px)',
-        height: '80px',
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 32px',
-        transition: 'all 0.4s cubic-bezier(0.25, 1, 0.5, 1)',
-        color: isAtTop ? '#ffffff' : 'var(--text-main)',
+        flexDirection: 'column',
       }}>
+        {/* Announcement Banner */}
+        <div style={{
+          background: '#000000',
+          color: '#ffffff',
+          textAlign: 'center',
+          padding: '10px clamp(10px, 3vw, 20px)',
+          fontSize: 'clamp(8px, 2.5vw, 11px)',
+          letterSpacing: '0.1em',
+          textTransform: 'uppercase',
+          fontWeight: 500,
+        }}>
+          Complimentary Shipping on All Orders Across India
+        </div>
+
+        <header style={{
+          background: isAtTop ? 'transparent' : 'var(--header-bg)',
+          backdropFilter: isAtTop ? 'none' : 'blur(12px)',
+          WebkitBackdropFilter: isAtTop ? 'none' : 'blur(12px)',
+          height: '80px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '0 clamp(16px, 4vw, 32px)',
+          transition: 'all 0.4s cubic-bezier(0.25, 1, 0.5, 1)',
+          color: isAtTop ? '#ffffff' : 'var(--text-main)',
+        }}>
         {/* Left: Menu & Links */}
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '32px' }}>
           <button onClick={() => setIsMenuOpen(true)} style={{ color: 'inherit', background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', display: 'flex' }}>
@@ -154,6 +154,7 @@ export const Header: React.FC = () => {
           </button>
         </div>
       </header>
+      </div>
 
       {/* Full Screen Menu Overlay */}
       <div style={{
