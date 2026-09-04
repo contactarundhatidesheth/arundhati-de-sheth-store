@@ -148,7 +148,7 @@ export default function CategoryAllProductsPage() {
       </section>
 
       {/* ── Breadcrumb / Back ── */}
-      <div style={{ padding: '32px 40px 0', display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <div className="breadcrumb-wrapper" style={{ padding: '32px 40px 0', display: 'flex', alignItems: 'center', gap: '12px' }}>
         {step !== 'collection' && (
           <button
             onClick={goBack}
@@ -175,32 +175,36 @@ export default function CategoryAllProductsPage() {
           STEP 1 — Choose Collection
       ══════════════════════════════════ */}
       {step === 'collection' && (
-        <div style={{ padding: '48px 40px 80px' }}>
+        <div className="step-wrapper" style={{ padding: '48px 40px 80px' }}>
           <div className="collection-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2px', maxWidth: '1600px', margin: '0 auto' }}>
             {COLLECTIONS.map(col => (
                 <button
                   key={col.id}
                   onClick={() => pickCollection(col.id)}
-                  style={{ border: 'none', padding: 0, cursor: 'pointer', position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', display: 'block', background: 'transparent' }}
+                  style={{ border: 'none', padding: 0, cursor: 'pointer', width: '100%', display: 'flex', flexDirection: 'column', background: 'transparent' }}
                   className="collection-card"
                 >
-                  <Image
-                    src={col.image}
-                    alt={col.label}
-                    fill
-                    style={{ objectFit: 'cover', transition: 'transform 0.7s ease', opacity: 1 }}
-                    className="collection-img"
-                  />
-                  <div style={{ position: 'absolute', bottom: '32px', left: '28px', right: '28px', textAlign: 'left' }}>
-                    <p style={{ color: 'rgba(0,0,0,0.6)', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '8px', fontWeight: 500 }}>
+                  <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', background: '#F9F9F9' }}>
+                    <Image
+                      src={col.image}
+                      alt={col.label}
+                      fill
+                      style={{ objectFit: 'contain', padding: '24px', transition: 'transform 0.7s ease' }}
+                      className="collection-img"
+                    />
+                  </div>
+                  <div style={{ padding: '24px 0 16px', textAlign: 'left', width: '100%' }}>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '8px', fontWeight: 500 }}>
                       {col.subtitle}
                     </p>
-                    <h2 style={{ color: '#000', fontSize: 'clamp(1.3rem, 2vw, 2rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1 }}>
-                      {col.label}
-                    </h2>
-                  </div>
-                  <div className="collection-arrow" style={{ position: 'absolute', top: '24px', right: '24px', opacity: 0, transition: 'opacity 0.3s ease' }}>
-                    <ArrowRight size={20} color="#000" strokeWidth={1.5} />
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <h2 style={{ color: 'var(--text-main)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1, margin: 0 }}>
+                        {col.label}
+                      </h2>
+                      <div className="collection-arrow" style={{ opacity: 0, transition: 'opacity 0.3s ease, transform 0.3s ease', transform: 'translateX(-10px)' }}>
+                        <ArrowRight size={20} color="var(--text-main)" strokeWidth={1.5} />
+                      </div>
+                    </div>
                   </div>
                 </button>
             ))}
@@ -212,20 +216,21 @@ export default function CategoryAllProductsPage() {
           STEP 2 — Product Grid (with Filters)
       ══════════════════════════════════ */}
       {step === 'products' && (
-        <div style={{ padding: '48px 40px 120px' }}>
+        <div className="step-wrapper" style={{ padding: '48px 40px 120px' }}>
           {/* Filters Bar */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', marginBottom: '48px' }}>
+          <div className="filters-bar" style={{ display: 'flex', flexDirection: 'column', gap: '24px', marginBottom: '48px' }}>
             
             {/* Search & Metal Controls */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', borderBottom: '1px solid #eaeaea', paddingBottom: '16px' }}>
+            <div className="filter-controls" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', borderBottom: '1px solid #eaeaea', paddingBottom: '16px' }}>
               <input 
                 type="text" 
                 placeholder="Search pieces..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 style={{ padding: '12px 16px', border: '1px solid #eaeaea', borderRadius: '4px', outline: 'none', fontSize: '0.85rem', width: '250px' }}
+                className="search-input"
               />
-              <div style={{ display: 'flex', gap: '12px' }}>
+              <div className="metal-filters" style={{ display: 'flex', gap: '12px' }}>
                 {['Gold', 'Silver'].map(metal => (
                   <button 
                     key={metal}
@@ -251,7 +256,7 @@ export default function CategoryAllProductsPage() {
 
             {/* Category Tabs */}
             {typesInCollection.length > 0 && (
-              <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '16px' }}>
+              <div className="category-tabs" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '16px', WebkitOverflowScrolling: 'touch' }}>
                 <button 
                   onClick={() => setSelectedType(null)}
                   style={{ 
@@ -326,15 +331,28 @@ export default function CategoryAllProductsPage() {
       <style>{`
         .collection-card:hover .collection-img,
         .product-img:hover { transform: scale(1.05); }
-        .collection-card:hover .collection-arrow { opacity: 1 !important; }
+        .collection-card:hover .collection-arrow { opacity: 1 !important; transform: translateX(0) !important; }
 
         @media (max-width: 1100px) { .product-grid { grid-template-columns: repeat(3,1fr) !important; } }
         @media (max-width: 900px) { .product-grid { grid-template-columns: repeat(3,1fr) !important; } }
         @media (max-width: 768px) {
-          .shop-wrapper { padding-top: 80px !important; }
-          .shop-wrapper > div { padding: 32px 16px 80px !important; }
+          .shop-wrapper { padding-top: 50px !important; }
+          .breadcrumb-wrapper { padding: 24px 16px 16px !important; }
+          .step-wrapper { padding: 16px 16px 120px !important; }
           .collection-grid { grid-template-columns: 1fr !important; }
-          .product-grid { grid-template-columns: repeat(2,1fr) !important; gap: 24px 10px !important; }
+          .product-grid { grid-template-columns: repeat(2,1fr) !important; gap: 24px 12px !important; }
+          
+          /* Filters Mobile Fixes */
+          .filters-bar { gap: 16px !important; margin-bottom: 24px !important; }
+          .filter-controls { flex-direction: column; align-items: stretch !important; gap: 12px !important; border-bottom: none !important; padding-bottom: 0 !important; }
+          .search-input { width: 100% !important; margin-bottom: 8px; }
+          .metal-filters { width: 100%; justify-content: space-between; }
+          .metal-filters button { flex: 1; }
+          
+          /* Horizontal Swipeable Tabs */
+          .category-tabs { flex-wrap: nowrap !important; overflow-x: auto; padding-bottom: 12px; margin-bottom: 16px; border-bottom: 1px solid #eaeaea; justify-content: flex-start !important; mask-image: linear-gradient(to right, black 85%, transparent 100%); -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%); }
+          .category-tabs::-webkit-scrollbar { display: none; }
+          .category-tabs button { flex-shrink: 0; }
         }
         /* Removed 420px 1-column breakpoint to maintain 2-columns on small screens */
       `}</style>

@@ -305,7 +305,9 @@ img {
 
 /* ─── Mobile Responsive ─── */
 @media (max-width: 768px) {
-
+  .hide-on-mobile {
+    display: none !important;
+  }
   /* Typography */
   h1 { font-size: clamp(1.5rem, 8vw, 2.5rem); }
   h2 { font-size: clamp(1.3rem, 6vw, 2rem); }
