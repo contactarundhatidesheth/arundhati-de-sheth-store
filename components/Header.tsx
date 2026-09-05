@@ -194,14 +194,6 @@ export const Header: React.FC = () => {
           .hide-on-mobile {
             display: none;
           }
-          .logo-wrapper {
-            width: 140px !important;
-          }
-        }
-        @media (min-width: 769px) {
-          .logo-wrapper {
-            width: 200px;
-          }
         }
       `}</style>
     </>
