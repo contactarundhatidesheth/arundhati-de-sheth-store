@@ -125,7 +125,7 @@ export const Header: React.FC = () => {
 
         {/* Right: Cart & User */}
         <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '24px' }}>
-          <Link href={user ? "/account" : "/login"} style={{ display: 'flex', alignItems: 'center', color: 'inherit', background: 'transparent', border: 'none', padding: 0 }} className="hide-on-mobile">
+          <Link href={user ? "/account" : "/login"} style={{ display: 'flex', alignItems: 'center', color: 'inherit', background: 'transparent', border: 'none', padding: 0 }}>
             <User size={20} strokeWidth={1.5} />
           </Link>
           <button 
@@ -186,6 +186,11 @@ export const Header: React.FC = () => {
           <Link href="/collections" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>HIGH JEWELLERY</Link>
           <Link href="/pages/whats-new" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>PRESS</Link>
           <Link href="/contact" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>CONTACT</Link>
+          {user ? (
+            <Link href="/account" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>ACCOUNT</Link>
+          ) : (
+            <Link href="/login" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>LOGIN</Link>
+          )}
         </nav>
       </div>
 
