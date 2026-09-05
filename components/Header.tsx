@@ -50,6 +50,7 @@ export const Header: React.FC = () => {
   }, [lastScrollY]);
 
   const isAtTop = lastScrollY <= 10 && !isLightPage;
+  const isHeaderVisible = isVisible && !isMenuOpen;
 
   // Lock body scroll when menu is open
   useEffect(() => {
@@ -65,7 +66,7 @@ export const Header: React.FC = () => {
     <>
       <div style={{
         position: 'fixed',
-        top: isVisible ? '0' : '-140px',
+        top: isHeaderVisible ? '0' : '-140px',
         left: 0,
         width: '100%',
         zIndex: 101,
@@ -158,38 +159,59 @@ export const Header: React.FC = () => {
       </div>
 
       {/* Full Screen Menu Overlay */}
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        background: 'rgba(10, 10, 10, 0.95)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        zIndex: 1000,
-        transform: isMenuOpen ? 'translateX(0)' : 'translateX(100%)',
-        transition: 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)',
-        display: 'flex',
-        flexDirection: 'column',
-        overflowY: 'auto',
-      }}>
-        <div style={{ height: '80px', flexShrink: 0, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '0 32px' }}>
+      <div 
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          background: 'rgba(10, 10, 10, 0.95)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          zIndex: 1000,
+          transform: isMenuOpen ? 'translateX(0)' : 'translateX(100%)',
+          transition: 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)',
+          display: 'flex',
+          flexDirection: 'column',
+          overflowY: 'auto',
+        }}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) setIsMenuOpen(false);
+        }}
+      >
+        <div style={{ 
+          height: 'clamp(80px, 10vh, 120px)', 
+          flexShrink: 0, 
+          display: 'flex', 
+          justifyContent: 'flex-end', 
+          alignItems: 'flex-start',
+          padding: 'env(safe-area-inset-top, 20px) 24px 0 0' 
+        }}>
           <button onClick={() => setIsMenuOpen(false)} style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', display: 'flex' }}>
             <X size={32} strokeWidth={1} color="#ffffff" />
           </button>
         </div>
-        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '24px', padding: '20px 0 calc(60px + env(safe-area-inset-bottom, 0px)) 0' }}>
-          <Link href="/about" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>ABOUT US</Link>
-          <Link href="/timeline" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>JOURNEY</Link>
-          <Link href="/category/all-products" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>SHOP</Link>
-          <Link href="/collections" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>HIGH JEWELLERY</Link>
-          <Link href="/pages/whats-new" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>PRESS</Link>
-          <Link href="/contact" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>CONTACT</Link>
+        <nav style={{ 
+          flex: 1, 
+          display: 'flex', 
+          flexDirection: 'column', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          gap: 'clamp(16px, 3vh, 24px)', 
+          padding: '20px 24px calc(60px + env(safe-area-inset-bottom, 0px)) 24px',
+          marginTop: '-10vh'
+        }}>
+          <Link href="/about" className="nav-link" style={{ fontSize: 'clamp(1rem, 4vw, 1.4rem)', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>ABOUT US</Link>
+          <Link href="/timeline" className="nav-link" style={{ fontSize: 'clamp(1rem, 4vw, 1.4rem)', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>JOURNEY</Link>
+          <Link href="/category/all-products" className="nav-link" style={{ fontSize: 'clamp(1rem, 4vw, 1.4rem)', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>SHOP</Link>
+          <Link href="/collections" className="nav-link" style={{ fontSize: 'clamp(1rem, 4vw, 1.4rem)', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>HIGH JEWELLERY</Link>
+          <Link href="/pages/whats-new" className="nav-link" style={{ fontSize: 'clamp(1rem, 4vw, 1.4rem)', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>PRESS</Link>
+          <Link href="/contact" className="nav-link" style={{ fontSize: 'clamp(1rem, 4vw, 1.4rem)', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>CONTACT</Link>
           {user ? (
-            <Link href="/account" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>ACCOUNT</Link>
+            <Link href="/account" className="nav-link" style={{ fontSize: 'clamp(1rem, 4vw, 1.4rem)', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>ACCOUNT</Link>
           ) : (
-            <Link href="/login" className="nav-link" style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>LOGIN</Link>
+            <Link href="/login" className="nav-link" style={{ fontSize: 'clamp(1rem, 4vw, 1.4rem)', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>LOGIN</Link>
           )}
         </nav>
       </div>

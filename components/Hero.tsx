@@ -41,7 +41,7 @@ export const Hero: React.FC = () => {
       style={{
         position: 'relative',
         width: '100%',
-        height: '100%',
+        height: '100dvh',
         display: 'flex',
         overflow: 'hidden',
         background: '#000',
