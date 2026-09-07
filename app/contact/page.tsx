@@ -68,7 +68,7 @@ export default function ContactPage() {
                   <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
                     <MapPin size={20} style={{ marginTop: '4px', flexShrink: 0, color: 'var(--text-main)', opacity: 0.6 }} />
                     <div>
-                      <strong style={{ color: 'var(--text-main)', display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '0.85rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>The Salon</strong>
+                      <strong style={{ color: 'var(--text-main)', display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '0.85rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>The Salon — Churchgate</strong>
                       <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.7', fontWeight: '300' }}>
                         Private Viewings by Request<br />
                         Reach out to arrange a visit.
@@ -92,7 +92,7 @@ export default function ContactPage() {
                       <strong style={{ color: 'var(--text-main)', display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '0.85rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Direct Phone / WhatsApp</strong>
                        <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.7', fontWeight: '300' }}>
                         +91 95818 22000<br />
-                        <span style={{ fontSize: '0.8rem' }}>Mon – Sat, 10 AM – 7 PM IST</span>
+                        <span style={{ fontSize: '0.8rem' }}>Mon – Fri, 11 AM – 6 PM IST</span>
                       </p>
                     </div>
                   </div>
