@@ -87,14 +87,12 @@ export default function CollectionsPage() {
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0) 100%)' }} />
         </div>
         <div style={{ position: 'absolute', bottom: 'clamp(30px, 5vw, 60px)', left: 'clamp(20px, 5vw, 60px)', right: '20px', zIndex: 10 }}>
-          <p style={{ fontSize: '0.7rem', color: '#ffffff', letterSpacing: '0.3em', textTransform: 'uppercase', fontWeight: '500', marginBottom: '16px' }}>
-            Curated Collections
-          </p>
-          <h1 style={{ 
-            fontSize: 'clamp(2.5rem, 8vw, 6rem)', 
-            fontWeight: '300', 
-            fontFamily: 'var(--font-serif)', 
-            color: '#fff', 
+
+          <h1 style={{
+            fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+            fontWeight: '300',
+            fontFamily: 'var(--font-serif)',
+            color: '#fff',
             margin: '0 0 16px 0',
             lineHeight: 1,
             letterSpacing: '-0.02em',
@@ -107,43 +105,43 @@ export default function CollectionsPage() {
 
       {/* Filtered Product Grid */}
       <div style={{ position: 'relative', zIndex: 1, background: 'var(--bg-primary)' }}>
-      {showFiltered && (
-        <FadeInSection>
-          <Section background="primary" padding="lg">
-            <Container>
-              <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-                <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: '500', marginBottom: '12px' }}>
-                  {collectionFilter ? 'Collection' : 'Category'}
-                </p>
-                <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 2.8rem)', color: 'var(--text-main)', fontWeight: '300', marginBottom: '24px', fontFamily: 'var(--font-serif)' }}>
-                  {filterTitle}
-                </h2>
-                <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', maxWidth: '560px', margin: '0 auto 32px', lineHeight: '1.7', fontWeight: '300' }}>
-                  {filteredProducts.length} {filteredProducts.length === 1 ? 'piece' : 'pieces'} available. All inquiries are price on request.
-                </p>
-                <Link href="/collections" className="btn-secondary" style={{ color: 'var(--text-main)', borderColor: 'var(--border)', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                  <span>← View All High Jewellery</span>
-                </Link>
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '48px 24px' }}>
-                {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-            </Container>
-          </Section>
-        </FadeInSection>
-      )}
+        {showFiltered && (
+          <FadeInSection>
+            <Section background="primary" padding="lg">
+              <Container>
+                <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+                  <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: '500', marginBottom: '12px' }}>
+                    {collectionFilter ? 'Collection' : 'Category'}
+                  </p>
+                  <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 2.8rem)', color: 'var(--text-main)', fontWeight: '300', marginBottom: '24px', fontFamily: 'var(--font-serif)' }}>
+                    {filterTitle}
+                  </h2>
+                  <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', maxWidth: '560px', margin: '0 auto 32px', lineHeight: '1.7', fontWeight: '300' }}>
+                    {filteredProducts.length} {filteredProducts.length === 1 ? 'piece' : 'pieces'} available. All inquiries are price on request.
+                  </p>
+                  <Link href="/collections" className="btn-secondary" style={{ color: 'var(--text-main)', borderColor: 'var(--border)', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                    <span>← View All High Jewellery</span>
+                  </Link>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '48px 24px' }}>
+                  {filteredProducts.map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </div>
+              </Container>
+            </Section>
+          </FadeInSection>
+        )}
 
-      {/* Catalogues - only show when not filtered */}
-      {!showFiltered && (
-        <div>
-          {CATALOGUES.map((catalogue, idx) => {
-            const isEven = idx % 2 === 0;
-            const catalogueWhatsappLink = `${WHATSAPP_URL}?text=${encodeURIComponent(`Hi, I'm interested in the "${catalogue.title}" high jewellery collection. Could you please share more details?`)}`;
+        {/* Catalogues - only show when not filtered */}
+        {!showFiltered && (
+          <div>
+            {CATALOGUES.map((catalogue, idx) => {
+              const isEven = idx % 2 === 0;
+              const catalogueWhatsappLink = `${WHATSAPP_URL}?text=${encodeURIComponent(`Hi, I'm interested in the "${catalogue.title}" high jewellery collection. Could you please share more details?`)}`;
 
-            return (
-              <section key={catalogue.id} style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', padding: 'var(--section-padding)', background: isEven ? 'var(--bg-primary)' : 'var(--bg-secondary)', overflow: 'hidden' }}>
+              return (
+                <section key={catalogue.id} style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', padding: 'var(--section-padding)', background: isEven ? 'var(--bg-primary)' : 'var(--bg-secondary)', overflow: 'hidden' }}>
                   <Container>
                     <div className="catalogue-section-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'center' }}>
 
@@ -186,34 +184,34 @@ export default function CollectionsPage() {
                     </div>
                   </Container>
                 </section>
-            );
-          })}
-        </div>
-      )}
-
-      {/* Bottom CTA */}
-      <section style={{ padding: 'var(--section-padding)', background: '#1A1A1A', color: '#FAF9F7', textAlign: 'center' }}>
-        <Container center>
-          <p style={{ fontSize: '0.7rem', color: 'var(--text-on-dark-strong)', letterSpacing: '0.3em', textTransform: 'uppercase', fontWeight: '500', marginBottom: '20px' }}>
-            Begin a Conversation
-          </p>
-          <h2 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', fontWeight: '200', marginBottom: '20px', fontFamily: 'var(--font-serif)', lineHeight: '1.2', color: 'var(--text-on-dark)' }}>
-            Interested in a particular piece<br />or bespoke commission?
-          </h2>
-          <p style={{ fontSize: '0.95rem', color: 'var(--text-on-dark-muted)', lineHeight: '1.7', marginBottom: '40px', fontWeight: '300', maxWidth: '560px', margin: '0 auto 40px' }}>
-            Each piece is crafted as a legacy creation. All inquiries are price on request — contact us directly for pricing, availability, and private studio appointments.
-          </p>
-          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href={whatsappLink} className="btn-dark-primary" style={{ borderRadius: 'var(--radius-sm)', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-              <span>WhatsApp Advisory</span>
-              <ArrowRight size={14} />
-            </Link>
-            <Link href="/contact" className="btn-dark-secondary" style={{ borderRadius: 'var(--radius-sm)', display: 'inline-flex', alignItems: 'center' }}>
-              <span>Contact Studio</span>
-            </Link>
+              );
+            })}
           </div>
-        </Container>
-      </section>
+        )}
+
+        {/* Bottom CTA */}
+        <section style={{ padding: 'var(--section-padding)', background: '#1A1A1A', color: '#FAF9F7', textAlign: 'center' }}>
+          <Container center>
+            <p style={{ fontSize: '0.7rem', color: 'var(--text-on-dark-strong)', letterSpacing: '0.3em', textTransform: 'uppercase', fontWeight: '500', marginBottom: '20px' }}>
+              Begin a Conversation
+            </p>
+            <h2 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', fontWeight: '200', marginBottom: '20px', fontFamily: 'var(--font-serif)', lineHeight: '1.2', color: 'var(--text-on-dark)' }}>
+              Interested in a particular piece<br />or bespoke commission?
+            </h2>
+            <p style={{ fontSize: '0.95rem', color: 'var(--text-on-dark-muted)', lineHeight: '1.7', marginBottom: '40px', fontWeight: '300', maxWidth: '560px', margin: '0 auto 40px' }}>
+              Each piece is crafted as a legacy creation. All inquiries are price on request — contact us directly for pricing, availability, and private studio appointments.
+            </p>
+            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Link href={whatsappLink} className="btn-dark-primary" style={{ borderRadius: 'var(--radius-sm)', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                <span>WhatsApp Advisory</span>
+                <ArrowRight size={14} />
+              </Link>
+              <Link href="/contact" className="btn-dark-secondary" style={{ borderRadius: 'var(--radius-sm)', display: 'inline-flex', alignItems: 'center' }}>
+                <span>Contact Studio</span>
+              </Link>
+            </div>
+          </Container>
+        </section>
       </div>
 
       {/* PDF Modal Viewer */}
@@ -232,22 +230,22 @@ export default function CollectionsPage() {
           justifyContent: 'center',
           backdropFilter: 'blur(10px)'
         }}>
-          <button 
+          <button
             onClick={() => setActivePdf(null)}
             style={{ position: 'absolute', top: '24px', right: '24px', background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', zIndex: 10000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             aria-label="Close viewer"
           >
             <X size={40} />
           </button>
-          
+
           <div style={{ width: '90%', height: '90%', maxWidth: '1200px', background: '#fff', borderRadius: '8px', overflow: 'hidden', position: 'relative', boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}>
             <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 0 }}>
               <DiamondLoader />
             </div>
-            <iframe 
-              src={activePdf} 
-              width="100%" 
-              height="100%" 
+            <iframe
+              src={activePdf}
+              width="100%"
+              height="100%"
               style={{ border: 'none', position: 'relative', zIndex: 1, backgroundColor: 'transparent' }}
               title="High Jewellery Viewer"
             />

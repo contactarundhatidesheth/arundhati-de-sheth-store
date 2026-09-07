@@ -49,70 +49,70 @@ export const Hero: React.FC = () => {
       }}
     >
       <div className="hero-inner" style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100%', position: 'absolute', inset: 0 }}>
-      {/* Left Video */}
-      <div className="hero-panel" style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+        {/* Left Video */}
+        <div className="hero-panel" style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
           <video
-          ref={video1Ref}
-          src="/videos/look1.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: 'top center',
-            display: 'block',
-          }}
-        />
-        {/* subtle dark overlay */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'rgba(0,0,0,0.12)',
-          }}
-        />
-      </div>
+            ref={video1Ref}
+            src="/videos/look1.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'center',
+              display: 'block',
+            }}
+          />
+          {/* subtle dark overlay */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'rgba(0,0,0,0.12)',
+            }}
+          />
+        </div>
 
-      {/* Centre Divider */}
-      <div
-        className="hero-divider"
-        style={{
-          width: '1px',
-          flexShrink: 0,
-          background: 'rgba(255,255,255,0.25)',
-          zIndex: 2,
-        }}
-      />
-
-      {/* Right Video */}
-      <div className="hero-panel" style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
-        <video
-          ref={video2Ref}
-          src="/videos/look2.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: 'top center',
-            display: 'block',
-          }}
-        />
-        {/* subtle dark overlay */}
+        {/* Centre Divider */}
         <div
+          className="hero-divider"
           style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'rgba(0,0,0,0.12)',
+            width: '1px',
+            flexShrink: 0,
+            background: 'rgba(255,255,255,0.25)',
+            zIndex: 2,
           }}
         />
-      </div>
+
+        {/* Right Video */}
+        <div className="hero-panel" style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+          <video
+            ref={video2Ref}
+            src="/videos/look2.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'center',
+              display: 'block',
+            }}
+          />
+          {/* subtle dark overlay */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'rgba(0,0,0,0.12)',
+            }}
+          />
+        </div>
 
 
       </div>{/* end hero-inner */}
@@ -163,7 +163,7 @@ export const Hero: React.FC = () => {
         @media (max-width: 768px) {
           .hero-inner { flex-direction: column !important; }
           .hero-divider { width: 100% !important; height: 1px !important; }
-          .hero-panel { flex: none !important; width: 100% !important; height: 50vh !important; }
+          .hero-panel { flex: 1 !important; width: 100% !important; height: 50% !important; }
         }
       `}</style>
     </section>

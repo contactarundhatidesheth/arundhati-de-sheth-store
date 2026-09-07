@@ -17,13 +17,13 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     setErrorMsg(null);
-    
+
     const formData = new FormData();
     formData.append('email', email);
     formData.append('password', password);
-    
+
     const error = await login(formData);
-    
+
     if (error) {
       setErrorMsg(error);
       setIsLoading(false);
@@ -58,8 +58,8 @@ export default function LoginPage() {
             <label style={{ display: 'block', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px', color: '#000' }}>
               Email Address
             </label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -80,8 +80,8 @@ export default function LoginPage() {
             <label style={{ display: 'block', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px', color: '#000' }}>
               Password
             </label>
-            <input 
-              type="password" 
+            <input
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -99,12 +99,13 @@ export default function LoginPage() {
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Link href="#" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textDecoration: 'underline' }}>
+            <Link href="/forgot-password" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textDecoration: 'underline' }}>
               Forgot Password?
             </Link>
           </div>
 
-          <button 
+
+          <button
             type="submit"
             disabled={isLoading}
             style={{
