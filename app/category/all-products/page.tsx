@@ -336,7 +336,8 @@ export default function CategoryAllProductsPage() {
         @media (max-width: 1100px) { .product-grid { grid-template-columns: repeat(3,1fr) !important; } }
         @media (max-width: 900px) { .product-grid { grid-template-columns: repeat(3,1fr) !important; } }
         @media (max-width: 768px) {
-          .shop-wrapper { padding-top: 50px !important; }
+          /* Hero is full-bleed under the fixed header — remove extra top padding */
+          .shop-wrapper { padding-top: 0 !important; }
           .breadcrumb-wrapper { padding: 24px 16px 16px !important; }
           .step-wrapper { padding: 16px 16px 120px !important; }
           .collection-grid { grid-template-columns: 1fr !important; }

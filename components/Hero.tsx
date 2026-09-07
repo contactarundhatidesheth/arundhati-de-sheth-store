@@ -41,16 +41,17 @@ export const Hero: React.FC = () => {
       style={{
         position: 'relative',
         width: '100%',
-        height: '100dvh',
+        height: '100svh',
         display: 'flex',
         overflow: 'hidden',
         background: '#000',
+        marginTop: 0,
       }}
     >
       <div className="hero-inner" style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100%', position: 'absolute', inset: 0 }}>
       {/* Left Video */}
       <div className="hero-panel" style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
-        <video
+          <video
           ref={video1Ref}
           src="/videos/look1.mp4"
           autoPlay
@@ -61,6 +62,7 @@ export const Hero: React.FC = () => {
             width: '100%',
             height: '100%',
             objectFit: 'cover',
+            objectPosition: 'top center',
             display: 'block',
           }}
         />
@@ -98,6 +100,7 @@ export const Hero: React.FC = () => {
             width: '100%',
             height: '100%',
             objectFit: 'cover',
+            objectPosition: 'top center',
             display: 'block',
           }}
         />
