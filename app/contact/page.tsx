@@ -19,9 +19,30 @@ export default function ContactPage() {
     message: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorStatus, setErrorStatus] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setErrorStatus(null);
+    try {
+      const res = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      if (!res.ok) {
+        throw new Error('Failed to send email');
+      }
+      setSubmitted(true);
+      setFormData({ name: '', email: '', phone: '', subject: 'General Inquiry', message: '' });
+    } catch (err: any) {
+      console.error(err);
+      setErrorStatus(err.message || 'Something went wrong');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -37,11 +58,11 @@ export default function ContactPage() {
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 25%)' }} />
         </div>
         <div style={{ position: 'absolute', bottom: 'clamp(30px, 5vw, 60px)', left: 'clamp(20px, 5vw, 60px)', right: '20px', zIndex: 10 }}>
-          <h1 style={{ 
-            fontSize: 'clamp(2.5rem, 8vw, 6rem)', 
-            fontWeight: '300', 
-            fontFamily: 'var(--font-serif)', 
-            color: '#fff', 
+          <h1 style={{
+            fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+            fontWeight: '300',
+            fontFamily: 'var(--font-serif)',
+            color: '#fff',
             margin: 0,
             lineHeight: 1,
             letterSpacing: '-0.02em',
@@ -55,121 +76,160 @@ export default function ContactPage() {
       {/* Main Content */}
       <div style={{ position: 'relative', zIndex: 1, background: 'var(--bg-primary)' }}>
         <FadeInSection>
-        <Section background="primary" padding="lg">
-          <Container>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
-              {/* Contact Details */}
-              <div style={{ width: '100%' }}>
-                <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2rem)', color: 'var(--text-main)', fontWeight: '300', marginBottom: '40px', fontFamily: 'var(--font-serif)' }}>
-                  Studio & Advisory
-                </h2>
+          <Section background="primary" padding="lg">
+            <Container>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
+                {/* Contact Details */}
+                <div style={{ width: '100%' }}>
+                  <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2rem)', color: 'var(--text-main)', fontWeight: '300', marginBottom: '40px', fontFamily: 'var(--font-serif)' }}>
+                    Studio & Advisory
+                  </h2>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', marginBottom: '48px', textAlign: 'left' }}>
-                  <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-                    <MapPin size={20} style={{ marginTop: '4px', flexShrink: 0, color: 'var(--text-main)', opacity: 0.6 }} />
-                    <div>
-                      <strong style={{ color: 'var(--text-main)', display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '0.85rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>The Salon — Churchgate</strong>
-                      <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.7', fontWeight: '300' }}>
-                        Private Viewings by Request<br />
-                        Reach out to arrange a visit.
-                      </p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', marginBottom: '48px', textAlign: 'left' }}>
+                    <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                      <MapPin size={20} style={{ marginTop: '4px', flexShrink: 0, color: 'var(--text-main)', opacity: 0.6 }} />
+                      <div>
+                        <strong style={{ color: 'var(--text-main)', display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '0.85rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>The Salon — Churchgate</strong>
+                        <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.7', fontWeight: '300' }}>
+                          Private Viewings by Request<br />
+                          Reach out to arrange a visit.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                      <Mail size={20} style={{ marginTop: '4px', flexShrink: 0, color: 'var(--text-main)', opacity: 0.6 }} />
+                      <div>
+                        <strong style={{ color: 'var(--text-main)', display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '0.85rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Email Inquiries</strong>
+                        <a href="mailto:contact@arundhatidesheth.com" style={{ color: 'var(--text-main)', textDecoration: 'underline', textUnderlineOffset: '3px', fontSize: '0.9rem' }}>
+                          contact@arundhatidesheth.com
+                        </a>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                      <Phone size={20} style={{ marginTop: '4px', flexShrink: 0, color: 'var(--text-main)', opacity: 0.6 }} />
+                      <div>
+                        <strong style={{ color: 'var(--text-main)', display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '0.85rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Direct Phone / WhatsApp</strong>
+                        <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.7', fontWeight: '300' }}>
+                          +91 95818 22000<br />
+                          <span style={{ fontSize: '0.8rem' }}>Mon – Fri, 11 AM – 6 PM IST</span>
+                        </p>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                      <Clock size={20} style={{ marginTop: '4px', flexShrink: 0, color: 'var(--text-main)', opacity: 0.6 }} />
+                      <div>
+                        <strong style={{ color: 'var(--text-main)', display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '0.85rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Response Time</strong>
+                        <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.7', fontWeight: '300' }}>
+                          All client inquiries are reviewed personally by our design team within 24 business hours.
+                        </p>
+                      </div>
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-                    <Mail size={20} style={{ marginTop: '4px', flexShrink: 0, color: 'var(--text-main)', opacity: 0.6 }} />
-                    <div>
-                      <strong style={{ color: 'var(--text-main)', display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '0.85rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Email Inquiries</strong>
-                       <a href="mailto:contact@arundhatidesheth.com" style={{ color: 'var(--text-main)', textDecoration: 'underline', textUnderlineOffset: '3px', fontSize: '0.9rem' }}>
-                        contact@arundhatidesheth.com
-                      </a>
-                    </div>
-                  </div>
-
-                  <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-                    <Phone size={20} style={{ marginTop: '4px', flexShrink: 0, color: 'var(--text-main)', opacity: 0.6 }} />
-                    <div>
-                      <strong style={{ color: 'var(--text-main)', display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '0.85rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Direct Phone / WhatsApp</strong>
-                       <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.7', fontWeight: '300' }}>
-                        +91 95818 22000<br />
-                        <span style={{ fontSize: '0.8rem' }}>Mon – Fri, 11 AM – 6 PM IST</span>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-                    <Clock size={20} style={{ marginTop: '4px', flexShrink: 0, color: 'var(--text-main)', opacity: 0.6 }} />
-                    <div>
-                      <strong style={{ color: 'var(--text-main)', display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '0.85rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Response Time</strong>
-                      <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.7', fontWeight: '300' }}>
-                        All client inquiries are reviewed personally by our design team within 24 business hours.
-                      </p>
-                    </div>
+                  {/* WhatsApp CTA */}
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Button href={WHATSAPP_URL} variant="primary" target="_blank" rel="noopener noreferrer" icon={<Shield size={16} />}>
+                      <span>Chat on WhatsApp</span>
+                    </Button>
                   </div>
                 </div>
 
-                {/* WhatsApp CTA */}
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <Button href={WHATSAPP_URL} variant="primary" target="_blank" rel="noopener noreferrer" icon={<Shield size={16} />}>
-                    <span>Chat on WhatsApp</span>
-                  </Button>
+                {/* Contact Form */}
+                <div style={{ width: '100%', marginTop: '64px', textAlign: 'left', borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: '64px' }}>
+                  <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2rem)', color: 'var(--text-main)', fontWeight: '300', marginBottom: '40px', fontFamily: 'var(--font-serif)', textAlign: 'center' }}>
+                    Send a Message
+                  </h2>
+                  {submitted ? (
+                    <div style={{ textAlign: 'center', padding: '40px', background: 'rgba(0,0,0,0.02)', borderRadius: '8px' }}>
+                      <CheckCircle2 size={40} style={{ color: 'green', margin: '0 auto 16px' }} />
+                      <p style={{ fontSize: '1.2rem', color: 'var(--text-main)', fontWeight: '300' }}>Thank you for reaching out.</p>
+                      <p style={{ color: 'var(--text-muted)' }}>We will get back to you shortly.</p>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                      {errorStatus && <div style={{ color: 'red', fontSize: '0.9rem' }}>{errorStatus}</div>}
+                      <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+                        <div style={{ flex: '1 1 calc(50% - 12px)', minWidth: '200px' }}>
+                          <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Name *</label>
+                          <input required type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} style={{ width: '100%', padding: '12px', border: '1px solid rgba(0,0,0,0.2)', background: 'transparent' }} />
+                        </div>
+                        <div style={{ flex: '1 1 calc(50% - 12px)', minWidth: '200px' }}>
+                          <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Email *</label>
+                          <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} style={{ width: '100%', padding: '12px', border: '1px solid rgba(0,0,0,0.2)', background: 'transparent' }} />
+                        </div>
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Phone</label>
+                        <input type="tel" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} style={{ width: '100%', padding: '12px', border: '1px solid rgba(0,0,0,0.2)', background: 'transparent' }} />
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Message *</label>
+                        <textarea required rows={5} value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })} style={{ width: '100%', padding: '12px', border: '1px solid rgba(0,0,0,0.2)', background: 'transparent', resize: 'vertical' }} />
+                      </div>
+                      <button type="submit" disabled={isSubmitting} style={{ alignSelf: 'center', background: 'var(--text-main)', color: '#fff', padding: '16px 48px', border: 'none', cursor: isSubmitting ? 'not-allowed' : 'pointer', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '16px' }}>
+                        {isSubmitting ? 'Sending...' : 'Send Message'}
+                      </button>
+                    </form>
+                  )}
                 </div>
               </div>
+            </Container>
+          </Section>
+        </FadeInSection>
+
+        {/* Map Section */}
+        <FadeInSection>
+          <Section background="primary" padding="none">
+            <div style={{ width: '100%', height: '450px', filter: 'grayscale(100%) opacity(0.9)' }}>
+              <iframe
+                src="https://maps.google.com/maps?q=Churchgate,Mumbai&t=&z=15&ie=UTF8&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={false}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
             </div>
-          </Container>
-        </Section>
-      </FadeInSection>
-
-      {/* Map Section */}
-      <FadeInSection>
-        <Section background="primary" padding="none">
-          <div style={{ width: '100%', height: '450px', filter: 'grayscale(100%) opacity(0.9)' }}>
-            <iframe
-              src="https://maps.google.com/maps?q=Churchgate,Mumbai&t=&z=15&ie=UTF8&output=embed"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen={false}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
-          </div>
-        </Section>
-      </FadeInSection>
+          </Section>
+        </FadeInSection>
 
 
 
-      {/* FAQ Link */}
-      <FadeInSection>
-        <Section background="primary" padding="lg" borderTop>
-          <Container maxWidth="800px" style={{ textAlign: 'center' }}>
-            <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2rem)', color: 'var(--text-main)', fontWeight: '300', fontFamily: 'var(--font-serif)', marginBottom: '24px' }}>
-              Have Questions?
-            </h2>
-            <p style={{ fontSize: '1rem', color: 'var(--text-muted)', marginBottom: '40px', fontWeight: '300' }}>
-              Find details about shipping, bespoke commissions, and pricing in our comprehensive FAQ.
-            </p>
-            <Link href="/faq" style={{ 
-              display: 'inline-flex', 
-              alignItems: 'center', 
-              padding: '16px 32px', 
-              border: '1px solid var(--text-main)', 
-              color: 'var(--text-main)', 
-              textDecoration: 'none', 
-              textTransform: 'uppercase', 
-              letterSpacing: '0.1em', 
-              fontSize: '0.85rem', 
-              fontWeight: 500,
-              transition: 'all 0.3s ease'
-            }}
-            onMouseOver={(e) => { e.currentTarget.style.background = 'var(--text-main)'; e.currentTarget.style.color = 'var(--bg-primary)'; }}
-            onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-main)'; }}
-            >
-              View All FAQs
-            </Link>
-          </Container>
-        </Section>
-      </FadeInSection>
+        {/* FAQ Link */}
+        <FadeInSection>
+          <Section background="primary" padding="lg" borderTop>
+            <Container maxWidth="800px" style={{ textAlign: 'center' }}>
+              <h2 style={{ fontSize: 'clamp(1.6rem, 3vw, 2rem)', color: 'var(--text-main)', fontWeight: '300', fontFamily: 'var(--font-serif)', marginBottom: '24px' }}>
+                Have Questions?
+              </h2>
+              <p style={{ fontSize: '1rem', color: 'var(--text-muted)', marginBottom: '40px', fontWeight: '300' }}>
+                Find details about shipping, bespoke commissions, and pricing in our comprehensive FAQ.
+              </p>
+              <Link href="/faq" style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                padding: '16px 32px',
+                border: '1px solid var(--text-main)',
+                color: 'var(--text-main)',
+                textDecoration: 'none',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                fontSize: '0.85rem',
+                fontWeight: 500,
+                transition: 'all 0.3s ease'
+              }}
+                onMouseOver={(e) => { e.currentTarget.style.background = 'var(--text-main)'; e.currentTarget.style.color = 'var(--bg-primary)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-main)'; }}
+              >
+                View All FAQs
+              </Link>
+            </Container>
+          </Section>
+        </FadeInSection>
       </div>
     </div>
   );

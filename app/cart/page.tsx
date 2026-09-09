@@ -13,12 +13,13 @@ export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, subtotal, clearCart } = useCart();
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [user, setUser] = React.useState<any>(null);
+  const [checkoutMessage, setCheckoutMessage] = React.useState<{ type: 'success' | 'error', text: string } | null>(null);
   const router = useRouter();
 
   React.useEffect(() => {
     const supabase = createClient();
     supabase.auth.getUser().then(({ data }) => setUser(data.user));
-    
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user || null);
     });
@@ -28,19 +29,20 @@ export default function CartPage() {
 
   const handleCheckout = async () => {
     setIsProcessing(true);
+    setCheckoutMessage(null);
     try {
       const res = await fetch('/api/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           amount: subtotal,
           cartItems: cart,
           shippingAddress: user?.user_metadata?.shipping_address || {}
         })
       });
-      
+
       const data = await res.json();
-      
+
       if (!res.ok) throw new Error(data.error);
 
       const options = {
@@ -58,16 +60,16 @@ export default function CartPage() {
               body: JSON.stringify(response)
             });
             const verifyData = await verifyRes.json();
-            
+
             if (verifyRes.ok) {
-              alert('Payment Successful! Your order has been placed.');
+              setCheckoutMessage({ type: 'success', text: 'Payment Successful! Your order has been placed. Redirecting...' });
               clearCart();
-              router.push('/account');
+              setTimeout(() => { router.push('/account'); }, 2000);
             } else {
-              alert('Payment Verification Failed: ' + verifyData.error);
+              setCheckoutMessage({ type: 'error', text: 'Payment Verification Failed: ' + verifyData.error });
             }
           } catch (err) {
-            alert('Error verifying payment.');
+            setCheckoutMessage({ type: 'error', text: 'Error verifying payment.' });
           }
         },
         theme: {
@@ -77,11 +79,11 @@ export default function CartPage() {
 
       const rzp = new (window as any).Razorpay(options);
       rzp.on('payment.failed', function (response: any) {
-        alert('Payment Failed: ' + response.error.description);
+        setCheckoutMessage({ type: 'error', text: 'Payment Failed: ' + response.error.description });
       });
       rzp.open();
     } catch (err: any) {
-      alert('Secure Checkout is currently initializing or unavailable: ' + err.message);
+      setCheckoutMessage({ type: 'error', text: 'Secure Checkout is currently initializing or unavailable: ' + err.message });
     } finally {
       setIsProcessing(false);
     }
@@ -92,137 +94,152 @@ export default function CartPage() {
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
       <div style={{ minHeight: 'calc(100vh - 80px)', background: 'var(--bg-primary)', padding: '144px 24px 64px' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-        
-        <div className="cart-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '64px' }}>
-          
-          {/* Left: Cart Items */}
-          <div>
-            <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontFamily: 'var(--font-serif)', marginBottom: '32px', borderBottom: '1px solid var(--border)', paddingBottom: '16px' }}>
-              My Cart
-            </h1>
 
-            {cart.length === 0 ? (
-              <div style={{ padding: '48px 0', textAlign: 'center' }}>
-                <p style={{ fontSize: '1rem', color: 'var(--text-muted)', marginBottom: '24px' }}>Cart is empty</p>
-                <Link href="/category/all-products" className="btn-primary">
-                  Continue Shopping
-                </Link>
-              </div>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-                {cart.map((item) => (
-                  <div key={item.product.id} className="cart-item" style={{ display: 'flex', gap: '24px', borderBottom: '1px solid var(--border)', paddingBottom: '32px' }}>
-                    <div className="cart-item-img" style={{ position: 'relative', width: '120px', aspectRatio: '4/5', background: 'var(--bg-secondary)', flexShrink: 0 }}>
-                      <Image 
-                        src={item.product.images[0]} 
-                        alt={item.product.title} 
-                        fill 
-                        style={{ objectFit: 'cover' }} 
-                      />
-                    </div>
-                    
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px', gap: '12px' }}>
-                        <h3 style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', fontWeight: '400', fontFamily: 'var(--font-sans)', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
-                          {item.product.title}
-                        </h3>
-                        <p style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', flexShrink: 0 }}>₹{item.product.price.toLocaleString('en-IN')}</p>
+          <div className="cart-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '64px' }}>
+
+            {/* Left: Cart Items */}
+            <div>
+              <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontFamily: 'var(--font-serif)', marginBottom: '32px', borderBottom: '1px solid var(--border)', paddingBottom: '16px' }}>
+                My Cart
+              </h1>
+
+              {cart.length === 0 ? (
+                <div style={{ padding: '48px 0', textAlign: 'center' }}>
+                  <p style={{ fontSize: '1rem', color: 'var(--text-muted)', marginBottom: '24px' }}>Cart is empty</p>
+                  <Link href="/category/all-products" className="btn-primary">
+                    Continue Shopping
+                  </Link>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                  {cart.map((item) => (
+                    <div key={item.product.id} className="cart-item" style={{ display: 'flex', gap: '24px', borderBottom: '1px solid var(--border)', paddingBottom: '32px' }}>
+                      <div className="cart-item-img" style={{ position: 'relative', width: '120px', aspectRatio: '4/5', background: 'var(--bg-secondary)', flexShrink: 0 }}>
+                        <Image
+                          src={item.product.images[0]}
+                          alt={item.product.title}
+                          fill
+                          style={{ objectFit: 'cover' }}
+                        />
                       </div>
 
-                      <div style={{ display: 'flex', alignItems: 'center', marginTop: 'auto', border: '1px solid var(--border)', width: 'fit-content' }}>
-                        <button 
-                          onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                          style={{ padding: '8px 16px', fontSize: '1rem' }}
-                        >-</button>
-                        <span style={{ fontSize: '0.9rem', padding: '0 12px' }}>{item.quantity}</span>
-                        <button 
-                          onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                          style={{ padding: '8px 16px', fontSize: '1rem' }}
-                        >+</button>
+                      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px', gap: '12px' }}>
+                          <h3 style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', fontWeight: '400', fontFamily: 'var(--font-sans)', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                            {item.product.title}
+                          </h3>
+                          <p style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', flexShrink: 0 }}>₹{item.product.price.toLocaleString('en-IN')}</p>
+                        </div>
+
+                        <div style={{ display: 'flex', alignItems: 'center', marginTop: 'auto', border: '1px solid var(--border)', width: 'fit-content' }}>
+                          <button
+                            onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                            style={{ padding: '8px 16px', fontSize: '1rem' }}
+                          >-</button>
+                          <span style={{ fontSize: '0.9rem', padding: '0 12px' }}>{item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                            style={{ padding: '8px 16px', fontSize: '1rem' }}
+                          >+</button>
+                        </div>
                       </div>
+
+                      <button
+                        onClick={() => removeFromCart(item.product.id)}
+                        style={{ alignSelf: 'flex-start', color: 'var(--text-muted)' }}
+                      >
+                        <X size={20} />
+                      </button>
                     </div>
-                    
-                    <button 
-                      onClick={() => removeFromCart(item.product.id)}
-                      style={{ alignSelf: 'flex-start', color: 'var(--text-muted)' }}
-                    >
-                      <X size={20} />
+                  ))}
+                </div>
+              )}
+
+              {cart.length > 0 && (
+                <div style={{ marginTop: '32px' }}>
+                  <div style={{ marginBottom: '24px' }}>
+                    <button style={{ color: 'var(--text-main)', fontSize: '0.9rem', textDecoration: 'underline', padding: 0 }}>
+                      Enter a promo code
                     </button>
                   </div>
-                ))}
-              </div>
-            )}
-
-            {cart.length > 0 && (
-              <div style={{ marginTop: '32px' }}>
-                <div style={{ marginBottom: '24px' }}>
-                  <button style={{ color: 'var(--text-main)', fontSize: '0.9rem', textDecoration: 'underline', padding: 0 }}>
-                    Enter a promo code
-                  </button>
+                  <div>
+                    <button style={{ color: 'var(--text-main)', fontSize: '0.9rem', textDecoration: 'underline', padding: 0 }}>
+                      Add a note
+                    </button>
+                  </div>
                 </div>
-                <div>
-                  <button style={{ color: 'var(--text-main)', fontSize: '0.9rem', textDecoration: 'underline', padding: 0 }}>
-                    Add a note
+              )}
+            </div>
+
+            {/* Right: Order Summary */}
+            {cart.length > 0 && (
+              <div>
+                <h2 style={{ fontSize: '1.5rem', fontFamily: 'var(--font-serif)', marginBottom: '32px', borderBottom: '1px solid var(--border)', paddingBottom: '16px' }}>
+                  Order Summary
+                </h2>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
+                  <span style={{ color: 'var(--text-muted)' }}>Subtotal</span>
+                  <span>₹{subtotal.toLocaleString('en-IN')}</span>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid var(--border)' }}>
+                  <Link href="#" style={{ fontSize: '0.9rem', textDecoration: 'underline' }}>
+                    Estimate Shipping
+                  </Link>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.25rem', fontWeight: '500', margin: '32px 0' }}>
+                  <span>Total</span>
+                  <span>₹{subtotal.toLocaleString('en-IN')}</span>
+                </div>
+
+                {checkoutMessage && (
+                  <div style={{
+                    padding: '16px',
+                    marginBottom: '24px',
+                    backgroundColor: checkoutMessage.type === 'error' ? '#fee2e2' : '#dcfce7',
+                    color: checkoutMessage.type === 'error' ? '#991b1b' : '#166534',
+                    border: `1px solid ${checkoutMessage.type === 'error' ? '#f87171' : '#4ade80'}`,
+                    borderRadius: '4px',
+                    fontSize: '0.9rem',
+                    lineHeight: '1.4'
+                  }}>
+                    {checkoutMessage.text}
+                  </div>
+                )}
+
+                {user ? (
+                  <button
+                    className="btn-primary"
+                    style={{ width: '100%', marginBottom: '16px', opacity: isProcessing ? 0.7 : 1 }}
+                    onClick={handleCheckout}
+                    disabled={isProcessing}
+                  >
+                    {isProcessing ? 'Processing...' : 'Checkout'}
                   </button>
+                ) : (
+                  <button
+                    className="btn-primary"
+                    style={{ width: '100%', marginBottom: '16px', display: 'flex', gap: '8px', alignItems: 'center' }}
+                    onClick={() => router.push('/login')}
+                  >
+                    <LogIn size={18} />
+                    Login to Checkout
+                  </button>
+                )}
+
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                  <Lock size={14} />
+                  <span>Secure Checkout</span>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Right: Order Summary */}
-          {cart.length > 0 && (
-            <div>
-              <h2 style={{ fontSize: '1.5rem', fontFamily: 'var(--font-serif)', marginBottom: '32px', borderBottom: '1px solid var(--border)', paddingBottom: '16px' }}>
-                Order Summary
-              </h2>
-              
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Subtotal</span>
-                <span>₹{subtotal.toLocaleString('en-IN')}</span>
-              </div>
-              
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid var(--border)' }}>
-                <Link href="#" style={{ fontSize: '0.9rem', textDecoration: 'underline' }}>
-                  Estimate Shipping
-                </Link>
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.25rem', fontWeight: '500', marginBottom: '32px' }}>
-                <span>Total</span>
-                <span>₹{subtotal.toLocaleString('en-IN')}</span>
-              </div>
-
-              {user ? (
-                <button 
-                  className="btn-primary" 
-                  style={{ width: '100%', marginBottom: '16px', opacity: isProcessing ? 0.7 : 1 }}
-                  onClick={handleCheckout}
-                  disabled={isProcessing}
-                >
-                  {isProcessing ? 'Processing...' : 'Checkout'}
-                </button>
-              ) : (
-                <button 
-                  className="btn-primary" 
-                  style={{ width: '100%', marginBottom: '16px', display: 'flex', gap: '8px', alignItems: 'center' }}
-                  onClick={() => router.push('/login')}
-                >
-                  <LogIn size={18} />
-                  Login to Checkout
-                </button>
-              )}
-
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                <Lock size={14} />
-                <span>Secure Checkout</span>
-              </div>
-            </div>
-          )}
         </div>
 
-      </div>
-
-      <style jsx>{`
+        <style jsx>{`
         @media (max-width: 900px) {
           .cart-grid {
             grid-template-columns: 1fr !important;

@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { createClient } from '@/utils/supabase/server'
+import { createClient, getURL } from '@/utils/supabase/server'
 
 export async function login(formData: FormData) {
   const supabase = createClient()
@@ -40,7 +40,7 @@ export async function signup(formData: FormData) {
   const firstName = formData.get('firstName') as string
   const lastName = formData.get('lastName') as string
 
-  const origin = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+  const origin = getURL()
   const { error } = await supabase.auth.signUp({
     email,
     password,
@@ -65,7 +65,7 @@ export async function signInWithGoogle() {
   const supabase = createClient()
 
   // Try to use NEXT_PUBLIC_SITE_URL, fallback to localhost for local dev
-  const origin = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+  const origin = getURL()
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
@@ -82,7 +82,7 @@ export async function signInWithGoogle() {
 export async function resetPassword(formData: FormData) {
   const supabase = createClient()
   const email = formData.get('email') as string
-  const origin = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+  const origin = getURL()
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${origin}/auth/callback?next=/account/update-password`,
