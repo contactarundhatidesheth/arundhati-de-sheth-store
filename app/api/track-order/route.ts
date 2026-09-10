@@ -12,9 +12,11 @@ export async function POST(req: Request) {
         const supabase = createClient();
 
         // We search the orders table securely via RPC (bypasses RLS specifically for this order ID)
-        const { data: order } = await supabase
+        const { data } = await supabase
             .rpc('get_tracking_order', { p_razorpay_order_id: orderId })
             .single();
+
+        const order = data as any;
 
         if (!order) {
             return NextResponse.json({ error: 'Order not found' }, { status: 404 });
