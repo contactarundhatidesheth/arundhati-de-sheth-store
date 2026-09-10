@@ -7,6 +7,8 @@ export async function verifyAdminOtp(otp: string) {
     if (otp === '369369') {
         cookies().set('admin_session_token', 'true', {
             httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
             path: '/',
             maxAge: 60 * 60 * 24 * 7 // 1 week
         });
