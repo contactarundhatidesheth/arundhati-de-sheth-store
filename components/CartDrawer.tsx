@@ -12,7 +12,7 @@ export const CartDrawer: React.FC = () => {
   if (!isCartOpen) return null;
 
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 100, display: 'flex', justifyContent: 'flex-end' }}>
+    <div style={{ position: 'fixed', inset: 0, zIndex: 999, display: 'flex', justifyContent: 'flex-end' }}>
       <div
         style={{ position: 'absolute', inset: 0, background: 'rgba(0, 0, 0, 0.4)', backdropFilter: 'blur(2px)' }}
         onClick={() => setIsCartOpen(false)}
@@ -28,7 +28,7 @@ export const CartDrawer: React.FC = () => {
           borderLeft: '1px solid var(--border)',
           display: 'flex',
           flexDirection: 'column',
-          zIndex: 101,
+          zIndex: 1000,
           animation: 'slideInRight 0.3s ease-out forwards',
         }}
         className="animate-slide-in"
@@ -70,11 +70,11 @@ export const CartDrawer: React.FC = () => {
                         {item.product.title}
                       </h4>
                       <button
-                         onClick={() => removeFromCart(item.product.id)}
-                         style={{ color: 'var(--text-muted)' }}
-                         aria-label="Remove item"
+                        onClick={() => removeFromCart(item.product.id)}
+                        style={{ color: 'var(--text-muted)' }}
+                        aria-label="Remove item"
                       >
-                         <Trash2 size={16} />
+                        <Trash2 size={16} />
                       </button>
                     </div>
                     <p style={{ fontSize: '1rem' }}>₹{item.product.price.toLocaleString('en-IN')}</p>
