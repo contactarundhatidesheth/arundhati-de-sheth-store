@@ -5,13 +5,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCMSData } from '@/hooks/useCMSData';
 import { useCart } from '@/context/CartContext';
-import { ChevronDown, ChevronUp, ShieldCheck, Truck, BadgeCheck } from 'lucide-react';
+import { ChevronDown, ChevronUp, ShieldCheck, Truck, BadgeCheck, ChevronLeft, ChevronRight, X as CloseIcon, ZoomIn } from 'lucide-react';
 
 export default function ProductDetailClient({ params }: { params: { handle: string } }) {
   const { data, loading } = useCMSData();
   const { addToCart } = useCart();
   const [openAccordion, setOpenAccordion] = useState<string | null>('info');
   const [activeImage, setActiveImage] = useState(0);
+  const [isZoomModalOpen, setIsZoomModalOpen] = useState(false);
 
   if (loading) return <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }} />;
 
@@ -51,27 +52,41 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
         {/* Left: Image Gallery with thumbnail switcher */}
         <div className="product-image-panel" style={{ display: 'flex', flexDirection: 'column', background: 'var(--bg-surface)' }}>
           {/* Main Image */}
-          <div style={{ width: '100%', padding: '40px 80px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <div style={{ width: '100%', padding: '40px 80px', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
             <div
               className="main-image-container"
-              style={{ position: 'relative', width: '100%', maxWidth: '600px', aspectRatio: '4/5', overflow: 'hidden', cursor: 'crosshair' }}
-              onMouseMove={(e) => {
-                const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-                const x = ((e.clientX - left) / width) * 100;
-                const y = ((e.clientY - top) / height) * 100;
-                e.currentTarget.style.setProperty('--x', `${x}%`);
-                e.currentTarget.style.setProperty('--y', `${y}%`);
-              }}
+              style={{ position: 'relative', width: '100%', maxWidth: '600px', aspectRatio: '4/5', overflow: 'hidden', cursor: 'zoom-in', background: '#fff' }}
+              onClick={() => setIsZoomModalOpen(true)}
             >
               <Image
                 src={product.images[activeImage]}
                 alt={`${product.title} - View ${activeImage + 1}`}
                 fill
-                style={{ objectFit: 'contain', background: '#fff' }}
-                className="main-product-image"
+                style={{ objectFit: 'contain' }}
                 priority
               />
+              <div style={{ position: 'absolute', bottom: '16px', right: '16px', background: 'rgba(255,255,255,0.8)', padding: '8px', borderRadius: '50%', display: 'flex', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+                <ZoomIn size={20} color="#000" />
+              </div>
             </div>
+
+            {/* Slider Arrows */}
+            {product.images.length > 1 && (
+              <>
+                <button
+                  onClick={() => setActiveImage(prev => (prev === 0 ? product.images.length - 1 : prev - 1))}
+                  style={{ position: 'absolute', left: '24px', top: '50%', transform: 'translateY(-50%)', background: '#fff', border: '1px solid #eaeaea', borderRadius: '50%', width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}
+                >
+                  <ChevronLeft size={24} color="#000" />
+                </button>
+                <button
+                  onClick={() => setActiveImage(prev => (prev === product.images.length - 1 ? 0 : prev + 1))}
+                  style={{ position: 'absolute', right: '24px', top: '50%', transform: 'translateY(-50%)', background: '#fff', border: '1px solid #eaeaea', borderRadius: '50%', width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}
+                >
+                  <ChevronRight size={24} color="#000" />
+                </button>
+              </>
+            )}
           </div>
           {/* Thumbnails */}
           {product.images.length > 1 && (
@@ -256,16 +271,47 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
         </div>
       )}
 
+      {/* Lightbox Zoom Modal */}
+      {isZoomModalOpen && (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: '#ffffff', zIndex: 999999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <button
+            onClick={() => setIsZoomModalOpen(false)}
+            style={{ position: 'absolute', top: '32px', right: '32px', background: 'transparent', border: 'none', cursor: 'pointer', zIndex: 1000000 }}
+          >
+            <CloseIcon size={32} color="#000" />
+          </button>
+
+          <div style={{ position: 'relative', width: '90%', height: '90%' }}>
+            <Image
+              src={product.images[activeImage]}
+              alt={`${product.title} - Zoomed View`}
+              fill
+              style={{ objectFit: 'contain' }}
+              quality={100}
+            />
+          </div>
+
+          {product.images.length > 1 && (
+            <>
+              <button
+                onClick={() => setActiveImage(prev => (prev === 0 ? product.images.length - 1 : prev - 1))}
+                style={{ position: 'absolute', left: '48px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.5)', border: 'none', borderRadius: '50%', width: '64px', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+              >
+                <ChevronLeft size={36} color="#000" />
+              </button>
+              <button
+                onClick={() => setActiveImage(prev => (prev === product.images.length - 1 ? 0 : prev + 1))}
+                style={{ position: 'absolute', right: '48px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.5)', border: 'none', borderRadius: '50%', width: '64px', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+              >
+                <ChevronRight size={36} color="#000" />
+              </button>
+            </>
+          )}
+        </div>
+      )
+      }
+
       <style>{`
-        .main-product-image {
-          transition: transform 0.4s ease-out;
-          transform-origin: var(--x, 50%) var(--y, 50%);
-        }
-        @media (hover: hover) and (pointer: fine) {
-          .main-image-container:hover .main-product-image {
-            transform: scale(2.2);
-          }
-        }
         .rec-img:hover { transform: scale(1.05); }
         .add-to-cart-btn {
           width: 100%;
@@ -334,6 +380,6 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
           .trust-badges { display: none !important; }
         }
       `}</style>
-    </div>
+    </div >
   );
 }
