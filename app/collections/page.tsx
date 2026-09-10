@@ -80,7 +80,7 @@ export default function CollectionsPage() {
       <section style={{ position: 'relative', width: '100%', height: '85vh', overflow: 'hidden', background: '#000' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
           <video
-            src="/images/High%20Jewellery%20.mp4"
+            src="/images/high_jewellery_compressed.mp4"
             autoPlay
             loop
             muted
