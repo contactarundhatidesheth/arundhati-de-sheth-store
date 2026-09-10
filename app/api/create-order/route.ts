@@ -3,16 +3,11 @@ import { createClient } from '@/utils/supabase/server';
 
 export async function POST(req: Request) {
   try {
-    const { amount, cartItems, shippingAddress, guestEmail, guestPhone } = await req.json();
+    const { amount, cartItems, guestName, guestEmail, guestPhone, shippingAddress } = await req.json();
 
-    const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user && (!guestEmail || !guestPhone)) {
-      return NextResponse.json({ error: 'Email and Phone are required for guest checkout' }, { status: 400 });
+    if (!guestName || !guestEmail || !guestPhone) {
+      return NextResponse.json({ error: 'Name, Email and Phone are required for checkout' }, { status: 400 });
     }
-
-    const currentEmail = user ? user.email : guestEmail;
 
     // Check if keys exist
     if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
@@ -42,15 +37,17 @@ export async function POST(req: Request) {
       throw new Error(data.error?.description || 'Razorpay Order Creation Failed');
     }
 
+    const supabase = createClient();
+
     // Insert pending order into Supabase
     const { error: dbError } = await supabase.from('orders').insert({
-      user_id: user ? user.id : null,
-      user_email: currentEmail,
-      user_phone: user ? null : guestPhone,
+      user_id: null,
+      user_email: guestEmail,
+      user_phone: guestPhone,
       razorpay_order_id: data.id,
       amount: amount,
       status: 'Pending',
-      shipping_address: shippingAddress,
+      shipping_address: { ...shippingAddress, name: guestName, tracking_number: null },
       items: cartItems
     });
 

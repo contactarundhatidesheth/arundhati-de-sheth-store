@@ -91,6 +91,12 @@ export default function TrackOrder() {
                             <span style={{ color: 'var(--text-muted)' }}>Payment Verification</span>
                             <span style={{ fontWeight: '500' }}>{orderData.razorpay_payment_id || 'Awaiting Sync'}</span>
                         </div>
+                        {orderData.shipping_address?.tracking_number && (
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '32px', padding: '16px', background: '#f5f5f5', borderRadius: '4px' }}>
+                                <span style={{ color: 'var(--text-muted)', textTransform: 'uppercase', fontSize: '0.8rem', letterSpacing: '0.05em' }}>Shipping Docket #</span>
+                                <span style={{ fontWeight: '600', letterSpacing: '0.05em' }}>{orderData.shipping_address.tracking_number}</span>
+                            </div>
+                        )}
 
                         <h3 style={{ fontSize: '1rem', marginBottom: '16px' }}>Items</h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>

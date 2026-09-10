@@ -3,9 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ShoppingBag, User, Menu, X } from 'lucide-react';
+import { ShoppingBag, Menu, X } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
-import { createClient } from '@/utils/supabase/client';
 
 // Pages with a light/white background at the top — logo must always be black
 const LIGHT_BG_PATHS = ['/category/ephemerals', '/category/perennials', '/shipping', '/terms', '/privacy', '/payment', '/press', '/cart', '/product', '/shop-the-look', '/pages/jewelry-lookbooks', '/timeline'];
@@ -16,18 +15,6 @@ export const Header: React.FC = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
-
-  useEffect(() => {
-    const supabase = createClient();
-    supabase.auth.getUser().then(({ data }) => setUser(data.user));
-    
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   // Force opaque white header + black logo on light-background pages
   const isLightPage = LIGHT_BG_PATHS.some((p) => pathname.startsWith(p));
@@ -35,7 +22,7 @@ export const Header: React.FC = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
+
       // Hide when scrolling down past 80px, show when scrolling up
       if (currentScrollY > lastScrollY && currentScrollY > 80) {
         setIsVisible(false);
@@ -100,66 +87,64 @@ export const Header: React.FC = () => {
           transition: 'all 0.4s cubic-bezier(0.25, 1, 0.5, 1)',
           color: isAtTop ? '#ffffff' : 'var(--text-main)',
         }}>
-        {/* Left: Menu & Links */}
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '32px' }}>
-          <button onClick={() => setIsMenuOpen(true)} style={{ color: 'inherit', background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', display: 'flex' }}>
-            <Menu size={28} strokeWidth={1.5} />
-          </button>
-        </div>
+          {/* Left: Menu & Links */}
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '32px' }}>
+            <button onClick={() => setIsMenuOpen(true)} style={{ color: 'inherit', background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', display: 'flex' }}>
+              <Menu size={28} strokeWidth={1.5} />
+            </button>
+          </div>
 
-        {/* Center: Logo */}
-        <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <Link href="/" className="logo-wrapper" style={{ display: 'block' }}>
-            <img 
-              src="https://www.arundhatidesheth.com/cdn/shop/files/111.png?v=1708868785" 
-              alt="Arundhati De-Sheth" 
-              style={{ 
-                width: '100%', 
-                height: 'auto', 
-                objectFit: 'contain',
-                filter: isAtTop ? 'brightness(0) invert(1)' : 'none',
-                transition: 'filter 0.4s ease'
-              }}
-            />
-          </Link>
-        </div>
+          {/* Center: Logo */}
+          <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Link href="/" className="logo-wrapper" style={{ display: 'block' }}>
+              <img
+                src="https://www.arundhatidesheth.com/cdn/shop/files/111.png?v=1708868785"
+                alt="Arundhati De-Sheth"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  objectFit: 'contain',
+                  filter: isAtTop ? 'brightness(0) invert(1)' : 'none',
+                  transition: 'filter 0.4s ease'
+                }}
+              />
+            </Link>
+          </div>
 
-        {/* Right: Cart & User */}
-        <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '24px' }}>
-          <Link href={user ? "/account" : "/login"} style={{ display: 'flex', alignItems: 'center', color: 'inherit', background: 'transparent', border: 'none', padding: 0 }}>
-            <User size={20} strokeWidth={1.5} />
-          </Link>
-          <button 
-            style={{ position: 'relative', display: 'flex', alignItems: 'center', color: 'inherit', background: 'transparent', border: 'none', padding: 0, cursor: 'pointer' }}
-            onClick={() => setIsCartOpen(true)}
-          >
-            <ShoppingBag size={20} strokeWidth={1.5} />
-            {totalItems > 0 && (
-              <span style={{
-                position: 'absolute',
-                top: '-6px',
-                right: '-10px',
-                background: isAtTop ? '#ffffff' : 'var(--text-main)',
-                color: isAtTop ? '#000000' : 'var(--bg-primary)',
-                fontSize: '10px',
-                width: '16px',
-                height: '16px',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'all 0.4s ease'
-              }}>
-                {totalItems}
-              </span>
-            )}
-          </button>
-        </div>
-      </header>
+          {/* Right: Cart & User */}
+          <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '24px' }}>
+
+            <button
+              style={{ position: 'relative', display: 'flex', alignItems: 'center', color: 'inherit', background: 'transparent', border: 'none', padding: 0, cursor: 'pointer' }}
+              onClick={() => setIsCartOpen(true)}
+            >
+              <ShoppingBag size={20} strokeWidth={1.5} />
+              {totalItems > 0 && (
+                <span style={{
+                  position: 'absolute',
+                  top: '-6px',
+                  right: '-10px',
+                  background: isAtTop ? '#ffffff' : 'var(--text-main)',
+                  color: isAtTop ? '#000000' : 'var(--bg-primary)',
+                  fontSize: '10px',
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.4s ease'
+                }}>
+                  {totalItems}
+                </span>
+              )}
+            </button>
+          </div>
+        </header>
       </div>
 
       {/* Full Screen Menu Overlay */}
-      <div 
+      <div
         style={{
           position: 'fixed',
           top: 0,
@@ -180,25 +165,25 @@ export const Header: React.FC = () => {
           if (e.target === e.currentTarget) setIsMenuOpen(false);
         }}
       >
-        <div style={{ 
-          height: 'clamp(80px, 10vh, 120px)', 
-          flexShrink: 0, 
-          display: 'flex', 
-          justifyContent: 'flex-end', 
+        <div style={{
+          height: 'clamp(80px, 10vh, 120px)',
+          flexShrink: 0,
+          display: 'flex',
+          justifyContent: 'flex-end',
           alignItems: 'flex-start',
-          padding: 'env(safe-area-inset-top, 20px) 24px 0 0' 
+          padding: 'env(safe-area-inset-top, 20px) 24px 0 0'
         }}>
           <button onClick={() => setIsMenuOpen(false)} style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', display: 'flex' }}>
             <X size={32} strokeWidth={1} color="#ffffff" />
           </button>
         </div>
-        <nav style={{ 
-          flex: 1, 
-          display: 'flex', 
-          flexDirection: 'column', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          gap: 'clamp(16px, 3vh, 24px)', 
+        <nav style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: 'clamp(16px, 3vh, 24px)',
           padding: '20px 24px calc(60px + env(safe-area-inset-bottom, 0px)) 24px',
           marginTop: '-10vh'
         }}>
@@ -208,11 +193,7 @@ export const Header: React.FC = () => {
           <Link href="/collections" className="nav-link" style={{ fontSize: 'clamp(1rem, 4vw, 1.4rem)', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>HIGH JEWELLERY</Link>
           <Link href="/pages/whats-new" className="nav-link" style={{ fontSize: 'clamp(1rem, 4vw, 1.4rem)', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>PRESS</Link>
           <Link href="/contact" className="nav-link" style={{ fontSize: 'clamp(1rem, 4vw, 1.4rem)', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>CONTACT</Link>
-          {user ? (
-            <Link href="/account" className="nav-link" style={{ fontSize: 'clamp(1rem, 4vw, 1.4rem)', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>ACCOUNT</Link>
-          ) : (
-            <Link href="/login" className="nav-link" style={{ fontSize: 'clamp(1rem, 4vw, 1.4rem)', color: '#ffffff', letterSpacing: '0.15em' }} onClick={() => setIsMenuOpen(false)}>LOGIN</Link>
-          )}
+
         </nav>
       </div>
 

@@ -5,36 +5,34 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
 import { useCart } from '@/context/CartContext';
-import { Lock, X, LogIn } from 'lucide-react';
-import { createClient } from '@/utils/supabase/client';
+import { Lock, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, subtotal, clearCart } = useCart();
   const [isProcessing, setIsProcessing] = React.useState(false);
-  const [user, setUser] = React.useState<any>(null);
+  const [guestName, setGuestName] = React.useState('');
   const [guestEmail, setGuestEmail] = React.useState('');
   const [guestPhone, setGuestPhone] = React.useState('');
+  const [guestAddress, setGuestAddress] = React.useState({
+    line1: '',
+    line2: '',
+    city: '',
+    state: '',
+    zip: ''
+  });
   const [checkoutMessage, setCheckoutMessage] = React.useState<{ type: 'success' | 'error', text: string } | null>(null);
   const router = useRouter();
 
-  React.useEffect(() => {
-    const supabase = createClient();
-    supabase.auth.getUser().then(({ data }) => setUser(data.user));
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
+  const inputStyle = { padding: '12px', border: '1px solid var(--border)', borderRadius: '4px', outline: 'none', background: 'var(--bg-primary)' };
 
   const handleCheckout = async () => {
     setIsProcessing(true);
     setCheckoutMessage(null);
 
-    if (!user && (!guestEmail || !guestPhone)) {
-      setCheckoutMessage({ type: 'error', text: 'Please enter your email and phone number for checkout.' });
+    // Validate simple required fields
+    if (!guestName || !guestEmail || !guestPhone || !guestAddress.line1 || !guestAddress.city || !guestAddress.state || !guestAddress.zip) {
+      setCheckoutMessage({ type: 'error', text: 'Please fill in all required contact and shipping details.' });
       setIsProcessing(false);
       return;
     }
@@ -46,9 +44,10 @@ export default function CartPage() {
         body: JSON.stringify({
           amount: subtotal,
           cartItems: cart,
-          shippingAddress: user?.user_metadata?.shipping_address || {},
-          guestEmail: user ? null : guestEmail,
-          guestPhone: user ? null : guestPhone
+          guestName,
+          guestEmail,
+          guestPhone,
+          shippingAddress: guestAddress
         })
       });
 
@@ -73,9 +72,9 @@ export default function CartPage() {
             const verifyData = await verifyRes.json();
 
             if (verifyRes.ok) {
-              setCheckoutMessage({ type: 'success', text: 'Payment Successful! Your order has been placed. Redirecting...' });
+              setCheckoutMessage({ type: 'success', text: 'Payment Successful! Your order has been placed. Redirecting to tracking...' });
               clearCart();
-              setTimeout(() => { router.push('/account'); }, 2000);
+              setTimeout(() => { router.push(`/track?order=${data.orderId}`); }, 2000);
             } else {
               setCheckoutMessage({ type: 'error', text: 'Payment Verification Failed: ' + verifyData.error });
             }
@@ -220,13 +219,21 @@ export default function CartPage() {
                   </div>
                 )}
 
-                {!user && (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '16px' }}>
-                    <h3 style={{ fontSize: '1rem', color: '#111', fontWeight: '500' }}>Guest Checkout</h3>
-                    <input type="email" placeholder="Email Address *" value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)} required style={{ padding: '12px', border: '1px solid var(--border)', borderRadius: '4px', outline: 'none' }} />
-                    <input type="tel" placeholder="Phone Number *" value={guestPhone} onChange={(e) => setGuestPhone(e.target.value)} required style={{ padding: '12px', border: '1px solid var(--border)', borderRadius: '4px', outline: 'none' }} />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
+                  <h3 style={{ fontSize: '1rem', color: '#111', fontWeight: '500', marginBottom: '8px' }}>Checkout Details</h3>
+                  <input type="text" placeholder="Full Name *" value={guestName} onChange={(e) => setGuestName(e.target.value)} required style={inputStyle} />
+                  <input type="email" placeholder="Email Address *" value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)} required style={inputStyle} />
+                  <input type="tel" placeholder="Phone Number *" value={guestPhone} onChange={(e) => setGuestPhone(e.target.value)} required style={inputStyle} />
+
+                  <h3 style={{ fontSize: '1rem', color: '#111', fontWeight: '500', marginTop: '16px', marginBottom: '8px' }}>Shipping Address</h3>
+                  <input type="text" placeholder="Address Line 1 *" value={guestAddress.line1} onChange={(e) => setGuestAddress({ ...guestAddress, line1: e.target.value })} required style={inputStyle} />
+                  <input type="text" placeholder="Address Line 2 (Optional)" value={guestAddress.line2} onChange={(e) => setGuestAddress({ ...guestAddress, line2: e.target.value })} style={inputStyle} />
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <input type="text" placeholder="City *" value={guestAddress.city} onChange={(e) => setGuestAddress({ ...guestAddress, city: e.target.value })} required style={inputStyle} />
+                    <input type="text" placeholder="State *" value={guestAddress.state} onChange={(e) => setGuestAddress({ ...guestAddress, state: e.target.value })} required style={inputStyle} />
                   </div>
-                )}
+                  <input type="text" placeholder="Postal Code *" value={guestAddress.zip} onChange={(e) => setGuestAddress({ ...guestAddress, zip: e.target.value })} required style={inputStyle} />
+                </div>
 
                 <button
                   className="btn-primary"
@@ -237,12 +244,7 @@ export default function CartPage() {
                   {isProcessing ? 'Processing SECURE CHECKOUT...' : 'Checkout Safely'}
                 </button>
 
-                {!user && (
-                  <div style={{ textAlign: 'center', marginBottom: '16px' }}>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Already have an account? </span>
-                    <Link href="/login" style={{ fontSize: '0.85rem', color: '#111', textDecoration: 'underline' }}>Login here</Link>
-                  </div>
-                )}
+
 
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                   <Lock size={14} />
