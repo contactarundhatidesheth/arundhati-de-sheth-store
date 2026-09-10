@@ -80,9 +80,7 @@ export default async function OrdersAdminPage() {
                 <p style={{ fontSize: '0.9rem', color: '#444', lineHeight: 1.5 }}>
                   {order.shipping_address?.line1}<br />
                   {order.shipping_address?.line2 && <>{order.shipping_address.line2}<br /></>}
-                  {order.shipping_address?.landmark && <>Landmark: {order.shipping_address.landmark}<br /></>}
-                  {order.shipping_address?.city}, {order.shipping_address?.state} {order.shipping_address?.postalCode}<br />
-                  {order.shipping_address?.country}
+                  {order.shipping_address?.city}, {order.shipping_address?.state} {order.shipping_address?.zip || order.shipping_address?.postalCode}<br />
                 </p>
               </div>
             </div>
