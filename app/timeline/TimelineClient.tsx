@@ -12,24 +12,25 @@ export default function TimelineClient({ timelineEvents }: { timelineEvents: any
   useEffect(() => {
     const handleScroll = () => {
       if (!containerRef.current || !trackRef.current) return;
-      
-      const containerTop = containerRef.current.offsetTop;
+
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const containerTop = window.scrollY + containerRect.top;
       const containerHeight = containerRef.current.clientHeight;
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
-      
+
       // Calculate how far we've scrolled within the container
       const scrollDelta = scrollY - containerTop;
       const maxScrollVertical = containerHeight - windowHeight;
-      
+
       if (scrollDelta >= 0 && scrollDelta <= maxScrollVertical) {
         // We are inside the sticky section
         const progress = scrollDelta / maxScrollVertical;
-        
+
         // Calculate max horizontal scroll
         const trackWidth = trackRef.current.scrollWidth;
         const maxScrollHorizontal = trackWidth - window.innerWidth;
-        
+
         setTranslateX(-(progress * maxScrollHorizontal));
       } else if (scrollDelta < 0) {
         setTranslateX(0);
@@ -43,7 +44,7 @@ export default function TimelineClient({ timelineEvents }: { timelineEvents: any
     window.addEventListener('scroll', handleScroll, { passive: true });
     // Initial call
     handleScroll();
-    
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -53,27 +54,27 @@ export default function TimelineClient({ timelineEvents }: { timelineEvents: any
         The container height dictates how much vertical scrolling is required 
         to complete the horizontal panning. We use 100vh per item for a smooth pace.
       */}
-      <div 
-        ref={containerRef} 
-        style={{ 
-          position: 'relative', 
+      <div
+        ref={containerRef}
+        style={{
+          position: 'relative',
           height: `${(timelineEvents.length + 1) * 100}vh`,
           background: 'var(--bg-primary)'
         }}
       >
-        <div 
-          style={{ 
-            position: 'sticky', 
-            top: '80px', 
-            height: 'calc(100vh - 80px)', 
+        <div
+          style={{
+            position: 'sticky',
+            top: '120px',
+            height: 'calc(100vh - 120px)',
             overflow: 'hidden',
             display: 'flex',
             alignItems: 'center'
           }}
         >
-          <div 
+          <div
             ref={trackRef}
-            style={{ 
+            style={{
               display: 'flex',
               gap: '120px',
               padding: '0 10vw 0 10vw', // Start with offset, end with standard offset
@@ -97,22 +98,22 @@ export default function TimelineClient({ timelineEvents }: { timelineEvents: any
 
             {/* Timeline Events */}
             {timelineEvents.map((event, index) => (
-              <div 
-                key={event.id} 
-                style={{ 
-                  width: 'clamp(800px, 85vw, 1400px)', 
-                  flexShrink: 0, 
-                  display: 'flex', 
+              <div
+                key={event.id}
+                style={{
+                  width: 'clamp(800px, 85vw, 1400px)',
+                  flexShrink: 0,
+                  display: 'flex',
                   flexDirection: 'row',
                   gap: '60px',
                   alignItems: 'center',
-                  height: 'calc(100vh - 80px)'
+                  height: 'calc(100vh - 120px)'
                 }}
               >
                 <div style={{ width: '55%', height: '75vh', display: 'flex', gap: '20px', background: 'transparent', overflow: 'hidden', paddingBottom: '0' }}>
                   {event.images && event.images.length > 0 && event.images.map((imgSrc: string, imgIndex: number) => (
                     <div key={imgIndex} style={{ position: 'relative', height: '100%', flex: 1, minWidth: 0, overflow: 'hidden' }}>
-                      <Image 
+                      <Image
                         src={imgSrc}
                         alt={`${event.title} image ${imgIndex + 1}`}
                         fill
@@ -133,7 +134,7 @@ export default function TimelineClient({ timelineEvents }: { timelineEvents: any
                     {event.description}
                   </p>
                   {event.link && event.link !== '#' && (
-                    <Link 
+                    <Link
                       href={event.link}
                       style={{
                         display: 'inline-block',
@@ -159,12 +160,12 @@ export default function TimelineClient({ timelineEvents }: { timelineEvents: any
             {/* Outro Logo Slide */}
             <div style={{ width: '40vw', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <div style={{ position: 'relative', width: 'clamp(300px, 40vw, 600px)', height: 'clamp(300px, 40vw, 600px)', opacity: 0.9 }}>
-                <Image 
-                  src="/brand/logo-black.png" 
-                  alt="Arundhati De-Sheth Logo" 
-                  fill 
+                <Image
+                  src="/brand/logo-black.png"
+                  alt="Arundhati De-Sheth Logo"
+                  fill
                   unoptimized
-                  style={{ objectFit: 'contain' }} 
+                  style={{ objectFit: 'contain' }}
                 />
               </div>
             </div>

@@ -1,16 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
-import { createClient } from '@/utils/supabase/server';
+import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-const ADMIN_EMAILS = ['arundhati@ads.com', 'contactarundhatidesheth@gmail.com'];
-
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const cookieStore = cookies();
+  const token = cookieStore.get('admin_session_token')?.value;
 
-  if (!user || !ADMIN_EMAILS.includes(user.email || '')) {
-    redirect('/login?message=Unauthorized Access. Admin Only.');
+  if (token !== 'true') {
+    redirect('/admin/login');
   }
 
   return (
@@ -25,7 +23,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <Link href="/admin/blogs" style={{ textDecoration: 'none', color: '#333', fontSize: '0.95rem' }}>Press & Blogs</Link>
           <Link href="/admin/testimonials" style={{ textDecoration: 'none', color: '#333', fontSize: '0.95rem' }}>Testimonials</Link>
           <Link href="/admin/timeline" style={{ textDecoration: 'none', color: '#333', fontSize: '0.95rem' }}>Timeline Events</Link>
-          <Link href="/" style={{ textDecoration: 'none', color: '#888', fontSize: '0.95rem', marginTop: '48px' }}>&larr; View Storefront</Link>
+          <div style={{ marginTop: '48px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <Link href="/api/admin-logout" style={{ textDecoration: 'none', color: '#cc0000', fontSize: '0.95rem', fontWeight: '500' }}>⚿ Lock Panel (Logout)</Link>
+            <Link href="/" style={{ textDecoration: 'none', color: '#888', fontSize: '0.95rem' }}>&larr; View Storefront</Link>
+          </div>
         </nav>
       </aside>
       <main style={{ flex: 1, padding: '48px' }}>

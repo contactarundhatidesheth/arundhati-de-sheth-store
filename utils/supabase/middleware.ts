@@ -31,17 +31,16 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // Temporarily disabled for development
-  // if (
-  //   !user &&
-  //   request.nextUrl.pathname.startsWith('/admin') &&
-  //   !request.nextUrl.pathname.startsWith('/admin/login')
-  // ) {
-  //   // no user, redirect to login page
-  //   const url = request.nextUrl.clone()
-  //   url.pathname = '/admin/login'
-  //   return NextResponse.redirect(url)
-  // }
+  // Admin routing check based on OTP token
+  const isAdminRoute = request.nextUrl.pathname.startsWith('/admin');
+  const isLoginRoute = request.nextUrl.pathname.startsWith('/admin/login');
+  const adminCookie = request.cookies.get('admin_session_token')?.value;
+
+  if (isAdminRoute && !isLoginRoute && adminCookie !== 'true') {
+    const url = request.nextUrl.clone()
+    url.pathname = '/admin/login'
+    return NextResponse.redirect(url)
+  }
 
   return supabaseResponse
 }

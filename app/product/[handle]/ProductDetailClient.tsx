@@ -45,15 +45,15 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
   const whatsappMessage = encodeURIComponent(`Hello, I am interested in acquiring the ${product.title} (SKU: ${product.id.slice(0, 8).toUpperCase()}). Could you please share the pricing and arrange a private viewing?`);
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', paddingTop: '120px' }}>
       <div className="product-layout" style={{ display: 'grid', gridTemplateColumns: '54.5% 45.5%', gap: 0 }}>
-        
+
         {/* Left: Image Gallery with thumbnail switcher */}
         <div className="product-image-panel" style={{ display: 'flex', flexDirection: 'column', background: 'var(--bg-surface)' }}>
           {/* Main Image */}
           <div style={{ width: '100%', padding: '40px 80px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <div 
-              className="main-image-container" 
+            <div
+              className="main-image-container"
               style={{ position: 'relative', width: '100%', maxWidth: '600px', aspectRatio: '4/5', overflow: 'hidden', cursor: 'crosshair' }}
               onMouseMove={(e) => {
                 const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
@@ -63,15 +63,15 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
                 e.currentTarget.style.setProperty('--y', `${y}%`);
               }}
             >
-            <Image
-              src={product.images[activeImage]}
-              alt={`${product.title} - View ${activeImage + 1}`}
-              fill
-              style={{ objectFit: 'contain', background: '#fff' }}
-              className="main-product-image"
-              priority
-            />
-          </div>
+              <Image
+                src={product.images[activeImage]}
+                alt={`${product.title} - View ${activeImage + 1}`}
+                fill
+                style={{ objectFit: 'contain', background: '#fff' }}
+                className="main-product-image"
+                priority
+              />
+            </div>
           </div>
           {/* Thumbnails */}
           {product.images.length > 1 && (
@@ -103,11 +103,11 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
         {/* Right: Product Info */}
         <div style={{ position: 'relative' }}>
           <div className="info-panel" style={{ padding: '60px 48px', display: 'flex', flexDirection: 'column' }}>
-            
+
             {/* Breadcrumbs */}
             <nav style={{ fontSize: '11.2px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1.68px', marginBottom: '32px', fontWeight: '400' }}>
-              <Link href="/" style={{ textDecoration: 'none', color: 'inherit' }}>Home</Link> &nbsp; / &nbsp; 
-              <Link href="/category/all-products" style={{ textDecoration: 'none', color: 'inherit' }}>Collections</Link> &nbsp; / &nbsp; 
+              <Link href="/" style={{ textDecoration: 'none', color: 'inherit' }}>Home</Link> &nbsp; / &nbsp;
+              <Link href="/category/all-products" style={{ textDecoration: 'none', color: 'inherit' }}>Collections</Link> &nbsp; / &nbsp;
               <span style={{ color: '#000000' }}>{product.category}</span>
             </nav>
 
@@ -123,7 +123,7 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
                 <p style={{ fontSize: '17.6px', color: 'var(--text-main)', letterSpacing: '0.88px', fontWeight: '500', marginBottom: '16px' }}>
                   ₹ {product.price.toLocaleString('en-IN')}
                 </p>
-                <div 
+                <div
                   style={{ fontSize: '13.5px', color: 'var(--text-muted)', fontWeight: '300', lineHeight: '1.6', margin: 0, padding: 0 }}
                   dangerouslySetInnerHTML={{ __html: product.description || '' }}
                 />
@@ -138,7 +138,7 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
               >
                 Add to Cart
               </button>
-              <a 
+              <a
                 href={`https://wa.me/919581822000?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -148,7 +148,7 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ type: 'whatsapp_click', id: product.id })
-                  }).catch(() => {});
+                  }).catch(() => { });
                 }}
               >
                 Inquire & Bespoke Commission
@@ -171,13 +171,13 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
               </div>
             </div>
 
-              {/* Detailed Accordions */}
-              <div style={{ borderTop: '1px solid var(--border-light)' }}>
-                
+            {/* Detailed Accordions */}
+            <div style={{ borderTop: '1px solid var(--border-light)' }}>
+
 
               {/* Specifications */}
               <div style={{ borderBottom: '1px solid var(--border-light)' }}>
-                <button 
+                <button
                   onClick={() => toggleAccordion('specs')}
                   style={{ width: '100%', padding: '24px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13.5px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold', background: 'transparent', border: 'none', cursor: 'pointer', color: '#000000', fontFamily: 'inherit' }}
                 >
@@ -206,7 +206,7 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
 
               {/* Jewel Care */}
               <div style={{ borderBottom: '1px solid var(--border-light)' }}>
-                <button 
+                <button
                   onClick={() => toggleAccordion('care')}
                   style={{ width: '100%', padding: '24px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13.5px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold', background: 'transparent', border: 'none', cursor: 'pointer', color: '#000000', fontFamily: 'inherit' }}
                 >

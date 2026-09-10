@@ -3,14 +3,16 @@ import { createClient } from '@/utils/supabase/server';
 
 export async function POST(req: Request) {
   try {
-    const { amount, cartItems, shippingAddress } = await req.json();
+    const { amount, cartItems, shippingAddress, guestEmail, guestPhone } = await req.json();
 
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!user && (!guestEmail || !guestPhone)) {
+      return NextResponse.json({ error: 'Email and Phone are required for guest checkout' }, { status: 400 });
     }
+
+    const currentEmail = user ? user.email : guestEmail;
 
     // Check if keys exist
     if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
@@ -42,8 +44,9 @@ export async function POST(req: Request) {
 
     // Insert pending order into Supabase
     const { error: dbError } = await supabase.from('orders').insert({
-      user_id: user.id,
-      user_email: user.email,
+      user_id: user ? user.id : null,
+      user_email: currentEmail,
+      user_phone: user ? null : guestPhone,
       razorpay_order_id: data.id,
       amount: amount,
       status: 'Pending',

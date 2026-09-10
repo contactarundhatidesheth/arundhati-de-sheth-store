@@ -13,6 +13,8 @@ export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, subtotal, clearCart } = useCart();
   const [isProcessing, setIsProcessing] = React.useState(false);
   const [user, setUser] = React.useState<any>(null);
+  const [guestEmail, setGuestEmail] = React.useState('');
+  const [guestPhone, setGuestPhone] = React.useState('');
   const [checkoutMessage, setCheckoutMessage] = React.useState<{ type: 'success' | 'error', text: string } | null>(null);
   const router = useRouter();
 
@@ -30,6 +32,13 @@ export default function CartPage() {
   const handleCheckout = async () => {
     setIsProcessing(true);
     setCheckoutMessage(null);
+
+    if (!user && (!guestEmail || !guestPhone)) {
+      setCheckoutMessage({ type: 'error', text: 'Please enter your email and phone number for checkout.' });
+      setIsProcessing(false);
+      return;
+    }
+
     try {
       const res = await fetch('/api/create-order', {
         method: 'POST',
@@ -37,7 +46,9 @@ export default function CartPage() {
         body: JSON.stringify({
           amount: subtotal,
           cartItems: cart,
-          shippingAddress: user?.user_metadata?.shipping_address || {}
+          shippingAddress: user?.user_metadata?.shipping_address || {},
+          guestEmail: user ? null : guestEmail,
+          guestPhone: user ? null : guestPhone
         })
       });
 
@@ -209,24 +220,28 @@ export default function CartPage() {
                   </div>
                 )}
 
-                {user ? (
-                  <button
-                    className="btn-primary"
-                    style={{ width: '100%', marginBottom: '16px', opacity: isProcessing ? 0.7 : 1 }}
-                    onClick={handleCheckout}
-                    disabled={isProcessing}
-                  >
-                    {isProcessing ? 'Processing...' : 'Checkout'}
-                  </button>
-                ) : (
-                  <button
-                    className="btn-primary"
-                    style={{ width: '100%', marginBottom: '16px', display: 'flex', gap: '8px', alignItems: 'center' }}
-                    onClick={() => router.push('/login')}
-                  >
-                    <LogIn size={18} />
-                    Login to Checkout
-                  </button>
+                {!user && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '16px' }}>
+                    <h3 style={{ fontSize: '1rem', color: '#111', fontWeight: '500' }}>Guest Checkout</h3>
+                    <input type="email" placeholder="Email Address *" value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)} required style={{ padding: '12px', border: '1px solid var(--border)', borderRadius: '4px', outline: 'none' }} />
+                    <input type="tel" placeholder="Phone Number *" value={guestPhone} onChange={(e) => setGuestPhone(e.target.value)} required style={{ padding: '12px', border: '1px solid var(--border)', borderRadius: '4px', outline: 'none' }} />
+                  </div>
+                )}
+
+                <button
+                  className="btn-primary"
+                  style={{ width: '100%', marginBottom: '16px', opacity: isProcessing ? 0.7 : 1 }}
+                  onClick={handleCheckout}
+                  disabled={isProcessing}
+                >
+                  {isProcessing ? 'Processing SECURE CHECKOUT...' : 'Checkout Safely'}
+                </button>
+
+                {!user && (
+                  <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Already have an account? </span>
+                    <Link href="/login" style={{ fontSize: '0.85rem', color: '#111', textDecoration: 'underline' }}>Login here</Link>
+                  </div>
                 )}
 
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>

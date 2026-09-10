@@ -4,37 +4,43 @@
 :root {
   /* Brand Colors strictly from PDF */
   --bg-primary: #FFFFFF;
-  --bg-secondary: #FFFFFF; /* Fallback to white as per PDF */
+  --bg-secondary: #FFFFFF;
+  /* Fallback to white as per PDF */
   --bg-surface: #FFFFFF;
   --header-bg: rgba(255, 255, 255, 0.95);
-  
+
   --text-main: #000000;
-  --text-muted: #504D45; /* Dark grey */
+  --text-muted: #504D45;
+  /* Dark grey */
   --text-subtle: #504D45;
-  
-  --border: #504D45; /* Dark grey */
+
+  --border: #504D45;
+  /* Dark grey */
   --border-light: rgba(80, 77, 69, 0.2);
-  
-  --accent: #F6D954; /* Yellow */
-  --accent-gold: #F6D954; /* Aliased to Yellow */
-  --accent-green: #5D6533; /* Olive Green */
-  
+
+  --accent: #F6D954;
+  /* Yellow */
+  --accent-gold: #F6D954;
+  /* Aliased to Yellow */
+  --accent-green: #5D6533;
+  /* Olive Green */
+
   --text-on-dark: #FFFFFF;
   --text-on-dark-muted: rgba(255, 255, 255, 0.7);
   --text-on-dark-strong: #FFFFFF;
-  
+
   /* Brand Fonts strictly from PDF */
   --font-serif: 'Source Serif 4', Georgia, serif;
   --font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  
+
   --radius-sm: 0px;
   --radius-md: 0px;
   --radius-lg: 0px;
   --radius-full: 9999px;
-  
+
   --container-max: 1440px;
   --section-padding: clamp(60px, 8vw, 100px) 24px;
-  
+
   --transition-smooth: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
   --transition-fast: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
@@ -47,7 +53,8 @@
   overflow-wrap: break-word;
 }
 
-html, body {
+html,
+body {
   max-width: 100vw;
   background-color: var(--bg-primary);
   color: var(--text-main);
@@ -64,7 +71,12 @@ html, body {
   color: var(--bg-primary);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-serif);
   font-weight: 400;
   letter-spacing: -0.02em;
@@ -72,16 +84,29 @@ h1, h2, h3, h4, h5, h6 {
   text-decoration: none;
 }
 
-h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover {
+h1:hover,
+h2:hover,
+h3:hover,
+h4:hover,
+h5:hover,
+h6:hover {
   text-decoration: underline;
   text-decoration-color: var(--accent-gold);
   text-underline-offset: 4px;
   text-decoration-thickness: 1px;
 }
 
-h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); }
-h2 { font-size: clamp(2rem, 4vw, 3.5rem); }
-h3 { font-size: clamp(1.5rem, 3vw, 2.5rem); }
+h1 {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+
+h3 {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+}
 
 a {
   color: inherit;
@@ -179,8 +204,15 @@ img {
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-fade-in {
@@ -188,18 +220,53 @@ img {
 }
 
 /* Utilities */
-.text-center { text-align: center; }
-.w-full { width: 100%; }
-.h-full { height: 100%; }
-.flex { display: flex; }
-.grid { display: grid; }
-.flex-col { flex-direction: column; }
-.items-center { align-items: center; }
-.justify-center { justify-content: center; }
-.justify-between { justify-content: space-between; }
-.gap-4 { gap: 1rem; }
-.gap-8 { gap: 2rem; }
-.gap-12 { gap: 3rem; }
+.text-center {
+  text-align: center;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.flex {
+  display: flex;
+}
+
+.grid {
+  display: grid;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.gap-8 {
+  gap: 2rem;
+}
+
+.gap-12 {
+  gap: 3rem;
+}
 
 /* Product Cards */
 .product-card {
@@ -287,7 +354,7 @@ img {
   padding: 8px 0;
   flex-direction: column;
   min-width: 180px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 .dropdown-link {
@@ -313,13 +380,23 @@ img {
   .hide-on-mobile {
     display: none !important;
   }
+
   .logo-wrapper {
     width: 180px !important;
   }
+
   /* Typography */
-  h1 { font-size: clamp(1.5rem, 8vw, 2.5rem); }
-  h2 { font-size: clamp(1.3rem, 6vw, 2rem); }
-  h3 { font-size: clamp(1.1rem, 5vw, 1.6rem); }
+  h1 {
+    font-size: clamp(1.5rem, 8vw, 2.5rem);
+  }
+
+  h2 {
+    font-size: clamp(1.3rem, 6vw, 2rem);
+  }
+
+  h3 {
+    font-size: clamp(1.1rem, 5vw, 1.6rem);
+  }
 
   /* Buttons - full width on mobile */
   .btn-primary,
@@ -336,14 +413,14 @@ img {
   }
 
   /* Footer: stack columns */
-  footer > div > div[style*="grid-template-columns"] {
+  footer>div>div[style*="grid-template-columns"] {
     grid-template-columns: 1fr 1fr !important;
     gap: 40px !important;
   }
 }
 
 @media (max-width: 600px) {
-  footer > div > div[style*="grid-template-columns"] {
+  footer>div>div[style*="grid-template-columns"] {
     grid-template-columns: 1fr !important;
   }
 }

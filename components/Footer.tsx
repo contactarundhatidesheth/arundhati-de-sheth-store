@@ -8,30 +8,30 @@ export const Footer: React.FC = () => {
   return (
     <footer style={{ background: 'var(--bg-primary)', color: 'var(--text-main)', padding: '100px 24px 60px', borderTop: '1px solid var(--border)' }}>
       <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto' }}>
-        
+
         {/* Brand Logo - Centered */}
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '80px' }}>
           <Link href="/" style={{ display: 'block', width: '240px' }}>
-            <img 
-              src="/brand/logo-black.png" 
-              alt="Arundhati De-Sheth" 
+            <img
+              src="/brand/logo-black.png"
+              alt="Arundhati De-Sheth"
               style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
             />
           </Link>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '64px', marginBottom: '80px' }}>
-          
+
           {/* Column 1: Explore */}
           <div>
             <h4 style={{ fontSize: '0.85rem', fontWeight: '500', marginBottom: '24px', letterSpacing: '0.05em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Explore</h4>
             <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <Link href="/about" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity='0.6')} onMouseOut={e => (e.currentTarget.style.opacity='1')}>About Us</Link>
-              <Link href="/category/all-products" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity='0.6')} onMouseOut={e => (e.currentTarget.style.opacity='1')}>Shop</Link>
-              <Link href="/category/ephemerals" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity='0.6')} onMouseOut={e => (e.currentTarget.style.opacity='1')}>Ephemerals</Link>
-              <Link href="/category/perennials" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity='0.6')} onMouseOut={e => (e.currentTarget.style.opacity='1')}>Perennials</Link>
-              <Link href="/collections" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity='0.6')} onMouseOut={e => (e.currentTarget.style.opacity='1')}>High Jewellery</Link>
-              <Link href="/pages/whats-new" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity='0.6')} onMouseOut={e => (e.currentTarget.style.opacity='1')}>Press</Link>
+              <Link href="/about" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity = '0.6')} onMouseOut={e => (e.currentTarget.style.opacity = '1')}>About Us</Link>
+              <Link href="/category/all-products" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity = '0.6')} onMouseOut={e => (e.currentTarget.style.opacity = '1')}>Shop</Link>
+              <Link href="/category/ephemerals" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity = '0.6')} onMouseOut={e => (e.currentTarget.style.opacity = '1')}>Ephemerals</Link>
+              <Link href="/category/perennials" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity = '0.6')} onMouseOut={e => (e.currentTarget.style.opacity = '1')}>Perennials</Link>
+              <Link href="/collections" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity = '0.6')} onMouseOut={e => (e.currentTarget.style.opacity = '1')}>High Jewellery</Link>
+              <Link href="/pages/whats-new" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity = '0.6')} onMouseOut={e => (e.currentTarget.style.opacity = '1')}>Press</Link>
             </nav>
           </div>
 
@@ -39,11 +39,11 @@ export const Footer: React.FC = () => {
           <div>
             <h4 style={{ fontSize: '0.85rem', fontWeight: '500', marginBottom: '24px', letterSpacing: '0.05em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Client Service</h4>
             <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <Link href="/contact" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity='0.6')} onMouseOut={e => (e.currentTarget.style.opacity='1')}>Contact Us</Link>
-              <Link href="/faq" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity='0.6')} onMouseOut={e => (e.currentTarget.style.opacity='1')}>FAQ</Link>
-              <Link href="/shipping" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity='0.6')} onMouseOut={e => (e.currentTarget.style.opacity='1')}>Shipping &amp; Returns</Link>
-              <Link href="/terms" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity='0.6')} onMouseOut={e => (e.currentTarget.style.opacity='1')}>Store Policy</Link>
-              <Link href="/payment" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity='0.6')} onMouseOut={e => (e.currentTarget.style.opacity='1')}>Payment Methods</Link>
+              <Link href="/contact" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity = '0.6')} onMouseOut={e => (e.currentTarget.style.opacity = '1')}>Contact Us</Link>
+              <Link href="/faq" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity = '0.6')} onMouseOut={e => (e.currentTarget.style.opacity = '1')}>FAQ</Link>
+              <Link href="/shipping" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity = '0.6')} onMouseOut={e => (e.currentTarget.style.opacity = '1')}>Shipping &amp; Returns</Link>
+              <Link href="/terms" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity = '0.6')} onMouseOut={e => (e.currentTarget.style.opacity = '1')}>Store Policy</Link>
+              <Link href="/payment" style={{ fontSize: '0.95rem', padding: '4px 0', display: 'block', transition: 'opacity 0.3s' }} onMouseOver={e => (e.currentTarget.style.opacity = '0.6')} onMouseOut={e => (e.currentTarget.style.opacity = '1')}>Payment Methods</Link>
             </nav>
           </div>
 
@@ -51,7 +51,7 @@ export const Footer: React.FC = () => {
           <div>
             <h4 style={{ fontSize: '0.85rem', fontWeight: '500', marginBottom: '24px', letterSpacing: '0.05em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Contact</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.95rem', color: 'var(--text-main)', lineHeight: '1.6' }}>
-              <a href="mailto:contact@arundhatidesheth.com" style={{ textDecoration: 'none', color: 'inherit' }} className="nav-link">contact@arundhatidesheth.com</a>
+              <a href="mailto:contact@arundhatidesheth.com" style={{ textDecoration: 'none', color: 'inherit', whiteSpace: 'nowrap' }} className="nav-link">contact@arundhatidesheth.com</a>
               <p>+91 95818 22000</p>
               <div style={{ display: 'flex', gap: '20px', marginTop: '24px' }}>
                 <a href="#" style={{ color: 'var(--text-main)', transition: 'opacity 0.3s' }} className="hover-opacity" aria-label="Facebook">
@@ -116,9 +116,9 @@ export const Footer: React.FC = () => {
           </p>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '8px' }}>
             designed & developed by{' '}
-            <a 
-              href="https://www.eyepune.com" 
-              target="_blank" 
+            <a
+              href="https://www.eyepune.com"
+              target="_blank"
               rel="noopener noreferrer"
               style={{ color: 'crimson', fontWeight: '500', textDecoration: 'none' }}
               onMouseOver={(e) => e.currentTarget.style.textDecoration = 'underline'}
