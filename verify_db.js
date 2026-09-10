@@ -7,11 +7,11 @@ async function testDB() {
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
     );
 
-    const { data, error } = await supabase.from('newsletter').select('*').limit(1);
+    const { data, error } = await supabase.from('newsletter_subscribers').select('*').limit(1);
     if (error) {
         console.log('Error testing newsletter:', error.message);
     } else {
-        console.log('Newsletter table exists:', data);
+        console.log('Success! Table newsletter_subscribers exists:', data);
     }
 }
 

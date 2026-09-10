@@ -3,11 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ShoppingBag, Menu, X } from 'lucide-react';
+import { ShoppingBag, Menu, X, PackageSearch } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
 // Pages with a light/white background at the top — logo must always be black
-const LIGHT_BG_PATHS = ['/category/ephemerals', '/category/perennials', '/shipping', '/terms', '/privacy', '/payment', '/press', '/cart', '/product', '/shop-the-look', '/pages/jewelry-lookbooks', '/timeline'];
+const LIGHT_BG_PATHS = ['/category/ephemerals', '/category/perennials', '/shipping', '/terms', '/privacy', '/payment', '/press', '/cart', '/product', '/shop-the-look', '/pages/jewelry-lookbooks', '/timeline', '/track'];
 
 export const Header: React.FC = () => {
   const { totalItems, setIsCartOpen } = useCart();
@@ -113,6 +113,10 @@ export const Header: React.FC = () => {
 
           {/* Right: Cart & User */}
           <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '24px' }}>
+
+            <Link href="/track" style={{ display: 'flex', alignItems: 'center', color: 'inherit', background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', textDecoration: 'none' }} title="Track Order">
+              <PackageSearch size={20} strokeWidth={1.5} />
+            </Link>
 
             <button
               style={{ position: 'relative', display: 'flex', alignItems: 'center', color: 'inherit', background: 'transparent', border: 'none', padding: 0, cursor: 'pointer' }}

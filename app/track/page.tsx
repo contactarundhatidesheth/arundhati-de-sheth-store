@@ -33,8 +33,8 @@ export default function TrackOrder() {
     };
 
     return (
-        <div style={{ minHeight: 'calc(100vh - 80px)', background: 'var(--bg-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ width: '100%', maxWidth: '600px', padding: '48px 24px' }}>
+        <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '100px', paddingBottom: '60px' }}>
+            <div style={{ width: '100%', maxWidth: '600px', padding: '0 24px' }}>
                 <h1 style={{ fontSize: 'clamp(2rem, 5vw, 2.5rem)', fontFamily: 'var(--font-serif)', marginBottom: '16px', textAlign: 'center' }}>Track Your Order</h1>
                 <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '40px' }}>Enter your order checkout ID and email/phone to check the status.</p>
 
