@@ -11,14 +11,13 @@ export async function POST(req: Request) {
 
         const supabase = createClient();
 
-        // We search the orders table securely via RPC (bypasses RLS specifically for this order ID)
-        const { data } = await supabase
-            .rpc('get_tracking_order', { p_razorpay_order_id: orderId })
-            .single();
+        const { data: order, error } = await supabase
+            .from('orders')
+            .select('*')
+            .eq('razorpay_order_id', orderId)
+            .maybeSingle();
 
-        const order = data as any;
-
-        if (!order) {
+        if (error || !order) {
             return NextResponse.json({ error: 'Order not found' }, { status: 404 });
         }
 
@@ -39,6 +38,7 @@ export async function POST(req: Request) {
             amount: order.amount,
             status: order.status,
             items: order.items,
+            shipping_address: order.shipping_address,
             created_at: order.created_at
         };
 
