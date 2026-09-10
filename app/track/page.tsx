@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 export default function TrackOrder() {
-    const [orderId, setOrderId] = useState('');
+    const [docketId, setDocketId] = useState('');
     const [emailOrPhone, setEmailOrPhone] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [orderData, setOrderData] = useState<any>(null);
@@ -19,7 +19,7 @@ export default function TrackOrder() {
             const res = await fetch('/api/track-order', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ orderId, emailOrPhone })
+                body: JSON.stringify({ docketId, emailOrPhone })
             });
             const data = await res.json();
             if (!res.ok) throw new Error(data.error);
@@ -36,7 +36,7 @@ export default function TrackOrder() {
         <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '100px', paddingBottom: '60px' }}>
             <div style={{ width: '100%', maxWidth: '600px', padding: '0 24px' }}>
                 <h1 style={{ fontSize: 'clamp(2rem, 5vw, 2.5rem)', fontFamily: 'var(--font-serif)', marginBottom: '16px', textAlign: 'center' }}>Track Your Order</h1>
-                <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '40px' }}>Enter your order checkout ID and email/phone to check the status.</p>
+                <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '40px' }}>Enter your Shipping Docket ID and email/phone to check the status.</p>
 
                 {!orderData ? (
                     <form onSubmit={submitTracking} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -46,13 +46,13 @@ export default function TrackOrder() {
                             </div>
                         )}
                         <div>
-                            <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Order ID *</label>
+                            <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Docket ID / Number *</label>
                             <input
                                 type="text"
-                                value={orderId}
-                                onChange={(e) => setOrderId(e.target.value)}
+                                value={docketId}
+                                onChange={(e) => setDocketId(e.target.value)}
                                 required
-                                placeholder="order_xyz987"
+                                placeholder="SGL..."
                                 style={{ width: '100%', padding: '16px', fontSize: '1rem', border: '1px solid var(--border)', borderRadius: '4px', outline: 'none' }}
                             />
                         </div>

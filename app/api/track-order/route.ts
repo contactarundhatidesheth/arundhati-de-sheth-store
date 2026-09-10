@@ -3,18 +3,19 @@ import { createClient } from '@/utils/supabase/server';
 
 export async function POST(req: Request) {
     try {
-        const { orderId, emailOrPhone } = await req.json();
+        const { docketId, emailOrPhone } = await req.json();
 
-        if (!orderId || !emailOrPhone) {
-            return NextResponse.json({ error: 'Order ID and Identifier are required' }, { status: 400 });
+        if (!docketId || !emailOrPhone) {
+            return NextResponse.json({ error: 'Docket ID and Identifier are required' }, { status: 400 });
         }
 
         const supabase = createClient();
 
+        // Check if the docketId matches the shipping_address JSON tracking_number, or fallback to razorpay order id just in case
         const { data: order, error } = await supabase
             .from('orders')
             .select('*')
-            .eq('razorpay_order_id', orderId)
+            .or(`shipping_address->>tracking_number.eq.${docketId},razorpay_order_id.eq.${docketId}`)
             .maybeSingle();
 
         if (error || !order) {
