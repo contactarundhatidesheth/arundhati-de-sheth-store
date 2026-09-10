@@ -166,17 +166,51 @@ export default function CartPage() {
               )}
 
               {cart.length > 0 && (
-                <div style={{ marginTop: '32px' }}>
-                  <div style={{ marginBottom: '24px' }}>
-                    <button style={{ color: 'var(--text-main)', fontSize: '0.9rem', textDecoration: 'underline', padding: 0 }}>
-                      Enter a promo code
-                    </button>
+                <div style={{ marginTop: '48px', paddingTop: '32px', borderTop: '1px solid var(--border)' }}>
+                  <h2 style={{ fontSize: '1.5rem', fontFamily: 'var(--font-serif)', marginBottom: '24px' }}>Guest Checkout Details</h2>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginBottom: '32px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Full Name *</label>
+                      <input type="text" placeholder="John Doe" value={guestName} onChange={(e) => setGuestName(e.target.value)} required style={inputStyle} />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Email Address *</label>
+                      <input type="email" placeholder="john@example.com" value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)} required style={inputStyle} />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Phone Number *</label>
+                      <input type="tel" placeholder="+91 98765 43210" value={guestPhone} onChange={(e) => setGuestPhone(e.target.value)} required style={inputStyle} />
+                    </div>
                   </div>
-                  <div>
-                    <button style={{ color: 'var(--text-main)', fontSize: '0.9rem', textDecoration: 'underline', padding: 0 }}>
-                      Add a note
-                    </button>
+
+                  <h3 style={{ fontSize: '1.1rem', color: '#111', fontWeight: '500', marginBottom: '16px' }}>Shipping Address</h3>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px', marginBottom: '20px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Address Line 1 *</label>
+                      <input type="text" placeholder="House/Flat No., Building Name, Street" value={guestAddress.line1} onChange={(e) => setGuestAddress({ ...guestAddress, line1: e.target.value })} required style={inputStyle} />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Address Line 2 (Optional)</label>
+                      <input type="text" placeholder="Landmark, Area, or additional details" value={guestAddress.line2} onChange={(e) => setGuestAddress({ ...guestAddress, line2: e.target.value })} style={inputStyle} />
+                    </div>
                   </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px', marginBottom: '32px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>City *</label>
+                      <input type="text" placeholder="Mumbai" value={guestAddress.city} onChange={(e) => setGuestAddress({ ...guestAddress, city: e.target.value })} required style={inputStyle} />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>State *</label>
+                      <input type="text" placeholder="Maharashtra" value={guestAddress.state} onChange={(e) => setGuestAddress({ ...guestAddress, state: e.target.value })} required style={inputStyle} />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <label style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Postal Code *</label>
+                      <input type="text" placeholder="400001" value={guestAddress.zip} onChange={(e) => setGuestAddress({ ...guestAddress, zip: e.target.value })} required style={inputStyle} />
+                    </div>
+                  </div>
+
                 </div>
               )}
             </div>
@@ -219,21 +253,6 @@ export default function CartPage() {
                   </div>
                 )}
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
-                  <h3 style={{ fontSize: '1rem', color: '#111', fontWeight: '500', marginBottom: '8px' }}>Checkout Details</h3>
-                  <input type="text" placeholder="Full Name *" value={guestName} onChange={(e) => setGuestName(e.target.value)} required style={inputStyle} />
-                  <input type="email" placeholder="Email Address *" value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)} required style={inputStyle} />
-                  <input type="tel" placeholder="Phone Number *" value={guestPhone} onChange={(e) => setGuestPhone(e.target.value)} required style={inputStyle} />
-
-                  <h3 style={{ fontSize: '1rem', color: '#111', fontWeight: '500', marginTop: '16px', marginBottom: '8px' }}>Shipping Address</h3>
-                  <input type="text" placeholder="Address Line 1 *" value={guestAddress.line1} onChange={(e) => setGuestAddress({ ...guestAddress, line1: e.target.value })} required style={inputStyle} />
-                  <input type="text" placeholder="Address Line 2 (Optional)" value={guestAddress.line2} onChange={(e) => setGuestAddress({ ...guestAddress, line2: e.target.value })} style={inputStyle} />
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                    <input type="text" placeholder="City *" value={guestAddress.city} onChange={(e) => setGuestAddress({ ...guestAddress, city: e.target.value })} required style={inputStyle} />
-                    <input type="text" placeholder="State *" value={guestAddress.state} onChange={(e) => setGuestAddress({ ...guestAddress, state: e.target.value })} required style={inputStyle} />
-                  </div>
-                  <input type="text" placeholder="Postal Code *" value={guestAddress.zip} onChange={(e) => setGuestAddress({ ...guestAddress, zip: e.target.value })} required style={inputStyle} />
-                </div>
 
                 <button
                   className="btn-primary"
