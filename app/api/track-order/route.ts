@@ -31,6 +31,20 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Order found, but the email/phone does not match our records.' }, { status: 403 });
         }
 
+        // Fetch Live Courier Tracking Details
+        let courierDetails = null;
+        if (order.shipping_address?.tracking_number) {
+            try {
+                const courierRes = await fetch(`https://secureglobal.in/api/api/Docket/TrackPracel?DocketRefNo=${order.shipping_address.tracking_number}`);
+                const courierData = await courierRes.json();
+                if (courierData.status_Code === 200 && courierData.data) {
+                    courierDetails = courierData.data;
+                }
+            } catch (err) {
+                console.error("Failed to securely fetch live courier tracking data:", err);
+            }
+        }
+
         // Scrub out sensitive IDs
         const safeOrder = {
             razorpay_order_id: order.razorpay_order_id,
@@ -39,6 +53,7 @@ export async function POST(req: Request) {
             status: order.status,
             items: order.items,
             shipping_address: order.shipping_address,
+            courierDetails: courierDetails,
             created_at: order.created_at
         };
 

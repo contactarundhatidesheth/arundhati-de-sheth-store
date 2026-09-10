@@ -92,9 +92,27 @@ export default function TrackOrder() {
                             <span style={{ fontWeight: '500' }}>{orderData.razorpay_payment_id || 'Awaiting Sync'}</span>
                         </div>
                         {orderData.shipping_address?.tracking_number && (
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '32px', padding: '16px', background: '#f5f5f5', borderRadius: '4px' }}>
-                                <span style={{ color: 'var(--text-muted)', textTransform: 'uppercase', fontSize: '0.8rem', letterSpacing: '0.05em' }}>Shipping Docket #</span>
-                                <span style={{ fontWeight: '600', letterSpacing: '0.05em' }}>{orderData.shipping_address.tracking_number}</span>
+                            <div style={{ marginBottom: '32px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px', padding: '16px', background: '#f5f5f5', borderRadius: '4px' }}>
+                                    <span style={{ color: 'var(--text-muted)', textTransform: 'uppercase', fontSize: '0.8rem', letterSpacing: '0.05em' }}>Shipping Docket #</span>
+                                    <span style={{ fontWeight: '600', letterSpacing: '0.05em' }}>{orderData.shipping_address.tracking_number}</span>
+                                </div>
+                                {orderData.courierDetails && orderData.courierDetails.docketTrackingDetailDto && orderData.courierDetails.docketTrackingDetailDto.length > 0 && (
+                                    <div style={{ marginTop: '24px', borderLeft: '2px solid #eaeaea', marginLeft: '8px', paddingLeft: '24px' }}>
+                                        <h4 style={{ fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '24px' }}>Live Tracking Progress</h4>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                                            {orderData.courierDetails.docketTrackingDetailDto.map((log: any, idx: number) => (
+                                                <div key={idx} style={{ position: 'relative' }}>
+                                                    <div style={{ position: 'absolute', left: '-31px', top: '4px', width: '12px', height: '12px', borderRadius: '50%', background: idx === 0 ? '#111' : '#ccc', border: '2px solid #fff' }}></div>
+                                                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '4px', fontWeight: '500' }}>
+                                                        {new Date(log.actionedOn).toLocaleString('en-IN')} — {log.branchName}
+                                                    </p>
+                                                    <p style={{ fontSize: '0.95rem', fontWeight: '600' }}>{log.status}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         )}
 
