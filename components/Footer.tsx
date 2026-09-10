@@ -1,10 +1,43 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { Facebook, Instagram } from 'lucide-react';
+import { Facebook, Instagram, Loader2 } from 'lucide-react';
 
 export const Footer: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [message, setMessage] = useState('');
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setStatus('loading');
+    setMessage('');
+
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to subscribe');
+      }
+
+      setStatus('success');
+      setMessage('Welcome! Thank you for subscribing.');
+      setEmail('');
+    } catch (err: any) {
+      setStatus('error');
+      setMessage(err.message || 'An error occurred. Please try again later.');
+    }
+  };
+
   return (
     <footer style={{ background: 'var(--bg-primary)', color: 'var(--text-main)', padding: '100px 24px 60px', borderTop: '1px solid var(--border)' }}>
       <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto' }}>
@@ -72,11 +105,14 @@ export const Footer: React.FC = () => {
             <p style={{ fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '24px' }}>
               Subscribe to receive updates, access to exclusive deals, and more.
             </p>
-            <form onSubmit={(e) => e.preventDefault()} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <form onSubmit={handleSubscribe} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <input
                 type="email"
                 placeholder="Enter your email address"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={status === 'loading' || status === 'success'}
                 style={{
                   width: '100%',
                   padding: '12px 0',
@@ -86,17 +122,43 @@ export const Footer: React.FC = () => {
                   color: 'var(--text-main)',
                   fontSize: '0.95rem',
                   outline: 'none',
-                  transition: 'border-color 0.3s ease'
+                  transition: 'border-color 0.3s ease',
+                  opacity: (status === 'loading' || status === 'success') ? 0.5 : 1
                 }}
               />
               <button
                 type="submit"
                 className="btn-primary"
-                style={{ width: '100%', padding: '14px', letterSpacing: '0.05em', textTransform: 'uppercase', fontSize: '0.85rem' }}
+                disabled={status === 'loading' || status === 'success'}
+                style={{
+                  width: '100%',
+                  padding: '14px',
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
+                  fontSize: '0.85rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  opacity: status === 'success' ? 0.5 : 1
+                }}
               >
-                Subscribe
+                {status === 'loading' ? <Loader2 size={16} className="lucide-spin" /> : (status === 'success' ? 'Subscribed' : 'Subscribe')}
               </button>
             </form>
+
+            {/* Feedback Message */}
+            {message && (
+              <p style={{
+                marginTop: '16px',
+                fontSize: '0.85rem',
+                color: status === 'error' ? 'crimson' : 'var(--accent-gold, #D4AF37)',
+                fontWeight: 500,
+                lineHeight: 1.5
+              }}>
+                {message}
+              </p>
+            )}
           </div>
         </div>
 
