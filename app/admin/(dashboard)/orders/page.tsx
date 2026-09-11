@@ -1,6 +1,7 @@
 import React from 'react';
 import { createClient as createSupabaseAdmin } from '@supabase/supabase-js';
 import { revalidatePath } from 'next/cache';
+import { sendOrderTrackingEmail } from '@/utils/email';
 export const dynamic = 'force-dynamic';
 
 export default async function OrdersAdminPage() {
@@ -111,6 +112,19 @@ export default async function OrdersAdminPage() {
                       status: newStatus,
                       shipping_address: updatedShipping
                     }).eq('id', order.id);
+
+                    // Dispatch conditional execution based on Courier logic
+                    const wasShipped = order.status === 'Shipped';
+                    const oldTracking = order.shipping_address?.tracking_number;
+                    if (newStatus === 'Shipped' && trackingNumber && (!wasShipped || trackingNumber !== oldTracking)) {
+                      await sendOrderTrackingEmail(
+                        order.user_email,
+                        order.shipping_address?.name || 'Valued Client',
+                        order.id,
+                        trackingNumber
+                      );
+                    }
+
                     revalidatePath('/admin/orders');
                   }} style={{ display: 'flex', gap: '8px', alignItems: 'center', background: '#f5f5f5', padding: '12px', borderRadius: '8px' }}>
                     <select name="status" defaultValue={order.status} style={{ padding: '6px', borderRadius: '4px', border: '1px solid #ccc', fontSize: '0.85rem' }}>
