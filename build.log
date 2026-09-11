@@ -1,0 +1,73 @@
+﻿
+> arundhatidesheth-jewellery-storefront@1.0.0 build
+> node download_about_assets.js && node download_brand_assets.js && node download_timeline_images.js && next build
+
+ΓÅ¡∩╕Å  Skipping about-video.mp4 (already exists)
+ΓÅ¡∩╕Å  Skipping arundhati-portrait.webp (already exists)
+ΓÅ¡∩╕Å  Skipping look1.mp4 (already exists)
+ΓÅ¡∩╕Å  Skipping look2.mp4 (already exists)
+
+≡ƒÄë Done! Re-run after updating the IDs.
+≡ƒôü Downloading 7 brand assets to public/brand/...
+
+ΓÅ¡∩╕Å  Skipping logo-pattern.pdf (already exists)
+ΓÅ¡∩╕Å  Skipping logo-black.png (already exists)
+ΓÅ¡∩╕Å  Skipping logo-white.png (already exists)
+ΓÅ¡∩╕Å  Skipping ads-logo-black.png (already exists)
+ΓÅ¡∩╕Å  Skipping ads-logo-grey.png (already exists)
+ΓÅ¡∩╕Å  Skipping ads-logo-03.png (already exists)
+ΓÅ¡∩╕Å  Skipping ads-logo-011.png (already exists)
+
+≡ƒÄë Done!
+≡ƒôü Downloading 13 Timeline images to public/timeline/...
+
+ΓÅ¡∩╕Å  Skipping timeline-ads-masaba-amrapali.jpg (already exists)
+ΓÅ¡∩╕Å  Skipping timeline-gilded-age-1.jpg (already exists)
+ΓÅ¡∩╕Å  Skipping timeline-gilded-age-2.jpg (already exists)
+ΓÅ¡∩╕Å  Skipping timeline-gilded-age-3.jpg (already exists)
+ΓÅ¡∩╕Å  Skipping timeline-gilded-age-bom.jpg (already exists)
+ΓÅ¡∩╕Å  Skipping timeline-le-mill.jpg (already exists)
+ΓÅ¡∩╕Å  Skipping timeline-lightness-of-being.jpg (already exists)
+ΓÅ¡∩╕Å  Skipping timeline-only-natural-diamonds.jpg (already exists)
+ΓÅ¡∩╕Å  Skipping timeline-prismatic-mumbai.jpg (already exists)
+ΓÅ¡∩╕Å  Skipping timeline-remarkable-women-1.jpg (already exists)
+ΓÅ¡∩╕Å  Skipping timeline-remarkable-women-2.jpg (already exists)
+ΓÅ¡∩╕Å  Skipping timeline-remarkable-women-2019.jpg (already exists)
+ΓÅ¡∩╕Å  Skipping timeline-shadow-games.jpg (already exists)
+
+≡ƒÄë Done!
+  Γû▓ Next.js 14.2.35
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+node.exe : Failed to compile.
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Failed to compile.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+./utils/supabase/server.ts
+Error: 
+  [31mx[0m You're importing a component that needs next/headers. That only works in a Server Component which is not 
+supported in the pages/ directory. Read more: https://nextjs.org/docs/getting-started/
+  [31m|[0m react-essentials#server-components
+  [31m|[0m 
+  [31m|[0m 
+   ,-[[36;1;4mC:\Users\found\Desktop\Games\jwellery\utils\supabase\server.ts[0m:1:1]
+ [2m1[0m | import { createServerClient, type CookieOptions } from '@supabase/ssr'
+ [2m2[0m | import { cookies } from 'next/headers'
+   : [31;1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+ [2m3[0m | 
+ [2m4[0m | export function createClient() {
+ [2m5[0m |   const cookieStore = cookies()
+   `----
+
+Import trace for requested module:
+./utils/supabase/server.ts
+./lib/db.ts
+./app/press/page.tsx
+
+
+> Build failed because of webpack errors
