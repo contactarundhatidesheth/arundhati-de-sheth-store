@@ -20,6 +20,7 @@ export interface Product {
     dimensions?: string;
     purity?: string;
     weight?: string;
+    careInstructions?: string;
   };
   isNew?: boolean;
   isBespoke?: boolean;

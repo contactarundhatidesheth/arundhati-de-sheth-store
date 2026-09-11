@@ -37,7 +37,14 @@ export async function saveProduct(formData: FormData) {
     tags: (formData.get('tags') as string).split(',').map(t => t.trim()),
     images: finalImageUrl ? [finalImageUrl] : [], // TODO handle existing images better in real implementation
     is_new: formData.get('isNew') === 'on',
-    sequence: formData.get('sequence') ? parseInt(formData.get('sequence') as string) : 999
+    sequence: formData.get('sequence') ? parseInt(formData.get('sequence') as string) : 999,
+    specs: {
+      purity: formData.get('purity') as string || '',
+      weight: formData.get('weight') as string || '',
+      dimensions: formData.get('dimensions') as string || '',
+      gemstones: formData.get('gemstones') as string || '',
+      careInstructions: formData.get('careInstructions') as string || ''
+    }
   };
 
   await supabase.from('products').upsert(payload);

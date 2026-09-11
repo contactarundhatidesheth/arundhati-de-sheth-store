@@ -84,6 +84,35 @@ export default async function EditProductPage({ params }: { params: { id: string
           <AdminRichText name="description" defaultValue={product.description} placeholder="A brief description of the product..." />
         </div>
 
+        <div style={{ padding: '24px', background: '#f8f8f8', borderRadius: '8px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <h3 style={{ fontSize: '1.2rem', margin: '0 0 8px 0', fontFamily: 'var(--font-serif)' }}>Specifications & Care</h3>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{ fontSize: '0.85rem', fontWeight: '500' }}>Purity</label>
+              <input type="text" name="purity" defaultValue={product.specs?.purity || ''} style={{ padding: '10px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="e.g. 18K Yellow Gold" />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{ fontSize: '0.85rem', fontWeight: '500' }}>Weight</label>
+              <input type="text" name="weight" defaultValue={product.specs?.weight || ''} style={{ padding: '10px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="e.g. 5.5 GM" />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{ fontSize: '0.85rem', fontWeight: '500' }}>Dimensions</label>
+              <input type="text" name="dimensions" defaultValue={product.specs?.dimensions || ''} style={{ padding: '10px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="e.g. 2 x 3 cm" />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{ fontSize: '0.85rem', fontWeight: '500' }}>Gemstones</label>
+              <input type="text" name="gemstones" defaultValue={product.specs?.gemstones || ''} style={{ padding: '10px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="e.g. Rough Cut Diamonds 2CT" />
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '8px' }}>
+            <label style={{ fontSize: '0.85rem', fontWeight: '500' }}>Jewel Care Instructions (Optional Override)</label>
+            <p style={{ fontSize: '0.75rem', color: '#666', margin: '-4px 0 4px 0' }}>If left blank, the global default care instructions will be shown.</p>
+            <AdminRichText name="careInstructions" defaultValue={product.specs?.careInstructions || ''} placeholder="Custom care instructions..." />
+          </div>
+        </div>
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Image (Upload or URL)</label>
           <div style={{ display: 'flex', gap: '16px', flexDirection: 'column' }}>

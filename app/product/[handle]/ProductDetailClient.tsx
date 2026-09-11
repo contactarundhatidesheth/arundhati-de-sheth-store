@@ -240,14 +240,20 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
                 </button>
                 {openAccordion === 'care' && (
                   <div style={{ paddingBottom: '32px', fontSize: '14.5px', color: 'var(--text-muted)', lineHeight: '1.7', fontWeight: '300' }}>
-                    <p style={{ marginBottom: '16px', fontWeight: '500', color: '#000000' }}>Tips to keep your jewellery in great condition -</p>
-                    <ol style={{ paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '12px', margin: 0 }}>
-                      <li style={{ paddingLeft: '4px' }}>Wear your jewellery after applying lotion/perfume/spray.</li>
-                      <li style={{ paddingLeft: '4px' }}>Do not wear your jewellery to swim or shower.</li>
-                      <li style={{ paddingLeft: '4px' }}>Clean your diamond jewellery with warm, mildly soapy water; followed by air drying it.</li>
-                      <li style={{ paddingLeft: '4px' }}>Avoid cleaning coloured gemstones and pearl jewellery at home.</li>
-                      <li style={{ paddingLeft: '4px' }}>When not wearing your jewel, keep it in an air-tight pouch or its jewellery box.</li>
-                    </ol>
+                    {product.specs?.careInstructions ? (
+                      <div dangerouslySetInnerHTML={{ __html: product.specs.careInstructions }} />
+                    ) : (
+                      <>
+                        <p style={{ marginBottom: '16px', fontWeight: '500', color: '#000000' }}>Tips to keep your jewellery in great condition -</p>
+                        <ol style={{ paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '12px', margin: 0 }}>
+                          <li style={{ paddingLeft: '4px' }}>Wear your jewellery after applying lotion/perfume/spray.</li>
+                          <li style={{ paddingLeft: '4px' }}>Do not wear your jewellery to swim or shower.</li>
+                          <li style={{ paddingLeft: '4px' }}>Clean your diamond jewellery with warm, mildly soapy water; followed by air drying it.</li>
+                          <li style={{ paddingLeft: '4px' }}>Avoid cleaning coloured gemstones and pearl jewellery at home.</li>
+                          <li style={{ paddingLeft: '4px' }}>When not wearing your jewel, keep it in an air-tight pouch or its jewellery box.</li>
+                        </ol>
+                      </>
+                    )}
                   </div>
                 )}
               </div>
