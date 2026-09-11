@@ -8,9 +8,9 @@ export interface Product {
   description: string;
   price: number;
   compareAtPrice?: number;
-  category: 'Earring' | 'Ring' | 'Pendant' | 'Necklace' | 'Bracelet' | 'Cuff';
-  metal: '18K Gold' | '925 Silver' | '14K Gold' | 'Multi-Metal';
-  collection: 'EPHEMERALS' | 'PERENNIALS - Gold' | 'PERENNIALS - Silver';
+  category: string;
+  metal: string;
+  collection: string;
   tags: string[];
   images: string[];
   specs: {
@@ -87,7 +87,7 @@ export interface Database {
 
 export async function readDB(): Promise<Database> {
   const supabase = createClient();
-  
+
   const [
     { data: products },
     { data: catalogues },

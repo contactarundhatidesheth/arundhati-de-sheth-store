@@ -22,15 +22,6 @@ const COLLECTIONS = [
   },
 ];
 
-const JEWELLERY_TYPES = [
-  { id: 'EARRING', label: 'Earrings', image: '/products/20.png' },
-  { id: 'RING', label: 'Rings', image: '/products/30.png' },
-  { id: 'NECKLACE', label: 'Necklaces', image: '/products/6.png' },
-  { id: 'PENDANT', label: 'Pendants', image: '/products/6.png' },
-  { id: 'BRACELET', label: 'Bracelets', image: '/products/30.png' },
-  { id: 'CUFF', label: 'Cuffs', image: '/products/20.png' },
-];
-
 type Step = 'collection' | 'products';
 
 export default function CategoryAllProductsPage() {
@@ -48,6 +39,13 @@ export default function CategoryAllProductsPage() {
 
   const normalize = (str: string) => (str || '').toUpperCase().replace(/[:\-\s]+/g, '');
 
+  /* Derive dynamic categories from active products */
+  const uniqueCategories = Array.from(new Set(PRODUCTS.map(p => p.category).filter(Boolean)));
+  const JEWELLERY_TYPES = uniqueCategories.map(cat => ({
+    id: normalize(cat),
+    label: cat
+  }));
+
   /* Which types exist in the chosen collection? */
   const typesInCollection = selectedCollection
     ? JEWELLERY_TYPES.filter(t =>
@@ -60,8 +58,11 @@ export default function CategoryAllProductsPage() {
     : JEWELLERY_TYPES;
 
   if (selectedCollection === 'EPHEMERALS') {
-    typesInCollection.push({ id: 'COLLAB', label: 'Collab Collection', image: '' });
+    typesInCollection.push({ id: 'COLLAB', label: 'Collab Collection' });
   }
+
+  /* Derive dynamic metals from active products */
+  const uniqueMetals = Array.from(new Set(PRODUCTS.map(p => p.metal).filter(Boolean)));
 
   /* Final filtered products */
   const filteredProducts = selectedCollection
@@ -230,8 +231,8 @@ export default function CategoryAllProductsPage() {
                 style={{ padding: '12px 16px', border: '1px solid #eaeaea', borderRadius: '4px', outline: 'none', fontSize: '0.85rem', width: '250px' }}
                 className="search-input"
               />
-              <div className="metal-filters" style={{ display: 'flex', gap: '12px' }}>
-                {['Gold', 'Silver'].map(metal => (
+              <div className="metal-filters" style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '4px' }}>
+                {uniqueMetals.map(metal => (
                   <button
                     key={metal}
                     onClick={() => setMetalFilter(metalFilter === metal ? null : metal)}
@@ -245,7 +246,8 @@ export default function CategoryAllProductsPage() {
                       fontSize: '0.75rem',
                       textTransform: 'uppercase',
                       cursor: 'pointer',
-                      transition: 'all 0.2s'
+                      transition: 'all 0.2s',
+                      whiteSpace: 'nowrap'
                     }}
                   >
                     {metal}
