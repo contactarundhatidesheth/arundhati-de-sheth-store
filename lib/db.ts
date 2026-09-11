@@ -47,6 +47,7 @@ export interface Blog {
   title: string;
   excerpt: string;
   image: string;
+  link?: string;
   sequence?: number;
 }
 

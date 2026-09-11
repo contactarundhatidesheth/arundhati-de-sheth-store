@@ -118,6 +118,7 @@ export async function saveBlog(formData: FormData) {
     title: formData.get('title') as string,
     excerpt: formData.get('excerpt') as string,
     image: finalImageUrl,
+    link: formData.get('link') as string || null,
     sequence: formData.get('sequence') ? parseInt(formData.get('sequence') as string) : 999
   };
 
