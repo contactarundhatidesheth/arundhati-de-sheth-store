@@ -1,6 +1,7 @@
 'use client';
 import React, { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { Play, Pause } from 'lucide-react';
 import { useCMSData } from '@/hooks/useCMSData';
 
 /* ─────────────────────────────────────────────────────────
@@ -85,6 +86,7 @@ function HowWeHelpSection() {
 export default function AboutPage() {
   const { data, loading } = useCMSData();
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -92,11 +94,51 @@ export default function AboutPage() {
     }
   }, []);
 
+  const toggleVideo = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
   return (
     <div style={{ background: 'var(--bg-primary)', color: 'var(--text-main)' }}>
 
-      {/* ── Hero: Full-bleed video background ── */}
-      <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      {/* ── Page Content ── */}
+      <div style={{ position: 'relative', zIndex: 1, background: 'var(--bg-primary)' }}>
+        <div className="about-journey" style={{ maxWidth: '1400px', margin: '0 auto', padding: '160px 24px 120px' }}>
+
+          {/* ── Arundhati's Story ── */}
+          <section className="editorial-block" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center', marginBottom: '80px' }}>
+            <div style={{ aspectRatio: '3/4', width: '100%', overflow: 'hidden' }}>
+              {/* Portrait — use local file once downloaded, falls back to Shopify CDN */}
+              <img
+                src="/images/arundhati-portrait.webp"
+                alt="Arundhati De-Sheth"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                onError={(e) => { (e.target as HTMLImageElement).src = 'https://www.arundhatidesheth.com/cdn/shop/files/DSC00807.jpg?v=1744025659'; }}
+              />
+            </div>
+            <div>
+              <p style={{ fontSize: '0.75rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '16px' }}>Her Story</p>
+              <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', fontFamily: 'var(--font-serif)', marginBottom: '32px', fontWeight: 400 }}>Arundhati&apos;s Story</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', fontSize: '1rem', color: 'var(--text-muted)', lineHeight: '1.9' }}>
+                <p>Arundhati De-Sheth is an expert on contemporary fine jewellery. She works with connoisseurs and aspiring collectors from around the world curating keepsakes for their private collections and often crafting individualistic jewels that bring out the personality of its wearer.</p>
+                <p>In a world driven by hyper marketing, Arundhati&apos;s thoughtful approach sits on the opposite end of the spectrum — a purveyor of slow luxury, her endeavour is to show lasting pieces that can be enjoyed through the many phases of life, and then passed down to the next generation.</p>
+                <p>Having graduated from the top-rated ESSEC Business School in Paris and selected to the prestigious LVMH program to specialise in Luxury Brand Management, Arundhati&apos;s first tryst with exceptional jewellery was in 2008 whilst working at the Cartier Middle-East and Asia Headquarters in Dubai.</p>
+                <p>Her unwavering interest in high jewellery also took her to the Cannes Film Festival in 2011, where she had intimate interviews with the owners and artistic directors of Chopard and De Grisogono. Her next role as a high jewellery sales expert with Nirav Modi allowed her to travel the world, learning about manufacturing and design from the sharpest minds in the business.</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      {/* ── Hero Video Section (Moved Down) ── */}
+      <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '120px' }}>
         {/* Video background — swapped to Drive video once downloaded */}
         <video
           ref={videoRef}
@@ -114,14 +156,24 @@ export default function AboutPage() {
         {/* Dark overlay - changed to subtle bottom gradient for text readability */}
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 25%)' }} />
 
+        {/* Video Playback Controls */}
+        <button
+          onClick={toggleVideo}
+          style={{ position: 'absolute', top: '48px', right: '48px', zIndex: 10, background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(4px)', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: 'pointer', transition: 'background 0.3s' }}
+          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.6)'}
+          onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.3)'}
+        >
+          {isPlaying ? <Pause size={20} strokeWidth={1} /> : <Play size={20} strokeWidth={1} style={{ marginLeft: '2px' }} />}
+        </button>
+
         {/* Hero text - bottom-left */}
         <div className="about-hero-text" style={{ position: 'absolute', bottom: '48px', left: '48px', zIndex: 2, textAlign: 'left', color: '#FFFFFF' }}>
           <p style={{ fontSize: '0.65rem', letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '12px', opacity: 0.7 }}>
             Fine Jewellery Consultancy
           </p>
-          <h1 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1, marginBottom: '16px' }}>
+          <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1, marginBottom: '16px' }}>
             Arundhati<br />De-Sheth
-          </h1>
+          </h2>
           <div style={{ width: '32px', height: '1px', background: '#d4af37', marginBottom: '16px' }} />
           <p style={{ fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', opacity: 0.6 }}>
             Video Credits: Only Natural Diamonds
@@ -129,37 +181,13 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* ── Page Content ── */}
       <div style={{ position: 'relative', zIndex: 1, background: 'var(--bg-primary)' }}>
-        <div className="about-journey" style={{ maxWidth: '1400px', margin: '0 auto', padding: '120px 24px' }}>
-
-          {/* ── Arundhati's Journey ── */}
-          <section className="editorial-block" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center', marginBottom: '160px' }}>
-            <div style={{ aspectRatio: '3/4', width: '100%', overflow: 'hidden' }}>
-              {/* Portrait — use local file once downloaded, falls back to Shopify CDN */}
-              <img
-                src="/images/arundhati-portrait.webp"
-                alt="Arundhati De-Sheth"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                onError={(e) => { (e.target as HTMLImageElement).src = 'https://www.arundhatidesheth.com/cdn/shop/files/DSC00807.jpg?v=1744025659'; }}
-              />
-            </div>
-            <div>
-              <p style={{ fontSize: '0.75rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '16px' }}>Her Story</p>
-              <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', fontFamily: 'var(--font-serif)', marginBottom: '32px', fontWeight: 400 }}>Arundhati&apos;s Journey</h2>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', fontSize: '1rem', color: 'var(--text-muted)', lineHeight: '1.9' }}>
-                <p>Arundhati De-Sheth is an expert on contemporary fine jewellery. She works with connoisseurs and aspiring collectors from around the world curating keepsakes for their private collections and often crafting individualistic jewels that bring out the personality of its wearer.</p>
-                <p>In a world driven by hyper marketing, Arundhati&apos;s thoughtful approach sits on the opposite end of the spectrum — a purveyor of slow luxury, her endeavour is to show lasting pieces that can be enjoyed through the many phases of life, and then passed down to the next generation.</p>
-                <p>Having graduated from the top-rated ESSEC Business School in Paris and selected to the prestigious LVMH program to specialise in Luxury Brand Management, Arundhati&apos;s first tryst with exceptional jewellery was in 2008 whilst working at the Cartier Middle-East and Asia Headquarters in Dubai.</p>
-                <p>Her unwavering interest in high jewellery also took her to the Cannes Film Festival in 2011, where she had intimate interviews with the owners and artistic directors of Chopard and De Grisogono. Her next role as a high jewellery sales expert with Nirav Modi allowed her to travel the world, learning about manufacturing and design from the sharpest minds in the business.</p>
-              </div>
-            </div>
-          </section>
+        <div className="about-journey" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 24px 120px' }}>
 
           {/* ── Core Values: Vision, Mission, Objective ── */}
           <section className="core-values-section" style={{ marginBottom: '160px' }}>
             <div className="core-values-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '80px' }}>
-              
+
               {/* Mission */}
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <h3 style={{ fontSize: '2rem', fontFamily: 'var(--font-serif)', color: 'var(--text-main)', marginBottom: '20px', fontWeight: 400 }}>

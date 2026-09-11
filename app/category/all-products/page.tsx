@@ -11,24 +11,24 @@ const COLLECTIONS = [
   {
     id: 'EPHEMERALS',
     label: 'Ephemerals',
-    subtitle: 'Seasonal & Limited Edition',
+    subtitle: 'Pieces created in limited moments',
     image: '/products/20.png',
   },
   {
     id: 'PERENNIALS',
     label: 'Perennials',
-    subtitle: 'Timeless Creations',
+    subtitle: 'Pieces lasting a long time, recurrent',
     image: '/products/30.png',
   },
 ];
 
 const JEWELLERY_TYPES = [
-  { id: 'EARRING',  label: 'Earrings',  image: '/products/20.png' },
-  { id: 'RING',     label: 'Rings',     image: '/products/30.png' },
-  { id: 'NECKLACE', label: 'Necklaces', image: '/products/6.png'  },
-  { id: 'PENDANT',  label: 'Pendants',  image: '/products/6.png'  },
+  { id: 'EARRING', label: 'Earrings', image: '/products/20.png' },
+  { id: 'RING', label: 'Rings', image: '/products/30.png' },
+  { id: 'NECKLACE', label: 'Necklaces', image: '/products/6.png' },
+  { id: 'PENDANT', label: 'Pendants', image: '/products/6.png' },
   { id: 'BRACELET', label: 'Bracelets', image: '/products/30.png' },
-  { id: 'CUFF',     label: 'Cuffs',     image: '/products/20.png' },
+  { id: 'CUFF', label: 'Cuffs', image: '/products/20.png' },
 ];
 
 type Step = 'collection' | 'products';
@@ -36,11 +36,11 @@ type Step = 'collection' | 'products';
 export default function CategoryAllProductsPage() {
   const { data, loading } = useCMSData();
 
-  const [step, setStep]             = useState<Step>('collection');
+  const [step, setStep] = useState<Step>('collection');
   const [selectedCollection, setSelectedCollection] = useState<string | null>(null);
-  const [selectedType, setSelectedType]             = useState<string | null>(null); // null = All
-  const [searchQuery, setSearchQuery]               = useState('');
-  const [metalFilter, setMetalFilter]               = useState<string | null>(null);
+  const [selectedType, setSelectedType] = useState<string | null>(null); // null = All
+  const [searchQuery, setSearchQuery] = useState('');
+  const [metalFilter, setMetalFilter] = useState<string | null>(null);
 
   if (loading) return <div style={{ minHeight: '100vh', background: '#FFF' }} />;
 
@@ -51,12 +51,12 @@ export default function CategoryAllProductsPage() {
   /* Which types exist in the chosen collection? */
   const typesInCollection = selectedCollection
     ? JEWELLERY_TYPES.filter(t =>
-        PRODUCTS.some(
-          p =>
-            normalize(p.collection).includes(normalize(selectedCollection)) &&
-            normalize(p.category) === normalize(t.id),
-        ),
-      )
+      PRODUCTS.some(
+        p =>
+          normalize(p.collection).includes(normalize(selectedCollection)) &&
+          normalize(p.category) === normalize(t.id),
+      ),
+    )
     : JEWELLERY_TYPES;
 
   if (selectedCollection === 'EPHEMERALS') {
@@ -66,28 +66,28 @@ export default function CategoryAllProductsPage() {
   /* Final filtered products */
   const filteredProducts = selectedCollection
     ? PRODUCTS.filter(p => {
-        // Collection Filter
-        if (!normalize(p.collection).includes(normalize(selectedCollection))) return false;
-        
-        // Type Filter
-        if (selectedType) {
-          if (selectedType === 'COLLAB') {
-            if (!(normalize(p.collection).includes('COLLAB') || 
-                  normalize(p.category).includes('COLLAB') || 
-                  normalize(p.title).includes('COLLAB'))) return false;
-          } else {
-            if (normalize(p.category) !== normalize(selectedType)) return false;
-          }
+      // Collection Filter
+      if (!normalize(p.collection).includes(normalize(selectedCollection))) return false;
+
+      // Type Filter
+      if (selectedType) {
+        if (selectedType === 'COLLAB') {
+          if (!(normalize(p.collection).includes('COLLAB') ||
+            normalize(p.category).includes('COLLAB') ||
+            normalize(p.title).includes('COLLAB'))) return false;
+        } else {
+          if (normalize(p.category) !== normalize(selectedType)) return false;
         }
+      }
 
-        // Search Filter
-        if (searchQuery && !p.title.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+      // Search Filter
+      if (searchQuery && !p.title.toLowerCase().includes(searchQuery.toLowerCase())) return false;
 
-        // Metal Filter
-        if (metalFilter && !normalize(p.metal).includes(normalize(metalFilter))) return false;
+      // Metal Filter
+      if (metalFilter && !normalize(p.metal).includes(normalize(metalFilter))) return false;
 
-        return true;
-      })
+      return true;
+    })
     : [];
 
   /* ── Handlers ── */
@@ -98,9 +98,9 @@ export default function CategoryAllProductsPage() {
   };
 
   const goBack = () => {
-    if (step === 'products') { 
-      setStep('collection'); 
-      setSelectedCollection(null); 
+    if (step === 'products') {
+      setStep('collection');
+      setSelectedCollection(null);
       setSelectedType(null);
       setSearchQuery('');
       setMetalFilter(null);
@@ -117,11 +117,11 @@ export default function CategoryAllProductsPage() {
       <section style={{ position: 'relative', minHeight: '85vh', display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-start', background: '#000000', overflow: 'hidden' }}>
         <Image
           src={
-            step === 'collection' 
-              ? '/images/Explore%20.png' 
-              : selectedCollection === 'EPHEMERALS' 
-              ? '/images/Ephemerals%20.png' 
-              : '/images/Perennials%20.png'
+            step === 'collection'
+              ? '/images/Explore%20.png'
+              : selectedCollection === 'EPHEMERALS'
+                ? '/images/Ephemerals%20.png'
+                : '/images/Perennials%20.png'
           }
           alt={step === 'collection' ? 'Explore Collections' : collectionLabel}
           fill
@@ -178,35 +178,35 @@ export default function CategoryAllProductsPage() {
         <div className="step-wrapper" style={{ padding: '48px 40px 80px' }}>
           <div className="collection-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2px', maxWidth: '1600px', margin: '0 auto' }}>
             {COLLECTIONS.map(col => (
-                <button
-                  key={col.id}
-                  onClick={() => pickCollection(col.id)}
-                  style={{ border: 'none', padding: 0, cursor: 'pointer', width: '100%', display: 'flex', flexDirection: 'column', background: 'transparent' }}
-                  className="collection-card"
-                >
-                  <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', background: '#F9F9F9' }}>
-                    <Image
-                      src={col.image}
-                      alt={col.label}
-                      fill
-                      style={{ objectFit: 'contain', padding: '24px', transition: 'transform 0.7s ease' }}
-                      className="collection-img"
-                    />
-                  </div>
-                  <div style={{ padding: '24px 0 16px', textAlign: 'left', width: '100%' }}>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '8px', fontWeight: 500 }}>
-                      {col.subtitle}
-                    </p>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <h2 style={{ color: 'var(--text-main)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1, margin: 0 }}>
-                        {col.label}
-                      </h2>
-                      <div className="collection-arrow" style={{ opacity: 0, transition: 'opacity 0.3s ease, transform 0.3s ease', transform: 'translateX(-10px)' }}>
-                        <ArrowRight size={20} color="var(--text-main)" strokeWidth={1.5} />
-                      </div>
+              <button
+                key={col.id}
+                onClick={() => pickCollection(col.id)}
+                style={{ border: 'none', padding: 0, cursor: 'pointer', width: '100%', display: 'flex', flexDirection: 'column', background: 'transparent' }}
+                className="collection-card"
+              >
+                <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', background: '#F9F9F9' }}>
+                  <Image
+                    src={col.image}
+                    alt={col.label}
+                    fill
+                    style={{ objectFit: 'contain', padding: '24px', transition: 'transform 0.7s ease' }}
+                    className="collection-img"
+                  />
+                </div>
+                <div style={{ padding: '24px 0 16px', textAlign: 'left', width: '100%' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <h2 style={{ color: 'var(--text-main)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1, margin: 0 }}>
+                      {col.label}
+                    </h2>
+                    <div className="collection-arrow" style={{ opacity: 0, transition: 'opacity 0.3s ease, transform 0.3s ease', transform: 'translateX(-10px)' }}>
+                      <ArrowRight size={20} color="var(--text-main)" strokeWidth={1.5} />
                     </div>
                   </div>
-                </button>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '0.75rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500 }}>
+                    {col.subtitle}
+                  </p>
+                </div>
+              </button>
             ))}
           </div>
         </div>
@@ -219,12 +219,12 @@ export default function CategoryAllProductsPage() {
         <div className="step-wrapper" style={{ padding: '48px 40px 120px' }}>
           {/* Filters Bar */}
           <div className="filters-bar" style={{ display: 'flex', flexDirection: 'column', gap: '24px', marginBottom: '48px' }}>
-            
+
             {/* Search & Metal Controls */}
             <div className="filter-controls" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', borderBottom: '1px solid #eaeaea', paddingBottom: '16px' }}>
-              <input 
-                type="text" 
-                placeholder="Search pieces..." 
+              <input
+                type="text"
+                placeholder="Search pieces..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 style={{ padding: '12px 16px', border: '1px solid #eaeaea', borderRadius: '4px', outline: 'none', fontSize: '0.85rem', width: '250px' }}
@@ -232,10 +232,10 @@ export default function CategoryAllProductsPage() {
               />
               <div className="metal-filters" style={{ display: 'flex', gap: '12px' }}>
                 {['Gold', 'Silver'].map(metal => (
-                  <button 
+                  <button
                     key={metal}
                     onClick={() => setMetalFilter(metalFilter === metal ? null : metal)}
-                    style={{ 
+                    style={{
                       background: metalFilter === metal ? '#111' : 'transparent',
                       color: metalFilter === metal ? '#fff' : '#666',
                       border: '1px solid',
@@ -257,16 +257,16 @@ export default function CategoryAllProductsPage() {
             {/* Category Tabs */}
             {typesInCollection.length > 0 && (
               <div className="category-tabs" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '16px', WebkitOverflowScrolling: 'touch' }}>
-                <button 
+                <button
                   onClick={() => setSelectedType(null)}
-                  style={{ 
-                    background: 'none', 
-                    border: 'none', 
-                    fontSize: '0.75rem', 
-                    letterSpacing: '0.15em', 
-                    textTransform: 'uppercase', 
-                    cursor: 'pointer', 
-                    padding: '8px 16px', 
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    fontSize: '0.75rem',
+                    letterSpacing: '0.15em',
+                    textTransform: 'uppercase',
+                    cursor: 'pointer',
+                    padding: '8px 16px',
                     borderBottom: selectedType === null ? '1px solid #000' : '1px solid transparent',
                     color: selectedType === null ? '#000' : '#888',
                     transition: 'color 0.2s, border-color 0.2s'
@@ -275,17 +275,17 @@ export default function CategoryAllProductsPage() {
                   All Pieces
                 </button>
                 {typesInCollection.map(type => (
-                  <button 
+                  <button
                     key={type.id}
                     onClick={() => setSelectedType(type.id)}
-                    style={{ 
-                      background: 'none', 
-                      border: 'none', 
-                      fontSize: '0.75rem', 
-                      letterSpacing: '0.15em', 
-                      textTransform: 'uppercase', 
-                      cursor: 'pointer', 
-                      padding: '8px 16px', 
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      fontSize: '0.75rem',
+                      letterSpacing: '0.15em',
+                      textTransform: 'uppercase',
+                      cursor: 'pointer',
+                      padding: '8px 16px',
                       borderBottom: selectedType === type.id ? '1px solid #000' : '1px solid transparent',
                       color: selectedType === type.id ? '#000' : '#888',
                       transition: 'color 0.2s, border-color 0.2s'

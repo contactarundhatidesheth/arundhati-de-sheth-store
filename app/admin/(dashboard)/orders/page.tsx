@@ -30,7 +30,6 @@ export default async function OrdersAdminPage() {
         </summary>
         <form action={async (formData) => {
           "use server";
-          const { createClient: createSupabaseAdmin } = await import('@supabase/supabase-js');
           const supabaseAdmin = createSupabaseAdmin(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
           const manualOrder = {
@@ -104,7 +103,6 @@ export default async function OrdersAdminPage() {
                 <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'flex-end' }}>
                   <form action={async (formData) => {
                     "use server";
-                    const { createClient: createSupabaseAdmin } = await import('@supabase/supabase-js');
                     const supabaseServer = createSupabaseAdmin(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
                     const newStatus = formData.get('status') as string;
                     const trackingNumber = formData.get('trackingNumber') as string;
