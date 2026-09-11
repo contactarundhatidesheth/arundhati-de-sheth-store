@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { readDB } from '@/lib/db';
 import { saveProduct } from '@/app/admin/actions';
 import AdminRichText from '@/app/admin/AdminRichText';
+import FilterPills from '@/app/admin/components/FilterPills';
 
 export default async function NewProductPage() {
   const db = await readDB();
@@ -39,30 +40,12 @@ export default async function NewProductPage() {
             <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Price (₹)</label>
             <input type="number" name="price" required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="50000" />
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
-            <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Category</label>
-            <input type="text" name="category" list="categoryOptions" required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="Select or type category" />
-            <datalist id="categoryOptions">
-              {uniqueCategories.map(cat => <option key={cat} value={cat} />)}
-            </datalist>
-          </div>
+          <FilterPills name="category" options={uniqueCategories} label="Category" />
         </div>
 
         <div style={{ display: 'flex', gap: '24px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
-            <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Metal</label>
-            <input type="text" name="metal" list="metalOptions" required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="Select or type metal" />
-            <datalist id="metalOptions">
-              {uniqueMetals.map(metal => <option key={metal} value={metal} />)}
-            </datalist>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
-            <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Collection</label>
-            <input type="text" name="collection" list="collectionOptions" required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="Select or type collection" />
-            <datalist id="collectionOptions">
-              {uniqueCollections.map(collection => <option key={collection} value={collection} />)}
-            </datalist>
-          </div>
+          <FilterPills name="metal" options={uniqueMetals} label="Metal" />
+          <FilterPills name="collection" options={uniqueCollections} label="Collection" />
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
