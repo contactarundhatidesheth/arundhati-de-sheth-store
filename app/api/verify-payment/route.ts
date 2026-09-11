@@ -21,7 +21,8 @@ export async function POST(req: Request) {
     }
 
     // Update the order in Supabase
-    const supabase = createClient();
+    const { createClient: createSupabaseAdmin } = await import('@supabase/supabase-js');
+    const supabase = createSupabaseAdmin(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
     const { error } = await supabase
       .from('orders')
       .update({

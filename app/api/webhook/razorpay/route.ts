@@ -25,7 +25,8 @@ export async function POST(req: Request) {
         const event = JSON.parse(bodyText);
 
         // Handle the event
-        const supabase = createClient();
+        const { createClient: createSupabaseAdmin } = await import('@supabase/supabase-js');
+        const supabase = createSupabaseAdmin(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
         if (event.event === 'payment.captured' || event.event === 'order.paid') {
             const paymentEntity = event.payload.payment.entity;
             const orderId = paymentEntity.order_id;
