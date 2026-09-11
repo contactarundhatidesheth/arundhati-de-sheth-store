@@ -3,11 +3,12 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { readDB } from '@/lib/db';
 import { saveCatalogue } from '@/app/admin/actions';
+import { DeletableImageHelper } from '@/app/admin/components/DeletableImageHelpers';
 
 export default async function EditCataloguePage({ params }: { params: { id: string } }) {
   const db = await readDB();
   const catalogue = db.catalogues.find(c => c.id === params.id);
-  
+
   if (!catalogue) {
     notFound();
   }
@@ -21,7 +22,7 @@ export default async function EditCataloguePage({ params }: { params: { id: stri
 
       <form action={saveCatalogue} style={{ background: '#fff', padding: '32px', borderRadius: '8px', border: '1px solid #eaeaea', display: 'flex', flexDirection: 'column', gap: '24px' }}>
         <input type="hidden" name="id" value={catalogue.id} />
-        
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Sequence / Display Order</label>
           <input type="number" name="sequence" defaultValue={catalogue.sequence || 999} required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="1" />
@@ -47,7 +48,7 @@ export default async function EditCataloguePage({ params }: { params: { id: stri
           <div style={{ display: 'flex', gap: '16px', flexDirection: 'column' }}>
             <input type="file" name="imageFile" accept="image/*,video/*" style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} />
             <span style={{ fontSize: '0.8rem', color: '#666', marginTop: '-8px' }}>OR</span>
-            <input type="url" name="image" defaultValue={catalogue.image} style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="Provide Image URL (https://...)" />
+            <DeletableImageHelper name="image" defaultUrl={catalogue.image || ''} />
           </div>
         </div>
 

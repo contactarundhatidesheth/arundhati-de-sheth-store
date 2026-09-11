@@ -4,11 +4,12 @@ import { notFound } from 'next/navigation';
 import { readDB } from '@/lib/db';
 import { saveProduct } from '@/app/admin/actions';
 import AdminRichText from '@/app/admin/AdminRichText';
+import { DeletableImageHelper } from '@/app/admin/components/DeletableImageHelpers';
 
 export default async function EditProductPage({ params }: { params: { id: string } }) {
   const db = await readDB();
   const product = db.products.find(p => p.id === params.id);
-  
+
   if (!product) {
     notFound();
   }
@@ -22,7 +23,7 @@ export default async function EditProductPage({ params }: { params: { id: string
 
       <form action={saveProduct} style={{ background: '#fff', padding: '32px', borderRadius: '8px', border: '1px solid #eaeaea', display: 'flex', flexDirection: 'column', gap: '24px' }}>
         <input type="hidden" name="id" value={product.id} />
-        
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Sequence / Display Order</label>
           <input type="number" name="sequence" defaultValue={product.sequence || 999} required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="1" />
@@ -84,7 +85,7 @@ export default async function EditProductPage({ params }: { params: { id: string
           <div style={{ display: 'flex', gap: '16px', flexDirection: 'column' }}>
             <input type="file" name="imageFile" accept="image/*,video/*" style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} />
             <span style={{ fontSize: '0.8rem', color: '#666', marginTop: '-8px' }}>OR</span>
-            <input type="url" name="image" defaultValue={product.images[0]} style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="Provide Image URL (https://...)" />
+            <DeletableImageHelper name="image" defaultUrl={product.images[0] || ''} />
           </div>
         </div>
 

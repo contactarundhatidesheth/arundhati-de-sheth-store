@@ -3,11 +3,12 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { readDB } from '@/lib/db';
 import { saveTimelineEvent } from '@/app/admin/actions';
+import { DeletableImageListHelper } from '@/app/admin/components/DeletableImageHelpers';
 
 export default async function EditTimelinePage({ params }: { params: { id: string } }) {
   const db = await readDB();
   const event = db.timelineEvents.find(t => t.id === params.id);
-  
+
   if (!event) {
     notFound();
   }
@@ -21,7 +22,7 @@ export default async function EditTimelinePage({ params }: { params: { id: strin
 
       <form action={saveTimelineEvent} style={{ background: '#fff', padding: '32px', borderRadius: '8px', border: '1px solid #eaeaea', display: 'flex', flexDirection: 'column', gap: '24px' }}>
         <input type="hidden" name="id" value={event.id} />
-        
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Sequence / Display Order</label>
           <input type="number" name="sequence" defaultValue={event.sequence || 999} required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="1" />
@@ -48,7 +49,7 @@ export default async function EditTimelinePage({ params }: { params: { id: strin
           <div style={{ display: 'flex', gap: '16px', flexDirection: 'column' }}>
             <input type="file" name="imageFiles" accept="image/*,video/*" multiple style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} />
             <span style={{ fontSize: '0.8rem', color: '#666', marginTop: '-8px' }}>OR URLs (comma separated)</span>
-            <textarea name="images" defaultValue={(event.images || []).join(', ')} rows={3} style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px', resize: 'vertical' }} placeholder="/timeline/img1.jpg, /timeline/img2.jpg"></textarea>
+            <DeletableImageListHelper name="images" defaultUrls={event.images || []} />
           </div>
           <span style={{ fontSize: '0.8rem', color: '#888' }}>You can upload multiple files or provide multiple URLs. Leave blank if no images.</span>
         </div>
