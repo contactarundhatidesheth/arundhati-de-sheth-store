@@ -114,7 +114,16 @@ export async function readDB(): Promise<Database> {
       inStock: p.in_stock
     })),
     catalogues: catalogues || [],
-    blogs: blogs || [],
+    blogs: (blogs || []).map(b => {
+      let excerpt = b.excerpt || '';
+      let link = b.link || ''; // Fallback just in case
+      if (excerpt.includes('|||')) {
+        const parts = excerpt.split('|||');
+        link = parts.pop() || '';
+        excerpt = parts.join('|||');
+      }
+      return { ...b, excerpt, link };
+    }),
     testimonials: testimonials || [],
     timelineEvents: timelineEvents || [],
     analytics: {
