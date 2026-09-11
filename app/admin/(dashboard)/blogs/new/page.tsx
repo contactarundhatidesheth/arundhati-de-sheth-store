@@ -32,13 +32,13 @@ export default function NewBlogPage() {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Excerpt / Summary</label>
-          <textarea name="excerpt" required rows={3} style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px', resize: 'vertical' }} placeholder="Arundhati De-Sheth redefines modern luxury..."></textarea>
+          <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Article Link / URL</label>
+          <input type="url" name="link" required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="https://vogue.in/..." />
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>External Link (URL)</label>
-          <input type="url" name="link" style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="https://vogue.in/..." />
+          <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Excerpt / Summary</label>
+          <textarea name="excerpt" required rows={3} style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px', resize: 'vertical' }} placeholder="Arundhati De-Sheth redefines modern luxury..."></textarea>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>

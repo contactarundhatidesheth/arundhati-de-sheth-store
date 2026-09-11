@@ -9,47 +9,12 @@ import { Section } from '@/components/ui/Section';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { FadeInSection } from '@/components/ui/FadeInSection';
+import { readDB } from '@/lib/db';
 
-const PRESS = [
-  {
-    id: '1',
-    publication: 'Vogue India',
-    title: 'The New Guard of Indian High Jewellery',
-    excerpt: 'Arundhati De-Sheth is redefining what it means to be a contemporary high jewellery designer in India.',
-    date: 'March 2025',
-    image: '/pressimages/press-1.png',
-    link: '#',
-  },
-  {
-    id: '2',
-    publication: "Harper's Bazaar",
-    title: 'Sculptural Silver: The Perennials Collection',
-    excerpt: 'Rock crystals and architectural forms collide in this stunning new collection from Mumbai-based Arundhati De-Sheth.',
-    date: 'January 2025',
-    image: '/pressimages/press-2.jpg',
-    link: '#',
-  },
-  {
-    id: '3',
-    publication: 'Jewellery Focus Asia',
-    title: 'Bespoke by Design: A Conversation with Arundhati De-Sheth',
-    excerpt: 'On building a consultancy-first model, gemstone provenance, and the art of the private client relationship.',
-    date: 'November 2024',
-    image: '/pressimages/press-3.jpg',
-    link: '#',
-  },
-  {
-    id: '4',
-    publication: 'The Jewellery Editor',
-    title: 'JewelArt 2024: The Highlights',
-    excerpt: "A curated selection of the most compelling pieces from this year's edition of JewelArt, featuring Arundhati De-Sheth.",
-    date: 'October 2024',
-    image: '/pressimages/press-4.png',
-    link: '#',
-  },
-];
+export default async function PressPage() {
+  const db = await readDB();
+  const PRESS = [...db.blogs].sort((a, b) => (a.sequence || 999) - (b.sequence || 999));
 
-export default function PressPage() {
   const whatsappMessage = encodeURIComponent("Hi, I'm interested in press and media inquiries. Could you please share the press kit?");
   const whatsappLink = WHATSAPP_URL + "?text=" + whatsappMessage;
 
@@ -69,11 +34,11 @@ export default function PressPage() {
           <p style={{ fontSize: '0.7rem', color: 'var(--accent-light)', letterSpacing: '0.3em', textTransform: 'uppercase', fontWeight: '500', marginBottom: '16px' }}>
             Press & Editorial
           </p>
-          <h1 style={{ 
-            fontSize: 'clamp(2.5rem, 8vw, 6rem)', 
-            fontWeight: '300', 
-            fontFamily: 'var(--font-serif)', 
-            color: '#fff', 
+          <h1 style={{
+            fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+            fontWeight: '300',
+            fontFamily: 'var(--font-serif)',
+            color: '#fff',
             margin: '0 0 16px 0',
             lineHeight: 1,
             letterSpacing: '-0.02em',
@@ -113,11 +78,10 @@ export default function PressPage() {
               <FadeInSection key={article.id}>
                 <article style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%' }}>
                   <div style={{ position: 'relative', width: '100%', aspectRatio: '3/2', overflow: 'hidden', background: 'var(--bg-surface)' }}>
-                    <Image
-                      src={article.image}
+                    <img
+                      src={article.image || '/pressimages/press-hero.png'}
                       alt={article.title}
-                      fill
-                      style={{ objectFit: 'cover' }}
+                      style={{ objectFit: 'cover', width: '100%', height: '100%' }}
                     />
                   </div>
                   <div style={{ padding: '32px', flex: 1, display: 'flex', flexDirection: 'column' }}>
