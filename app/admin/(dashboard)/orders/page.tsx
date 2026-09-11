@@ -1,5 +1,6 @@
 import React from 'react';
 import { createClient as createSupabaseAdmin } from '@supabase/supabase-js';
+import { revalidatePath } from 'next/cache';
 export const dynamic = 'force-dynamic';
 
 export default async function OrdersAdminPage() {
@@ -54,7 +55,6 @@ export default async function OrdersAdminPage() {
           };
 
           await supabaseAdmin.from('orders').insert({ ...manualOrder });
-          const { revalidatePath } = await import('next/cache');
           revalidatePath('/admin/orders');
         }} style={{ marginTop: '24px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
@@ -111,7 +111,6 @@ export default async function OrdersAdminPage() {
                       status: newStatus,
                       shipping_address: updatedShipping
                     }).eq('id', order.id);
-                    const { revalidatePath } = await import('next/cache');
                     revalidatePath('/admin/orders');
                   }} style={{ display: 'flex', gap: '8px', alignItems: 'center', background: '#f5f5f5', padding: '12px', borderRadius: '8px' }}>
                     <select name="status" defaultValue={order.status} style={{ padding: '6px', borderRadius: '4px', border: '1px solid #ccc', fontSize: '0.85rem' }}>
