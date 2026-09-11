@@ -46,32 +46,36 @@ export default async function EditProductPage({ params }: { params: { id: string
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
             <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Category</label>
-            <select name="category" defaultValue={product.category} required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }}>
-              <option value="Earring">Earring</option>
-              <option value="Ring">Ring</option>
-              <option value="Necklace">Necklace</option>
-              <option value="Bracelet">Bracelet</option>
-            </select>
+            <input type="text" name="category" list="categoryOptions" defaultValue={product.category} required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="Select or type category" />
+            <datalist id="categoryOptions">
+              <option value="Earring" />
+              <option value="Ring" />
+              <option value="Necklace" />
+              <option value="Bracelet" />
+              <option value="Pendant" />
+            </datalist>
           </div>
         </div>
 
         <div style={{ display: 'flex', gap: '24px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
             <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Metal</label>
-            <select name="metal" defaultValue={product.metal} required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }}>
-              <option value="18K Gold">18K Gold</option>
-              <option value="14K Gold">14K Gold</option>
-              <option value="925 Silver">925 Silver</option>
-              <option value="Multi-Metal">Multi-Metal</option>
-            </select>
+            <input type="text" name="metal" list="metalOptions" defaultValue={product.metal} required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="Select or type metal" />
+            <datalist id="metalOptions">
+              <option value="18K Gold" />
+              <option value="14K Gold" />
+              <option value="925 Silver" />
+              <option value="Multi-Metal" />
+            </datalist>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
             <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Collection</label>
-            <select name="collection" defaultValue={product.collection} required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }}>
-              <option value="EPHEMERALS">EPHEMERALS</option>
-              <option value="PERENNIALS - Gold">PERENNIALS - Gold</option>
-              <option value="PERENNIALS - Silver">PERENNIALS - Silver</option>
-            </select>
+            <input type="text" name="collection" list="collectionOptions" defaultValue={product.collection} required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="Select or type collection" />
+            <datalist id="collectionOptions">
+              <option value="EPHEMERALS" />
+              <option value="PERENNIALS - Gold" />
+              <option value="PERENNIALS - Silver" />
+            </datalist>
           </div>
         </div>
 
