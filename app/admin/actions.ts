@@ -2,10 +2,8 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { createClient as createSupabaseAdmin } from '@supabase/supabase-js';
+import { getSupabaseAdmin as getAdminClient } from '@/utils/supabase-admin';
 import { saveUpload } from '@/lib/upload';
-
-const getAdminClient = () => createSupabaseAdmin(process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://radmagmbzuubeqjrncot.supabase.co', process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJhZG1hZ21ienV1YmVxanJuY290Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4Nzc0MzgwMiwiZXhwIjoyMTAzMzE5ODAyfQ.QpclPWrif6Nlj4QrD2VBHp1OUw83hOU-IQEaJwuD58E');
 
 // --- PRODUCTS ---
 export async function deleteProduct(id: string) {

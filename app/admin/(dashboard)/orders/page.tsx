@@ -1,14 +1,11 @@
 import React from 'react';
-import { createClient as createSupabaseAdmin } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from '@/utils/supabase-admin';
 import { revalidatePath } from 'next/cache';
 import { sendOrderTrackingEmail } from '@/utils/email';
 export const dynamic = 'force-dynamic';
 
 export default async function OrdersAdminPage() {
-  const supabase = createSupabaseAdmin(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJhZG1hZ21ienV1YmVxanJuY290Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4Nzc0MzgwMiwiZXhwIjoyMTAzMzE5ODAyfQ.QpclPWrif6Nlj4QrD2VBHp1OUw83hOU-IQEaJwuD58E'
-  );
+  const supabase = getSupabaseAdmin();
 
   // Fetch orders directly, thanks to our RLS policy we get all orders if admin
   const { data: orders, error } = await supabase
@@ -32,7 +29,7 @@ export default async function OrdersAdminPage() {
         </summary>
         <form action={async (formData) => {
           "use server";
-          const supabaseAdmin = createSupabaseAdmin(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJhZG1hZ21ienV1YmVxanJuY290Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4Nzc0MzgwMiwiZXhwIjoyMTAzMzE5ODAyfQ.QpclPWrif6Nlj4QrD2VBHp1OUw83hOU-IQEaJwuD58E');
+          const supabaseAdmin = getSupabaseAdmin();
 
           const manualOrder = {
             user_id: null,
@@ -104,7 +101,7 @@ export default async function OrdersAdminPage() {
                 <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'flex-end' }}>
                   <form action={async (formData) => {
                     "use server";
-                    const supabaseServer = createSupabaseAdmin(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJhZG1hZ21ienV1YmVxanJuY290Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4Nzc0MzgwMiwiZXhwIjoyMTAzMzE5ODAyfQ.QpclPWrif6Nlj4QrD2VBHp1OUw83hOU-IQEaJwuD58E');
+                    const supabaseServer = getSupabaseAdmin();
                     const newStatus = formData.get('status') as string;
                     const trackingNumber = formData.get('trackingNumber') as string;
                     const updatedShipping = { ...order.shipping_address, tracking_number: trackingNumber || null };
