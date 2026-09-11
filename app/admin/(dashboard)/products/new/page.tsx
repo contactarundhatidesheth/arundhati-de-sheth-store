@@ -7,9 +7,14 @@ import FilterPills from '@/app/admin/components/FilterPills';
 
 export default async function NewProductPage() {
   const db = await readDB();
-  const uniqueCategories = Array.from(new Set(db.products.map(p => p.category).filter(Boolean)));
-  const uniqueMetals = Array.from(new Set(db.products.map(p => p.metal).filter(Boolean)));
-  const uniqueCollections = Array.from(new Set(db.products.map(p => p.collection).filter(Boolean)));
+  const guaranteedCategories = ["Earring", "Ring", "Necklace", "Bracelet", "Pendant", "Collab"];
+  const uniqueCategories = Array.from(new Set([...guaranteedCategories, ...db.products.map(p => p.category).filter(Boolean)]));
+
+  const guaranteedMetals = ["18K Gold", "14K Gold", "925 Silver", "Multi-Metal"];
+  const uniqueMetals = Array.from(new Set([...guaranteedMetals, ...db.products.map(p => p.metal).filter(Boolean)]));
+
+  const guaranteedCollections = ["EPHEMERALS", "PERENNIALS - Gold", "PERENNIALS - Silver", "Collab"];
+  const uniqueCollections = Array.from(new Set([...guaranteedCollections, ...db.products.map(p => p.collection).filter(Boolean)]));
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto' }}>
