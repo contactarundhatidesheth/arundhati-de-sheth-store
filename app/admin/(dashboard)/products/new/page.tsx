@@ -1,9 +1,15 @@
 import React from 'react';
 import Link from 'next/link';
+import { readDB } from '@/lib/db';
 import { saveProduct } from '@/app/admin/actions';
 import AdminRichText from '@/app/admin/AdminRichText';
 
-export default function NewProductPage() {
+export default async function NewProductPage() {
+  const db = await readDB();
+  const uniqueCategories = Array.from(new Set(db.products.map(p => p.category).filter(Boolean)));
+  const uniqueMetals = Array.from(new Set(db.products.map(p => p.metal).filter(Boolean)));
+  const uniqueCollections = Array.from(new Set(db.products.map(p => p.collection).filter(Boolean)));
+
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
@@ -37,11 +43,7 @@ export default function NewProductPage() {
             <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Category</label>
             <input type="text" name="category" list="categoryOptions" required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="Select or type category" />
             <datalist id="categoryOptions">
-              <option value="Earring" />
-              <option value="Ring" />
-              <option value="Necklace" />
-              <option value="Bracelet" />
-              <option value="Pendant" />
+              {uniqueCategories.map(cat => <option key={cat} value={cat} />)}
             </datalist>
           </div>
         </div>
@@ -51,19 +53,14 @@ export default function NewProductPage() {
             <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Metal</label>
             <input type="text" name="metal" list="metalOptions" required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="Select or type metal" />
             <datalist id="metalOptions">
-              <option value="18K Gold" />
-              <option value="14K Gold" />
-              <option value="925 Silver" />
-              <option value="Multi-Metal" />
+              {uniqueMetals.map(metal => <option key={metal} value={metal} />)}
             </datalist>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
             <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Collection</label>
             <input type="text" name="collection" list="collectionOptions" required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="Select or type collection" />
             <datalist id="collectionOptions">
-              <option value="EPHEMERALS" />
-              <option value="PERENNIALS - Gold" />
-              <option value="PERENNIALS - Silver" />
+              {uniqueCollections.map(collection => <option key={collection} value={collection} />)}
             </datalist>
           </div>
         </div>
