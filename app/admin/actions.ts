@@ -2,12 +2,14 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { createClient } from '@/utils/supabase/server';
+import { createClient as createSupabaseAdmin } from '@supabase/supabase-js';
 import { saveUpload } from '@/lib/upload';
+
+const getAdminClient = () => createSupabaseAdmin(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
 // --- PRODUCTS ---
 export async function deleteProduct(id: string) {
-  const supabase = createClient();
+  const supabase = getAdminClient();
   await supabase.from('products').delete().eq('id', id);
   revalidatePath('/admin/products');
   revalidatePath('/category/[category]');
@@ -16,9 +18,9 @@ export async function deleteProduct(id: string) {
 }
 
 export async function saveProduct(formData: FormData) {
-  const supabase = createClient();
+  const supabase = getAdminClient();
   const id = formData.get('id') as string;
-  
+
   const imageFile = formData.get('imageFile') as File | null;
   let finalImageUrl = formData.get('image') as string;
   if (imageFile && imageFile.size > 0) {
@@ -39,9 +41,9 @@ export async function saveProduct(formData: FormData) {
     is_new: formData.get('isNew') === 'on',
     sequence: formData.get('sequence') ? parseInt(formData.get('sequence') as string) : 999
   };
-  
+
   await supabase.from('products').upsert(payload);
-  
+
   revalidatePath('/admin/products');
   revalidatePath('/category/[category]');
   revalidatePath('/collections');
@@ -50,7 +52,7 @@ export async function saveProduct(formData: FormData) {
 
 // --- CATALOGUES ---
 export async function deleteCatalogue(id: string) {
-  const supabase = createClient();
+  const supabase = getAdminClient();
   await supabase.from('catalogues').delete().eq('id', id);
   revalidatePath('/admin/catalogues');
   revalidatePath('/collections');
@@ -58,7 +60,7 @@ export async function deleteCatalogue(id: string) {
 }
 
 export async function saveCatalogue(formData: FormData) {
-  const supabase = createClient();
+  const supabase = getAdminClient();
   const id = formData.get('id') as string;
 
   const imageFile = formData.get('imageFile') as File | null;
@@ -87,7 +89,7 @@ export async function saveCatalogue(formData: FormData) {
 
 // --- BLOGS ---
 export async function deleteBlog(id: string) {
-  const supabase = createClient();
+  const supabase = getAdminClient();
   await supabase.from('blogs').delete().eq('id', id);
   revalidatePath('/admin/blogs');
   revalidatePath('/pages/whats-new');
@@ -95,7 +97,7 @@ export async function deleteBlog(id: string) {
 }
 
 export async function saveBlog(formData: FormData) {
-  const supabase = createClient();
+  const supabase = getAdminClient();
   const id = formData.get('id') as string;
 
   const imageFile = formData.get('imageFile') as File | null;
@@ -123,7 +125,7 @@ export async function saveBlog(formData: FormData) {
 
 // --- TESTIMONIALS ---
 export async function deleteTestimonial(id: string) {
-  const supabase = createClient();
+  const supabase = getAdminClient();
   await supabase.from('testimonials').delete().eq('id', id);
   revalidatePath('/admin/testimonials');
   revalidatePath('/');
@@ -131,7 +133,7 @@ export async function deleteTestimonial(id: string) {
 }
 
 export async function saveTestimonial(formData: FormData) {
-  const supabase = createClient();
+  const supabase = getAdminClient();
   const id = formData.get('id') as string;
 
   const imageFile = formData.get('imageFile') as File | null;
@@ -158,7 +160,7 @@ export async function saveTestimonial(formData: FormData) {
 
 // --- TIMELINE EVENTS ---
 export async function deleteTimelineEvent(id: string) {
-  const supabase = createClient();
+  const supabase = getAdminClient();
   await supabase.from('timeline_events').delete().eq('id', id);
   revalidatePath('/admin/timeline');
   revalidatePath('/timeline');
@@ -166,12 +168,12 @@ export async function deleteTimelineEvent(id: string) {
 }
 
 export async function saveTimelineEvent(formData: FormData) {
-  const supabase = createClient();
+  const supabase = getAdminClient();
   const id = formData.get('id') as string;
-  
+
   const imageInputs = formData.get('images') as string;
   const parsedImages = imageInputs ? imageInputs.split(',').map(s => s.trim()).filter(Boolean) : [];
-  
+
   const imageFiles = formData.getAll('imageFiles') as File[];
   for (const file of imageFiles) {
     if (file && file.size > 0) {
@@ -199,14 +201,14 @@ export async function saveTimelineEvent(formData: FormData) {
 
 // --- GLOBAL QUICK ACTIONS ---
 export async function updateSequence(collection: string, id: string, sequence: number) {
-  const supabase = createClient();
-  
+  const supabase = getAdminClient();
+
   // Note: collection name mapping
   let table = collection;
   if (collection === 'timelineEvents') table = 'timeline_events';
 
   await supabase.from(table).update({ sequence }).eq('id', id);
-  
+
   if (collection === 'products') {
     revalidatePath('/admin/products');
     revalidatePath('/category/[category]');
