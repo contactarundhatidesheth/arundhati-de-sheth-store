@@ -4,9 +4,13 @@ export async function saveUpload(file: File): Promise<string> {
   const supabase = getSupabaseAdmin();
   const filename = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g, '')}`;
 
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+
   const { data, error } = await supabase.storage
     .from('media')
-    .upload(filename, file, {
+    .upload(filename, buffer, {
+      contentType: file.type,
       cacheControl: '3600',
       upsert: false
     });
