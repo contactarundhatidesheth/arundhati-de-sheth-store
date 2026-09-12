@@ -97,11 +97,11 @@ export async function readDB(): Promise<Database> {
     { data: testimonials },
     { data: timelineEvents }
   ] = await Promise.all([
-    supabase.from('products').select('*').order('sequence', { ascending: true }),
-    supabase.from('catalogues').select('*').order('sequence', { ascending: true }),
-    supabase.from('blogs').select('*').order('sequence', { ascending: true }),
-    supabase.from('testimonials').select('*').order('sequence', { ascending: true }),
-    supabase.from('timeline_events').select('*').order('sequence', { ascending: true })
+    supabase.from('products').select('*').order('sequence', { ascending: false }),
+    supabase.from('catalogues').select('*').order('sequence', { ascending: false }),
+    supabase.from('blogs').select('*').order('sequence', { ascending: false }),
+    supabase.from('testimonials').select('*').order('sequence', { ascending: false }),
+    supabase.from('timeline_events').select('*').order('sequence', { ascending: false })
   ]);
 
   return {
