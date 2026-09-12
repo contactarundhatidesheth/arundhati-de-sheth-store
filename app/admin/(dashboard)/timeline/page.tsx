@@ -6,8 +6,8 @@ import SequenceEditor from '../SequenceEditor';
 
 export default async function AdminTimeline() {
   const db = await readDB();
-  const sortedTimelineEvents = [...db.timelineEvents].sort((a, b) => (a.sequence || 999) - (b.sequence || 999));
-  
+  const sortedTimelineEvents = [...db.timelineEvents].sort((a, b) => (b.sequence || 999) - (a.sequence || 999));
+
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
@@ -16,7 +16,7 @@ export default async function AdminTimeline() {
           Add Event
         </Link>
       </div>
-      
+
       <div style={{ background: '#fff', borderRadius: '8px', border: '1px solid #eaeaea', overflow: 'hidden' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
           <thead>
@@ -44,7 +44,7 @@ export default async function AdminTimeline() {
                   <td style={{ padding: '16px 24px' }}>
                     <div style={{ display: 'flex', gap: '8px' }}>
                       {t.images.slice(0, 3).map((img, i) => (
-                         <img key={i} src={img} alt="" style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
+                        <img key={i} src={img} alt="" style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
                       ))}
                       {t.images.length > 3 && <span style={{ color: '#888', fontSize: '0.8rem', alignSelf: 'center' }}>+{t.images.length - 3}</span>}
                     </div>

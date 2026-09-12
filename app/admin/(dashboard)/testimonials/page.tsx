@@ -6,8 +6,8 @@ import SequenceEditor from '../SequenceEditor';
 
 export default async function AdminTestimonials() {
   const db = await readDB();
-  const sortedTestimonials = [...db.testimonials].sort((a, b) => (a.sequence || 999) - (b.sequence || 999));
-  
+  const sortedTestimonials = [...db.testimonials].sort((a, b) => (b.sequence || 999) - (a.sequence || 999));
+
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
@@ -16,7 +16,7 @@ export default async function AdminTestimonials() {
           Add Testimonial
         </Link>
       </div>
-      
+
       <div style={{ background: '#fff', borderRadius: '8px', border: '1px solid #eaeaea', overflow: 'hidden' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
           <thead>
