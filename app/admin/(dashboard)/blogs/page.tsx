@@ -6,7 +6,7 @@ import SequenceEditor from '../SequenceEditor';
 
 export default async function AdminBlogs() {
   const db = await readDB();
-  const sortedBlogs = [...db.blogs].sort((a, b) => (b.sequence || 999) - (a.sequence || 999));
+  const sortedBlogs = [...db.blogs].sort((a, b) => (a.sequence || 999) - (b.sequence || 999));
 
   return (
     <div>

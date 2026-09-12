@@ -6,7 +6,7 @@ import SequenceEditor from '../SequenceEditor';
 
 export default async function AdminCatalogues() {
   const db = await readDB();
-  const sortedCatalogues = [...db.catalogues].sort((a, b) => (b.sequence || 999) - (a.sequence || 999));
+  const sortedCatalogues = [...db.catalogues].sort((a, b) => (a.sequence || 999) - (b.sequence || 999));
 
   return (
     <div>

@@ -6,7 +6,7 @@ import SequenceEditor from '../SequenceEditor';
 
 export default async function AdminTimeline() {
   const db = await readDB();
-  const sortedTimelineEvents = [...db.timelineEvents].sort((a, b) => (b.sequence || 999) - (a.sequence || 999));
+  const sortedTimelineEvents = [...db.timelineEvents].sort((a, b) => (a.sequence || 999) - (b.sequence || 999));
 
   return (
     <div>
