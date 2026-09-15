@@ -12,6 +12,7 @@ export async function deleteProduct(id: string) {
   revalidatePath('/admin/products');
   revalidatePath('/category/[category]');
   revalidatePath('/collections');
+  revalidatePath('/');
   return { success: true };
 }
 
@@ -52,6 +53,8 @@ export async function saveProduct(formData: FormData) {
   revalidatePath('/admin/products');
   revalidatePath('/category/[category]');
   revalidatePath('/collections');
+  revalidatePath('/');
+  revalidatePath('/product/' + payload.handle);
   redirect('/admin/products');
 }
 
@@ -61,6 +64,7 @@ export async function deleteCatalogue(id: string) {
   await supabase.from('catalogues').delete().eq('id', id);
   revalidatePath('/admin/catalogues');
   revalidatePath('/collections');
+  revalidatePath('/');
   return { success: true };
 }
 
@@ -89,6 +93,7 @@ export async function saveCatalogue(formData: FormData) {
 
   revalidatePath('/admin/catalogues');
   revalidatePath('/collections');
+  revalidatePath('/');
   redirect('/admin/catalogues');
 }
 
@@ -98,6 +103,7 @@ export async function deleteBlog(id: string) {
   await supabase.from('blogs').delete().eq('id', id);
   revalidatePath('/admin/blogs');
   revalidatePath('/pages/whats-new');
+  revalidatePath('/');
   return { success: true };
 }
 
@@ -125,6 +131,7 @@ export async function saveBlog(formData: FormData) {
 
   revalidatePath('/admin/blogs');
   revalidatePath('/pages/whats-new');
+  revalidatePath('/');
   redirect('/admin/blogs');
 }
 
@@ -169,6 +176,7 @@ export async function deleteTimelineEvent(id: string) {
   await supabase.from('timeline_events').delete().eq('id', id);
   revalidatePath('/admin/timeline');
   revalidatePath('/timeline');
+  revalidatePath('/');
   return { success: true };
 }
 
@@ -177,14 +185,30 @@ export async function saveTimelineEvent(formData: FormData) {
   const id = formData.get('id') as string;
 
   const imageInputs = formData.get('images') as string;
-  const parsedImages = imageInputs ? imageInputs.split(',').map(s => s.trim()).filter(Boolean) : [];
+  let parsedImages = imageInputs ? imageInputs.split(',').map(s => s.trim()).filter(Boolean) : [];
 
-  const imageFiles = formData.getAll('imageFiles') as File[];
-  for (const file of imageFiles) {
-    if (file && file.size > 0) {
+  // Robust parsing to catch multiple or single files depending on how the server parses multipart form data
+  const files: File[] = [];
+  const multiFiles = formData.getAll('imageFiles');
+  if (multiFiles && multiFiles.length > 0) {
+    multiFiles.forEach(f => files.push(f as File));
+  } else {
+    const singleFile = formData.get('imageFiles');
+    if (singleFile) files.push(singleFile as File);
+  }
+
+  // To let the newest uploaded files feature prominently (index 0), unshift them.
+  const uploadedUrls: string[] = [];
+  for (const file of files) {
+    if (file && typeof file.size === 'number' && file.size > 0 && file.name && file.name !== 'undefined') {
       const uploadedUrl = await saveUpload(file);
-      parsedImages.push(uploadedUrl);
+      uploadedUrls.push(uploadedUrl);
     }
+  }
+
+  if (uploadedUrls.length > 0) {
+    // Bring newly uploaded to front, followed by old parsed images
+    parsedImages = [...uploadedUrls, ...parsedImages];
   }
 
   const payload = {
@@ -201,6 +225,7 @@ export async function saveTimelineEvent(formData: FormData) {
 
   revalidatePath('/admin/timeline');
   revalidatePath('/timeline');
+  revalidatePath('/');
   redirect('/admin/timeline');
 }
 
@@ -218,17 +243,21 @@ export async function updateSequence(collection: string, id: string, sequence: n
     revalidatePath('/admin/products');
     revalidatePath('/category/[category]');
     revalidatePath('/collections');
+    revalidatePath('/');
   } else if (collection === 'catalogues') {
     revalidatePath('/admin/catalogues');
     revalidatePath('/collections');
+    revalidatePath('/');
   } else if (collection === 'blogs') {
     revalidatePath('/admin/blogs');
     revalidatePath('/pages/whats-new');
+    revalidatePath('/');
   } else if (collection === 'testimonials') {
     revalidatePath('/admin/testimonials');
     revalidatePath('/');
   } else if (collection === 'timelineEvents') {
     revalidatePath('/admin/timeline');
     revalidatePath('/timeline');
+    revalidatePath('/');
   }
 }
