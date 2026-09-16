@@ -1,7 +1,7 @@
 import React from 'react';
 import { getSupabaseAdmin } from '@/utils/supabase-admin';
 import { revalidatePath } from 'next/cache';
-import { sendOrderTrackingEmail } from '@/utils/email';
+import { sendOrderTrackingEmail } from '@/lib/email';
 export const dynamic = 'force-dynamic';
 
 export default async function OrdersAdminPage() {

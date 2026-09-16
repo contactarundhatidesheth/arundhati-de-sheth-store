@@ -23,6 +23,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <Link href="/admin/blogs" style={{ textDecoration: 'none', color: '#333', fontSize: '0.95rem' }}>Press & Blogs</Link>
           <Link href="/admin/testimonials" style={{ textDecoration: 'none', color: '#333', fontSize: '0.95rem' }}>Testimonials</Link>
           <Link href="/admin/timeline" style={{ textDecoration: 'none', color: '#333', fontSize: '0.95rem' }}>Timeline Events</Link>
+          <Link href="/admin/inquiries" style={{ textDecoration: 'none', color: '#333', fontSize: '0.95rem' }}>Inquiries CRM</Link>
           <div style={{ marginTop: '48px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <a href="/api/admin-logout" style={{ textDecoration: 'none', color: '#cc0000', fontSize: '0.95rem', fontWeight: '500' }}>⚿ Lock Panel (Logout)</a>
             <Link href="/" style={{ textDecoration: 'none', color: '#888', fontSize: '0.95rem' }}>&larr; View Storefront</Link>

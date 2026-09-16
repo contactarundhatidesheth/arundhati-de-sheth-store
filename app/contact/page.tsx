@@ -33,7 +33,8 @@ export default function ContactPage() {
         body: JSON.stringify(formData)
       });
       if (!res.ok) {
-        throw new Error('Failed to send email');
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData?.error || 'Failed to send email. Ensure backend credentials are valid.');
       }
       setSubmitted(true);
       setFormData({ name: '', email: '', phone: '', subject: 'General Inquiry', message: '' });

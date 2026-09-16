@@ -227,7 +227,14 @@ export default function CartPage() {
                             className="btn-primary"
                             style={{ padding: '12px 32px', opacity: isStep1Valid ? 1 : 0.5 }}
                             disabled={!isStep1Valid}
-                            onClick={() => setActiveStep(2)}
+                            onClick={() => {
+                              setActiveStep(2);
+                              fetch('/api/log-cart', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ email: guestEmail, phone: guestPhone, cart })
+                              }).catch(e => console.warn('Silently failed to log cart telemetry:', e));
+                            }}
                           >
                             Continue to Shipping
                           </button>

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
+import { sendContactNotification, sendContactThankYou } from '@/lib/email';
+import { getSupabaseAdmin } from '@/utils/supabase-admin';
 
 export async function POST(req: Request) {
     try {
@@ -13,54 +14,24 @@ export async function POST(req: Request) {
             );
         }
 
-        // Configure the Outlook SMTP transport
-        const transporter = nodemailer.createTransport({
-            host: 'smtp.office365.com',
-            port: 587,
-            secure: false, // true for 465, false for other ports
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
-            },
-            tls: {
-                ciphers: 'SSLv3',
-                rejectUnauthorized: false
-            }
-        });
+        // 1. Log to CRM Database
+        const supabase = getSupabaseAdmin();
+        const { error: dbError } = await supabase.from('contact_inquiries').insert([{
+            name, email, phone, subject: subject || 'General', message
+        }]);
 
-        // Setup email data
-        const mailOptions = {
-            from: process.env.EMAIL_USER, // Sender address (must be the authenticated user)
-            to: 'connect@eyepune.com', // Your receiving address
-            subject: `New Contact Submission: ${subject || 'General Inquiry'}`,
-            text: `
-You have received a new contact submission from your website.
+        if (dbError) {
+            console.error('Failed to log contact inquiry to database:', dbError);
+            // We continue processing to ensure email delivers even if DB has an issue, but log it.
+        }
 
-Name: ${name}
-Email: ${email}
-Phone: ${phone || 'Not provided'}
-Subject: ${subject}
+        // 2. Notify Admin via Graph API
+        await sendContactNotification(name, email, phone, subject, message);
 
-Message:
-${message}
-      `,
-            html: `
-        <h2>New Contact Submission</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
-        <p><strong>Subject:</strong> ${subject}</p>
-        <br/>
-        <p><strong>Message:</strong></p>
-        <p>${message}</p>
-      `,
-        };
+        // 3. Dispatch automated Thank You Email back to the customer
+        await sendContactThankYou(email, name, subject);
 
-        // Send mail
-        const info = await transporter.sendMail(mailOptions);
-        console.log('Message sent: %s', info.messageId);
-
-        return NextResponse.json({ success: true, messageId: info.messageId });
+        return NextResponse.json({ success: true, messageId: 'graph-api-sent' });
     } catch (error: any) {
         console.error('Email send error:', error);
         return NextResponse.json(

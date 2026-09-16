@@ -20,10 +20,19 @@ export async function saveProduct(formData: FormData) {
   const supabase = getAdminClient();
   const id = formData.get('id') as string;
 
-  const imageFile = formData.get('imageFile') as File | null;
-  let finalImageUrl = formData.get('image') as string;
-  if (imageFile && imageFile.size > 0) {
-    finalImageUrl = await saveUpload(imageFile);
+  const uploadedUrls: string[] = [];
+
+  const existingImages = formData.get('images') as string;
+  if (existingImages) {
+    uploadedUrls.push(...existingImages.split(',').map(u => u.trim()).filter(Boolean));
+  }
+
+  const imageFiles = formData.getAll('imageFiles') as File[];
+  for (const file of imageFiles) {
+    if (file && file.size > 0) {
+      const url = await saveUpload(file);
+      uploadedUrls.push(url);
+    }
   }
 
   const payload = {
@@ -36,7 +45,7 @@ export async function saveProduct(formData: FormData) {
     metal: formData.get('metal') as string,
     collection: formData.get('collection') as string,
     tags: (formData.get('tags') as string).split(',').map(t => t.trim()),
-    images: finalImageUrl ? [finalImageUrl] : [], // TODO handle existing images better in real implementation
+    images: uploadedUrls,
     is_new: formData.get('isNew') === 'on',
     sequence: formData.get('sequence') ? parseInt(formData.get('sequence') as string) : 999,
     specs: {
@@ -141,6 +150,13 @@ export async function deleteTestimonial(id: string) {
   await supabase.from('testimonials').delete().eq('id', id);
   revalidatePath('/admin/testimonials');
   revalidatePath('/');
+  return { success: true };
+}
+
+export async function deleteInquiry(id: string) {
+  const supabase = getAdminClient();
+  await supabase.from('contact_inquiries').delete().eq('id', id);
+  revalidatePath('/admin/inquiries');
   return { success: true };
 }
 

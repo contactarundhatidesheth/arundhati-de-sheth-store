@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import { sendNewsletterWelcome } from '@/lib/email';
 
 export async function POST(req: Request) {
     try {
@@ -23,6 +24,12 @@ export async function POST(req: Request) {
             }
             console.error('Newsletter Database Error:', dbError);
             return NextResponse.json({ error: 'Failed to subscribe to newsletter. Please try again.' }, { status: 500 });
+        }
+
+        try {
+            await sendNewsletterWelcome(email);
+        } catch (e) {
+            console.error('Failed to send newsletter welcome: ', e);
         }
 
         return NextResponse.json({ success: true, message: 'Successfully subscribed to the newsletter!' });
