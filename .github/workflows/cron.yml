@@ -1,0 +1,12 @@
+name: Hourly Cart Sweeper
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  sweep-abandoned-carts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Vercel Abandoned Cart Endpoint
+        run: curl -s -X GET https://arundhati-de-sheth-store.vercel.app/api/cron/abandoned-cart
