@@ -11,7 +11,7 @@ export default async function NewProductPage() {
   const uniqueCategories = Array.from(new Set([...guaranteedCategories, ...db.products.map(p => p.category).filter(Boolean)]));
 
   const guaranteedMetals = ["18K Gold", "14K Gold", "925 Silver", "Multi-Metal"];
-  const uniqueMetals = Array.from(new Set([...guaranteedMetals, ...db.products.map(p => p.metal).filter(Boolean)]));
+  const uniqueMetals = Array.from(new Set([...guaranteedMetals, ...db.products.flatMap(p => (p.metal || '').split(',').map(s => s.trim()).filter(Boolean))]));
 
   const guaranteedCollections = ["EPHEMERALS", "PERENNIALS - Gold", "PERENNIALS - Silver", "Collab"];
   const uniqueCollections = Array.from(new Set([...guaranteedCollections, ...db.products.map(p => p.collection).filter(Boolean)]));
@@ -49,7 +49,7 @@ export default async function NewProductPage() {
         </div>
 
         <div style={{ display: 'flex', gap: '24px' }}>
-          <FilterPills name="metal" options={uniqueMetals} label="Metal" />
+          <FilterPills name="metal" options={uniqueMetals} label="Metal" multiple={true} />
           <FilterPills name="collection" options={uniqueCollections} label="Collection" />
         </div>
 
