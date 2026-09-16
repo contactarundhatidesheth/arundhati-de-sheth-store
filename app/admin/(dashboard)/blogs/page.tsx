@@ -42,7 +42,7 @@ export default async function AdminBlogs() {
                     <SequenceEditor collection="blogs" id={b.id} initialSequence={b.sequence ?? ''} />
                   </td>
                   <td style={{ padding: '16px 24px' }}>
-                    <img src={b.image} alt={b.title} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
+                    <img src={b.image || '/pressimages/press-hero.png'} alt={b.title} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
                   </td>
                   <td style={{ padding: '16px 24px', fontWeight: '500' }}>{b.publication}</td>
                   <td style={{ padding: '16px 24px', color: '#666' }}>{b.title}</td>
