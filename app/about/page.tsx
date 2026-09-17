@@ -244,10 +244,71 @@ export default function AboutPage() {
             </div>
           </section>
 
+          {/* ── Testimonials Sideways Scroll ── */}
+          {(() => {
+            const displayTestimonials = data.testimonials?.length > 0 ? data.testimonials : [
+              { id: '1', author: 'Sophia L', location: 'Mumbai', quote: 'The geometric symmetry and light weight of these designs make them my immediate choice every morning.', image: 'https://www.arundhatidesheth.com/cdn/shop/files/Screenshot_2025-04-08_130922.png?v=1708934384&width=400' },
+              { id: '2', author: 'Marcus V', location: 'London', quote: 'Unparalleled refinement and lasting durability that truly elevates any outfit.', image: 'https://www.arundhatidesheth.com/cdn/shop/files/Screenshot_2026-01-27_144230.png?v=1708934384&width=400' },
+              { id: '3', author: 'Aria M', location: 'Paris', quote: 'An extraordinary dedication to the craft. I have never felt more elegant.', image: 'https://www.arundhatidesheth.com/cdn/shop/files/PASTELGIRANDOLEEARRINGS1_1.jpg?v=1708934384&width=400' }
+            ];
+
+            return (
+              <section style={{ marginBottom: '80px' }}>
+                <div style={{ marginBottom: '40px', textAlign: 'center' }}>
+                  <p style={{ color: 'var(--accent)', fontSize: '0.75rem', letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '12px' }}>Client Experiences</p>
+                  <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 3rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, color: 'var(--text-main)' }}>What they say</h2>
+                </div>
+                <div
+                  className="testimonials-scroll-container"
+                  style={{
+                    display: 'flex',
+                    overflowX: 'auto',
+                    gap: '24px',
+                    paddingBottom: '24px',
+                    scrollSnapType: 'x mandatory',
+                    WebkitOverflowScrolling: 'touch'
+                  }}
+                >
+                  {displayTestimonials.map((testimonial: any, idx: number) => (
+                    <div
+                      key={testimonial.id || idx}
+                      style={{
+                        minWidth: 'clamp(300px, 60vw, 400px)',
+                        scrollSnapAlign: 'start',
+                        background: 'var(--bg-secondary)',
+                        padding: '40px',
+                        borderRadius: '4px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        borderTop: '2px solid var(--accent)'
+                      }}
+                    >
+                      <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginBottom: '24px' }}>
+                        <div style={{ width: '64px', height: '64px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
+                          <img src={testimonial.image} alt={testimonial.author} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </div>
+                        <div>
+                          <p style={{ fontSize: '0.9rem', fontWeight: 500, letterSpacing: '0.05em', margin: 0, textTransform: 'uppercase', color: 'var(--text-main)' }}>{testimonial.author}</p>
+                          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{testimonial.location}</p>
+                        </div>
+                      </div>
+                      <p style={{ fontSize: '1.05rem', fontStyle: 'italic', color: 'var(--text-muted)', lineHeight: '1.7', margin: 0 }}>
+                        &ldquo;{testimonial.quote}&rdquo;
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            );
+          })()}
+
         </div>
       </div>
 
       <style>{`
+        .testimonials-scroll-container::-webkit-scrollbar { display: none; }
+        .testimonials-scroll-container { -ms-overflow-style: none; scrollbar-width: none; }
+        
         .testimonial-box { background: var(--bg-secondary); padding: 48px 32px; border-radius: 2px; display: flex; flex-direction: column; justify-content: center; border-left: 2px solid #d4af37; }
         @keyframes scrollPulse { 0%,100% { opacity: 0.3; transform: scaleY(1); } 50% { opacity: 0.8; transform: scaleY(1.2); } }
         @media (max-width: 900px) {

@@ -25,8 +25,26 @@ export function DeletableImageListHelper({ defaultUrls, name }: { defaultUrls: s
             {urls.length > 0 && (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '8px' }}>
                     {urls.map((u, i) => (
-                        <div key={`${u}-${i}`} style={{ position: 'relative', width: 'fit-content' }}>
-                            <img src={u} alt={"Image " + i} style={{ height: '100px', minWidth: '100px', borderRadius: '4px', border: '1px solid #ddd', objectFit: 'cover' }} />
+                        <div key={`${u}-${i}`} style={{ position: 'relative', width: 'fit-content', border: '1px solid #ddd', borderRadius: '4px', padding: '4px', background: '#f5f5f5' }}>
+                            <img src={u} alt={"Image " + i} style={{ height: '100px', minWidth: '100px', borderRadius: '4px', objectFit: 'cover', display: 'block' }} />
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px', gap: '4px' }}>
+                                <button type="button" disabled={i === 0} onClick={(e) => {
+                                    e.preventDefault();
+                                    const newUrls = [...urls];
+                                    const temp = newUrls[i - 1];
+                                    newUrls[i - 1] = newUrls[i];
+                                    newUrls[i] = temp;
+                                    setRawText(newUrls.join(', '));
+                                }} style={{ padding: '4px 6px', fontSize: '12px', cursor: i === 0 ? 'not-allowed' : 'pointer', background: i === 0 ? '#fafafa' : '#fff', border: '1px solid #ccc', borderRadius: '4px', flex: 1, color: i === 0 ? '#999' : '#000' }}>&larr; L</button>
+                                <button type="button" disabled={i === urls.length - 1} onClick={(e) => {
+                                    e.preventDefault();
+                                    const newUrls = [...urls];
+                                    const temp = newUrls[i + 1];
+                                    newUrls[i + 1] = newUrls[i];
+                                    newUrls[i] = temp;
+                                    setRawText(newUrls.join(', '));
+                                }} style={{ padding: '4px 6px', fontSize: '12px', cursor: i === urls.length - 1 ? 'not-allowed' : 'pointer', background: i === urls.length - 1 ? '#fafafa' : '#fff', border: '1px solid #ccc', borderRadius: '4px', flex: 1, color: i === urls.length - 1 ? '#999' : '#000' }}>R &rarr;</button>
+                            </div>
                             <button type="button" onClick={() => {
                                 const newUrls = urls.filter((_, idx) => idx !== i);
                                 setRawText(newUrls.join(', '));

@@ -10,7 +10,7 @@ import { ChevronDown, ChevronUp, ShieldCheck, Truck, BadgeCheck, ChevronLeft, Ch
 export default function ProductDetailClient({ params }: { params: { handle: string } }) {
   const { data, loading } = useCMSData();
   const { addToCart } = useCart();
-  const [openAccordion, setOpenAccordion] = useState<string | null>('info');
+  const [openAccordions, setOpenAccordions] = useState<string[]>(['specs']);
   const [activeImage, setActiveImage] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
 
@@ -27,7 +27,7 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
   }
 
   const toggleAccordion = (section: string) => {
-    setOpenAccordion(openAccordion === section ? null : section);
+    setOpenAccordions(prev => prev.includes(section) ? prev.filter(s => s !== section) : [...prev, section]);
   };
 
   const recommendations = (() => {
@@ -207,9 +207,9 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
                   style={{ width: '100%', padding: '24px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13.5px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold', background: 'transparent', border: 'none', cursor: 'pointer', color: '#000000', fontFamily: 'inherit' }}
                 >
                   Specifications
-                  {openAccordion === 'specs' ? <ChevronUp size={18} strokeWidth={1.5} /> : <ChevronDown size={18} strokeWidth={1.5} />}
+                  {openAccordions.includes('specs') ? <ChevronUp size={18} strokeWidth={1.5} /> : <ChevronDown size={18} strokeWidth={1.5} />}
                 </button>
-                {openAccordion === 'specs' && (
+                {openAccordions.includes('specs') && (
                   <div style={{ paddingBottom: '32px' }}>
                     <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '16px', padding: 0, margin: 0 }}>
                       {Object.entries({
@@ -236,9 +236,9 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
                   style={{ width: '100%', padding: '24px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13.5px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold', background: 'transparent', border: 'none', cursor: 'pointer', color: '#000000', fontFamily: 'inherit' }}
                 >
                   Jewel Care Instructions
-                  {openAccordion === 'care' ? <ChevronUp size={18} strokeWidth={1.5} /> : <ChevronDown size={18} strokeWidth={1.5} />}
+                  {openAccordions.includes('care') ? <ChevronUp size={18} strokeWidth={1.5} /> : <ChevronDown size={18} strokeWidth={1.5} />}
                 </button>
-                {openAccordion === 'care' && (
+                {openAccordions.includes('care') && (
                   <div style={{ paddingBottom: '32px', fontSize: '14.5px', color: 'var(--text-muted)', lineHeight: '1.7', fontWeight: '300' }}>
                     {product.specs?.careInstructions ? (
                       <div dangerouslySetInnerHTML={{ __html: product.specs.careInstructions }} />

@@ -61,8 +61,8 @@ export default function CategoryAllProductsPage() {
     typesInCollection.push({ id: 'COLLAB', label: 'Collab Collection' });
   }
 
-  /* Derive dynamic metals from active products */
-  const uniqueMetals = Array.from(new Set(PRODUCTS.map(p => p.metal).filter(Boolean)));
+  /* Define fixed metals for simplified filtering */
+  const uniqueMetals = ['Gold', 'Silver'];
 
   /* Final filtered products */
   const filteredProducts = selectedCollection

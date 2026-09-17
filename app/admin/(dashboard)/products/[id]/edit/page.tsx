@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { readDB } from '@/lib/db';
 import { saveProduct } from '@/app/admin/actions';
 import AdminRichText from '@/app/admin/AdminRichText';
-import { DeletableImageHelper } from '@/app/admin/components/DeletableImageHelpers';
+import { DeletableImageListHelper } from '@/app/admin/components/DeletableImageHelpers';
 import FilterPills from '@/app/admin/components/FilterPills';
 
 export default async function EditProductPage({ params }: { params: { id: string } }) {
@@ -101,7 +101,7 @@ export default async function EditProductPage({ params }: { params: { id: string
           <div style={{ display: 'flex', gap: '16px', flexDirection: 'column' }}>
             <input type="file" name="imageFiles" multiple accept="image/*,video/*" style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} />
             <span style={{ fontSize: '0.8rem', color: '#666', marginTop: '-8px' }}>AND / OR</span>
-            <input type="text" name="images" defaultValue={(product.images || []).join(', ')} style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="Provide comma-separated Image URLs (https://...)" />
+            <DeletableImageListHelper name="images" defaultUrls={product.images || []} />
           </div>
         </div>
 
