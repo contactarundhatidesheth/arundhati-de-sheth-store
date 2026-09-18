@@ -78,7 +78,7 @@ export default function SearchPage() {
                 {searchQuery.trim() ? (
                     <div>
                         <h2 style={{ fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '24px', color: '#666' }}>
-                            {filteredProducts.length} Results for "{searchQuery}"
+                            {filteredProducts.length} Results for &quot;{searchQuery}&quot;
                         </h2>
 
                         {filteredProducts.length === 0 ? (
