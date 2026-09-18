@@ -21,6 +21,7 @@ export interface Product {
     purity?: string;
     weight?: string;
     careInstructions?: string;
+    customSpecs?: string;
   };
   isNew?: boolean;
   isBespoke?: boolean;

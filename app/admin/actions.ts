@@ -64,7 +64,8 @@ export async function saveProduct(formData: FormData) {
       weight: formData.get('weight') as string || '',
       dimensions: formData.get('dimensions') as string || '',
       gemstones: formData.get('gemstones') as string || '',
-      careInstructions: formData.get('careInstructions') as string || ''
+      careInstructions: formData.get('careInstructions') as string || '',
+      customSpecs: formData.get('customSpecs') as string || ''
     }
   };
 

@@ -211,20 +211,24 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
                 </button>
                 {openAccordions.includes('specs') && (
                   <div style={{ paddingBottom: '32px' }}>
-                    <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '16px', padding: 0, margin: 0 }}>
-                      {Object.entries({
-                        'Metal': product.metal,
-                        'Purity': product.specs?.purity,
-                        'Gemstones': product.specs?.gemstones,
-                        'Weight': product.specs?.weight,
-                        'Dimensions': product.specs?.dimensions,
-                      }).map(([key, value]) => value && (
-                        <li key={key} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '15.2px', borderBottom: '1px solid var(--border-light)', paddingBottom: '8px', fontWeight: '300' }}>
-                          <span style={{ color: 'var(--text-muted)' }}>{key}</span>
-                          <span style={{ color: '#000000', textAlign: 'right', maxWidth: '60%' }}>{value}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    {product.specs?.customSpecs ? (
+                      <div dangerouslySetInnerHTML={{ __html: product.specs.customSpecs }} className="rich-text-content" style={{ fontSize: '14.5px', color: 'var(--text-muted)', lineHeight: '1.7', fontWeight: '300' }} />
+                    ) : (
+                      <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '16px', padding: 0, margin: 0 }}>
+                        {Object.entries({
+                          'Metal': product.metal,
+                          'Purity': product.specs?.purity,
+                          'Gemstones': product.specs?.gemstones,
+                          'Weight': product.specs?.weight,
+                          'Dimensions': product.specs?.dimensions,
+                        }).map(([key, value]) => value && (
+                          <li key={key} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '15.2px', borderBottom: '1px solid var(--border-light)', paddingBottom: '8px', fontWeight: '300' }}>
+                            <span style={{ color: 'var(--text-muted)' }}>{key}</span>
+                            <span style={{ color: '#000000', textAlign: 'right', maxWidth: '60%' }}>{value}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 )}
               </div>
