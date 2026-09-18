@@ -112,7 +112,7 @@ export function getPremiumEmailTemplate(content: string): string {
                         <!-- Footer -->
                         <tr>
                             <td class="footer">
-                                <p>ARUNDHATI DE-SHETH | FINE JEWELLERY CONSULTANCY</p>
+                                <p>ARUNDHATI DE-SHETH | The Jwellery Confluence</p>
                                 <p>Mumbai, India</p>
                                 <p style="margin-top: 15px;"><a href="https://arundhatidesheth.com" style="color: #888; text-decoration: none;">arundhatidesheth.com</a></p>
                             </td>
