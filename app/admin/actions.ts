@@ -20,19 +20,30 @@ export async function saveProduct(formData: FormData) {
   const supabase = getAdminClient();
   const id = formData.get('id') as string;
 
-  const uploadedUrls: string[] = [];
+  const imageInputs = formData.get('images') as string;
+  let parsedImages = imageInputs ? imageInputs.split(',').map(s => s.trim()).filter(Boolean) : [];
 
-  const existingImages = formData.get('images') as string;
-  if (existingImages) {
-    uploadedUrls.push(...existingImages.split(',').map(u => u.trim()).filter(Boolean));
+  // Robust parsing to catch multiple or single files depending on how the server parses multipart form data
+  const files: File[] = [];
+  const multiFiles = formData.getAll('imageFiles');
+  if (multiFiles && multiFiles.length > 0) {
+    multiFiles.forEach(f => files.push(f as File));
+  } else {
+    const singleFile = formData.get('imageFiles');
+    if (singleFile) files.push(singleFile as File);
   }
 
-  const imageFiles = formData.getAll('imageFiles') as File[];
-  for (const file of imageFiles) {
-    if (file && file.size > 0) {
+  const uploadedUrls: string[] = [];
+  for (const file of files) {
+    if (file && typeof file.size === 'number' && file.size > 0 && file.name && file.name !== 'undefined') {
       const url = await saveUpload(file);
       uploadedUrls.push(url);
     }
+  }
+
+  if (uploadedUrls.length > 0) {
+    // Bring newly uploaded to front, followed by old parsed images
+    parsedImages = [...uploadedUrls, ...parsedImages];
   }
 
   const payload = {
@@ -45,7 +56,7 @@ export async function saveProduct(formData: FormData) {
     metal: formData.get('metal') as string,
     collection: formData.get('collection') as string,
     tags: (formData.get('tags') as string).split(',').map(t => t.trim()),
-    images: uploadedUrls,
+    images: parsedImages,
     is_new: formData.get('isNew') === 'on',
     sequence: formData.get('sequence') ? parseInt(formData.get('sequence') as string) : 999,
     specs: {
