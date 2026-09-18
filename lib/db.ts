@@ -117,13 +117,26 @@ export async function readDB(): Promise<Database> {
     catalogues: catalogues || [],
     blogs: (blogs || []).map(b => {
       let excerpt = b.excerpt || '';
-      let link = b.link || ''; // Fallback just in case
+      let link = b.link || '';
       if (excerpt.includes('|||')) {
         const parts = excerpt.split('|||');
         link = parts.pop() || '';
         excerpt = parts.join('|||');
       }
-      return { ...b, excerpt, link };
+
+      let image = b.image || '';
+      if (image === 'null' || image === 'undefined') image = '';
+      if (image.startsWith('[') && image.endsWith(']')) {
+        try {
+          const parsed = JSON.parse(image);
+          if (Array.isArray(parsed)) image = parsed[0] || '';
+        } catch (e) { }
+      }
+      if (image.includes(',')) {
+        image = image.split(',')[0].trim();
+      }
+
+      return { ...b, excerpt, link, image };
     }),
     testimonials: testimonials || [],
     timelineEvents: timelineEvents || [],
