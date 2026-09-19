@@ -31,7 +31,14 @@ export async function getGraphAccessToken(): Promise<string> {
         body: params.toString()
     });
 
-    const data = await response.json();
+    let data;
+    const responseText = await response.text();
+    try {
+        data = JSON.parse(responseText);
+    } catch (err) {
+        data = { error: 'Invalid JSON response from Graph API token endpoint', text: responseText };
+    }
+
     if (!response.ok) {
         console.error('Failed to get Graph token:', data);
         throw new Error('Graph Error: ' + JSON.stringify(data));
@@ -60,7 +67,13 @@ export async function sendGraphEmail(toAddress: string, subject: string, htmlCon
     });
 
     if (!response.ok) {
-        const err = await response.json();
+        let err;
+        const responseText = await response.text();
+        try {
+            err = JSON.parse(responseText);
+        } catch (e) {
+            err = { error: { message: responseText || 'Empty response from Graph API' } };
+        }
         console.error("Graph API Send Error:", err);
         throw new Error(err.error?.message || "Failed to send email via Graph API");
     }

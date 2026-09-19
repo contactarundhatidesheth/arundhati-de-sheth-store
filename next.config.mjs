@@ -2,6 +2,11 @@
 const nextConfig = {
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '50mb',
+    },
+  },
   images: {
     remotePatterns: [
       {
@@ -15,6 +20,7 @@ const nextConfig = {
     ],
   },
 };
+
 
 export default nextConfig;
 
