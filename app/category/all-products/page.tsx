@@ -57,10 +57,6 @@ export default function CategoryAllProductsPage() {
     )
     : JEWELLERY_TYPES;
 
-  if (selectedCollection === 'EPHEMERALS') {
-    typesInCollection.push({ id: 'COLLAB', label: 'Collab Collection' });
-  }
-
   /* Define fixed metals for simplified filtering */
   const uniqueMetals = ['Gold', 'Silver'];
 
@@ -72,13 +68,7 @@ export default function CategoryAllProductsPage() {
 
       // Type Filter
       if (selectedType) {
-        if (selectedType === 'COLLAB') {
-          if (!(normalize(p.collection).includes('COLLAB') ||
-            normalize(p.category).includes('COLLAB') ||
-            normalize(p.title).includes('COLLAB'))) return false;
-        } else {
-          if (normalize(p.category) !== normalize(selectedType)) return false;
-        }
+        if (normalize(p.category) !== normalize(selectedType)) return false;
       }
 
       // Search Filter
