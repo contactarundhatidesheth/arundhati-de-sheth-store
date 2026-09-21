@@ -12,13 +12,13 @@ const COLLECTIONS = [
     id: 'EPHEMERALS',
     label: 'Ephemerals',
     subtitle: 'Pieces created in limited moments',
-    image: '/products/20.png',
+    image: '/images/Ephemerals%20front%20image%20.png',
   },
   {
     id: 'PERENNIALS',
     label: 'Perennials',
     subtitle: 'Pieces lasting a long time, recurrent',
-    image: '/products/30.png',
+    image: '/images/Perennials%20front%20image%20.png',
   },
 ];
 
