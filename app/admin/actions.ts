@@ -16,6 +16,41 @@ export async function deleteProduct(id: string) {
   return { success: true };
 }
 
+export async function removeOptionFromGlobal(field: string, optionToRemove: string) {
+  const supabase = getAdminClient();
+  const { data: products } = await supabase.from('products').select('*');
+  if (!products) return { success: false };
+
+  for (const p of products) {
+    let changed = false;
+    let newValue = p[field] || '';
+
+    if (field === 'metal') { // metal supports multiple comma separated values
+      const arr = newValue.split(',').map((s: string) => s.trim()).filter(Boolean);
+      if (arr.includes(optionToRemove)) {
+        newValue = arr.filter((x: string) => x !== optionToRemove).join(', ');
+        changed = true;
+      }
+    } else { // category, collection are single value fields
+      if (newValue.trim() === optionToRemove.trim()) {
+        newValue = '';
+        changed = true;
+      }
+    }
+
+    if (changed) {
+      // Upsert the whole product or update just the field
+      await supabase.from('products').update({ [field]: newValue }).eq('id', p.id);
+    }
+  }
+
+  revalidatePath('/admin/products');
+  revalidatePath('/category/[category]');
+  revalidatePath('/collections');
+  revalidatePath('/');
+  return { success: true };
+}
+
 export async function saveProduct(formData: FormData) {
   const supabase = getAdminClient();
   const id = formData.get('id') as string;

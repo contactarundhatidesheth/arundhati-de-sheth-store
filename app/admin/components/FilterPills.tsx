@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { removeOptionFromGlobal } from '@/app/admin/actions';
 
 interface FilterPillsProps {
     name: string;
@@ -51,25 +52,60 @@ export default function FilterPills({ name, options: initialOptions, defaultValu
             <input type="hidden" name={name} value={multiple ? selected.join(', ') : (selected[0] || '')} required />
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', padding: '12px', border: '1px solid #ddd', borderRadius: '4px', background: '#fafafa', minHeight: '64px' }}>
-                {options.map(opt => (
-                    <button
-                        key={opt}
-                        type="button"
-                        onClick={(e) => { e.preventDefault(); toggleSelected(opt); }}
-                        style={{
-                            padding: '6px 12px',
-                            borderRadius: '20px',
-                            border: selected.includes(opt) ? '1px solid #000' : '1px solid #ccc',
-                            background: selected.includes(opt) ? '#000' : '#fff',
-                            color: selected.includes(opt) ? '#fff' : '#333',
-                            fontSize: '0.8rem',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s',
-                        }}
-                    >
-                        {opt}
-                    </button>
-                ))}
+                {options.map(opt => {
+                    const isSelected = selected.includes(opt);
+                    return (
+                        <div
+                            key={opt}
+                            style={{
+                                display: 'inline-flex',
+                                alignItems: 'stretch',
+                                borderRadius: '20px',
+                                border: isSelected ? '1px solid #000' : '1px solid #ccc',
+                                background: isSelected ? '#000' : '#fff',
+                                color: isSelected ? '#fff' : '#333',
+                                overflow: 'hidden',
+                                transition: 'all 0.2s',
+                            }}
+                        >
+                            <button
+                                type="button"
+                                onClick={(e) => { e.preventDefault(); toggleSelected(opt); }}
+                                style={{
+                                    padding: '6px 8px 6px 12px',
+                                    background: 'transparent',
+                                    border: 'none',
+                                    color: 'inherit',
+                                    fontSize: '0.8rem',
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                {opt}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={async (e) => {
+                                    e.preventDefault();
+                                    setOptions(prev => prev.filter(x => x !== opt));
+                                    setSelected(prev => prev.filter(x => x !== opt));
+                                    await removeOptionFromGlobal(name, opt);
+                                }}
+                                style={{
+                                    padding: '6px 12px 6px 4px',
+                                    background: 'transparent',
+                                    border: 'none',
+                                    color: 'inherit',
+                                    fontSize: '0.9rem',
+                                    cursor: 'pointer',
+                                    opacity: 0.6,
+                                }}
+                                title={`Remove ${opt}`}
+                            >
+                                &times;
+                            </button>
+                        </div>
+                    );
+                })}
 
                 {options.length === 0 && <span style={{ fontSize: '0.85rem', color: '#888', fontStyle: 'italic', display: 'flex', alignItems: 'center' }}>No parameters registered yet...</span>}
             </div>
