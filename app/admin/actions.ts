@@ -55,7 +55,7 @@ export async function saveProduct(formData: FormData) {
     category: formData.get('category') as string,
     metal: formData.get('metal') as string,
     collection: formData.get('collection') as string,
-    tags: (formData.get('tags') as string).split(',').map(t => t.trim()),
+    tags: formData.get('tags') ? (formData.get('tags') as string).split(',').map(t => t.trim()).filter(Boolean) : [],
     images: parsedImages,
     is_new: formData.get('isNew') === 'on',
     sequence: formData.get('sequence') ? parseInt(formData.get('sequence') as string) : 999,
@@ -69,7 +69,11 @@ export async function saveProduct(formData: FormData) {
     }
   };
 
-  await supabase.from('products').upsert(payload);
+  const { error } = await supabase.from('products').upsert(payload);
+  if (error) {
+    console.error("Failed to insert product:", error);
+    throw new Error(error.message);
+  }
 
   revalidatePath('/admin/products');
   revalidatePath('/category/[category]');
