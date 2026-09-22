@@ -14,7 +14,7 @@ export default async function NewProductPage() {
   const guaranteedMetals = ["18K Gold", "14K Gold", "925 Silver", "Multi-Metal"];
   const uniqueMetals = Array.from(new Set([...guaranteedMetals, ...db.products.flatMap(p => (p.metal || '').split(',').map(s => s.trim()).filter(Boolean))]));
 
-  const guaranteedCollections = ["EPHEMERALS", "PERENNIALS - Gold", "PERENNIALS - Silver", "Collab"];
+  const guaranteedCollections = ["EPHEMERALS", "PERENNIALS - Gold", "PERENNIALS - Silver"];
   const uniqueCollections = Array.from(new Set([...guaranteedCollections, ...db.products.map(p => p.collection).filter(Boolean)]));
 
   return (
