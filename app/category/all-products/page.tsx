@@ -35,7 +35,7 @@ export default function CategoryAllProductsPage() {
 
   if (loading) return <div style={{ minHeight: '100vh', background: '#FFF' }} />;
 
-  const PRODUCTS = data.products;
+  const PRODUCTS = data.products.filter(p => p.isActive !== false);
 
   const normalize = (str: string) => (str || '').toUpperCase().replace(/[:\-\s]+/g, '');
 
@@ -43,7 +43,7 @@ export default function CategoryAllProductsPage() {
   const uniqueCategories = Array.from(new Set(PRODUCTS.map(p => p.category).filter(Boolean)));
   const JEWELLERY_TYPES = uniqueCategories.map(cat => ({
     id: normalize(cat),
-    label: cat
+    label: cat.toLowerCase().endsWith('s') ? cat : `${cat}s`
   }));
 
   /* Which types exist in the chosen collection? */

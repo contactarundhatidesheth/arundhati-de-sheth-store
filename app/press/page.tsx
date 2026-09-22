@@ -13,6 +13,9 @@ import { readDB } from '@/lib/db';
 export default async function PressPage() {
   const db = await readDB();
   const PRESS = [...db.blogs].sort((a, b) => (a.sequence || 999) - (b.sequence || 999));
+  const heroSection = db.pageSections.find(s => s.id === 'press-hero');
+  const quoteSection = db.pageSections.find(s => s.id === 'press-quote');
+  const mediaSection = db.pageSections.find(s => s.id === 'press-media');
 
   const whatsappMessage = encodeURIComponent("Hi, I'm interested in press and media inquiries. Could you please share the press kit?");
   const whatsappLink = WHATSAPP_URL + "?text=" + whatsappMessage;
@@ -23,15 +26,15 @@ export default async function PressPage() {
       <section style={{ position: 'relative', width: '100%', height: '85vh', overflow: 'hidden', background: '#000' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
           <img
-            src="/pressimages/press-hero.png"
-            alt="Prismatic Collection Editorial"
+            src={heroSection?.image || '/pressimages/press-hero.png'}
+            alt="Press Cover"
             style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 1 }}
           />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0) 100%)' }} />
         </div>
         <div style={{ position: 'absolute', bottom: 'clamp(30px, 5vw, 60px)', left: 'clamp(20px, 5vw, 60px)', right: '20px', zIndex: 10 }}>
           <p style={{ fontSize: '0.7rem', color: 'var(--accent-light)', letterSpacing: '0.3em', textTransform: 'uppercase', fontWeight: '500', marginBottom: '16px' }}>
-            Press & Editorial
+            {heroSection?.subtitle || 'Press & Editorial'}
           </p>
           <h1 style={{
             fontSize: 'clamp(2.5rem, 8vw, 6rem)',
@@ -43,10 +46,10 @@ export default async function PressPage() {
             letterSpacing: '-0.02em',
             fontStyle: 'italic'
           }}>
-            In the Press
+            {heroSection?.title || 'In the Press'}
           </h1>
-          <p style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.8)', lineHeight: '1.8', fontWeight: '300', maxWidth: '560px', marginBottom: '32px' }}>
-            A selection of editorial features, interviews, and exhibition reviews.
+          <p style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.8)', lineHeight: '1.8', fontWeight: '300', maxWidth: '560px', marginBottom: '32px', whiteSpace: 'pre-wrap' }}>
+            {heroSection?.description || 'A selection of editorial features, interviews, and exhibition reviews.'}
           </p>
           <Button href={whatsappLink} variant="primary" icon={<ArrowRight size={14} />}>
             <span>Request Press Kit</span>
@@ -59,11 +62,11 @@ export default async function PressPage() {
         <Container maxWidth="900px" style={{ textAlign: 'center' }}>
           <FadeInSection>
             <Quote size={32} style={{ color: 'var(--text-muted)', marginBottom: '24px', opacity: 0.3 }} />
-            <blockquote style={{ fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontFamily: 'var(--font-serif)', fontWeight: '300', lineHeight: '1.6', color: 'var(--text-main)', margin: '0 0 24px', fontStyle: 'italic' }}>
-              &quot;Arundhati De-Sheth stands at the forefront of a new generation of Indian jewellers — sophisticated, globally minded, and utterly original.&quot;
+            <blockquote style={{ fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', fontFamily: 'var(--font-serif)', fontWeight: '300', lineHeight: '1.6', color: 'var(--text-main)', margin: '0 0 24px', fontStyle: 'italic', whiteSpace: 'pre-wrap' }}>
+              &quot;{quoteSection?.title || 'Arundhati De-Sheth stands at the forefront of a new generation of Indian jewellers — sophisticated, globally minded, and utterly original.'}&quot;
             </blockquote>
             <cite style={{ fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: '500', fontStyle: 'normal' }}>
-              — Vogue India
+              — {quoteSection?.subtitle || 'Vogue India'}
             </cite>
           </FadeInSection>
         </Container>
@@ -109,13 +112,13 @@ export default async function PressPage() {
         <Container maxWidth="700px" style={{ textAlign: 'center' }}>
           <FadeInSection>
             <p style={{ fontSize: '0.7rem', color: 'var(--accent-light)', letterSpacing: '0.3em', textTransform: 'uppercase', fontWeight: '500', marginBottom: '20px' }}>
-              Media Inquiries
+              {mediaSection?.subtitle || 'Media Inquiries'}
             </p>
             <h2 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', fontWeight: '200', marginBottom: '20px', fontFamily: 'var(--font-serif)', lineHeight: '1.2', color: 'var(--text-on-dark-strong)' }}>
-              Request the Press Kit
+              {mediaSection?.title || 'Request the Press Kit'}
             </h2>
-            <p style={{ fontSize: '0.95rem', color: 'var(--text-on-dark-muted)', lineHeight: '1.7', marginBottom: '40px', fontWeight: '300' }}>
-              For editorial requests, high-resolution imagery, or interview arrangements, please contact our press office.
+            <p style={{ fontSize: '0.95rem', color: 'var(--text-on-dark-muted)', lineHeight: '1.7', marginBottom: '40px', fontWeight: '300', whiteSpace: 'pre-wrap' }}>
+              {mediaSection?.description || 'For editorial requests, high-resolution imagery, or interview arrangements, please contact our press office.'}
             </p>
             <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
               <Button href={whatsappLink} variant="dark-primary" icon={<ArrowRight size={14} />}>

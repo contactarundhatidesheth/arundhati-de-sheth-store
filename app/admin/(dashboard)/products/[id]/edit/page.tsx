@@ -102,6 +102,12 @@ export default async function EditProductPage({ params }: { params: { id: string
           <label htmlFor="isNew" style={{ fontSize: '0.9rem', fontWeight: '500', cursor: 'pointer' }}>Mark as &quot;New Arrival&quot;</label>
         </div>
 
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '16px', background: '#f5f5f5', borderRadius: '4px', border: '1px solid #eaeaea' }}>
+          <input type="checkbox" name="isActive" id="isActive" defaultChecked={product.isActive !== false} style={{ width: '18px', height: '18px' }} />
+          <label htmlFor="isActive" style={{ fontSize: '0.95rem', fontWeight: '600', cursor: 'pointer' }}>Show on Live Website (Active)</label>
+          <span style={{ fontSize: '0.8rem', color: '#666', marginLeft: 'auto' }}>Uncheck to hide smoothly</span>
+        </div>
+
         <div style={{ marginTop: '24px' }}>
           <button type="submit" style={{ background: '#111', color: '#fff', padding: '14px 32px', borderRadius: '4px', textDecoration: 'none', fontSize: '0.95rem', letterSpacing: '0.05em', textTransform: 'uppercase', border: 'none', cursor: 'pointer', width: '100%' }}>
             Save Changes

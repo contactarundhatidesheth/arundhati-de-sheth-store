@@ -93,6 +93,7 @@ export async function saveProduct(formData: FormData) {
     tags: formData.get('tags') ? (formData.get('tags') as string).split(',').map(t => t.trim()).filter(Boolean) : [],
     images: parsedImages,
     is_new: formData.get('isNew') === 'on',
+    is_active: formData.get('isActive') === 'on',
     sequence: formData.get('sequence') ? parseInt(formData.get('sequence') as string) : 999,
     specs: {
       purity: formData.get('purity') as string || '',
@@ -296,6 +297,76 @@ export async function saveTimelineEvent(formData: FormData) {
   redirect('/admin/timeline');
 }
 
+// --- YOUTUBE VIDEOS ---
+export async function deleteYoutubeVideo(id: string) {
+  const supabase = getAdminClient();
+  await supabase.from('youtube_videos').delete().eq('id', id);
+  revalidatePath('/admin/blogs');
+  revalidatePath('/pages/whats-new');
+  return { success: true };
+}
+
+export async function saveYoutubeVideo(formData: FormData) {
+  const supabase = getAdminClient();
+  const id = formData.get('id') as string;
+
+  const payload = {
+    id: id || Date.now().toString(),
+    title: formData.get('title') as string,
+    video_id: formData.get('video_id') as string,
+    sequence: formData.get('sequence') ? parseInt(formData.get('sequence') as string) : 999
+  };
+
+  await supabase.from('youtube_videos').upsert(payload);
+
+  revalidatePath('/admin/blogs');
+  revalidatePath('/pages/whats-new');
+  redirect('/admin/blogs');
+}
+
+// --- SEEN ON FEATURES ---
+export async function deleteSeenOnFeature(id: string) {
+  const supabase = getAdminClient();
+  await supabase.from('seen_on_features').delete().eq('id', id);
+  revalidatePath('/admin/blogs');
+  revalidatePath('/pages/whats-new');
+  return { success: true };
+}
+
+export async function saveSeenOnFeature(formData: FormData) {
+  const supabase = getAdminClient();
+  const id = formData.get('id') as string;
+
+  const imageFile1 = formData.get('imageFile1') as File | null;
+  let finalImage1Url = formData.get('image1') as string;
+  if (imageFile1 && imageFile1.size > 0) {
+    finalImage1Url = await saveUpload(imageFile1);
+  }
+
+  const imageFile2 = formData.get('imageFile2') as File | null;
+  let finalImage2Url = formData.get('image2') as string;
+  if (imageFile2 && imageFile2.size > 0) {
+    finalImage2Url = await saveUpload(imageFile2);
+  }
+
+  const payload = {
+    id: id || Date.now().toString(),
+    title: formData.get('title') as string || '',
+    subtitle: formData.get('subtitle') as string || '',
+    description: formData.get('description') as string || '',
+    image1: finalImage1Url || '',
+    image2: finalImage2Url || '',
+    link: formData.get('link') as string || '',
+    sequence: formData.get('sequence') ? parseInt(formData.get('sequence') as string) : 999
+  };
+
+  await supabase.from('seen_on_features').upsert(payload);
+
+  revalidatePath('/admin/blogs');
+  revalidatePath('/pages/whats-new');
+  redirect('/admin/blogs');
+}
+
 // --- GLOBAL QUICK ACTIONS ---
 export async function updateSequence(collection: string, id: string, sequence: number) {
   const supabase = getAdminClient();
@@ -303,6 +374,8 @@ export async function updateSequence(collection: string, id: string, sequence: n
   // Note: collection name mapping
   let table = collection;
   if (collection === 'timelineEvents') table = 'timeline_events';
+  if (collection === 'youtubeVideos') table = 'youtube_videos';
+  if (collection === 'seenOnFeatures') table = 'seen_on_features';
 
   await supabase.from(table).update({ sequence }).eq('id', id);
 
@@ -315,7 +388,7 @@ export async function updateSequence(collection: string, id: string, sequence: n
     revalidatePath('/admin/catalogues');
     revalidatePath('/collections');
     revalidatePath('/');
-  } else if (collection === 'blogs') {
+  } else if (collection === 'blogs' || collection === 'youtubeVideos' || collection === 'seenOnFeatures') {
     revalidatePath('/admin/blogs');
     revalidatePath('/pages/whats-new');
     revalidatePath('/');
@@ -327,4 +400,35 @@ export async function updateSequence(collection: string, id: string, sequence: n
     revalidatePath('/timeline');
     revalidatePath('/');
   }
+}
+
+// --- PAGE SECTIONS ---
+export async function savePageSection(formData: FormData) {
+  const supabase = getAdminClient();
+  const id = formData.get('id') as string;
+
+  const imageFile = formData.get('imageFile') as File | null;
+  let finalImageUrl = formData.get('image') as string;
+  if (imageFile && imageFile.size > 0) {
+    finalImageUrl = await saveUpload(imageFile);
+  }
+
+  const payload = {
+    id: id,
+    title: formData.get('title') as string || '',
+    subtitle: formData.get('subtitle') as string || '',
+    description: formData.get('description') as string || '',
+    image: finalImageUrl || '',
+    link: formData.get('link') as string || '',
+  };
+
+  const { error } = await supabase.from('page_sections').upsert(payload);
+  if (error) {
+    console.error("Failed to insert page section:", error);
+    throw new Error(error.message);
+  }
+
+  revalidatePath('/admin/blogs');
+  revalidatePath('/press');
+  redirect('/admin/blogs');
 }

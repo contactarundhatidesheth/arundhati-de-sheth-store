@@ -28,6 +28,7 @@ export interface Product {
   isPriceOnRequest?: boolean;
   inStock: boolean;
   sequence?: number;
+  isActive?: boolean;
 }
 
 export interface Catalogue {
@@ -79,12 +80,42 @@ export interface AnalyticsData {
   referrers: Record<string, number>;
 }
 
+export interface PageSection {
+  id: string; // e.g. "press-hero", "press-quote", "press-media"
+  title: string;
+  subtitle?: string;
+  description?: string;
+  image?: string;
+  link?: string;
+}
+
+export interface YoutubeVideo {
+  id: string;
+  title: string;
+  video_id: string;
+  sequence?: number;
+}
+
+export interface SeenOnFeature {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  image1: string;
+  image2: string;
+  link?: string;
+  sequence?: number;
+}
+
 export interface Database {
   products: Product[];
   catalogues: Catalogue[];
   blogs: Blog[];
   testimonials: Testimonial[];
   timelineEvents: TimelineEvent[];
+  pageSections: PageSection[];
+  youtubeVideos: YoutubeVideo[];
+  seenOnFeatures: SeenOnFeature[];
   analytics: AnalyticsData;
 }
 
@@ -96,13 +127,19 @@ export async function readDB(): Promise<Database> {
     { data: catalogues },
     { data: blogs },
     { data: testimonials },
-    { data: timelineEvents }
+    { data: timelineEvents },
+    { data: pageSections },
+    { data: youtubeVideos },
+    { data: seenOnFeatures }
   ] = await Promise.all([
     supabase.from('products').select('*').order('sequence', { ascending: false }),
     supabase.from('catalogues').select('*').order('sequence', { ascending: false }),
     supabase.from('blogs').select('*').order('sequence', { ascending: false }),
     supabase.from('testimonials').select('*').order('sequence', { ascending: false }),
-    supabase.from('timeline_events').select('*').order('sequence', { ascending: false })
+    supabase.from('timeline_events').select('*').order('sequence', { ascending: false }),
+    supabase.from('page_sections').select('*'),
+    supabase.from('youtube_videos').select('*').order('sequence', { ascending: false }),
+    supabase.from('seen_on_features').select('*').order('sequence', { ascending: false })
   ]);
 
   return {
@@ -112,7 +149,8 @@ export async function readDB(): Promise<Database> {
       isNew: p.is_new,
       isBespoke: p.is_bespoke,
       isPriceOnRequest: p.is_price_on_request,
-      inStock: p.in_stock
+      inStock: p.in_stock,
+      isActive: p.is_active ?? true
     })),
     catalogues: catalogues || [],
     blogs: (blogs || []).map(b => {
@@ -140,6 +178,9 @@ export async function readDB(): Promise<Database> {
     }),
     testimonials: testimonials || [],
     timelineEvents: timelineEvents || [],
+    pageSections: pageSections || [],
+    youtubeVideos: youtubeVideos || [],
+    seenOnFeatures: seenOnFeatures || [],
     analytics: {
       visitors: 0,
       whatsappClicks: 0,
