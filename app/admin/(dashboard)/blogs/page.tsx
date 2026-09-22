@@ -189,8 +189,13 @@ export default async function AdminBlogs() {
                     </td>
                     <td style={{ padding: '16px 24px' }}>
                       <div style={{ display: 'flex', gap: '8px' }}>
-                        {f.image1 && <img src={f.image1} alt="Col 1" style={{ width: '30px', height: '30px', objectFit: 'cover', borderRadius: '4px', border: f.isLegacy ? '2px dashed #ccc' : 'none' }} />}
-                        {f.image2 && <img src={f.image2} alt="Col 2" style={{ width: '30px', height: '30px', objectFit: 'cover', borderRadius: '4px' }} />}
+                        {(() => {
+                          const imgs = f.image1 ? f.image1.split(',').filter(Boolean) : [];
+                          if (f.image2) imgs.push(f.image2);
+                          return imgs.slice(0, 2).map((img, idx) => (
+                            <img key={idx} src={img} alt={`Col ${idx}`} style={{ width: '30px', height: '30px', objectFit: 'cover', borderRadius: '4px', border: f.isLegacy ? '2px dashed #ccc' : 'none' }} />
+                          ));
+                        })()}
                       </div>
                     </td>
                     <td style={{ padding: '16px 24px', fontWeight: '500', color: f.isLegacy ? '#888' : '#333' }}>

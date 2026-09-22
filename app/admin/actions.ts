@@ -245,6 +245,7 @@ export async function saveTestimonial(formData: FormData) {
   redirect('/admin/testimonials');
 }
 
+
 // --- TIMELINE EVENTS ---
 export async function deleteTimelineEvent(id: string) {
   const supabase = getAdminClient();
@@ -344,16 +345,29 @@ export async function saveSeenOnFeature(formData: FormData) {
   const supabase = getAdminClient();
   const id = formData.get('id') as string;
 
-  const imageFile1 = formData.get('imageFile1') as File | null;
-  let finalImage1Url = formData.get('image1') as string;
-  if (imageFile1 && imageFile1.size > 0) {
-    finalImage1Url = await saveUpload(imageFile1);
+  const existingInputs = formData.get('existing_images') as string;
+  let parsedImages = existingInputs ? existingInputs.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+  const files: File[] = [];
+  const multiFiles = formData.getAll('imageFiles');
+  if (multiFiles && multiFiles.length > 0) {
+    multiFiles.forEach(f => files.push(f as File));
   }
 
-  const imageFile2 = formData.get('imageFile2') as File | null;
-  let finalImage2Url = formData.get('image2') as string;
-  if (imageFile2 && imageFile2.size > 0) {
-    finalImage2Url = await saveUpload(imageFile2);
+  const uploadedUrls: string[] = [];
+  try {
+    for (const file of files) {
+      if (file && typeof file.size === 'number' && file.size > 0 && file.name && file.name !== 'undefined') {
+        const uploadedUrl = await saveUpload(file);
+        uploadedUrls.push(uploadedUrl);
+      }
+    }
+  } catch (err: any) {
+    return { success: false, error: err.message || 'File upload failed due to size limits.' };
+  }
+
+  if (uploadedUrls.length > 0) {
+    parsedImages = [...parsedImages, ...uploadedUrls];
   }
 
   const payload = {
@@ -361,8 +375,8 @@ export async function saveSeenOnFeature(formData: FormData) {
     title: formData.get('title') as string || '',
     subtitle: formData.get('subtitle') as string || '',
     description: formData.get('description') as string || '',
-    image1: finalImage1Url || '',
-    image2: finalImage2Url || '',
+    image1: parsedImages.join(','),
+    image2: '',
     link: formData.get('link') as string || '',
     sequence: formData.get('sequence') ? parseInt(formData.get('sequence') as string) : 999
   };

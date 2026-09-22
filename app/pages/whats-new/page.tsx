@@ -131,42 +131,47 @@ export default async function WhatsNewPage() {
             Seen On
           </h2>
 
-          {sortedSeenOn.map((feature, idx) => (
-            <div key={feature.id} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '48px', alignItems: 'center', marginBottom: '120px' }}>
+          {sortedSeenOn.map((feature, idx) => {
+            const imgs = feature.image1 ? feature.image1.split(',').filter(Boolean) : [];
+            if (feature.image2 && !feature.image1?.includes(',')) imgs.push(feature.image2);
 
-              {/* Optional secondary structure based on index could be added, but we strictly map to mirror original JSX */}
-              <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', background: '#F5F5F5' }}>
-                {feature.image2 ? (
-                  <Image src={feature.image2} alt={feature.title} fill style={{ objectFit: 'cover' }} />
-                ) : (
-                  <Image src="/pressimages/press-hero.png" alt="Fallback" fill style={{ objectFit: 'cover' }} />
-                )}
-              </div>
+            return (
+              <div key={feature.id} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '48px', alignItems: 'center', marginBottom: '120px' }}>
 
-              <div style={{ textAlign: 'center', padding: '0 24px' }}>
-                <h4 style={{ fontSize: '26.8px', fontFamily: 'var(--font-serif)', marginBottom: '8px' }}>{feature.title}</h4>
-                <h6 style={{ fontSize: '19.1px', fontFamily: 'var(--font-serif)', marginBottom: '32px', color: '#666', whiteSpace: 'pre-wrap' }}>{feature.subtitle}</h6>
-                <hr style={{ width: '50px', border: 'none', borderTop: '1px solid #000', margin: '0 auto 32px' }} />
-                <p style={{ fontSize: '15px', fontFamily: 'Figtree, sans-serif', lineHeight: '22.5px', marginBottom: '40px', whiteSpace: 'pre-wrap' }}>
-                  {feature.description}
-                </p>
-                {feature.link && (
-                  <Link href={feature.link} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', fontSize: '11.6px', fontFamily: 'Figtree, sans-serif', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #000', paddingBottom: '4px', textDecoration: 'none', color: '#000' }}>
+                <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', background: '#F5F5F5' }}>
+                  {imgs.length > 1 ? (
+                    <Image src={imgs[1]} alt={feature.title} fill style={{ objectFit: 'cover' }} unoptimized={imgs[1].startsWith('http')} />
+                  ) : (
+                    <Image src="/pressimages/press-hero.png" alt="Fallback" fill style={{ objectFit: 'cover' }} />
+                  )}
+                </div>
+
+                <div style={{ textAlign: 'center', padding: '0 24px' }}>
+                  <h4 style={{ fontSize: '26.8px', fontFamily: 'var(--font-serif)', marginBottom: '8px' }}>{feature.title}</h4>
+                  <h6 style={{ fontSize: '19.1px', fontFamily: 'var(--font-serif)', marginBottom: '32px', color: '#666', whiteSpace: 'pre-wrap' }}>{feature.subtitle}</h6>
+                  <hr style={{ width: '50px', border: 'none', borderTop: '1px solid #000', margin: '0 auto 32px' }} />
+                  <p style={{ fontSize: '15px', fontFamily: 'Figtree, sans-serif', lineHeight: '22.5px', marginBottom: '40px', whiteSpace: 'pre-wrap' }}>
+                    {feature.description}
+                  </p>
+                  <Link
+                    href={`/pages/seen-on/${feature.id}`}
+                    style={{ display: 'inline-block', fontSize: '11.6px', fontFamily: 'Figtree, sans-serif', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #000', paddingBottom: '4px', textDecoration: 'none', color: '#000' }}
+                  >
                     See More
                   </Link>
-                )}
-              </div>
+                </div>
 
-              <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', background: '#F5F5F5' }}>
-                {feature.image1 ? (
-                  <Image src={feature.image1} alt={feature.title} fill style={{ objectFit: 'cover' }} />
-                ) : (
-                  <Image src="/pressimages/press-hero.png" alt="Fallback" fill style={{ objectFit: 'cover' }} />
-                )}
-              </div>
+                <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', background: '#F5F5F5' }}>
+                  {imgs.length > 0 ? (
+                    <Image src={imgs[0]} alt={feature.title} fill style={{ objectFit: 'cover' }} unoptimized={imgs[0].startsWith('http')} />
+                  ) : (
+                    <Image src="/pressimages/press-hero.png" alt="Fallback" fill style={{ objectFit: 'cover' }} />
+                  )}
+                </div>
 
-            </div>
-          ))}
+              </div>
+            );
+          })}
 
         </section>
       )}

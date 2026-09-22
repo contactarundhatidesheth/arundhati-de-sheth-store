@@ -1,12 +1,13 @@
 import React from 'react';
-import SeenOnForm from '@/app/admin/components/SeenOnForm';
+import { notFound } from 'next/navigation';
 import { readDB } from '@/lib/db';
+import SeenOnForm from '@/app/admin/components/SeenOnForm';
 
 export default async function EditSeenOnFeature({ params }: { params: { id: string } }) {
     const db = await readDB();
     const feature = db.seenOnFeatures.find(f => f.id === params.id);
 
-    if (!feature) return <div>Feature not found</div>;
+    if (!feature) return notFound();
 
     return <SeenOnForm initialData={feature} />;
 }
