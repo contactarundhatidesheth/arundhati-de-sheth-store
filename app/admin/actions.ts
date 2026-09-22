@@ -338,6 +338,8 @@ export async function deleteSeenOnFeature(id: string) {
   await supabase.from('seen_on_features').delete().eq('id', id);
   revalidatePath('/admin/blogs');
   revalidatePath('/pages/whats-new');
+  revalidatePath('/pages/seen-on/[id]');
+  revalidatePath('/');
   return { success: true, error: null };
 }
 
@@ -385,6 +387,8 @@ export async function saveSeenOnFeature(formData: FormData) {
 
   revalidatePath('/admin/blogs');
   revalidatePath('/pages/whats-new');
+  revalidatePath('/pages/seen-on/[id]');
+  revalidatePath('/');
   return { success: true, error: null };
 }
 
