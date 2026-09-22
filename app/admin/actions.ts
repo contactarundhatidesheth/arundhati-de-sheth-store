@@ -81,6 +81,14 @@ export async function saveProduct(formData: FormData) {
     parsedImages = [...uploadedUrls, ...parsedImages];
   }
 
+  const submittedTags = formData.get('tags') ? (formData.get('tags') as string).split(',').map(t => t.trim()).filter(Boolean) : [];
+  if (formData.get('isActive') !== 'on') {
+    if (!submittedTags.includes('_HIDDEN')) submittedTags.push('_HIDDEN');
+  } else {
+    const idx = submittedTags.indexOf('_HIDDEN');
+    if (idx > -1) submittedTags.splice(idx, 1);
+  }
+
   const payload = {
     id: id || Date.now().toString(),
     handle: formData.get('handle') as string || Date.now().toString(),
@@ -90,10 +98,9 @@ export async function saveProduct(formData: FormData) {
     category: formData.get('category') as string,
     metal: formData.get('metal') as string,
     collection: formData.get('collection') as string,
-    tags: formData.get('tags') ? (formData.get('tags') as string).split(',').map(t => t.trim()).filter(Boolean) : [],
+    tags: submittedTags,
     images: parsedImages,
     is_new: formData.get('isNew') === 'on',
-    is_active: formData.get('isActive') === 'on',
     sequence: formData.get('sequence') ? parseInt(formData.get('sequence') as string) : 999,
     specs: {
       purity: formData.get('purity') as string || '',

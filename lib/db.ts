@@ -150,7 +150,7 @@ export async function readDB(): Promise<Database> {
       isBespoke: p.is_bespoke,
       isPriceOnRequest: p.is_price_on_request,
       inStock: p.in_stock,
-      isActive: p.is_active ?? true
+      isActive: !(p.tags || []).includes('_HIDDEN')
     })),
     catalogues: catalogues || [],
     blogs: (blogs || []).map(b => {
