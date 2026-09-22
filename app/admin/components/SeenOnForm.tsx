@@ -28,8 +28,8 @@ export default function SeenOnForm({ initialData }: { initialData?: SeenOnFeatur
         setLoading(true);
         const formData = new FormData(e.currentTarget);
         const res = await saveSeenOnFeature(formData);
-        if (res && res.error) {
-            alert(res.error);
+        if (res && res.success === false) {
+            alert(res.error || 'Failed to save feature.');
             setLoading(false);
         } else {
             window.location.href = '/admin/blogs';

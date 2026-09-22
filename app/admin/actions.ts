@@ -338,7 +338,7 @@ export async function deleteSeenOnFeature(id: string) {
   await supabase.from('seen_on_features').delete().eq('id', id);
   revalidatePath('/admin/blogs');
   revalidatePath('/pages/whats-new');
-  return { success: true };
+  return { success: true, error: null };
 }
 
 export async function saveSeenOnFeature(formData: FormData) {
@@ -385,7 +385,7 @@ export async function saveSeenOnFeature(formData: FormData) {
 
   revalidatePath('/admin/blogs');
   revalidatePath('/pages/whats-new');
-  redirect('/admin/blogs');
+  return { success: true, error: null };
 }
 
 // --- GLOBAL QUICK ACTIONS ---
