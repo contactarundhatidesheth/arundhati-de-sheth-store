@@ -3,6 +3,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { readDB } from '@/lib/db';
 
+export const revalidate = 0;
+export const dynamic = 'force-dynamic';
+
 export default async function WhatsNewPage() {
   const db = await readDB();
 
