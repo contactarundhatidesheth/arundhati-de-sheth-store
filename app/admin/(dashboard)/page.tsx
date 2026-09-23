@@ -235,7 +235,7 @@ export default async function AdminDashboard() {
             {topProducts.map((p, idx) => (
               <tr key={p.id} style={{ borderBottom: '1px solid #eaeaea' }}>
                 <td style={{ padding: '20px 0', display: 'flex', alignItems: 'center', gap: '16px' }}>
-                  <img src={p.images[0]} alt={p.title} style={{ width: '48px', height: '48px', objectFit: 'cover', borderRadius: '4px' }} />
+                  <img src={p.images?.[0] || '/placeholder.png'} alt={p.title} style={{ width: '48px', height: '48px', objectFit: 'cover', borderRadius: '4px' }} />
                   <span style={{ fontWeight: '500', color: '#111' }}>{p.title}</span>
                 </td>
                 <td style={{ padding: '20px 0', color: '#666', fontSize: '0.9rem' }}>{p.collection}</td>
