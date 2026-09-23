@@ -24,9 +24,11 @@ export default function SearchPage() {
 
     // Filter products by search query
     const filteredProducts = searchQuery.trim()
-        ? PRODUCTS.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        ? PRODUCTS.filter(p => (p.isActive !== false) && (
+            p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
             (p.category && p.category.toLowerCase().includes(searchQuery.toLowerCase())) ||
-            (p.collection && p.collection.toLowerCase().includes(searchQuery.toLowerCase())))
+            (p.collection && p.collection.toLowerCase().includes(searchQuery.toLowerCase()))
+        ))
         : [];
 
     return (
