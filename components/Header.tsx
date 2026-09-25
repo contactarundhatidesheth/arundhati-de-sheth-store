@@ -88,7 +88,7 @@ export const Header: React.FC = () => {
           color: isAtTop ? '#ffffff' : 'var(--text-main)',
         }}>
           {/* Left: Menu & Links */}
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '32px' }}>
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 'clamp(16px, 3vw, 32px)' }}>
             <button onClick={() => setIsMenuOpen(true)} style={{ color: 'inherit', background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', display: 'flex' }}>
               <Menu size={28} strokeWidth={1.5} />
             </button>
@@ -96,7 +96,7 @@ export const Header: React.FC = () => {
 
           {/* Center: Logo */}
           <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Link href="/" className="logo-wrapper" style={{ display: 'block', width: '280px', transform: 'scale(1.15)', transformOrigin: 'center' }}>
+            <Link href="/" className="logo-wrapper" style={{ display: 'block', width: 'clamp(180px, 40vw, 280px)', transform: 'scale(1.15)', transformOrigin: 'center' }}>
               <img
                 src="https://www.arundhatidesheth.com/cdn/shop/files/111.png?v=1708868785"
                 alt="Arundhati De-Sheth"
@@ -112,7 +112,7 @@ export const Header: React.FC = () => {
           </div>
 
           {/* Right: Cart & User */}
-          <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '24px' }}>
+          <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 'clamp(12px, 3vw, 24px)' }}>
 
             <Link href="/search" style={{ display: 'flex', alignItems: 'center', color: 'inherit', background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', textDecoration: 'none' }} title="Search">
               <Search size={20} strokeWidth={1.5} />
