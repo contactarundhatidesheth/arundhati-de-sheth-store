@@ -7,7 +7,7 @@ import { ShoppingBag, Menu, X, PackageSearch, Search } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
 // Pages with a light/white background at the top — logo must always be black
-const LIGHT_BG_PATHS = ['/category/ephemerals', '/category/perennials', '/shipping', '/terms', '/privacy', '/payment', '/press', '/cart', '/product', '/shop-the-look', '/pages/jewelry-lookbooks', '/timeline', '/track', '/search'];
+const LIGHT_BG_PATHS = ['/category/ephemerals', '/category/perennials', '/press', '/cart', '/product', '/shop-the-look', '/pages/jewelry-lookbooks', '/timeline', '/track', '/search'];
 
 export const Header: React.FC = () => {
   const { totalItems, setIsCartOpen } = useCart();
