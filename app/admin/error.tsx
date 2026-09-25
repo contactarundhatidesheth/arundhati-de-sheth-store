@@ -19,7 +19,9 @@ export default function AdminError({
             <p style={{ marginBottom: '24px', color: '#666', fontFamily: 'Figtree, sans-serif' }}>
                 {error.message.includes('maximum allowed size')
                     ? "File Upload Error: The image you attempted to save was too large. Please compress it safely under 2MB and try again."
-                    : "An unexpected backend error occurred during your request."}
+                    : error.message.includes('mime type') || error.message.includes('format is not supported')
+                        ? "File Upload Error: The image format (like AVIF) is not supported. Please upload a JPEG, PNG, or WebP image."
+                        : "An unexpected backend error occurred during your request."}
             </p>
             <button
                 onClick={() => reset()}

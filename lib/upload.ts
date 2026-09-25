@@ -4,6 +4,10 @@ export async function saveUpload(file: File): Promise<string> {
   const supabase = getSupabaseAdmin();
   const filename = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g, '')}`;
 
+  if (file.type === 'image/avif') {
+    throw new Error(`File format is not supported: AVIF images cannot be uploaded.`);
+  }
+
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
 
