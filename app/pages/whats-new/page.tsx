@@ -77,7 +77,7 @@ export default async function WhatsNewPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '48px' }}>
           {sortedBlogs.map((article) => (
             <a key={article.id} href={article.link || '#'} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column' }}>
-              <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', marginBottom: '24px', background: '#F5F5F5' }}>
+              <div style={{ position: 'relative', width: '100%', aspectRatio: '1/1', marginBottom: '24px', background: '#F5F5F5' }}>
                 <Image src={article.image || '/pressimages/press-hero.png'} alt={article.title} fill style={{ objectFit: 'cover' }} />
               </div>
               <h3 style={{ fontSize: '15px', fontFamily: 'Figtree, sans-serif', lineHeight: '22.5px', fontWeight: '400', marginBottom: '16px' }}>

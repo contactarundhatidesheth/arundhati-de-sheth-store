@@ -54,7 +54,7 @@ export default async function EditBlogPage({ params }: { params: { id: string } 
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Article Image (Upload or URL)</label>
+          <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Article Image (Square 1:1)</label>
           <div style={{ display: 'flex', gap: '16px', flexDirection: 'column' }}>
             <input type="file" name="imageFile" accept="image/jpeg,image/png,image/webp,image/gif,video/*" style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} />
             <span style={{ fontSize: '0.8rem', color: '#666', marginTop: '-8px' }}>OR</span>
