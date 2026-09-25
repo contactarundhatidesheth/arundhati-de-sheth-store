@@ -4,8 +4,12 @@ export async function saveUpload(file: File): Promise<string> {
   const supabase = getSupabaseAdmin();
   const filename = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g, '')}`;
 
-  if (file.type === 'image/avif') {
-    throw new Error(`File format is not supported: AVIF images cannot be uploaded.`);
+  if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
+    throw new Error(`File format is not supported. Please upload an image or video.`);
+  }
+
+  if (['image/avif', 'image/heic', 'image/heif', 'image/tiff'].includes(file.type)) {
+    throw new Error(`File format is not supported: Please use JPEG, PNG, or WebP.`);
   }
 
   const arrayBuffer = await file.arrayBuffer();
