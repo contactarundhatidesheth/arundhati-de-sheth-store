@@ -95,8 +95,8 @@ export const Header: React.FC = () => {
           </div>
 
           {/* Center: Logo */}
-          <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Link href="/" className="logo-wrapper" style={{ display: 'block', width: 'clamp(180px, 40vw, 280px)', transform: 'scale(1.15)', transformOrigin: 'center' }}>
+          <div style={{ flex: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0 10px' }}>
+            <Link href="/" className="logo-wrapper" style={{ display: 'block', width: 'clamp(150px, 35vw, 240px)' }}>
               <img
                 src="https://www.arundhatidesheth.com/cdn/shop/files/111.png?v=1708868785"
                 alt="Arundhati De-Sheth"
