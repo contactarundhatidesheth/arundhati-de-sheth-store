@@ -5,14 +5,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCMSData } from '@/hooks/useCMSData';
 import { useCart } from '@/context/CartContext';
-import { ChevronDown, ChevronUp, ShieldCheck, Truck, BadgeCheck, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
+import { ChevronDown, ChevronUp, ShieldCheck, Truck, BadgeCheck, ChevronLeft, ChevronRight } from 'lucide-react';
+import ProductImageZoom from '@/components/ui/ProductImageZoom';
 
 export default function ProductDetailClient({ params }: { params: { handle: string } }) {
   const { data, loading } = useCMSData();
   const { addToCart } = useCart();
   const [openAccordions, setOpenAccordions] = useState<string[]>(['specs']);
   const [activeImage, setActiveImage] = useState(0);
-  const [isZoomed, setIsZoomed] = useState(false);
 
   if (loading) return <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }} />;
 
@@ -51,47 +51,32 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
 
         {/* Left: Image Gallery with thumbnail switcher */}
         <div className="product-image-panel" style={{ display: 'flex', flexDirection: 'column', background: 'var(--bg-surface)' }}>
-          {/* Main Image */}
+          {/* Main Image with Circular Loupe Zoom (desktop only) */}
           <div style={{ width: '100%', padding: '40px 80px', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
             <div
-              className={`main-image-container ${isZoomed ? 'zoomed' : ''}`}
-              style={{ position: 'relative', width: '100%', maxWidth: '600px', aspectRatio: '4/5', overflow: 'hidden', cursor: isZoomed ? 'zoom-out' : 'zoom-in', background: '#fff' }}
-              onClick={() => setIsZoomed(!isZoomed)}
-              onMouseMove={(e) => {
-                if (!isZoomed) return;
-                const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-                const x = ((e.clientX - left) / width) * 100;
-                const y = ((e.clientY - top) / height) * 100;
-                e.currentTarget.style.setProperty('--x', `${x}%`);
-                e.currentTarget.style.setProperty('--y', `${y}%`);
-              }}
-              onMouseLeave={() => setIsZoomed(false)}
+              className="main-image-container"
+              style={{ position: 'relative', width: '100%', maxWidth: '600px', aspectRatio: '4/5', overflow: 'hidden', background: '#fff' }}
             >
-              <Image
+              <ProductImageZoom
                 src={product.images[activeImage]}
                 alt={`${product.title} - View ${activeImage + 1}`}
-                fill
-                style={{ objectFit: 'contain' }}
-                className="main-product-image"
-                priority
+                zoomFactor={2.5}
+                loupeDiameter={180}
               />
-              <div style={{ position: 'absolute', bottom: '16px', right: '16px', background: 'rgba(255,255,255,0.8)', padding: '8px', borderRadius: '50%', display: 'flex', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', pointerEvents: 'none', opacity: isZoomed ? 0 : 1, transition: 'opacity 0.2s ease' }}>
-                <ZoomIn size={20} color="#000" />
-              </div>
             </div>
 
             {/* Slider Arrows */}
-            {product.images.length > 1 && !isZoomed && (
+            {product.images.length > 1 && (
               <>
                 <button
                   onClick={() => setActiveImage(prev => (prev === 0 ? product.images.length - 1 : prev - 1))}
-                  style={{ position: 'absolute', left: '24px', top: '50%', transform: 'translateY(-50%)', background: '#fff', border: '1px solid #eaeaea', borderRadius: '50%', width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}
+                  style={{ position: 'absolute', left: '24px', top: '50%', transform: 'translateY(-50%)', background: '#fff', border: '1px solid #eaeaea', borderRadius: '50%', width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', zIndex: 5 }}
                 >
                   <ChevronLeft size={24} color="#000" />
                 </button>
                 <button
                   onClick={() => setActiveImage(prev => (prev === product.images.length - 1 ? 0 : prev + 1))}
-                  style={{ position: 'absolute', right: '24px', top: '50%', transform: 'translateY(-50%)', background: '#fff', border: '1px solid #eaeaea', borderRadius: '50%', width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}
+                  style={{ position: 'absolute', right: '24px', top: '50%', transform: 'translateY(-50%)', background: '#fff', border: '1px solid #eaeaea', borderRadius: '50%', width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', zIndex: 5 }}
                 >
                   <ChevronRight size={24} color="#000" />
                 </button>
@@ -292,13 +277,6 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
       )}
 
       <style>{`
-        .main-product-image {
-          transition: transform 0.15s ease-out;
-          transform-origin: var(--x, 50%) var(--y, 50%);
-        }
-        .main-image-container.zoomed .main-product-image {
-          transform: scale(2.2);
-        }
         .rec-img:hover { transform: scale(1.05); }
         .add-to-cart-btn {
           width: 100%;
