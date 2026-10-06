@@ -31,7 +31,8 @@ export const sendOrderTrackingEmail = async (
             },
         });
 
-        const portalUrl = 'https://arundhati-de-sheth-store.vercel.app/track';
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.arundhatidesheth.com';
+        const portalUrl = `${baseUrl}/track`;
 
         const mailOptions = {
             from: `"Arundhati De-Sheth" <${EMAIL_USER}>`,
@@ -61,7 +62,7 @@ export const sendOrderTrackingEmail = async (
           <p style="font-size: 14px; color: #666; margin-top: 48px; border-top: 1px solid #eaeaea; padding-top: 24px;">
             If you have any questions or require advisory regarding your delivery, please contact our studio directly.<br><br>
             Arundhati De-Sheth Fine Jewellery<br>
-            <a href="https://arundhati-de-sheth-store.vercel.app" style="color: #666;">www.arundhatidesheth.com</a>
+            <a href="${baseUrl}" style="color: #666;">www.arundhatidesheth.com</a>
           </p>
         </div>
       `,

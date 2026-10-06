@@ -5,3 +5,4 @@ export const STUDIO_EMAIL = 'contact@arundhatidesheth.com';
 export const INSTAGRAM_URL = 'https://instagram.com/arundhatidesheth';
 export const STUDIO_ADDRESS = 'Sashaa Global LLP, Ground Floor, 2A, Plot-15 Iindira Niwas, Avantikabai Gokhale Marg, New Bhatwadi, Ggirgaon, Mumbai City, Maharashtra, 400004';
 export const STUDIO_PHONE = '+91 95818 22000';
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.arundhatidesheth.com';

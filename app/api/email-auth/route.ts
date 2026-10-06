@@ -4,12 +4,15 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const code = searchParams.get('code');
 
+    const urlObj = new URL(req.url);
+    const origin = process.env.NEXT_PUBLIC_SITE_URL || urlObj.origin || 'https://www.arundhatidesheth.com';
+    const redirectUri = `${origin}/api/email-auth`;
+
     if (!code) {
         // Redirect to Microsoft login
         const tenant = process.env.AZURE_TENANT_ID;
         const clientId = process.env.AZURE_CLIENT_ID;
-        const redirectUri = 'http://localhost:3000/api/email-auth';
-        return NextResponse.redirect(`https://login.microsoftonline.com/${tenant}/oauth2/v2.0/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&response_mode=query&scope=offline_access%20https%3A%2F%2Fgraph.microsoft.com%2FMail.Send&state=12345`);
+        return NextResponse.redirect(`https://login.microsoftonline.com/${tenant}/oauth2/v2.0/authorize?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(redirectUri)}&response_mode=query&scope=offline_access%20https%3A%2F%2Fgraph.microsoft.com%2FMail.Send&state=12345`);
     }
 
     // Exchange code for token
@@ -23,7 +26,7 @@ export async function GET(req: Request) {
                 client_id: process.env.AZURE_CLIENT_ID!,
                 client_secret: process.env.AZURE_CLIENT_SECRET!,
                 code,
-                redirect_uri: 'http://localhost:3000/api/email-auth',
+                redirect_uri: redirectUri,
                 grant_type: 'authorization_code'
             })
         });

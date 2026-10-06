@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 function getEnvVar(key: string): string {
+    if (process.env[key]) return process.env[key]!;
     try {
         const envPath = path.join(process.cwd(), '.env.local');
         if (fs.existsSync(envPath)) {
@@ -10,7 +11,7 @@ function getEnvVar(key: string): string {
             if (match) return match[1].trim();
         }
     } catch (e) { }
-    return process.env[key] || '';
+    return '';
 }
 
 export async function getGraphAccessToken(): Promise<string> {
@@ -127,7 +128,7 @@ export function getPremiumEmailTemplate(content: string): string {
                             <td class="footer">
                                 <p>ARUNDHATI DE-SHETH | The Jwellery Confluence</p>
                                 <p>Mumbai, India</p>
-                                <p style="margin-top: 15px;"><a href="https://arundhatidesheth.com" style="color: #888; text-decoration: none;">arundhatidesheth.com</a></p>
+                                <p style="margin-top: 15px;"><a href="https://www.arundhatidesheth.com" style="color: #888; text-decoration: none;">www.arundhatidesheth.com</a></p>
                             </td>
                         </tr>
                     </table>
@@ -176,7 +177,8 @@ export async function sendOrderConfirmation(email: string, orderId: string, tota
 }
 
 export async function sendOrderTrackingEmail(recipientEmail: string, recipientName: string, orderId: string, trackingNumber: string) {
-    const portalUrl = 'https://arundhati-de-sheth-store.vercel.app/track';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.arundhatidesheth.com';
+    const portalUrl = `${baseUrl}/track`;
 
     const html = getPremiumEmailTemplate(`
         <h1>Order Dispatch Confirmation</h1>
@@ -203,7 +205,8 @@ export async function sendOrderTrackingEmail(recipientEmail: string, recipientNa
 }
 
 export async function sendAbandonedCartEmail(email: string, cartItems: any[]) {
-    const portalUrl = 'https://arundhati-de-sheth-store.vercel.app/cart';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.arundhatidesheth.com';
+    const portalUrl = `${baseUrl}/cart`;
 
     let itemsHtml = '';
     let total = 0;
@@ -275,7 +278,7 @@ export async function sendContactThankYou(email: string, name: string, subject: 
         If you have urgent requirements, our Churchgate studio is also available for direct advisory.
         </p>
         <p style="text-align: center; margin-top: 20px;">
-            <a href="https://arundhati-de-sheth-store.vercel.app/" style="display: inline-block; padding: 14px 28px; background-color: #111; color: #fff; text-decoration: none; text-transform: uppercase; letter-spacing: 1.5px; font-size: 12px;">Back to Collections</a>
+            <a href="https://www.arundhatidesheth.com/" style="display: inline-block; padding: 14px 28px; background-color: #111; color: #fff; text-decoration: none; text-transform: uppercase; letter-spacing: 1.5px; font-size: 12px;">Back to Collections</a>
         </p>
     `);
 
