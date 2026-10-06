@@ -65,7 +65,7 @@ function HowWeHelpSection() {
       </div>
       <div style={{ position: 'relative', overflow: 'hidden', height: '100%' }}>
         <div style={{ position: 'absolute', inset: '-10% 0', transform: `translateY(${parallaxY}px)`, transition: 'transform 0.08s linear' }}>
-          <img src="https://www.arundhatidesheth.com/cdn/shop/files/image_1_0caa02f1-d125-49c8-8ff5-12951894228a.jpg?v=1710832955" alt="How we help our clients" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src="https://cdn.shopify.com/s/files/1/0793/9247/3397/files/image_1_0caa02f1-d125-49c8-8ff5-12951894228a.jpg?v=1710832955" alt="How we help our clients" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </div>
       </div>
       <style>{`
@@ -120,7 +120,7 @@ export default function AboutPage() {
                 src="/images/arundhati-portrait.webp"
                 alt="Arundhati De-Sheth"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                onError={(e) => { (e.target as HTMLImageElement).src = 'https://www.arundhatidesheth.com/cdn/shop/files/DSC00807.jpg?v=1744025659'; }}
+                onError={(e) => { (e.target as HTMLImageElement).src = 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/DSC00807.jpg?v=1744025659'; }}
               />
             </div>
             <div>
@@ -247,9 +247,9 @@ export default function AboutPage() {
           {/* ── Testimonials Sideways Scroll ── */}
           {(() => {
             const displayTestimonials = data.testimonials?.length > 0 ? data.testimonials : [
-              { id: '1', author: 'Sophia L', location: 'Mumbai', quote: 'The geometric symmetry and light weight of these designs make them my immediate choice every morning.', image: 'https://www.arundhatidesheth.com/cdn/shop/files/Screenshot_2025-04-08_130922.png?v=1708934384&width=400' },
-              { id: '2', author: 'Marcus V', location: 'London', quote: 'Unparalleled refinement and lasting durability that truly elevates any outfit.', image: 'https://www.arundhatidesheth.com/cdn/shop/files/Screenshot_2026-01-27_144230.png?v=1708934384&width=400' },
-              { id: '3', author: 'Aria M', location: 'Paris', quote: 'An extraordinary dedication to the craft. I have never felt more elegant.', image: 'https://www.arundhatidesheth.com/cdn/shop/files/PASTELGIRANDOLEEARRINGS1_1.jpg?v=1708934384&width=400' }
+              { id: '1', author: 'Sophia L', location: 'Mumbai', quote: 'The geometric symmetry and light weight of these designs make them my immediate choice every morning.', image: 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Screenshot_2025-04-08_130922.png?v=1708934384&width=400' },
+              { id: '2', author: 'Marcus V', location: 'London', quote: 'Unparalleled refinement and lasting durability that truly elevates any outfit.', image: 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Screenshot_2026-01-27_144230.png?v=1708934384&width=400' },
+              { id: '3', author: 'Aria M', location: 'Paris', quote: 'An extraordinary dedication to the craft. I have never felt more elegant.', image: 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/PASTELGIRANDOLEEARRINGS1_1.jpg?v=1708934384&width=400' }
             ];
 
             return (

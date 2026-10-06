@@ -98,8 +98,11 @@ export const Header: React.FC = () => {
           <div style={{ flex: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0 10px' }}>
             <Link href="/" className="logo-wrapper" style={{ display: 'block', width: 'clamp(150px, 35vw, 240px)' }}>
               <img
-                src="https://www.arundhatidesheth.com/cdn/shop/files/111.png?v=1708868785"
+                src="/brand/logo.png"
                 alt="Arundhati De-Sheth"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/logo.png';
+                }}
                 style={{
                   width: '100%',
                   height: 'auto',
