@@ -19,7 +19,7 @@ export const CuratedCollections: React.FC = () => {
       id: 'garden-beads',
       title: 'Garden Beads',
       description: 'Handcrafted beadwork inspired by nature.',
-      image: PRODUCTS.find(p => p.collection === 'EPHEMERALS')?.images[0] || 'https://www.arundhatidesheth.com/cdn/shop/files/Call_for_the_cocktails_compressed_1__page-0001.jpg?v=1708934384&width=800',
+      image: PRODUCTS.find(p => p.collection === 'EPHEMERALS')?.images[0] || 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Call_for_the_cocktails_compressed_1__page-0001.jpg?v=1708934384&width=800',
       link: '/category/garden-beads',
       tag: 'NEW ARRIVALS',
     },
@@ -27,21 +27,21 @@ export const CuratedCollections: React.FC = () => {
       id: 'silver-water',
       title: 'Silver Water',
       description: 'Fluid designs in premium 925 sterling silver.',
-      image: PRODUCTS.find(p => p.collection === 'PERENNIALS - Silver')?.images[0] || 'https://www.arundhatidesheth.com/cdn/shop/files/6ef918_dda50d76e89e497694803b84c6141c25_mv2.webp?v=1708934384&width=800',
+      image: PRODUCTS.find(p => p.collection === 'PERENNIALS - Silver')?.images[0] || 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/6ef918_dda50d76e89e497694803b84c6141c25_mv2.webp?v=1708934384&width=800',
       link: '/category/silver-water',
     },
     {
       id: 'gilded-gems',
       title: 'Gilded Gems',
       description: 'Opulent gold pieces for the modern romantic.',
-      image: PRODUCTS.find(p => p.collection === 'PERENNIALS - Gold')?.images[0] || 'https://www.arundhatidesheth.com/cdn/shop/files/Screenshot_2024-02-26_at_2.04.21_PM.png?v=1708934384&width=800',
+      image: PRODUCTS.find(p => p.collection === 'PERENNIALS - Gold')?.images[0] || 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Screenshot_2024-02-26_at_2.04.21_PM.png?v=1708934384&width=800',
       link: '/category/gilded-gems',
     },
     {
       id: 'the-archive',
       title: 'The Archive',
       description: 'Explore our complete collection of bespoke and ready-to-wear pieces.',
-      image: 'https://www.arundhatidesheth.com/cdn/shop/files/19_62d39958-6d5e-4d16-94a2-7fd33f4d9bf0.png?v=1784800252&width=800',
+      image: 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/19_62d39958-6d5e-4d16-94a2-7fd33f4d9bf0.png?v=1784800252&width=800',
       link: '/category/all-products',
     },
   ];
@@ -100,21 +100,21 @@ export const CuratedCollections: React.FC = () => {
           
           <div className="pdf-item" style={{ position: 'relative' }}>
             <Link href="/category/earrings" className="image-container" style={{ position: 'relative', display: 'block' }}>
-              <Image src="https://www.arundhatidesheth.com/cdn/shop/files/Call_for_the_cocktails_compressed_1__page-0001.jpg?v=1708934384&width=800" alt="Earrings" fill sizes="(max-width: 900px) 100vw, 33vw" />
+              <Image src="https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Call_for_the_cocktails_compressed_1__page-0001.jpg?v=1708934384&width=800" alt="Earrings" fill sizes="(max-width: 900px) 100vw, 33vw" />
               <div className="overlay-text">EARRINGS</div>
             </Link>
           </div>
 
           <div className="pdf-item" style={{ position: 'relative' }}>
             <Link href="/category/rings" className="image-container" style={{ position: 'relative', display: 'block' }}>
-              <Image src="https://www.arundhatidesheth.com/cdn/shop/files/6ef918_dda50d76e89e497694803b84c6141c25_mv2.webp?v=1708934384&width=800" alt="Rings" fill sizes="(max-width: 900px) 100vw, 33vw" />
+              <Image src="https://cdn.shopify.com/s/files/1/0793/9247/3397/files/6ef918_dda50d76e89e497694803b84c6141c25_mv2.webp?v=1708934384&width=800" alt="Rings" fill sizes="(max-width: 900px) 100vw, 33vw" />
               <div className="overlay-text">RINGS</div>
             </Link>
           </div>
 
           <div className="pdf-item" style={{ position: 'relative' }}>
             <Link href="/category/necklaces" className="image-container" style={{ position: 'relative', display: 'block' }}>
-              <Image src="https://www.arundhatidesheth.com/cdn/shop/files/Screenshot_2024-02-26_at_2.04.21_PM.png?v=1708934384&width=800" alt="Necklaces" fill sizes="(max-width: 900px) 100vw, 33vw" />
+              <Image src="https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Screenshot_2024-02-26_at_2.04.21_PM.png?v=1708934384&width=800" alt="Necklaces" fill sizes="(max-width: 900px) 100vw, 33vw" />
               <div className="overlay-text">NECKLACES</div>
             </Link>
           </div>

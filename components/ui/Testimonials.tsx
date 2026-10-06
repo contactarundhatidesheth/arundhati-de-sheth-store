@@ -20,13 +20,13 @@ const defaultItems: TestimonialItem[] = [
     quote: 'The geometric symmetry and light weight of these designs make them my immediate choice every morning.',
     author: 'Sophia L',
     location: 'Mumbai',
-    image: 'https://www.arundhatidesheth.com/cdn/shop/files/Screenshot_2025-04-08_130922.png?v=1708934384&width=400',
+    image: 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Screenshot_2025-04-08_130922.png?v=1708934384&width=400',
   },
   {
     quote: 'Unparalleled refinement and lasting durability that truly elevates any outfit.',
     author: 'Marcus V',
     location: 'London',
-    image: 'https://www.arundhatidesheth.com/cdn/shop/files/Screenshot_2026-01-27_144230.png?v=1708934384&width=400',
+    image: 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Screenshot_2026-01-27_144230.png?v=1708934384&width=400',
   },
 ];
 

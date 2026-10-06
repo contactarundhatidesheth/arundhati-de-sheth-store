@@ -15,7 +15,7 @@ export const ShopTheLook: React.FC = () => {
         
         <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', borderRadius: 'var(--radius-md)' }}>
           <ParallaxSection
-            imageSrc="https://www.arundhatidesheth.com/cdn/shop/files/19_62d39958-6d5e-4d16-94a2-7fd33f4d9bf0.png?v=1784800252&width=800"
+            imageSrc="https://cdn.shopify.com/s/files/1/0793/9247/3397/files/19_62d39958-6d5e-4d16-94a2-7fd33f4d9bf0.png?v=1784800252&width=800"
             imageAlt="Arundhati De-Sheth High Jewellery Editorial"
             overlayColor="#1A1A1A"
             overlayOpacity={0.2}

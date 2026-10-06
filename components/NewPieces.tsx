@@ -25,7 +25,7 @@ export const NewPieces: React.FC = () => {
           {/* Top Right: Image */}
           <div style={{ aspectRatio: '1/1', position: 'relative', overflow: 'hidden', background: '#FFFFFF' }}>
             <img 
-              src="https://www.arundhatidesheth.com/cdn/shop/files/Untitled_design_15.png?v=1708934384&width=800" 
+              src="https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Untitled_design_15.png?v=1708934384&width=800" 
               alt="New Jewelry 1"
               style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '24px' }}
             />
@@ -34,7 +34,7 @@ export const NewPieces: React.FC = () => {
           {/* Bottom Left: Image */}
           <div style={{ aspectRatio: '1/1', position: 'relative', overflow: 'hidden', background: '#FFFFFF' }}>
             <img 
-              src="https://www.arundhatidesheth.com/cdn/shop/files/Screenshot_2025-04-08_130922.png?v=1708934384&width=800" 
+              src="https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Screenshot_2025-04-08_130922.png?v=1708934384&width=800" 
               alt="New Jewelry 2"
               style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '24px' }}
             />
@@ -43,7 +43,7 @@ export const NewPieces: React.FC = () => {
           {/* Bottom Right: Image */}
           <div style={{ aspectRatio: '1/1', position: 'relative', overflow: 'hidden', background: '#FFFFFF' }}>
             <img 
-              src="https://www.arundhatidesheth.com/cdn/shop/files/e-invite-Final.jpg?v=1708934384&width=800" 
+              src="https://cdn.shopify.com/s/files/1/0793/9247/3397/files/e-invite-Final.jpg?v=1708934384&width=800" 
               alt="New Jewelry 3"
               style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '24px' }}
             />

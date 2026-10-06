@@ -9,25 +9,25 @@ const CATEGORIES = [
   {
     title: 'EPHEMERALS',
     subtitle: 'One-off High Jewellery',
-    image: 'https://www.arundhatidesheth.com/cdn/shop/files/MOLTENNUGGETPENDANT4.jpg?v=1706967224&width=800',
+    image: 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/MOLTENNUGGETPENDANT4.jpg?v=1706967224&width=800',
     link: '/collections?collection=EPHEMERALS',
   },
   {
     title: 'PERENNIALS — Gold',
     subtitle: '18K Gold & Natural Diamonds',
-    image: 'https://www.arundhatidesheth.com/cdn/shop/files/StonesinShapesRing3.2_1.jpg?v=1743743592&width=800',
+    image: 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/StonesinShapesRing3.2_1.jpg?v=1743743592&width=800',
     link: '/collections?collection=PERENNIALS%20-%20Gold',
   },
   {
     title: 'PERENNIALS — Silver',
     subtitle: '925 Silver & Rock Crystals',
-    image: 'https://www.arundhatidesheth.com/cdn/shop/files/PASTELGIRANDOLEEARRINGS1_1.jpg?v=1708934384&width=800',
+    image: 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/PASTELGIRANDOLEEARRINGS1_1.jpg?v=1708934384&width=800',
     link: '/collections?collection=PERENNIALS%20-%20Silver',
   },
   {
     title: 'Girandole Earrings',
     subtitle: 'Victorian Inspired Sculptures',
-    image: 'https://www.arundhatidesheth.com/cdn/shop/files/webshop_change_and_update_pieces_1.png?v=1785909327&width=800',
+    image: 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/webshop_change_and_update_pieces_1.png?v=1785909327&width=800',
     link: '/collections?category=earring',
   },
 ];

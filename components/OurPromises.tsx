@@ -27,7 +27,7 @@ export const OurPromises: React.FC = () => {
       {/* Banner */}
       <div style={{ width: '100%', height: '50vh', position: 'relative', marginBottom: '80px' }}>
         <img 
-          src="https://www.arundhatidesheth.com/cdn/shop/files/Screenshot_2025-04-08_154631.png?v=1708934384&width=2000" 
+          src="https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Screenshot_2025-04-08_154631.png?v=1708934384&width=2000" 
           alt="Our Promises"
           style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(100%)', objectPosition: 'center 30%' }}
         />

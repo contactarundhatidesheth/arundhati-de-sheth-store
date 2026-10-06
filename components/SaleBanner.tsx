@@ -12,7 +12,7 @@ export const SaleBanner: React.FC = () => {
       display: 'flex', 
       alignItems: 'center', 
       justifyContent: 'center',
-      background: 'url(https://www.arundhatidesheth.com/cdn/shop/files/e-invite-Final.jpg?v=1708934384&width=2000) center/cover no-repeat fixed'
+      background: 'url(https://cdn.shopify.com/s/files/1/0793/9247/3397/files/e-invite-Final.jpg?v=1708934384&width=2000) center/cover no-repeat fixed'
     }}>
       {/* Subtle overlay for contrast */}
       <div style={{
