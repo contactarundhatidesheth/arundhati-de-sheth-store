@@ -1,0 +1,14 @@
+.git
+.next
+node_modules
+ffmpeg
+.vercel
+.kilo
+.kilocode
+.playwright-mcp
+.data
+*.log
+*.exe
+homepage-*.png
+hero-*.png
+wix-hero.png
