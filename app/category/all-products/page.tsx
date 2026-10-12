@@ -185,14 +185,9 @@ export default function CategoryAllProductsPage() {
                   />
                 </div>
                 <div style={{ padding: '24px 0 16px', textAlign: 'left', width: '100%' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                    <h2 style={{ color: 'var(--text-main)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1, margin: 0 }}>
-                      {col.label}
-                    </h2>
-                    <div className="collection-arrow" style={{ opacity: 0, transition: 'opacity 0.3s ease, transform 0.3s ease', transform: 'translateX(-10px)' }}>
-                      <ArrowRight size={20} color="var(--text-main)" strokeWidth={1.5} />
-                    </div>
-                  </div>
+                  <h2 style={{ color: 'var(--text-main)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1, margin: '0 0 8px 0' }}>
+                    {col.label}
+                  </h2>
                   <p style={{ color: 'var(--text-muted)', fontSize: '0.75rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500 }}>
                     {col.subtitle}
                   </p>
@@ -297,14 +292,14 @@ export default function CategoryAllProductsPage() {
           ) : (
             <div className="product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '40px 16px', maxWidth: '2400px', margin: '0 auto' }}>
               {filteredProducts.map(product => (
-                <Link href={`/product/${product.handle}`} key={product.id} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
+                <Link href={`/product/${product.handle?.trim()}`} key={product.id} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
                   <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', marginBottom: '14px' }}>
                     <Image src={product.images[0]} alt={product.title} fill style={{ objectFit: 'cover', transition: 'transform 0.8s ease' }} className="product-img" />
                   </div>
                   <div style={{ padding: '0 4px 4px' }}>
                     <p style={{ color: '#000', fontSize: '12px', fontWeight: 400, letterSpacing: '0.3px', marginBottom: '3px' }}>{product.title}</p>
                     <p style={{ color: '#666', fontSize: '11px', fontWeight: 400 }}>
-                      ₹ {product.price.toLocaleString('en-IN')}
+                      {product.isPriceOnRequest ? 'Price on Request' : `₹ ${product.price.toLocaleString('en-IN')}`}
                     </p>
                   </div>
                 </Link>
@@ -323,7 +318,6 @@ export default function CategoryAllProductsPage() {
       <style>{`
         .collection-card:hover .collection-img,
         .product-img:hover { transform: scale(1.05); }
-        .collection-card:hover .collection-arrow { opacity: 1 !important; transform: translateX(0) !important; }
 
         @media (max-width: 1100px) { .product-grid { grid-template-columns: repeat(3,1fr) !important; } }
         @media (max-width: 900px) { .product-grid { grid-template-columns: repeat(3,1fr) !important; } }

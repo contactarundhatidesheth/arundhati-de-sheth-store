@@ -4,7 +4,12 @@ import ProductDetailClient from './ProductDetailClient';
 
 export async function generateMetadata({ params }: { params: { handle: string } }): Promise<Metadata> {
   const db = await readDB();
-  const product = db.products.find(p => p.handle === params.handle);
+  const rawHandle = decodeURIComponent(params.handle || '').trim().toLowerCase();
+  const product = db.products.find(p => 
+    (p.handle || '').trim().toLowerCase() === rawHandle ||
+    (p.handle || '').trim().toLowerCase() === rawHandle.replace(/\s+/g, '-') ||
+    p.id === params.handle
+  );
   
   if (!product) {
     return { title: 'Product Not Found | Arundhati De-Sheth' };

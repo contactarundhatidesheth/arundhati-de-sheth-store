@@ -77,7 +77,7 @@ export const CartDrawer: React.FC = () => {
                         <Trash2 size={16} />
                       </button>
                     </div>
-                    <p style={{ fontSize: '1rem' }}>₹{item.product.price.toLocaleString('en-IN')}</p>
+                    <p style={{ fontSize: '1rem' }}>{item.product.isPriceOnRequest ? 'Price on Request' : `₹${item.product.price.toLocaleString('en-IN')}`}</p>
                     <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', border: '1px solid var(--border)', width: 'fit-content' }}>
                       <button
                         onClick={() => updateQuantity(item.product.id, item.quantity - 1)}

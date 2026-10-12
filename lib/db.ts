@@ -145,10 +145,11 @@ export async function readDB(): Promise<Database> {
   return {
     products: (products || []).map(p => ({
       ...p,
+      handle: (p.handle || '').trim(),
       compareAtPrice: p.compare_at_price,
       isNew: p.is_new,
       isBespoke: p.is_bespoke,
-      isPriceOnRequest: p.is_price_on_request,
+      isPriceOnRequest: Boolean(p.is_price_on_request),
       inStock: p.in_stock,
       isActive: !(p.tags || []).includes('_HIDDEN')
     })),

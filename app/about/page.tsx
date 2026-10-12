@@ -283,14 +283,9 @@ export default function AboutPage() {
                         borderTop: '2px solid var(--accent)'
                       }}
                     >
-                      <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginBottom: '24px' }}>
-                        <div style={{ width: '64px', height: '64px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-                          <img src={testimonial.image} alt={testimonial.author} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                        </div>
-                        <div>
-                          <p style={{ fontSize: '0.9rem', fontWeight: 500, letterSpacing: '0.05em', margin: 0, textTransform: 'uppercase', color: 'var(--text-main)' }}>{testimonial.author}</p>
-                          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{testimonial.location}</p>
-                        </div>
+                      <div style={{ marginBottom: '20px' }}>
+                        <p style={{ fontSize: '0.9rem', fontWeight: 500, letterSpacing: '0.05em', margin: 0, textTransform: 'uppercase', color: 'var(--text-main)' }}>{testimonial.author}</p>
+                        <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '4px 0 0', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{testimonial.location}</p>
                       </div>
                       <p style={{ fontSize: '1.05rem', fontStyle: 'italic', color: 'var(--text-muted)', lineHeight: '1.7', margin: 0 }}>
                         &ldquo;{testimonial.quote}&rdquo;
@@ -315,7 +310,7 @@ export default function AboutPage() {
           .editorial-block { grid-template-columns: 1fr !important; gap: 40px !important; }
           .confluence-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
           .core-values-grid { grid-template-columns: 1fr !important; gap: 64px !important; }
-          .about-journey { padding: 60px 16px !important; }
+          .about-journey { padding: 130px 16px 60px !important; }
           .about-hero-text { bottom: 24px !important; left: 24px !important; }
           .confluence-video { height: 50vh !important; }
           .confluence-caption { bottom: 24px !important; left: 24px !important; }

@@ -90,7 +90,7 @@ export default function SearchPage() {
                         ) : (
                             <div className="product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '40px 16px' }}>
                                 {filteredProducts.map(product => (
-                                    <Link href={`/product/${product.handle}`} key={product.id} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
+                                    <Link href={`/product/${product.handle?.trim()}`} key={product.id} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
                                         <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', marginBottom: '14px' }}>
                                             <Image
                                                 src={product.images?.[0] || '/placeholder.png'}
@@ -103,7 +103,7 @@ export default function SearchPage() {
                                         <div style={{ padding: '0 4px 4px' }}>
                                             <p style={{ color: '#000', fontSize: '12px', fontWeight: 400, letterSpacing: '0.3px', marginBottom: '3px' }}>{product.title}</p>
                                             <p style={{ color: '#666', fontSize: '11px', fontWeight: 400 }}>
-                                                ₹ {product.price?.toLocaleString('en-IN') || 0}
+                                                {product.isPriceOnRequest ? 'Price on Request' : `₹ ${product.price?.toLocaleString('en-IN') || 0}`}
                                             </p>
                                         </div>
                                     </Link>

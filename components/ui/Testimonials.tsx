@@ -72,18 +72,13 @@ export const Testimonials: React.FC<TestimonialsProps> = ({ items }) => {
 
         {/* Right: Slider Card */}
         <div style={{ background: 'var(--bg-primary)', padding: '48px', display: 'flex', flexDirection: 'column', gap: '32px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
-          <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
-            <div style={{ width: '80px', height: '80px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-              <img src={displayItems[currentIndex].image} alt="Product" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            </div>
-            <div>
-              <p style={{ fontSize: '1.1rem', fontFamily: 'var(--font-serif)', fontStyle: 'italic', lineHeight: '1.6', marginBottom: '16px' }}>
-                &ldquo;{displayItems[currentIndex].quote}&rdquo;
-              </p>
-              <p style={{ fontSize: '0.85rem', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                {displayItems[currentIndex].author}
-              </p>
-            </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <p style={{ fontSize: '1.15rem', fontFamily: 'var(--font-serif)', fontStyle: 'italic', lineHeight: '1.7', marginBottom: '8px' }}>
+              &ldquo;{displayItems[currentIndex].quote}&rdquo;
+            </p>
+            <p style={{ fontSize: '0.85rem', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+              {displayItems[currentIndex].author}
+            </p>
           </div>
           
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '16px' }}>

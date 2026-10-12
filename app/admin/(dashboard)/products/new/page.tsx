@@ -94,6 +94,11 @@ export default async function NewProductPage() {
           <label htmlFor="isNew" style={{ fontSize: '0.9rem', fontWeight: '500', cursor: 'pointer' }}>Mark as &quot;New Arrival&quot;</label>
         </div>
 
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <input type="checkbox" name="isPriceOnRequest" id="isPriceOnRequest" />
+          <label htmlFor="isPriceOnRequest" style={{ fontSize: '0.9rem', fontWeight: '500', cursor: 'pointer' }}>Price on Request (Hide numerical price on website, show &quot;Price on Request&quot; and inquiry button)</label>
+        </div>
+
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '16px', background: '#f5f5f5', borderRadius: '4px', border: '1px solid #eaeaea' }}>
           <input type="checkbox" name="isActive" id="isActive" defaultChecked={true} style={{ width: '18px', height: '18px' }} />
           <label htmlFor="isActive" style={{ fontSize: '0.95rem', fontWeight: '600', cursor: 'pointer' }}>Show on Live Website (Active)</label>

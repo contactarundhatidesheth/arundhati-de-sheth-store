@@ -16,7 +16,12 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
 
   if (loading) return <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }} />;
 
-  const product = data.products.find(p => p.handle === params.handle);
+  const rawHandle = decodeURIComponent(params.handle || '').trim().toLowerCase();
+  const product = data.products.find(p => 
+    (p.handle || '').trim().toLowerCase() === rawHandle ||
+    (p.handle || '').trim().toLowerCase() === rawHandle.replace(/\s+/g, '-') ||
+    p.id === params.handle
+  );
 
   if (!product) {
     return (
@@ -131,7 +136,11 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
               </h1>
               <div style={{ paddingBottom: '24px', borderBottom: '1px solid var(--border-light)' }}>
                 <p style={{ fontSize: '17.6px', color: 'var(--text-main)', letterSpacing: '0.88px', fontWeight: '500', marginBottom: '16px' }}>
-                  ₹ {product.price.toLocaleString('en-IN')}
+                  {product.isPriceOnRequest ? (
+                    'Price on Request'
+                  ) : (
+                    `₹ ${product.price.toLocaleString('en-IN')}`
+                  )}
                 </p>
                 <div
                   style={{ fontSize: '13.5px', color: 'var(--text-muted)', fontWeight: '300', lineHeight: '1.6', margin: 0, padding: 0 }}
@@ -142,17 +151,20 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
 
             {/* Action Buttons */}
             <div className="action-buttons-container" style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '32px' }}>
-              <button
-                className="add-to-cart-btn"
-                onClick={() => addToCart(product)}
-              >
-                Add to Cart
-              </button>
+              {!product.isPriceOnRequest && (
+                <button
+                  className="add-to-cart-btn"
+                  onClick={() => addToCart(product)}
+                >
+                  Add to Cart
+                </button>
+              )}
               <a
                 href={`https://wa.me/919581822000?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inquire-btn"
+                className={product.isPriceOnRequest ? 'add-to-cart-btn' : 'inquire-btn'}
+                style={product.isPriceOnRequest ? { textDecoration: 'none', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' } : undefined}
                 onClick={() => {
                   fetch('/api/track', {
                     method: 'POST',
@@ -161,7 +173,7 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
                   }).catch(() => { });
                 }}
               >
-                Inquire & Bespoke Commission
+                {product.isPriceOnRequest ? 'Inquire for Price' : 'Inquire & Bespoke Commission'}
               </a>
             </div>
 
@@ -260,14 +272,14 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
           </h2>
           <div className="recommendations-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px', maxWidth: '1600px', margin: '0 auto' }}>
             {recommendations.map(rec => (
-              <Link href={`/product/${rec.handle}`} key={rec.id} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
+              <Link href={`/product/${rec.handle?.trim()}`} key={rec.id} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
                 <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', marginBottom: '14px', background: '#f9f9f9' }}>
                   <Image src={rec.images[0]} alt={rec.title} fill style={{ objectFit: 'cover', transition: 'transform 0.8s ease' }} className="rec-img" />
                 </div>
                 <div style={{ padding: '0 4px 4px', textAlign: 'center' }}>
                   <p style={{ color: '#000', fontSize: '13px', fontWeight: 500, letterSpacing: '0.5px', marginBottom: '6px' }}>{rec.title}</p>
                   <p style={{ color: 'var(--text-muted)', fontSize: '12px', fontWeight: 400 }}>
-                    ₹ {rec.price.toLocaleString('en-IN')}
+                    {rec.isPriceOnRequest ? 'Price on Request' : `₹ ${rec.price.toLocaleString('en-IN')}`}
                   </p>
                 </div>
               </Link>

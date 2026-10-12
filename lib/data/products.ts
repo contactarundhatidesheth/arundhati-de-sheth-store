@@ -632,6 +632,32 @@ export const PRODUCTS: Product[] = [
     isBespoke: true,
     isPriceOnRequest: true,
     inStock: true
+  },
+  {
+    id: '1790251883368',
+    handle: 'trishul-shakti-pendant',
+    title: 'Trishul Shakti Pendant (Midi)',
+    description: '<p>A sculptural trishul with an array of colours</p>',
+    price: 164000,
+    category: 'Pendant',
+    metal: '925 Silver',
+    collection: 'PERENNIALS - Silver',
+    tags: ['PERENNIALS- Silver', 'Tsavourite', 'White Sapphire', 'Pink Sapphire', 'Emerald', 'Ruby'],
+    images: [
+      'https://radmagmbzuubeqjrncot.supabase.co/storage/v1/object/public/media/1790251882632-67_6764917d-2554-4180-a0b9-b0b0e4cfbd7f.webp',
+      'https://radmagmbzuubeqjrncot.supabase.co/storage/v1/object/public/media/1790251973298-IMG_9284.webp',
+      'https://radmagmbzuubeqjrncot.supabase.co/storage/v1/object/public/media/1790251883037-69_193c234b-db10-4d2e-b86d-9ed3931e3c84.webp'
+    ],
+    specs: {
+      gold: '18K Yellow Gold - 0.745 GMS',
+      silver: '925 Silver - 7.465 GMS',
+      gemstones: 'Natural Diamond 0.61 CTS, Ruby 1.64 CTS, Emerald 1.51 CTS, Tsavorite 0.58 CTS, Sapphire 0.34 CTS',
+      purity: '18K Yellow Gold & 925 Silver'
+    },
+    isNew: false,
+    isBespoke: false,
+    isPriceOnRequest: false,
+    inStock: true
   }
 ];
 

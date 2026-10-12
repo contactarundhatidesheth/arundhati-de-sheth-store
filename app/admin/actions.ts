@@ -91,7 +91,7 @@ export async function saveProduct(formData: FormData) {
 
   const payload = {
     id: id || Date.now().toString(),
-    handle: formData.get('handle') as string || Date.now().toString(),
+    handle: ((formData.get('handle') as string) || Date.now().toString()).trim(),
     title: formData.get('title') as string,
     description: formData.get('description') as string,
     price: Number(formData.get('price')),
@@ -101,6 +101,7 @@ export async function saveProduct(formData: FormData) {
     tags: submittedTags,
     images: parsedImages,
     is_new: formData.get('isNew') === 'on',
+    is_price_on_request: formData.get('isPriceOnRequest') === 'on',
     sequence: formData.get('sequence') ? parseInt(formData.get('sequence') as string) : 999,
     specs: {
       purity: formData.get('purity') as string || '',
@@ -234,7 +235,7 @@ export async function saveTestimonial(formData: FormData) {
     quote: formData.get('quote') as string,
     author: formData.get('author') as string,
     location: formData.get('location') as string,
-    image: finalImageUrl,
+    image: finalImageUrl || '',
     sequence: formData.get('sequence') ? parseInt(formData.get('sequence') as string) : 999
   };
 

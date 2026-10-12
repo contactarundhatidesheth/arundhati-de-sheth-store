@@ -82,7 +82,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             Inquire
           </a>
           <Link
-            href={`/product/${product.handle}`}
+            href={`/product/${product.handle?.trim()}`}
             style={{ padding: '12px 14px', background: 'var(--bg-primary)', color: '#1A1A1A', fontSize: '0.7rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: '500', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', borderRadius: 'var(--radius-sm)' }}
           >
             <Eye size={14} />
@@ -95,7 +95,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: '500', marginBottom: '6px' }}>
             {product.collection}
           </p>
-          <Link href={`/product/${product.handle}`}>
+          <Link href={`/product/${product.handle?.trim()}`}>
             <h3 style={{ fontSize: '1.05rem', fontWeight: '400', color: 'var(--text-main)', marginBottom: '6px', lineHeight: '1.3', fontFamily: 'var(--font-serif)' }}>
               {product.title}
             </h3>

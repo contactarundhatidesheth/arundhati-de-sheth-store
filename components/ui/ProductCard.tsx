@@ -17,7 +17,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <Link
-      href={`/product/${product.handle}`}
+      href={`/product/${product.handle?.trim()}`}
       style={{
         display: 'flex',
         flexDirection: 'column',

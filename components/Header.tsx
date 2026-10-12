@@ -6,8 +6,20 @@ import { usePathname } from 'next/navigation';
 import { ShoppingBag, Menu, X, PackageSearch, Search } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
-// Pages with a light/white background at the top — logo must always be black
-const LIGHT_BG_PATHS = ['/category/ephemerals', '/category/perennials', '/press', '/cart', '/product', '/shop-the-look', '/pages/jewelry-lookbooks', '/timeline', '/track', '/search'];
+// Only pages with a dark/full-bleed hero banner at the top start with a transparent header and white logo.
+// All other pages have a light background and must have a visible opaque header with black logo & icons when unscrolled.
+const DARK_HERO_PATHS = [
+  '/',
+  '/collections',
+  '/contact',
+  '/category/all-products',
+  '/faq',
+  '/shipping',
+  '/terms',
+  '/privacy',
+  '/payment',
+  '/pages/whats-new',
+];
 
 export const Header: React.FC = () => {
   const { totalItems, setIsCartOpen } = useCart();
@@ -16,8 +28,14 @@ export const Header: React.FC = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Force opaque white header + black logo on light-background pages
-  const isLightPage = LIGHT_BG_PATHS.some((p) => pathname.startsWith(p));
+  // Normalize pathname (remove trailing slash if any)
+  const normalizedPath = pathname && pathname.length > 1 && pathname.endsWith('/')
+    ? pathname.slice(0, -1)
+    : (pathname || '');
+
+  // Only dark hero pages should start transparent; all other pages (including /about, /cart, /product, etc.) must show the opaque header with black logo & icons when unscrolled
+  const hasDarkHero = DARK_HERO_PATHS.includes(normalizedPath);
+  const isLightPage = !hasDarkHero;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -86,6 +104,7 @@ export const Header: React.FC = () => {
           padding: '0 clamp(16px, 4vw, 32px)',
           transition: 'all 0.4s cubic-bezier(0.25, 1, 0.5, 1)',
           color: isAtTop ? '#ffffff' : 'var(--text-main)',
+          borderBottom: isAtTop ? 'none' : '1px solid rgba(0, 0, 0, 0.06)',
         }}>
           {/* Left: Menu & Links */}
           <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 'clamp(16px, 3vw, 32px)' }}>
