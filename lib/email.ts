@@ -88,12 +88,12 @@ export function getPremiumEmailTemplate(content: string): string {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="color-scheme" content="light dark">
-        <meta name="supported-color-schemes" content="light dark">
+        <meta name="color-scheme" content="light">
+        <meta name="supported-color-schemes" content="light">
         <style>
             :root {
-                color-scheme: light dark;
-                supported-color-schemes: light dark;
+                color-scheme: light;
+                supported-color-schemes: light;
             }
             body { margin: 0; padding: 0; background-color: #FAFAFA; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
             table { border-collapse: collapse; }
@@ -109,57 +109,38 @@ export function getPremiumEmailTemplate(content: string): string {
             .receipt-table th { text-align: left; padding-bottom: 10px; border-bottom: 1px solid #EAEAEA; font-weight: normal; font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
             .receipt-table td { padding: 15px 0; border-bottom: 1px solid #F5F5F5; }
             .receipt-total { border-top: 1px solid #111; padding-top: 15px; margin-top: 15px; text-align: right; }
-
-            /* Responsive and Dark Mode handling */
-            @media (prefers-color-scheme: dark) {
-                .light-logo { display: none !important; }
-                .dark-logo { display: block !important; }
-            }
-            [data-ogsc] .light-logo { display: none !important; }
-            [data-ogsc] .dark-logo { display: block !important; }
         </style>
     </head>
-    <body>
-        <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+    <body style="margin: 0; padding: 0; background-color: #FAFAFA;">
+        <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color: #FAFAFA; width: 100%;">
             <tr>
-                <td align="center">
-                    <table class="container" width="100%" cellpadding="0" cellspacing="0" role="presentation">
-                        <!-- Header -->
+                <td align="center" style="padding: 30px 15px;">
+                    <table class="container" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="max-width: 600px; width: 100%; margin: 0 auto; background-color: #FFFFFF; border: 1px solid #EAEAEA;">
+                        <!-- Header with Brand Logo -->
                         <tr>
-                            <td class="header" align="center">
-                                <a href="https://www.arundhatidesheth.com" class="logo-link" target="_blank">
-                                    <!-- Light Mode Logo -->
+                            <td class="header" align="center" style="padding: 36px 20px; text-align: center; border-bottom: 1px solid #EAEAEA; background-color: #FFFFFF;">
+                                <a href="https://www.arundhatidesheth.com" class="logo-link" target="_blank" style="text-decoration: none; display: inline-block;">
                                     <img src="${baseUrl}/brand/logo.png" 
                                          alt="Arundhati De-Sheth" 
                                          width="210" 
-                                         class="light-logo" 
                                          style="display: block; width: 210px; max-width: 100%; height: auto; margin: 0 auto; border: 0; outline: none; text-decoration: none;" />
-                                    <!-- Dark Mode Logo -->
-                                    <!--[if !mso]><!-->
-                                    <div class="dark-logo" style="display: none; mso-hide: all;">
-                                        <img src="${baseUrl}/brand/logo-white-transparent.png" 
-                                             alt="Arundhati De-Sheth" 
-                                             width="210" 
-                                             style="display: block; width: 210px; max-width: 100%; height: auto; margin: 0 auto; border: 0; outline: none; text-decoration: none;" />
-                                    </div>
-                                    <!--<![endif]-->
                                 </a>
                             </td>
                         </tr>
                         <!-- Content -->
                         <tr>
-                            <td class="content">
+                            <td class="content" style="padding: 48px 40px; color: #333333; line-height: 1.8; font-size: 14px; background-color: #FFFFFF;">
                                 ${content}
                                 <br/>
-                                <p>Warm regards,<br/><strong>The Jewellery Confluence</strong></p>
+                                <p style="margin: 0 0 16px 0;">Warm regards,<br/><strong>The Jewellery Confluence</strong></p>
                             </td>
                         </tr>
                         <!-- Footer -->
                         <tr>
-                            <td class="footer">
-                                <p>ARUNDHATI DE-SHETH | The Jewellery Confluence</p>
-                                <p>Mumbai, India</p>
-                                <p style="margin-top: 15px;"><a href="https://www.arundhatidesheth.com" style="color: #888; text-decoration: none;">www.arundhatidesheth.com</a></p>
+                            <td class="footer" style="padding: 40px 20px; text-align: center; background-color: #FAFAFA; color: #888888; font-size: 11px; letter-spacing: 1px; line-height: 1.5; border-top: 1px solid #EAEAEA;">
+                                <p style="margin: 0 0 6px 0; letter-spacing: 1.5px; text-transform: uppercase;">ARUNDHATI DE-SHETH | The Jewellery Confluence</p>
+                                <p style="margin: 0 0 6px 0;">Mumbai, India</p>
+                                <p style="margin-top: 15px; margin-bottom: 0;"><a href="https://www.arundhatidesheth.com" style="color: #888888; text-decoration: none;">www.arundhatidesheth.com</a></p>
                             </td>
                         </tr>
                     </table>

@@ -40,22 +40,30 @@ export default function PreviewEmails() {
     `);
 
     return (
-        <div style={{ padding: '40px', backgroundColor: '#e5e5e5', display: 'flex', flexDirection: 'column', gap: '60px', alignItems: 'center' }}>
-            <h1 style={{ fontFamily: 'sans-serif', letterSpacing: '2px', textTransform: 'uppercase', color: '#333' }}>Email Template Previews</h1>
+        <div style={{ paddingTop: '150px', paddingBottom: '80px', paddingLeft: '20px', paddingRight: '20px', backgroundColor: '#EFEFEF', display: 'flex', flexDirection: 'column', gap: '60px', alignItems: 'center', minHeight: '100vh' }}>
+            <h1 style={{ fontFamily: 'var(--font-serif, "Source Serif 4", serif)', letterSpacing: '2px', textTransform: 'uppercase', color: '#111', fontSize: '24px', fontWeight: 400, textAlign: 'center' }}>
+                Email Template Previews
+            </h1>
 
-            <div style={{ width: '100%', maxWidth: '800px' }}>
-                <h2 style={{ textAlign: 'center', marginBottom: '20px', fontFamily: 'sans-serif' }}>1. Newsletter Welcome</h2>
-                <div dangerouslySetInnerHTML={{ __html: newsletter }} style={{ border: '1px solid #ddd', borderRadius: '4px', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.15)' }} />
+            <div style={{ width: '100%', maxWidth: '680px' }}>
+                <h2 style={{ textAlign: 'center', marginBottom: '20px', fontFamily: 'Montserrat, sans-serif', fontSize: '15px', letterSpacing: '1.5px', textTransform: 'uppercase', color: '#555', fontWeight: 500 }}>
+                    1. Newsletter Welcome
+                </h2>
+                <div dangerouslySetInnerHTML={{ __html: newsletter }} style={{ borderRadius: '2px', overflow: 'hidden', boxShadow: '0 10px 35px rgba(0,0,0,0.1)' }} />
             </div>
 
-            <div style={{ width: '100%', maxWidth: '800px' }}>
-                <h2 style={{ textAlign: 'center', marginBottom: '20px', fontFamily: 'sans-serif' }}>2. Order Confirmation</h2>
-                <div dangerouslySetInnerHTML={{ __html: order }} style={{ border: '1px solid #ddd', borderRadius: '4px', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.15)' }} />
+            <div style={{ width: '100%', maxWidth: '680px' }}>
+                <h2 style={{ textAlign: 'center', marginBottom: '20px', fontFamily: 'Montserrat, sans-serif', fontSize: '15px', letterSpacing: '1.5px', textTransform: 'uppercase', color: '#555', fontWeight: 500 }}>
+                    2. Order Confirmation
+                </h2>
+                <div dangerouslySetInnerHTML={{ __html: order }} style={{ borderRadius: '2px', overflow: 'hidden', boxShadow: '0 10px 35px rgba(0,0,0,0.1)' }} />
             </div>
 
-            <div style={{ width: '100%', maxWidth: '800px' }}>
-                <h2 style={{ textAlign: 'center', marginBottom: '20px', fontFamily: 'sans-serif' }}>3. Contact Submissions</h2>
-                <div dangerouslySetInnerHTML={{ __html: contact }} style={{ border: '1px solid #ddd', borderRadius: '4px', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.15)' }} />
+            <div style={{ width: '100%', maxWidth: '680px' }}>
+                <h2 style={{ textAlign: 'center', marginBottom: '20px', fontFamily: 'Montserrat, sans-serif', fontSize: '15px', letterSpacing: '1.5px', textTransform: 'uppercase', color: '#555', fontWeight: 500 }}>
+                    3. Contact Submissions
+                </h2>
+                <div dangerouslySetInnerHTML={{ __html: contact }} style={{ borderRadius: '2px', overflow: 'hidden', boxShadow: '0 10px 35px rgba(0,0,0,0.1)' }} />
             </div>
         </div>
     );
