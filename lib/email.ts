@@ -81,19 +81,26 @@ export async function sendGraphEmail(toAddress: string, subject: string, htmlCon
 }
 
 export function getPremiumEmailTemplate(content: string): string {
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.arundhatidesheth.com';
     return `
     <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="color-scheme" content="light dark">
+        <meta name="supported-color-schemes" content="light dark">
         <style>
+            :root {
+                color-scheme: light dark;
+                supported-color-schemes: light dark;
+            }
             body { margin: 0; padding: 0; background-color: #FAFAFA; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
             table { border-collapse: collapse; }
             .container { max-width: 600px; margin: 0 auto; background-color: #FFFFFF; }
-            .header { padding: 40px 20px; text-align: center; border-bottom: 1px solid #EAEAEA; }
-            .logo { font-family: 'Times New Roman', Times, serif; font-size: 24px; font-weight: normal; color: #111111; letter-spacing: 2px; text-transform: uppercase; margin: 0; }
-            .content { padding: 50px 40px; color: #333333; line-height: 1.8; font-size: 14px; }
+            .header { padding: 36px 20px; text-align: center; border-bottom: 1px solid #EAEAEA; }
+            .logo-link { text-decoration: none; display: inline-block; }
+            .content { padding: 48px 40px; color: #333333; line-height: 1.8; font-size: 14px; }
             .content h1 { font-family: 'Times New Roman', Times, serif; font-size: 22px; font-weight: normal; color: #111111; margin-top: 0; margin-bottom: 24px; letter-spacing: 0.5px; }
             .content p { margin: 0 0 16px 0; }
             .footer { padding: 40px 20px; text-align: center; background-color: #FAFAFA; color: #888888; font-size: 11px; letter-spacing: 1px; line-height: 1.5; }
@@ -102,6 +109,14 @@ export function getPremiumEmailTemplate(content: string): string {
             .receipt-table th { text-align: left; padding-bottom: 10px; border-bottom: 1px solid #EAEAEA; font-weight: normal; font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
             .receipt-table td { padding: 15px 0; border-bottom: 1px solid #F5F5F5; }
             .receipt-total { border-top: 1px solid #111; padding-top: 15px; margin-top: 15px; text-align: right; }
+
+            /* Responsive and Dark Mode handling */
+            @media (prefers-color-scheme: dark) {
+                .light-logo { display: none !important; }
+                .dark-logo { display: block !important; }
+            }
+            [data-ogsc] .light-logo { display: none !important; }
+            [data-ogsc] .dark-logo { display: block !important; }
         </style>
     </head>
     <body>
@@ -111,8 +126,24 @@ export function getPremiumEmailTemplate(content: string): string {
                     <table class="container" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                         <!-- Header -->
                         <tr>
-                            <td class="header">
-                                <h1 class="logo">Arundhati De-Sheth</h1>
+                            <td class="header" align="center">
+                                <a href="https://www.arundhatidesheth.com" class="logo-link" target="_blank">
+                                    <!-- Light Mode Logo -->
+                                    <img src="${baseUrl}/brand/logo.png" 
+                                         alt="Arundhati De-Sheth" 
+                                         width="210" 
+                                         class="light-logo" 
+                                         style="display: block; width: 210px; max-width: 100%; height: auto; margin: 0 auto; border: 0; outline: none; text-decoration: none;" />
+                                    <!-- Dark Mode Logo -->
+                                    <!--[if !mso]><!-->
+                                    <div class="dark-logo" style="display: none; mso-hide: all;">
+                                        <img src="${baseUrl}/brand/logo-white-transparent.png" 
+                                             alt="Arundhati De-Sheth" 
+                                             width="210" 
+                                             style="display: block; width: 210px; max-width: 100%; height: auto; margin: 0 auto; border: 0; outline: none; text-decoration: none;" />
+                                    </div>
+                                    <!--<![endif]-->
+                                </a>
                             </td>
                         </tr>
                         <!-- Content -->
@@ -120,13 +151,13 @@ export function getPremiumEmailTemplate(content: string): string {
                             <td class="content">
                                 ${content}
                                 <br/>
-                                <p>Warm regards,<br/><strong>The Arundhati De-Sheth Team</strong></p>
+                                <p>Warm regards,<br/><strong>The Jewellery Confluence</strong></p>
                             </td>
                         </tr>
                         <!-- Footer -->
                         <tr>
                             <td class="footer">
-                                <p>ARUNDHATI DE-SHETH | The Jwellery Confluence</p>
+                                <p>ARUNDHATI DE-SHETH | The Jewellery Confluence</p>
                                 <p>Mumbai, India</p>
                                 <p style="margin-top: 15px;"><a href="https://www.arundhatidesheth.com" style="color: #888; text-decoration: none;">www.arundhatidesheth.com</a></p>
                             </td>
