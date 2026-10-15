@@ -36,13 +36,16 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
   };
 
   const recommendations = (() => {
-    let recs = data.products.filter(p => p.id !== product.id && p.collection === product.collection);
+    const activeProducts = data.products.filter(
+      p => p.id !== product.id && p.isActive !== false && !(p.tags || []).includes('_HIDDEN')
+    );
+    let recs = activeProducts.filter(p => p.collection === product.collection);
     if (recs.length < 4) {
-      const more = data.products.filter(p => p.id !== product.id && p.category === product.category && !recs.find(r => r.id === p.id));
+      const more = activeProducts.filter(p => p.category === product.category && !recs.find(r => r.id === p.id));
       recs = [...recs, ...more];
     }
     if (recs.length < 4) {
-      const evenMore = data.products.filter(p => p.id !== product.id && !recs.find(r => r.id === p.id));
+      const evenMore = activeProducts.filter(p => !recs.find(r => r.id === p.id));
       recs = [...recs, ...evenMore];
     }
     return recs.slice(0, 4);
