@@ -19,25 +19,37 @@ export default function ContactPage() {
     message: '',
   });
 
+  const [honeypot, setHoneypot] = useState('');
+  const [formLoadedAt, setFormLoadedAt] = useState<number>(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorStatus, setErrorStatus] = useState<string | null>(null);
 
+  useEffect(() => {
+    setFormLoadedAt(Date.now());
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return; // Prevent double-clicks
     setIsSubmitting(true);
     setErrorStatus(null);
     try {
       const res = await fetch('/api/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          ...formData,
+          honeypot,
+          formLoadedAt
+        })
       });
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
-        throw new Error(errData?.error || 'Failed to send email. Ensure backend credentials are valid.');
+        throw new Error(errData?.error || 'Failed to send message. Please reach out via WhatsApp or email directly.');
       }
       setSubmitted(true);
       setFormData({ name: '', email: '', phone: '', subject: 'General Inquiry', message: '' });
+      setHoneypot('');
     } catch (err: any) {
       console.error(err);
       setErrorStatus(err.message || 'Something went wrong');
@@ -45,6 +57,7 @@ export default function ContactPage() {
       setIsSubmitting(false);
     }
   };
+
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
@@ -152,23 +165,49 @@ export default function ContactPage() {
                   ) : (
                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                       {errorStatus && <div style={{ color: 'red', fontSize: '0.9rem' }}>{errorStatus}</div>}
+                      
+                      {/* Honeypot anti-bot trap: invisible to humans, filled by automated spambots */}
+                      <div
+                        style={{
+                          position: 'absolute',
+                          left: '-9999px',
+                          opacity: 0,
+                          height: 0,
+                          width: 0,
+                          overflow: 'hidden',
+                          pointerEvents: 'none'
+                        }}
+                        aria-hidden="true"
+                      >
+                        <label htmlFor="website">Website</label>
+                        <input
+                          id="website"
+                          type="text"
+                          name="website"
+                          tabIndex={-1}
+                          autoComplete="off"
+                          value={honeypot}
+                          onChange={(e) => setHoneypot(e.target.value)}
+                        />
+                      </div>
+
                       <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
                         <div style={{ flex: '1 1 calc(50% - 12px)', minWidth: '200px' }}>
                           <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Name *</label>
-                          <input required type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} style={{ width: '100%', padding: '12px', border: '1px solid rgba(0,0,0,0.2)', background: 'transparent' }} />
+                          <input required name="name" type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} style={{ width: '100%', padding: '12px', border: '1px solid rgba(0,0,0,0.2)', background: 'transparent' }} />
                         </div>
                         <div style={{ flex: '1 1 calc(50% - 12px)', minWidth: '200px' }}>
                           <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Email *</label>
-                          <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} style={{ width: '100%', padding: '12px', border: '1px solid rgba(0,0,0,0.2)', background: 'transparent' }} />
+                          <input required name="email" type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} style={{ width: '100%', padding: '12px', border: '1px solid rgba(0,0,0,0.2)', background: 'transparent' }} />
                         </div>
                       </div>
                       <div>
                         <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Phone</label>
-                        <input type="tel" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} style={{ width: '100%', padding: '12px', border: '1px solid rgba(0,0,0,0.2)', background: 'transparent' }} />
+                        <input name="phone" type="tel" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} style={{ width: '100%', padding: '12px', border: '1px solid rgba(0,0,0,0.2)', background: 'transparent' }} />
                       </div>
                       <div>
                         <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Message *</label>
-                        <textarea required rows={5} value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })} style={{ width: '100%', padding: '12px', border: '1px solid rgba(0,0,0,0.2)', background: 'transparent', resize: 'vertical' }} />
+                        <textarea required name="message" rows={5} value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })} style={{ width: '100%', padding: '12px', border: '1px solid rgba(0,0,0,0.2)', background: 'transparent', resize: 'vertical' }} />
                       </div>
                       <button type="submit" disabled={isSubmitting} style={{ alignSelf: 'center', background: 'var(--text-main)', color: '#fff', padding: '16px 48px', border: 'none', cursor: isSubmitting ? 'not-allowed' : 'pointer', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '16px' }}>
                         {isSubmitting ? 'Sending...' : 'Send Message'}

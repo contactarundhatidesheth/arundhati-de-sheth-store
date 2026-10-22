@@ -280,6 +280,18 @@ export async function sendContactNotification(name: string, email: string, phone
 }
 
 export async function sendContactThankYou(email: string, name: string, subject: string) {
+    const fromAddress = getEnvVar('EMAIL_USER').toLowerCase().trim();
+    const normalizedEmail = (email || '').toLowerCase().trim();
+
+    // Prevent duplicate emails to store owner / atelier inbox
+    if (
+        normalizedEmail === 'arundhati@arundhatidesheth.com' ||
+        normalizedEmail === 'contact@arundhatidesheth.com' ||
+        (fromAddress && normalizedEmail === fromAddress)
+    ) {
+        return;
+    }
+
     const htmlContent = getPremiumEmailTemplate(`
         <h1>Thank You</h1>
         <p>Dear ${name},</p>
@@ -294,5 +306,10 @@ export async function sendContactThankYou(email: string, name: string, subject: 
         </p>
     `);
 
-    await sendGraphEmail(email, "Your Inquiry is Received - Arundhati De-Sheth", htmlContent);
+    try {
+        await sendGraphEmail(email, "Your Inquiry is Received - Arundhati De-Sheth", htmlContent);
+    } catch (e) {
+        console.error("Failed to dispatch client thank you email:", e);
+    }
 }
+
