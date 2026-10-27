@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ShoppingBag, Eye, Calendar, Sparkles } from 'lucide-react';
 import { Product } from '@/lib/data/products';
 import { WHATSAPP_URL } from '@/lib/config/site';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 interface ProductCardProps {
   product: Product;
@@ -15,8 +16,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [showActions, setShowActions] = useState(false);
 
-  const primaryImage = product.images[0];
-  const secondaryImage = product.images[1] || product.images[0];
+  const primaryImage = getOptimizedImageUrl(product.images[0], 600);
+  const secondaryImage = getOptimizedImageUrl(product.images[1] || product.images[0], 600);
 
   const whatsappMessage = encodeURIComponent(
     `Hi, I'm interested in ${product.title}. Could you please share pricing and availability details?`

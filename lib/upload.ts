@@ -19,7 +19,7 @@ export async function saveUpload(file: File): Promise<string> {
     .from('media')
     .upload(filename, buffer, {
       contentType: file.type,
-      cacheControl: '3600',
+      cacheControl: '31536000, public, immutable',
       upsert: false
     });
 

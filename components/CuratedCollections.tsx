@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useCMSData } from '@/hooks/useCMSData';
 import { PRODUCTS as FALLBACK_PRODUCTS } from '@/lib/data/products';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 const TABS = [
   { label: 'EPHEMERALS', value: 'EPHEMERALS' },
@@ -84,7 +85,7 @@ export const CuratedCollections: React.FC = () => {
           {PRODUCTS.filter(p => p.collection === activeTab).slice(0, 4).map((product) => (
             <div className="pdf-sub-item" key={product.id}>
               <Link href={`/product/${product.handle}`} className="sub-image-container">
-                <Image src={product.images[0]} alt={product.title} fill sizes="(max-width: 900px) 50vw, 20vw" />
+                <Image src={getOptimizedImageUrl(product.images[0], 600)} alt={product.title} fill sizes="(max-width: 900px) 50vw, 20vw" />
               </Link>
               <div className="sub-title">{product.title}</div>
             </div>
@@ -103,21 +104,21 @@ export const CuratedCollections: React.FC = () => {
           
           <div className="pdf-item" style={{ position: 'relative' }}>
             <Link href="/category/earrings" className="image-container" style={{ position: 'relative', display: 'block' }}>
-              <Image src="https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Call_for_the_cocktails_compressed_1__page-0001.jpg?v=1708934384&width=800" alt="Earrings" fill sizes="(max-width: 900px) 100vw, 33vw" />
+              <Image src={getOptimizedImageUrl("https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Call_for_the_cocktails_compressed_1__page-0001.jpg?v=1708934384", 800)} alt="Earrings" fill sizes="(max-width: 900px) 100vw, 33vw" />
               <div className="overlay-text">EARRINGS</div>
             </Link>
           </div>
 
           <div className="pdf-item" style={{ position: 'relative' }}>
             <Link href="/category/rings" className="image-container" style={{ position: 'relative', display: 'block' }}>
-              <Image src="https://cdn.shopify.com/s/files/1/0793/9247/3397/files/6ef918_dda50d76e89e497694803b84c6141c25_mv2.webp?v=1708934384&width=800" alt="Rings" fill sizes="(max-width: 900px) 100vw, 33vw" />
+              <Image src={getOptimizedImageUrl("https://cdn.shopify.com/s/files/1/0793/9247/3397/files/6ef918_dda50d76e89e497694803b84c6141c25_mv2.webp?v=1708934384", 800)} alt="Rings" fill sizes="(max-width: 900px) 100vw, 33vw" />
               <div className="overlay-text">RINGS</div>
             </Link>
           </div>
 
           <div className="pdf-item" style={{ position: 'relative' }}>
             <Link href="/category/necklaces" className="image-container" style={{ position: 'relative', display: 'block' }}>
-              <Image src="https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Screenshot_2024-02-26_at_2.04.21_PM.png?v=1708934384&width=800" alt="Necklaces" fill sizes="(max-width: 900px) 100vw, 33vw" />
+              <Image src={getOptimizedImageUrl("https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Screenshot_2024-02-26_at_2.04.21_PM.png?v=1708934384", 800)} alt="Necklaces" fill sizes="(max-width: 900px) 100vw, 33vw" />
               <div className="overlay-text">NECKLACES</div>
             </Link>
           </div>

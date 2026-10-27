@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 interface ProductImageZoomProps {
     src: string;
@@ -84,7 +85,7 @@ export default function ProductImageZoom({
         >
             {/* ── Full product image ── */}
             <Image
-                src={src}
+                src={getOptimizedImageUrl(src, 1200)}
                 alt={alt}
                 fill
                 style={{ objectFit: 'contain', userSelect: 'none' }}
@@ -105,7 +106,7 @@ export default function ProductImageZoom({
                         borderRadius: '50%',
 
                         // The zoomed image as a background, pixel-positioned
-                        backgroundImage: `url(${src})`,
+                        backgroundImage: `url(${getOptimizedImageUrl(src, 2000)})`,
                         backgroundRepeat: 'no-repeat',
                         backgroundSize: `${bgW}px ${bgH}px`,
                         backgroundPosition: `${bgX}px ${bgY}px`,

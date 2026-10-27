@@ -3,6 +3,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 export default function TimelineClient({ timelineEvents }: { timelineEvents: any[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -114,7 +115,7 @@ export default function TimelineClient({ timelineEvents }: { timelineEvents: any
                   {event.images && event.images.length > 0 && event.images.map((imgSrc: string, imgIndex: number) => (
                     <div key={imgIndex} style={{ position: 'relative', height: '100%', flex: 1, minWidth: 0, overflow: 'hidden' }}>
                       <Image
-                        src={imgSrc}
+                        src={getOptimizedImageUrl(imgSrc, 800)}
                         alt={`${event.title} image ${imgIndex + 1}`}
                         fill
                         unoptimized

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useCMSData } from '@/hooks/useCMSData';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 /* ─── Data ─── */
 const COLLECTIONS = [
@@ -293,8 +294,8 @@ export default function CategoryAllProductsPage() {
             <div className="product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '40px 16px', maxWidth: '2400px', margin: '0 auto' }}>
               {filteredProducts.map(product => (
                 <Link href={`/product/${product.handle?.trim()}`} key={product.id} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', marginBottom: '14px' }}>
-                    <Image src={product.images[0]} alt={product.title} fill style={{ objectFit: 'cover', transition: 'transform 0.8s ease' }} className="product-img" />
+                  <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', marginBottom: '14px', background: '#f9f9f9' }}>
+                    <Image src={getOptimizedImageUrl(product.images[0], 600)} alt={product.title} fill style={{ objectFit: 'cover', transition: 'transform 0.8s ease' }} className="product-img" />
                   </div>
                   <div style={{ padding: '0 4px 4px' }}>
                     <p style={{ color: '#000', fontSize: '12px', fontWeight: 400, letterSpacing: '0.3px', marginBottom: '3px' }}>{product.title}</p>

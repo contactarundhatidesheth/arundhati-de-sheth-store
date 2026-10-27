@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 interface ParallaxSectionProps {
   imageSrc: string;
@@ -87,7 +88,7 @@ export const ParallaxSection: React.FC<ParallaxSectionProps> = ({
         }}
       >
         <Image
-          src={imageSrc}
+          src={getOptimizedImageUrl(imageSrc, 1600)}
           alt={imageAlt}
           fill
           style={{ objectFit: 'cover' }}

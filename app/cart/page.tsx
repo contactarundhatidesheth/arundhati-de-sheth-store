@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
+import { getOptimizedImageUrl } from '@/lib/images';
 import { useCart } from '@/context/CartContext';
 import { Lock, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -158,7 +159,7 @@ export default function CartPage() {
                     <div key={item.product.id} className="cart-item" style={{ display: 'flex', gap: '24px', borderBottom: '1px solid var(--border)', paddingBottom: '32px' }}>
                       <div className="cart-item-img" style={{ position: 'relative', width: '120px', aspectRatio: '4/5', background: 'var(--bg-secondary)', flexShrink: 0 }}>
                         <Image
-                          src={item.product.images[0]}
+                          src={getOptimizedImageUrl(item.product.images[0], 240)}
                           alt={item.product.title}
                           fill
                           style={{ objectFit: 'cover' }}

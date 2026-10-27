@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Search, X } from 'lucide-react';
 import { useCMSData } from '@/hooks/useCMSData';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 export default function SearchPage() {
     const { data, loading } = useCMSData();
@@ -93,7 +94,7 @@ export default function SearchPage() {
                                     <Link href={`/product/${product.handle?.trim()}`} key={product.id} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
                                         <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', marginBottom: '14px' }}>
                                             <Image
-                                                src={product.images?.[0] || '/placeholder.png'}
+                                                src={getOptimizedImageUrl(product.images?.[0], 600) || '/placeholder.png'}
                                                 alt={product.title}
                                                 fill
                                                 style={{ objectFit: 'cover', transition: 'transform 0.8s ease' }}

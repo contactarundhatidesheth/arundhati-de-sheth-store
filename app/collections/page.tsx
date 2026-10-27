@@ -12,6 +12,7 @@ import { FadeInSection } from '@/components/ui/FadeInSection';
 import { DiamondLoader } from '@/components/ui/DiamondLoader';
 
 import { useCMSData } from '@/hooks/useCMSData';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 export default function CollectionsPage() {
   const { data, loading } = useCMSData();
@@ -150,9 +151,10 @@ export default function CollectionsPage() {
                       {/* Image */}
                       <div style={{ position: 'relative', width: '100%', order: isEven ? 2 : 1 }} className="catalogue-image">
                         <img
-                          src={catalogue.image}
+                          src={getOptimizedImageUrl(catalogue.image, 1000)}
                           alt={catalogue.title}
                           style={{ width: '100%', height: 'auto', display: 'block', maxHeight: '90vh', objectFit: 'contain' }}
+                          loading="lazy"
                         />
                         {catalogue.featured && (
                           <div style={{ position: 'absolute', top: '16px', left: '16px', padding: '6px 12px', background: 'var(--text-main)', color: 'var(--text-on-dark)', fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: '500' }}>

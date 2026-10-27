@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { X, Trash2 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 export const CartDrawer: React.FC = () => {
   const { cart, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, subtotal } = useCart();
@@ -58,7 +59,7 @@ export const CartDrawer: React.FC = () => {
                 <div key={item.product.id} style={{ display: 'flex', gap: '16px' }}>
                   <div style={{ position: 'relative', width: '90px', height: '120px', background: 'var(--bg-secondary)', flexShrink: 0 }}>
                     <Image
-                      src={item.product.images[0]}
+                      src={getOptimizedImageUrl(item.product.images[0], 200)}
                       alt={item.product.title}
                       fill
                       style={{ objectFit: 'cover' }}

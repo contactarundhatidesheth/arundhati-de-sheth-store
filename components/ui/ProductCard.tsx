@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Product } from '@/lib/data/products';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 interface ProductCardProps {
   product: Product;
@@ -12,8 +13,8 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  const primaryImage = product.images[0];
-  const secondaryImage = product.images[1] || product.images[0];
+  const primaryImage = getOptimizedImageUrl(product.images[0], 600);
+  const secondaryImage = getOptimizedImageUrl(product.images[1] || product.images[0], 600);
 
   return (
     <Link

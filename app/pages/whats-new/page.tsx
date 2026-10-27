@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { readDB } from '@/lib/db';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 export const revalidate = 0;
 export const dynamic = 'force-dynamic';
@@ -78,7 +79,7 @@ export default async function WhatsNewPage() {
           {sortedBlogs.map((article) => (
             <a key={article.id} href={article.link || '#'} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column' }}>
               <div style={{ position: 'relative', width: '100%', aspectRatio: '1/1', marginBottom: '24px', background: '#F5F5F5' }}>
-                <Image src={article.image || '/pressimages/press-hero.png'} alt={article.title} fill style={{ objectFit: 'cover' }} />
+                <Image src={getOptimizedImageUrl(article.image, 600) || '/pressimages/press-hero.png'} alt={article.title} fill style={{ objectFit: 'cover' }} />
               </div>
               <h3 style={{ fontSize: '15px', fontFamily: 'Figtree, sans-serif', lineHeight: '22.5px', fontWeight: '400', marginBottom: '16px' }}>
                 {article.title}
@@ -143,7 +144,7 @@ export default async function WhatsNewPage() {
 
                 <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', background: '#F5F5F5' }}>
                   {imgs.length > 1 ? (
-                    <Image src={imgs[1]} alt={feature.title} fill style={{ objectFit: 'cover' }} unoptimized={imgs[1].startsWith('http')} />
+                    <Image src={getOptimizedImageUrl(imgs[1], 800)} alt={feature.title} fill style={{ objectFit: 'cover' }} />
                   ) : (
                     <Image src="/pressimages/press-hero.png" alt="Fallback" fill style={{ objectFit: 'cover' }} />
                   )}
@@ -166,7 +167,7 @@ export default async function WhatsNewPage() {
 
                 <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', background: '#F5F5F5' }}>
                   {imgs.length > 0 ? (
-                    <Image src={imgs[0]} alt={feature.title} fill style={{ objectFit: 'cover' }} unoptimized={imgs[0].startsWith('http')} />
+                    <Image src={getOptimizedImageUrl(imgs[0], 800)} alt={feature.title} fill style={{ objectFit: 'cover' }} />
                   ) : (
                     <Image src="/pressimages/press-hero.png" alt="Fallback" fill style={{ objectFit: 'cover' }} />
                   )}

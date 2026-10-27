@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCMSData } from '@/hooks/useCMSData';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 const TABS = ['EPHEMERALS', 'PERENNIALS: GOLD', 'PERENNIALS: SILVER', 'HIGH JEWELLERY'];
 
@@ -53,7 +54,7 @@ export default function JewelryLookbooksPage() {
 
         {/* Earrings */}
         <Link href="/category/all-products?tab=EARRING" style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block' }}>
-          {earrings && <Image src={earrings} alt="Earrings" fill style={{ objectFit: 'cover' }} />}
+          {earrings && <Image src={getOptimizedImageUrl(earrings, 800)} alt="Earrings" fill style={{ objectFit: 'cover' }} />}
           <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.15)' }} />
           <h2 style={{ position: 'absolute', bottom: '40px', left: '40px', color: '#FFFFFF', fontSize: '28px', fontWeight: '400', letterSpacing: '3px' }}>
             EARRINGS
@@ -62,7 +63,7 @@ export default function JewelryLookbooksPage() {
 
         {/* Rings */}
         <Link href="/category/all-products?tab=RING" style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block' }}>
-          {rings && <Image src={rings} alt="Rings" fill style={{ objectFit: 'cover' }} />}
+          {rings && <Image src={getOptimizedImageUrl(rings, 800)} alt="Rings" fill style={{ objectFit: 'cover' }} />}
           <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.15)' }} />
           <h2 style={{ position: 'absolute', bottom: '40px', left: '40px', color: '#FFFFFF', fontSize: '28px', fontWeight: '400', letterSpacing: '3px' }}>
             RINGS
@@ -71,7 +72,7 @@ export default function JewelryLookbooksPage() {
 
         {/* Necklaces */}
         <Link href="/category/all-products?tab=NECKLACE" style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', display: 'block' }}>
-          {necklaces && <Image src={necklaces} alt="Necklaces" fill style={{ objectFit: 'cover' }} />}
+          {necklaces && <Image src={getOptimizedImageUrl(necklaces, 800)} alt="Necklaces" fill style={{ objectFit: 'cover' }} />}
           <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.15)' }} />
           <h2 style={{ position: 'absolute', bottom: '40px', left: '40px', color: '#FFFFFF', fontSize: '28px', fontWeight: '400', letterSpacing: '3px' }}>
             NECKLACES
@@ -92,7 +93,7 @@ export default function JewelryLookbooksPage() {
               <a key={index} href={cat.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
                 <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', background: '#F9F9F9', marginBottom: '16px' }}>
                   <Image
-                    src={cat.image}
+                    src={getOptimizedImageUrl(cat.image, 600)}
                     alt={cat.title}
                     fill
                     style={{ objectFit: 'cover' }}

@@ -9,6 +9,7 @@ import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { FadeInSection } from '@/components/ui/FadeInSection';
 import { readDB } from '@/lib/db';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 export default async function PressPage() {
   const db = await readDB();
@@ -26,7 +27,7 @@ export default async function PressPage() {
       <section style={{ position: 'relative', width: '100%', height: '85vh', overflow: 'hidden', background: '#000' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
           <img
-            src={heroSection?.image || '/pressimages/press-hero.png'}
+            src={getOptimizedImageUrl(heroSection?.image, 1600) || '/pressimages/press-hero.png'}
             alt="Press Cover"
             style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 1 }}
           />
@@ -81,8 +82,9 @@ export default async function PressPage() {
                 <article style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%' }}>
                   <div style={{ position: 'relative', width: '100%', aspectRatio: '3/2', overflow: 'hidden', background: 'var(--bg-surface)' }}>
                     <img
-                      src={article.image || '/pressimages/press-hero.png'}
+                      src={getOptimizedImageUrl(article.image, 600) || '/pressimages/press-hero.png'}
                       alt={article.title}
+                      loading="lazy"
                       style={{ objectFit: 'cover', width: '100%', height: '100%' }}
                     />
                   </div>

@@ -3,6 +3,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Play, Pause } from 'lucide-react';
 import { useCMSData } from '@/hooks/useCMSData';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 /* ─────────────────────────────────────────────────────────
    How We Help Section
@@ -65,7 +66,7 @@ function HowWeHelpSection() {
       </div>
       <div style={{ position: 'relative', overflow: 'hidden', height: '100%' }}>
         <div style={{ position: 'absolute', inset: '-10% 0', transform: `translateY(${parallaxY}px)`, transition: 'transform 0.08s linear' }}>
-          <img src="https://cdn.shopify.com/s/files/1/0793/9247/3397/files/image_1_0caa02f1-d125-49c8-8ff5-12951894228a.jpg?v=1710832955" alt="How we help our clients" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src={getOptimizedImageUrl("https://cdn.shopify.com/s/files/1/0793/9247/3397/files/image_1_0caa02f1-d125-49c8-8ff5-12951894228a.jpg?v=1710832955", 1000)} alt="How we help our clients" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </div>
       </div>
       <style>{`

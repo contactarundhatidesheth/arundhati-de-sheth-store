@@ -7,6 +7,7 @@ import { useCMSData } from '@/hooks/useCMSData';
 import { useCart } from '@/context/CartContext';
 import { ChevronDown, ChevronUp, ShieldCheck, Truck, BadgeCheck, ChevronLeft, ChevronRight } from 'lucide-react';
 import ProductImageZoom from '@/components/ui/ProductImageZoom';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 export default function ProductDetailClient({ params }: { params: { handle: string } }) {
   const { data, loading } = useCMSData();
@@ -111,7 +112,7 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
                     transition: 'border-color 0.2s ease',
                   }}
                 >
-                  <Image src={img} alt={`Thumbnail ${idx + 1}`} fill style={{ objectFit: 'cover' }} />
+                  <Image src={getOptimizedImageUrl(img, 160)} alt={`Thumbnail ${idx + 1}`} fill style={{ objectFit: 'cover' }} />
                 </button>
               ))}
             </div>
@@ -277,7 +278,7 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
             {recommendations.map(rec => (
               <Link href={`/product/${rec.handle?.trim()}`} key={rec.id} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
                 <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', marginBottom: '14px', background: '#f9f9f9' }}>
-                  <Image src={rec.images[0]} alt={rec.title} fill style={{ objectFit: 'cover', transition: 'transform 0.8s ease' }} className="rec-img" />
+                  <Image src={getOptimizedImageUrl(rec.images[0], 600)} alt={rec.title} fill style={{ objectFit: 'cover', transition: 'transform 0.8s ease' }} className="rec-img" />
                 </div>
                 <div style={{ padding: '0 4px 4px', textAlign: 'center' }}>
                   <p style={{ color: '#000', fontSize: '13px', fontWeight: 500, letterSpacing: '0.5px', marginBottom: '6px' }}>{rec.title}</p>
