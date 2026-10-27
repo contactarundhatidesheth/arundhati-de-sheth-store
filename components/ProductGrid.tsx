@@ -1,13 +1,16 @@
 'use client';
 
 import React from 'react';
-import { PRODUCTS, Product } from '@/lib/data/products';
+import { useCMSData } from '@/hooks/useCMSData';
+import { PRODUCTS as FALLBACK_PRODUCTS } from '@/lib/data/products';
 import { ProductCard } from '@/components/ui/ProductCard';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { WHATSAPP_URL } from '@/lib/config/site';
 
 export const ProductGrid: React.FC = () => {
+  const { data } = useCMSData();
+  const PRODUCTS = data.products.length > 0 ? data.products : FALLBACK_PRODUCTS;
   const whatsappMessage = encodeURIComponent("Hi, I'm interested in viewing your fine jewellery catalogue. Could you please share the latest collections?");
   const whatsappLink = `${WHATSAPP_URL}?text=${whatsappMessage}`;
 

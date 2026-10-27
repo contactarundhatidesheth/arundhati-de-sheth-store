@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { getSupabaseAdmin } from '@/utils/supabase-admin';
 import { PRODUCTS } from '@/lib/data/products';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -28,7 +29,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === '' ? 1.0 : 0.8,
   }));
 
-  const productRoutes: MetadataRoute.Sitemap = PRODUCTS.map((p) => ({
+  let products = PRODUCTS;
+  try {
+    const supabase = getSupabaseAdmin();
+    const { data } = await supabase.from('products').select('*');
+    if (data && data.length > 0) {
+      products = data.filter((p: any) => !(p.tags || []).includes('_HIDDEN'));
+    }
+  } catch (err) {
+    console.error('Sitemap Supabase error:', err);
+  }
+
+  const productRoutes: MetadataRoute.Sitemap = products.map((p) => ({
     url: `${baseUrl}/product/${p.handle}`,
     lastModified: new Date(),
     changeFrequency: 'weekly',

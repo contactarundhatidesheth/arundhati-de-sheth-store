@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { ArrowRight, X } from 'lucide-react';
 import { WHATSAPP_URL } from '@/lib/config/site';
 import { ProductCard } from '@/components/ui/ProductCard';
-import { PRODUCTS } from '@/lib/data/products';
 import { Section } from '@/components/ui/Section';
 import { Container } from '@/components/ui/Container';
 import { FadeInSection } from '@/components/ui/FadeInSection';

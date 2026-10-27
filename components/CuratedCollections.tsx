@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { PRODUCTS } from '@/lib/data/products';
+import { useCMSData } from '@/hooks/useCMSData';
+import { PRODUCTS as FALLBACK_PRODUCTS } from '@/lib/data/products';
 
 const TABS = [
   { label: 'EPHEMERALS', value: 'EPHEMERALS' },
@@ -13,6 +14,8 @@ const TABS = [
 ];
 
 export const CuratedCollections: React.FC = () => {
+  const { data } = useCMSData();
+  const PRODUCTS = data.products.length > 0 ? data.products : FALLBACK_PRODUCTS;
   const [activeTab, setActiveTab] = useState(TABS[0].value);
   const collections = [
     {
