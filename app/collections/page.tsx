@@ -60,9 +60,13 @@ export default function CollectionsPage() {
   }, []);
 
   const filteredProducts = collectionFilter
-    ? PRODUCTS.filter((p) => p.collection.toLowerCase().includes(collectionFilter.toLowerCase()))
+    ? PRODUCTS.filter((p) => (p.collection || '').toLowerCase().includes(collectionFilter.toLowerCase()))
     : categoryFilter
-      ? PRODUCTS.filter((p) => p.category.toLowerCase() === categoryFilter.toLowerCase())
+      ? PRODUCTS.filter((p) => {
+          const pCat = (p.category || '').toLowerCase().replace(/s$/, '');
+          const cFilter = categoryFilter.toLowerCase().replace(/s$/, '');
+          return pCat === cFilter || (p.category || '').toLowerCase() === categoryFilter.toLowerCase();
+        })
       : [];
 
   const showFiltered = Boolean(collectionFilter || categoryFilter);

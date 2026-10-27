@@ -127,7 +127,7 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
             <nav style={{ fontSize: '11.2px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1.68px', marginBottom: '32px', fontWeight: '400' }}>
               <Link href="/" style={{ textDecoration: 'none', color: 'inherit' }}>Home</Link> &nbsp; / &nbsp;
               <Link href="/category/all-products" style={{ textDecoration: 'none', color: 'inherit' }}>Collections</Link> &nbsp; / &nbsp;
-              <span style={{ color: '#000000' }}>{product.category}</span>
+              <Link href={`/category/all-products?tab=${product.category?.toUpperCase() || ''}`} style={{ textDecoration: 'none', color: '#000000' }}>{product.category}</Link>
             </nav>
 
             {/* Title & Metadata */}

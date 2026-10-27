@@ -103,21 +103,21 @@ export const CuratedCollections: React.FC = () => {
         <div className="pdf-grid" style={{ marginTop: '40px' }}>
           
           <div className="pdf-item" style={{ position: 'relative' }}>
-            <Link href="/category/earrings" className="image-container" style={{ position: 'relative', display: 'block' }}>
+            <Link href="/category/all-products?tab=EARRINGS" className="image-container" style={{ position: 'relative', display: 'block' }}>
               <Image src={getOptimizedImageUrl("https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Call_for_the_cocktails_compressed_1__page-0001.jpg?v=1708934384", 800)} alt="Earrings" fill sizes="(max-width: 900px) 100vw, 33vw" />
               <div className="overlay-text">EARRINGS</div>
             </Link>
           </div>
 
           <div className="pdf-item" style={{ position: 'relative' }}>
-            <Link href="/category/rings" className="image-container" style={{ position: 'relative', display: 'block' }}>
+            <Link href="/category/all-products?tab=RINGS" className="image-container" style={{ position: 'relative', display: 'block' }}>
               <Image src={getOptimizedImageUrl("https://cdn.shopify.com/s/files/1/0793/9247/3397/files/6ef918_dda50d76e89e497694803b84c6141c25_mv2.webp?v=1708934384", 800)} alt="Rings" fill sizes="(max-width: 900px) 100vw, 33vw" />
               <div className="overlay-text">RINGS</div>
             </Link>
           </div>
 
           <div className="pdf-item" style={{ position: 'relative' }}>
-            <Link href="/category/necklaces" className="image-container" style={{ position: 'relative', display: 'block' }}>
+            <Link href="/category/all-products?tab=NECKLACES" className="image-container" style={{ position: 'relative', display: 'block' }}>
               <Image src={getOptimizedImageUrl("https://cdn.shopify.com/s/files/1/0793/9247/3397/files/Screenshot_2024-02-26_at_2.04.21_PM.png?v=1708934384", 800)} alt="Necklaces" fill sizes="(max-width: 900px) 100vw, 33vw" />
               <div className="overlay-text">NECKLACES</div>
             </Link>

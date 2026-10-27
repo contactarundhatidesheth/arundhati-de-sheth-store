@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { useCMSData } from '@/hooks/useCMSData';
 import { getOptimizedImageUrl } from '@/lib/images';
 
@@ -23,53 +23,76 @@ const COLLECTIONS = [
   },
 ];
 
+const CATEGORY_TABS = [
+  { id: 'RING', label: 'Rings' },
+  { id: 'NECKLACE', label: 'Necklaces' },
+  { id: 'EARRING', label: 'Earrings' },
+  { id: 'PENDANT', label: 'Pendants' },
+  { id: 'BRACELET', label: 'Bracelets' },
+];
+
 type Step = 'collection' | 'products';
+
+const normalize = (str: string) => (str || '').toUpperCase().replace(/[:\-\s]+/g, '');
+
+const matchCategory = (prodCategory: string | null | undefined, targetType: string | null | undefined): boolean => {
+  if (!prodCategory || !targetType) return false;
+  const p = normalize(prodCategory);
+  const t = normalize(targetType);
+  if (p === t) return true;
+  // Singular / Plural matching (e.g. RING vs RINGS, EARRING vs EARRINGS, NECKLACE vs NECKLACES)
+  if (p.replace(/S$/, '') === t.replace(/S$/, '')) return true;
+  // Also treat CUFF as BRACELET
+  if ((p.includes('BRACELET') || p.includes('CUFF')) && (t.includes('BRACELET') || t.includes('CUFF'))) return true;
+  return false;
+};
 
 export default function CategoryAllProductsPage() {
   const { data, loading } = useCMSData();
 
   const [step, setStep] = useState<Step>('collection');
   const [selectedCollection, setSelectedCollection] = useState<string | null>(null);
-  const [selectedType, setSelectedType] = useState<string | null>(null); // null = All
+  const [selectedType, setSelectedType] = useState<string | null>(null); // null = All Pieces
   const [searchQuery, setSearchQuery] = useState('');
   const [metalFilter, setMetalFilter] = useState<string | null>(null);
+
+  // Read URL query params on mount (e.g. ?tab=RING or ?collection=EPHEMERALS)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab');
+      const colParam = params.get('collection');
+      if (colParam) {
+        setSelectedCollection(colParam.toUpperCase());
+        setStep('products');
+      } else if (tabParam) {
+        setSelectedCollection('ALL');
+        setStep('products');
+      }
+      if (tabParam) {
+        setSelectedType(tabParam.toUpperCase());
+      }
+    }
+  }, []);
 
   if (loading) return <div style={{ minHeight: '100vh', background: '#FFF' }} />;
 
   const PRODUCTS = data.products.filter(p => p.isActive !== false);
 
-  const normalize = (str: string) => (str || '').toUpperCase().replace(/[:\-\s]+/g, '');
-
-  /* Derive dynamic categories from active products */
-  const uniqueCategories = Array.from(new Set(PRODUCTS.map(p => p.category).filter(Boolean)));
-  const JEWELLERY_TYPES = uniqueCategories.map(cat => ({
-    id: normalize(cat),
-    label: cat.toLowerCase().endsWith('s') ? cat : `${cat}s`
-  }));
-
-  /* Which types exist in the chosen collection? */
-  const typesInCollection = selectedCollection
-    ? JEWELLERY_TYPES.filter(t =>
-      PRODUCTS.some(
-        p =>
-          normalize(p.collection).includes(normalize(selectedCollection)) &&
-          normalize(p.category) === normalize(t.id),
-      ),
-    )
-    : JEWELLERY_TYPES;
-
   /* Define fixed metals for simplified filtering */
   const uniqueMetals = ['Gold', 'Silver'];
 
   /* Final filtered products */
-  const filteredProducts = selectedCollection
+  const filteredProducts = (step === 'products' || selectedCollection)
     ? PRODUCTS.filter(p => {
       // Collection Filter
-      if (!normalize(p.collection).includes(normalize(selectedCollection))) return false;
+      if (selectedCollection && selectedCollection !== 'ALL') {
+        if (!normalize(p.collection).includes(normalize(selectedCollection))) return false;
+      }
 
-      // Type Filter
+      // Type / Category Filter
       if (selectedType) {
-        if (normalize(p.category) !== normalize(selectedType)) return false;
+        if (!matchCategory(p.category, selectedType)) return false;
       }
 
       // Search Filter
@@ -89,6 +112,19 @@ export default function CategoryAllProductsPage() {
     setStep('products');
   };
 
+  const handleSelectType = (typeId: string | null) => {
+    setSelectedType(typeId);
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      if (typeId) {
+        url.searchParams.set('tab', typeId);
+      } else {
+        url.searchParams.delete('tab');
+      }
+      window.history.replaceState({}, '', url.toString());
+    }
+  };
+
   const goBack = () => {
     if (step === 'products') {
       setStep('collection');
@@ -96,10 +132,18 @@ export default function CategoryAllProductsPage() {
       setSelectedType(null);
       setSearchQuery('');
       setMetalFilter(null);
+      if (typeof window !== 'undefined') {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('tab');
+        url.searchParams.delete('collection');
+        window.history.replaceState({}, '', url.toString());
+      }
     }
   };
 
-  const collectionLabel = COLLECTIONS.find(c => c.id === selectedCollection)?.label ?? '';
+  const collectionLabel = selectedCollection === 'ALL'
+    ? 'All Pieces'
+    : COLLECTIONS.find(c => c.id === selectedCollection)?.label ?? 'All Pieces';
 
   /* ── Render ── */
   return (
@@ -113,7 +157,9 @@ export default function CategoryAllProductsPage() {
               ? '/images/Explore%20.png'
               : selectedCollection === 'EPHEMERALS'
                 ? '/images/Ephemerals%20.png'
-                : '/images/Perennials%20.png'
+                : selectedCollection === 'PERENNIALS'
+                  ? '/images/Perennials%20.png'
+                  : '/images/Explore%20.png'
           }
           alt={step === 'collection' ? 'Explore Collections' : collectionLabel}
           fill
@@ -134,6 +180,11 @@ export default function CategoryAllProductsPage() {
           {step === 'products' && selectedCollection === 'PERENNIALS' && (
             <p style={{ color: '#FFFFFF', fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', marginTop: '20px', maxWidth: '600px', lineHeight: '1.6', letterSpacing: '0.05em', fontWeight: 300, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
               Lasting a very long time, or happening repeatedly or all the time; recurrent.
+            </p>
+          )}
+          {step === 'products' && (!selectedCollection || selectedCollection === 'ALL') && (
+            <p style={{ color: '#FFFFFF', fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', marginTop: '20px', maxWidth: '600px', lineHeight: '1.6', letterSpacing: '0.05em', fontWeight: 300, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+              Curated acquisitions and bespoke high jewellery
             </p>
           )}
         </div>
@@ -196,6 +247,34 @@ export default function CategoryAllProductsPage() {
               </button>
             ))}
           </div>
+          
+          <div style={{ textAlign: 'center', marginTop: '48px' }}>
+            <button
+              onClick={() => pickCollection('ALL')}
+              style={{
+                background: 'transparent',
+                border: '1px solid #111111',
+                color: '#111111',
+                padding: '12px 32px',
+                fontSize: '0.75rem',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                cursor: 'pointer',
+                fontWeight: 500,
+                transition: 'all 0.3s ease',
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.background = '#111111';
+                e.currentTarget.style.color = '#ffffff';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#111111';
+              }}
+            >
+              Browse All Pieces
+            </button>
+          </div>
         </div>
       )}
 
@@ -205,7 +284,88 @@ export default function CategoryAllProductsPage() {
       {step === 'products' && (
         <div className="step-wrapper" style={{ padding: '48px 40px 120px' }}>
           {/* Filters Bar */}
-          <div className="filters-bar" style={{ display: 'flex', flexDirection: 'column', gap: '24px', marginBottom: '48px' }}>
+          <div className="filters-bar" style={{ display: 'flex', flexDirection: 'column', gap: '28px', marginBottom: '48px' }}>
+
+            {/* Collection Switcher Pills */}
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              {[
+                { id: 'ALL', label: 'All Collections' },
+                { id: 'EPHEMERALS', label: 'Ephemerals' },
+                { id: 'PERENNIALS', label: 'Perennials' },
+              ].map(col => {
+                const isActive = (selectedCollection === col.id) || (col.id === 'ALL' && (!selectedCollection || selectedCollection === 'ALL'));
+                return (
+                  <button
+                    key={col.id}
+                    onClick={() => setSelectedCollection(col.id)}
+                    style={{
+                      background: isActive ? '#000000' : 'transparent',
+                      color: isActive ? '#ffffff' : '#666666',
+                      border: '1px solid',
+                      borderColor: isActive ? '#000000' : '#EAEAEA',
+                      borderRadius: '24px',
+                      padding: '6px 18px',
+                      fontSize: '0.72rem',
+                      letterSpacing: '0.12em',
+                      textTransform: 'uppercase',
+                      cursor: 'pointer',
+                      fontWeight: isActive ? 500 : 400,
+                      transition: 'all 0.2s ease',
+                    }}
+                  >
+                    {col.label}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Category Tabs — Pixel Perfect to User Design */}
+            <div className="category-tabs" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 'clamp(8px, 2.5vw, 24px)', WebkitOverflowScrolling: 'touch', borderBottom: '1px solid #EAEAEA', paddingBottom: '0px' }}>
+              <button
+                onClick={() => handleSelectType(null)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  fontSize: '0.78rem',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  cursor: 'pointer',
+                  padding: '10px 14px',
+                  borderBottom: selectedType === null ? '2px solid #000000' : '2px solid transparent',
+                  color: selectedType === null ? '#000000' : '#888888',
+                  fontWeight: selectedType === null ? 600 : 400,
+                  transition: 'color 0.2s, border-color 0.2s',
+                  marginBottom: '-1px',
+                }}
+              >
+                All Pieces
+              </button>
+              {CATEGORY_TABS.map(tab => {
+                const isSelected = selectedType !== null && matchCategory(tab.id, selectedType);
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => handleSelectType(tab.id)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      fontSize: '0.78rem',
+                      letterSpacing: '0.15em',
+                      textTransform: 'uppercase',
+                      cursor: 'pointer',
+                      padding: '10px 14px',
+                      borderBottom: isSelected ? '2px solid #000000' : '2px solid transparent',
+                      color: isSelected ? '#000000' : '#888888',
+                      fontWeight: isSelected ? 600 : 400,
+                      transition: 'color 0.2s, border-color 0.2s',
+                      marginBottom: '-1px',
+                    }}
+                  >
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
 
             {/* Search & Metal Controls */}
             <div className="filter-controls" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', borderBottom: '1px solid #eaeaea', paddingBottom: '16px' }}>
@@ -214,7 +374,7 @@ export default function CategoryAllProductsPage() {
                 placeholder="Search pieces..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ padding: '12px 16px', border: '1px solid #eaeaea', borderRadius: '4px', outline: 'none', fontSize: '0.85rem', width: '250px' }}
+                style={{ padding: '10px 16px', border: '1px solid #eaeaea', borderRadius: '4px', outline: 'none', fontSize: '0.85rem', width: '250px' }}
                 className="search-input"
               />
               <div className="metal-filters" style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '4px' }}>
@@ -227,9 +387,10 @@ export default function CategoryAllProductsPage() {
                       color: metalFilter === metal ? '#fff' : '#666',
                       border: '1px solid',
                       borderColor: metalFilter === metal ? '#111' : '#eaeaea',
-                      padding: '8px 16px',
+                      padding: '6px 14px',
                       borderRadius: '4px',
-                      fontSize: '0.75rem',
+                      fontSize: '0.72rem',
+                      letterSpacing: '0.08em',
                       textTransform: 'uppercase',
                       cursor: 'pointer',
                       transition: 'all 0.2s',
@@ -241,49 +402,6 @@ export default function CategoryAllProductsPage() {
                 ))}
               </div>
             </div>
-
-            {/* Category Tabs */}
-            {typesInCollection.length > 0 && (
-              <div className="category-tabs" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '16px', WebkitOverflowScrolling: 'touch' }}>
-                <button
-                  onClick={() => setSelectedType(null)}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    fontSize: '0.75rem',
-                    letterSpacing: '0.15em',
-                    textTransform: 'uppercase',
-                    cursor: 'pointer',
-                    padding: '8px 16px',
-                    borderBottom: selectedType === null ? '1px solid #000' : '1px solid transparent',
-                    color: selectedType === null ? '#000' : '#888',
-                    transition: 'color 0.2s, border-color 0.2s'
-                  }}
-                >
-                  All Pieces
-                </button>
-                {typesInCollection.map(type => (
-                  <button
-                    key={type.id}
-                    onClick={() => setSelectedType(type.id)}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      fontSize: '0.75rem',
-                      letterSpacing: '0.15em',
-                      textTransform: 'uppercase',
-                      cursor: 'pointer',
-                      padding: '8px 16px',
-                      borderBottom: selectedType === type.id ? '1px solid #000' : '1px solid transparent',
-                      color: selectedType === type.id ? '#000' : '#888',
-                      transition: 'color 0.2s, border-color 0.2s'
-                    }}
-                  >
-                    {type.label}
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
 
           {filteredProducts.length === 0 ? (
@@ -342,7 +460,6 @@ export default function CategoryAllProductsPage() {
           .category-tabs::-webkit-scrollbar { display: none; }
           .category-tabs button { flex-shrink: 0; }
         }
-        /* Removed 420px 1-column breakpoint to maintain 2-columns on small screens */
       `}</style>
     </div>
   );

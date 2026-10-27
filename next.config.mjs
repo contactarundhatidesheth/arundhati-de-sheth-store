@@ -32,6 +32,35 @@ const nextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: '/category/rings',
+        destination: '/category/all-products?tab=RINGS',
+        permanent: false,
+      },
+      {
+        source: '/category/earrings',
+        destination: '/category/all-products?tab=EARRINGS',
+        permanent: false,
+      },
+      {
+        source: '/category/necklaces',
+        destination: '/category/all-products?tab=NECKLACES',
+        permanent: false,
+      },
+      {
+        source: '/category/pendants',
+        destination: '/category/all-products?tab=PENDANTS',
+        permanent: false,
+      },
+      {
+        source: '/category/bracelets',
+        destination: '/category/all-products?tab=BRACELETS',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 
