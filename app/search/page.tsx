@@ -92,12 +92,12 @@ export default function SearchPage() {
                             <div className="product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '40px 16px' }}>
                                 {filteredProducts.map(product => (
                                     <Link href={`/product/${product.handle?.trim()}`} key={product.id} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
-                                        <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', marginBottom: '14px' }}>
+                                        <div style={{ position: 'relative', width: '100%', aspectRatio: '1/1', overflow: 'hidden', marginBottom: '14px', background: '#ffffff' }}>
                                             <Image
                                                 src={getOptimizedImageUrl(product.images?.[0], 600) || '/placeholder.png'}
                                                 alt={product.title}
                                                 fill
-                                                style={{ objectFit: 'cover', transition: 'transform 0.8s ease' }}
+                                                style={{ objectFit: 'contain', padding: '12px', transition: 'transform 0.8s ease' }}
                                                 className="product-img"
                                             />
                                         </div>

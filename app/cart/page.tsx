@@ -157,12 +157,12 @@ export default function CartPage() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
                   {cart.map((item) => (
                     <div key={item.product.id} className="cart-item" style={{ display: 'flex', gap: '24px', borderBottom: '1px solid var(--border)', paddingBottom: '32px' }}>
-                      <div className="cart-item-img" style={{ position: 'relative', width: '120px', aspectRatio: '4/5', background: 'var(--bg-secondary)', flexShrink: 0 }}>
+                      <div className="cart-item-img" style={{ position: 'relative', width: '120px', aspectRatio: '1/1', background: '#ffffff', borderRadius: '4px', overflow: 'hidden', flexShrink: 0 }}>
                         <Image
                           src={getOptimizedImageUrl(item.product.images[0], 240)}
                           alt={item.product.title}
                           fill
-                          style={{ objectFit: 'cover' }}
+                          style={{ objectFit: 'contain', padding: '8px' }}
                         />
                       </div>
 

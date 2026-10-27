@@ -57,12 +57,12 @@ export const CartDrawer: React.FC = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
               {cart.map((item) => (
                 <div key={item.product.id} style={{ display: 'flex', gap: '16px' }}>
-                  <div style={{ position: 'relative', width: '90px', height: '120px', background: 'var(--bg-secondary)', flexShrink: 0 }}>
+                  <div style={{ position: 'relative', width: '90px', height: '90px', background: '#ffffff', borderRadius: '4px', overflow: 'hidden', flexShrink: 0 }}>
                     <Image
                       src={getOptimizedImageUrl(item.product.images[0], 200)}
                       alt={item.product.title}
                       fill
-                      style={{ objectFit: 'cover' }}
+                      style={{ objectFit: 'contain', padding: '6px' }}
                     />
                   </div>
                   <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>

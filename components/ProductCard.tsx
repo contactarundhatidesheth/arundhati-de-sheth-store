@@ -32,13 +32,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     >
       <Link
         href={`/product/${product.handle}`}
-        style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', background: 'var(--bg-surface)', display: 'block', borderRadius: 'var(--radius-md)' }}
+        style={{ position: 'relative', width: '100%', aspectRatio: '1/1', overflow: 'hidden', background: '#ffffff', display: 'block', borderRadius: 'var(--radius-md)' }}
       >
         <Image
           src={isHovered ? secondaryImage : primaryImage}
           alt={product.title}
           fill
-          style={{ objectFit: 'cover', transition: 'opacity 0.6s ease' }}
+          style={{ objectFit: 'contain', padding: '12px', transition: 'opacity 0.6s ease' }}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </Link>

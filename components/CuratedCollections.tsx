@@ -152,13 +152,15 @@ export const CuratedCollections: React.FC = () => {
           position: relative;
           overflow: hidden;
           width: 100%;
-          aspect-ratio: 3/4;
+          aspect-ratio: 1/1;
+          background: #FFFFFF;
         }
 
         .sub-image-container img {
           width: 100%;
           height: 100%;
-          object-fit: cover;
+          object-fit: contain;
+          padding: 12px;
           transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
         }
 

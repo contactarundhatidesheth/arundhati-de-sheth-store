@@ -107,12 +107,12 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
                     border: activeImage === idx ? '2px solid #000' : '2px solid transparent',
                     padding: 0,
                     cursor: 'pointer',
-                    background: '#f5f5f5',
+                    background: '#ffffff',
                     overflow: 'hidden',
                     transition: 'border-color 0.2s ease',
                   }}
                 >
-                  <Image src={getOptimizedImageUrl(img, 160)} alt={`Thumbnail ${idx + 1}`} fill style={{ objectFit: 'cover' }} />
+                  <Image src={getOptimizedImageUrl(img, 160)} alt={`Thumbnail ${idx + 1}`} fill style={{ objectFit: 'contain', padding: '4px' }} />
                 </button>
               ))}
             </div>
@@ -277,8 +277,8 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
           <div className="recommendations-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px', maxWidth: '1600px', margin: '0 auto' }}>
             {recommendations.map(rec => (
               <Link href={`/product/${rec.handle?.trim()}`} key={rec.id} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column' }}>
-                <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', marginBottom: '14px', background: '#f9f9f9' }}>
-                  <Image src={getOptimizedImageUrl(rec.images[0], 600)} alt={rec.title} fill style={{ objectFit: 'cover', transition: 'transform 0.8s ease' }} className="rec-img" />
+                <div style={{ position: 'relative', width: '100%', aspectRatio: '1/1', overflow: 'hidden', marginBottom: '14px', background: '#ffffff' }}>
+                  <Image src={getOptimizedImageUrl(rec.images[0], 600)} alt={rec.title} fill style={{ objectFit: 'contain', padding: '12px', transition: 'transform 0.8s ease' }} className="rec-img" />
                 </div>
                 <div style={{ padding: '0 4px 4px', textAlign: 'center' }}>
                   <p style={{ color: '#000', fontSize: '13px', fontWeight: 500, letterSpacing: '0.5px', marginBottom: '6px' }}>{rec.title}</p>

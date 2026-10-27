@@ -44,7 +44,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           fill
           style={{
             objectFit: 'contain',
-            padding: '24px',
+            padding: '16px',
             transition: 'transform 1.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease',
             transform: isHovered ? 'scale(1.05)' : 'scale(1)',
           }}
