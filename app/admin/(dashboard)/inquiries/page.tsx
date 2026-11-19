@@ -2,6 +2,8 @@ import React from 'react';
 import { getSupabaseAdmin } from '@/utils/supabase-admin';
 import { deleteInquiry } from '@/app/admin/actions';
 
+export const dynamic = 'force-dynamic';
+
 export default async function InquiriesPage() {
     const supabase = getSupabaseAdmin();
     const { data: inquiries, error } = await supabase
