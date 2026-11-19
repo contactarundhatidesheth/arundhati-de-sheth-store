@@ -84,7 +84,7 @@ export default function CollectionsPage() {
       <section style={{ position: 'relative', width: '100%', height: '85vh', overflow: 'hidden', background: '#000' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
           <img
-            src="/images/high-jewellery.jpg"
+            src="/images/High%20Jewellery%20.jpg"
             alt="High Jewellery Collection"
             style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 1 }}
           />
