@@ -148,9 +148,7 @@ export default function AboutPage() {
           playsInline
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
         >
-          {/* Use local video once downloaded via download_about_assets.js */}
-          <source src="/videos/about-video.mp4" type="video/mp4" />
-          {/* Fallback to Shopify CDN video */}
+          {/* CDN hosted video to respect Cloudflare Workers 25MB asset limit */}
           <source src="https://www.arundhatidesheth.com/cdn/shop/videos/c/vp/bd1c0827a8744a549b5e3e7bc2e9f745/bd1c0827a8744a549b5e3e7bc2e9f745.HD-1080p-7.2Mbps-36693499.mp4" type="video/mp4" />
         </video>
 

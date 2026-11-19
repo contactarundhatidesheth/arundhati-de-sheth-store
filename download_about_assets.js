@@ -14,7 +14,6 @@ const fs = require('fs');
 const path = require('path');
 
 const FILES = [
-  { id: '1wt7s73AtsI62BW4mXenmeo0B6HYHxIct', name: 'about-video.mp4',    dir: 'public/videos' },
   { id: '1RGwiJXJJ8CGN9Scu6sjIoNZ58iHMVvo7', name: 'arundhati-portrait.webp', dir: 'public/images' },
   { id: '1iTbhB_Je-vmKcJs3xX2obqJUXjRw2glr', name: 'look1.mp4',          dir: 'public/videos' },
   { id: '1Y02VOkrQbfH_3dAjJx_nI-lC7lFysWRc', name: 'look2.mp4',          dir: 'public/videos' },
