@@ -5,6 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "node download_about_assets.js && node download_brand_assets.js && node download_timeline_images.js && next build",
+    "build:worker": "node download_about_assets.js && node download_brand_assets.js && node download_timeline_images.js && opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion",
+    "deploy": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion && wrangler deploy",
+    "preview": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion && wrangler dev",
     "start": "next start",
     "lint": "next lint",
     "extract-frames": "powershell -ExecutionPolicy Bypass -File scripts/extract-frames.ps1"
