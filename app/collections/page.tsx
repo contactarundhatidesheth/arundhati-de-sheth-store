@@ -83,12 +83,9 @@ export default function CollectionsPage() {
       {/* Hero Header */}
       <section style={{ position: 'relative', width: '100%', height: '85vh', overflow: 'hidden', background: '#000' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
-          <video
-            src="/images/High%20Jewellery%20Horizontal.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
+          <img
+            src="/images/high-jewellery.jpg"
+            alt="High Jewellery Collection"
             style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 1 }}
           />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0) 100%)' }} />
