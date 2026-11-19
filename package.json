@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node download_about_assets.js && node download_brand_assets.js && node download_timeline_images.js && next build",
+    "build": "node download_about_assets.js && node download_brand_assets.js && node download_timeline_images.js && npx @opennextjs/cloudflare build --dangerouslyUseUnsupportedNextVersion",
     "build:worker": "node download_about_assets.js && node download_brand_assets.js && node download_timeline_images.js && opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion",
     "deploy": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion && wrangler deploy",
     "preview": "opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion && wrangler dev",
