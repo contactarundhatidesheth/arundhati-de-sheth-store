@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { sendOrderConfirmation } from '@/lib/email';
+import { RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET } from '@/lib/config/razorpay';
 
 export async function POST(req: Request) {
   try {
@@ -11,7 +12,7 @@ export async function POST(req: Request) {
     }
 
     // Check if keys exist
-    if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+    if (!RAZORPAY_KEY_ID || !RAZORPAY_KEY_SECRET) {
       return NextResponse.json(
         { error: 'Razorpay keys not configured' },
         { status: 500 }
@@ -23,7 +24,7 @@ export async function POST(req: Request) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Basic ' + Buffer.from(`${process.env.RAZORPAY_KEY_ID}:${process.env.RAZORPAY_KEY_SECRET}`).toString('base64'),
+        Authorization: 'Basic ' + Buffer.from(`${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}`).toString('base64'),
       },
       body: JSON.stringify({
         amount: Math.round(amount * 100), // Amount in paise (multiply by 100)
@@ -66,7 +67,7 @@ export async function POST(req: Request) {
       console.error('Failed to send order confirmation: ', e);
     }
 
-    return NextResponse.json({ orderId: data.id, keyId: process.env.RAZORPAY_KEY_ID });
+    return NextResponse.json({ orderId: data.id, keyId: RAZORPAY_KEY_ID });
   } catch (error: any) {
     console.error('Checkout error:', error);
     return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });

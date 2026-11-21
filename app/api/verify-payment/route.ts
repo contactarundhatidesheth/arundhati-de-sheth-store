@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { createClient } from '@/utils/supabase/server';
+import { RAZORPAY_KEY_SECRET } from '@/lib/config/razorpay';
 
 export async function POST(req: Request) {
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = await req.json();
 
-    const secret = process.env.RAZORPAY_KEY_SECRET;
+    const secret = RAZORPAY_KEY_SECRET;
     if (!secret) {
       return NextResponse.json({ error: 'Razorpay secret not configured' }, { status: 500 });
     }

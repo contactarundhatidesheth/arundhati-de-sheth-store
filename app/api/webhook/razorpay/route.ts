@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { createClient } from '@/utils/supabase/server';
+import { RAZORPAY_WEBHOOK_SECRET } from '@/lib/config/razorpay';
 
 export async function POST(req: Request) {
     try {
         const bodyText = await req.text();
         const signature = req.headers.get('x-razorpay-signature');
-        const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
+        const secret = RAZORPAY_WEBHOOK_SECRET;
 
         if (!signature || !secret) {
             return NextResponse.json({ error: 'Missing webhook signature or secret' }, { status: 400 });
