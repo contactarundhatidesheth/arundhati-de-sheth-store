@@ -110,6 +110,16 @@ export default function AboutPage() {
   const aboutVideoUrl = aboutBanner?.link || '/videos/about-video.mp4';
   const aboutImageUrl = aboutBanner?.image;
 
+  // Her Story Portrait section media
+  const portraitBanner = (data?.pageSections || []).find(s => s.id === 'banner_about_portrait');
+  const portraitVideoUrl = portraitBanner?.link;
+  const portraitImageUrl = portraitBanner?.image || '/images/arundhati-portrait.webp';
+
+  // Jewellery Confluence section media
+  const confluenceBanner = (data?.pageSections || []).find(s => s.id === 'banner_about_confluence');
+  const confluenceVideoUrl = confluenceBanner?.link;
+  const confluenceImageUrl = confluenceBanner?.image || '/images/WhatsApp%20Image%202026-08-31%20at%203.11.01%20PM.jpeg';
+
   return (
     <div style={{ background: 'var(--bg-primary)', color: 'var(--text-main)' }}>
 
@@ -119,14 +129,25 @@ export default function AboutPage() {
 
           {/* ── Arundhati's Story ── */}
           <section className="editorial-block" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center', marginBottom: '80px' }}>
-            <div style={{ aspectRatio: '3/4', width: '100%', overflow: 'hidden' }}>
-              {/* Portrait — use local file once downloaded, falls back to Shopify CDN */}
-              <img
-                src="/images/arundhati-portrait.webp"
-                alt="Arundhati De-Sheth"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                onError={(e) => { (e.target as HTMLImageElement).src = 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/DSC00807.jpg?v=1744025659'; }}
-              />
+            <div style={{ aspectRatio: '3/4', width: '100%', overflow: 'hidden', position: 'relative' }}>
+              {portraitVideoUrl ? (
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                >
+                  <source src={portraitVideoUrl} type="video/mp4" />
+                </video>
+              ) : (
+                <img
+                  src={portraitImageUrl}
+                  alt="Arundhati De-Sheth"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  onError={(e) => { (e.target as HTMLImageElement).src = 'https://cdn.shopify.com/s/files/1/0793/9247/3397/files/DSC00807.jpg?v=1744025659'; }}
+                />
+              )}
             </div>
             <div>
               <p style={{ fontSize: '0.75rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '16px' }}>Her Story</p>
@@ -237,10 +258,26 @@ export default function AboutPage() {
             </div>
           </section>
 
-          {/* ── Jewellery Confluence: Video Section ── */}
+          {/* ── Jewellery Confluence: Video / Image Section ── */}
           <section style={{ marginBottom: '160px' }}>
             <div className="confluence-video" style={{ position: 'relative', width: '100%', height: '70vh', overflow: 'hidden', marginBottom: '80px', borderRadius: '2px' }}>
-              <img src="/images/WhatsApp%20Image%202026-08-31%20at%203.11.01%20PM.jpeg" alt="Jewellery Confluence" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%' }} />
+              {confluenceVideoUrl ? (
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                >
+                  <source src={confluenceVideoUrl} type="video/mp4" />
+                </video>
+              ) : (
+                <img
+                  src={confluenceImageUrl}
+                  alt="Jewellery Confluence"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%' }}
+                />
+              )}
               <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.2)' }} />
               <div className="confluence-caption" style={{ position: 'absolute', bottom: '48px', left: '48px' }}>
                 <p style={{ color: '#FFFFFF', fontSize: '0.75rem', letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '12px', opacity: 0.7 }}>Philosophy</p>

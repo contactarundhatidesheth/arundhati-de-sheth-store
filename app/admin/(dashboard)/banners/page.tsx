@@ -15,11 +15,27 @@ interface BannerConfig {
 
 const BANNERS_CONFIG: BannerConfig[] = [
   {
-    id: 'banner_about',
-    label: 'About Us Hero Video / Image',
+    id: 'banner_about_portrait',
+    label: 'About Us - Her Story Portrait Image / Video',
     page: 'About Us (/about)',
-    description: 'Background hero video or image for the About Us page.',
+    description: "Portrait image or video alongside Arundhati's Story in the top editorial section.",
+    defaultMedia: '/images/arundhati-portrait.webp',
+    supportsVideo: true,
+  },
+  {
+    id: 'banner_about',
+    label: 'About Us - Main Hero Video / Image',
+    page: 'About Us (/about)',
+    description: 'Full-bleed background hero video or image for the About Us page.',
     defaultMedia: '/videos/about-video.mp4',
+    supportsVideo: true,
+  },
+  {
+    id: 'banner_about_confluence',
+    label: 'About Us - Jewellery Confluence Image / Video',
+    page: 'About Us (/about)',
+    description: 'Wide image or video displayed in the Jewellery Confluence philosophy section.',
+    defaultMedia: '/images/WhatsApp%20Image%202026-08-31%20at%203.11.01%20PM.jpeg',
     supportsVideo: true,
   },
   {
