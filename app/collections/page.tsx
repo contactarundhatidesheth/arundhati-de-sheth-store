@@ -138,6 +138,9 @@ export default function CollectionsPage() {
           }}>
             High Jewellery
           </h1>
+          <p style={{ color: '#FFFFFF', fontSize: 'clamp(0.95rem, 1.4vw, 1.15rem)', marginTop: '16px', maxWidth: '650px', lineHeight: '1.5', letterSpacing: '0.03em', fontWeight: 300, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+            Rare gemstones, masterful artistry, and bespoke high jewellery creations by Arundhati De-Sheth.
+          </p>
         </div>
       </section>
 

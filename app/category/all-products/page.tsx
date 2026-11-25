@@ -243,11 +243,15 @@ export default function CategoryAllProductsPage() {
           <h1 style={{ fontSize: 'clamp(2.2rem, 7vw, 5rem)', fontWeight: '300', marginBottom: '0', fontFamily: 'var(--font-serif)', fontStyle: 'italic', lineHeight: '1', letterSpacing: '0.02em', color: '#FFFFFF', textShadow: '0 4px 12px rgba(0,0,0,0.4)' }}>
             {step === 'collection' ? 'Explore' : collectionLabel}
           </h1>
-          {((step === 'collection') || (!selectedCollection || selectedCollection === 'ALL')) && (
-            <p style={{ color: '#FFFFFF', fontSize: 'clamp(0.95rem, 1.4vw, 1.15rem)', marginTop: '16px', maxWidth: '600px', lineHeight: '1.5', letterSpacing: '0.03em', fontWeight: 300, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
-              A collection of fine jewels that includes jewels designed and crafted in-house, along with curated finds.
-            </p>
-          )}
+          <p style={{ color: '#FFFFFF', fontSize: 'clamp(0.95rem, 1.4vw, 1.15rem)', marginTop: '16px', maxWidth: '650px', lineHeight: '1.5', letterSpacing: '0.03em', fontWeight: 300, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+            {step === 'collection' || !selectedCollection || selectedCollection === 'ALL'
+              ? 'A collection of fine jewels that includes jewels designed and crafted in-house, along with curated finds.'
+              : selectedCollection === 'EPHEMERALS'
+                ? 'One of a kind, Fine Jewellery pieces that are part of our collection for a limited period of time.'
+                : selectedCollection === 'PERENNIALS'
+                  ? 'Fine Jewellery Pieces that are part of our permanent collection.'
+                  : 'A collection of fine jewels designed and crafted in-house.'}
+          </p>
         </div>
       </section>
 

@@ -119,6 +119,9 @@ export default function ContactPage() {
           }}>
             Contact
           </h1>
+          <p style={{ color: '#FFFFFF', fontSize: 'clamp(0.95rem, 1.4vw, 1.15rem)', marginTop: '16px', maxWidth: '650px', lineHeight: '1.5', letterSpacing: '0.03em', fontWeight: 300, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+            We invite you to reach out for private viewings, bespoke commissions, and advisory appointments.
+          </p>
         </div>
       </section>
 
