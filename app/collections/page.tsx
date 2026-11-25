@@ -78,16 +78,32 @@ export default function CollectionsPage() {
 
   if (loading) return <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }} />;
 
+  const highJewelleryBanner = (data?.pageSections || []).find((s: any) => s.id === 'banner_high_jewellery');
+  const heroImage = highJewelleryBanner?.image || '/images/High%20Jewellery%20.jpg';
+  const heroVideo = highJewelleryBanner?.link;
+
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
       {/* Hero Header */}
       <section style={{ position: 'relative', width: '100%', height: '85vh', overflow: 'hidden', background: '#000' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
-          <img
-            src="/images/High%20Jewellery%20.jpg"
-            alt="High Jewellery Collection"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 1 }}
-          />
+          {heroVideo ? (
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            >
+              <source src={heroVideo} type="video/mp4" />
+            </video>
+          ) : (
+            <img
+              src={heroImage}
+              alt="High Jewellery Collection"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 1 }}
+            />
+          )}
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0) 100%)' }} />
         </div>
         <div style={{ position: 'absolute', bottom: 'clamp(30px, 5vw, 60px)', left: 'clamp(20px, 5vw, 60px)', right: '20px', zIndex: 10 }}>

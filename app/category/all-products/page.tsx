@@ -145,6 +145,10 @@ export default function CategoryAllProductsPage() {
     ? 'All Pieces'
     : COLLECTIONS.find(c => c.id === selectedCollection)?.label ?? 'All Pieces';
 
+  const exploreBanner = (data?.pageSections || []).find((s: any) => s.id === 'banner_shop_explore')?.image;
+  const ephemeralsBanner = (data?.pageSections || []).find((s: any) => s.id === 'banner_shop_ephemerals')?.image;
+  const perennialsBanner = (data?.pageSections || []).find((s: any) => s.id === 'banner_shop_perennials')?.image;
+
   /* ── Render ── */
   return (
     <div className="shop-wrapper" style={{ minHeight: '100vh', background: '#FFF' }}>
@@ -154,12 +158,12 @@ export default function CategoryAllProductsPage() {
         <Image
           src={
             step === 'collection'
-              ? '/images/Explore%20.png'
+              ? (exploreBanner || '/images/Explore%20.png')
               : selectedCollection === 'EPHEMERALS'
-                ? '/images/Ephemerals%20.png'
+                ? (ephemeralsBanner || '/images/Ephemerals%20.png')
                 : selectedCollection === 'PERENNIALS'
-                  ? '/images/Perennials%20.png'
-                  : '/images/Explore%20.png'
+                  ? (perennialsBanner || '/images/Perennials%20.png')
+                  : (exploreBanner || '/images/Explore%20.png')
           }
           alt={step === 'collection' ? 'Explore Collections' : collectionLabel}
           fill
@@ -174,17 +178,17 @@ export default function CategoryAllProductsPage() {
           </h1>
           {step === 'products' && selectedCollection === 'EPHEMERALS' && (
             <p style={{ color: '#FFFFFF', fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', marginTop: '20px', maxWidth: '600px', lineHeight: '1.6', letterSpacing: '0.05em', fontWeight: 300, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
-              Existing only briefly, one of a kind pieces created in limited moments
+              Pieces created in limited moments
             </p>
           )}
           {step === 'products' && selectedCollection === 'PERENNIALS' && (
             <p style={{ color: '#FFFFFF', fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', marginTop: '20px', maxWidth: '600px', lineHeight: '1.6', letterSpacing: '0.05em', fontWeight: 300, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
-              Lasting a very long time, or happening repeatedly or all the time; recurrent.
+              Pieces lasting a long time, recurrent
             </p>
           )}
           {step === 'products' && (!selectedCollection || selectedCollection === 'ALL') && (
             <p style={{ color: '#FFFFFF', fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', marginTop: '20px', maxWidth: '600px', lineHeight: '1.6', letterSpacing: '0.05em', fontWeight: 300, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
-              Curated acquisitions and bespoke high jewellery
+              A collection of fine jewels that includes jewels designed and crafted in-house, along with curated finds.
             </p>
           )}
         </div>

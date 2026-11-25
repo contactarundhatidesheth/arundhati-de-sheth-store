@@ -25,6 +25,10 @@ export default function CartPage() {
   const [checkoutMessage, setCheckoutMessage] = React.useState<{ type: 'success' | 'error', text: string } | null>(null);
   const [activeStep, setActiveStep] = React.useState(1);
   const [pinLoading, setPinLoading] = React.useState(false);
+  const [couponCode, setCouponCode] = React.useState('');
+  const [appliedCoupon, setAppliedCoupon] = React.useState<{ code: string; discountAmount: number; discountValue: number; discountType: string } | null>(null);
+  const [couponLoading, setCouponLoading] = React.useState(false);
+  const [couponError, setCouponError] = React.useState<string | null>(null);
   const router = useRouter();
 
   const handleZipChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,6 +57,44 @@ export default function CartPage() {
     }
   };
 
+  const finalTotal = appliedCoupon ? Math.max(0, subtotal - appliedCoupon.discountAmount) : subtotal;
+
+  const handleApplyCoupon = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!couponCode.trim()) return;
+    setCouponLoading(true);
+    setCouponError(null);
+    try {
+      const res = await fetch('/api/validate-coupon', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: couponCode.trim(), cartTotal: subtotal })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Invalid coupon code');
+      }
+      setAppliedCoupon({
+        code: data.code,
+        discountAmount: data.discountAmount,
+        discountValue: data.discountValue,
+        discountType: data.discountType
+      });
+      setCouponError(null);
+    } catch (err: any) {
+      setCouponError(err.message || 'Failed to apply coupon');
+      setAppliedCoupon(null);
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponCode('');
+    setCouponError(null);
+  };
+
   const isStep1Valid = guestEmail && guestPhone;
   const isStep2Valid = guestName && guestAddress.line1 && guestAddress.city && guestAddress.state && guestAddress.zip;
 
@@ -75,12 +117,14 @@ export default function CartPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          amount: subtotal,
+          amount: finalTotal,
           cartItems: cart,
           guestName,
           guestEmail,
           guestPhone,
-          shippingAddress: guestAddress
+          shippingAddress: guestAddress,
+          couponCode: appliedCoupon?.code,
+          discountAmount: appliedCoupon?.discountAmount || 0
         })
       });
 
@@ -90,7 +134,7 @@ export default function CartPage() {
 
       const options = {
         key: data.keyId,
-        amount: subtotal * 100,
+        amount: finalTotal * 100,
         currency: "INR",
         name: "Arundhati De-Sheth",
         description: "Fine Jewellery Transaction",
@@ -341,6 +385,77 @@ export default function CartPage() {
                   <span>₹{subtotal.toLocaleString('en-IN')}</span>
                 </div>
 
+                {/* Coupon Code Section */}
+                <div style={{ margin: '20px 0', padding: '16px 0', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+                  {!appliedCoupon ? (
+                    <form onSubmit={handleApplyCoupon} style={{ display: 'flex', gap: '8px' }}>
+                      <input
+                        type="text"
+                        placeholder="Discount code"
+                        value={couponCode}
+                        onChange={(e) => setCouponCode(e.target.value)}
+                        style={{
+                          flex: 1,
+                          padding: '10px 12px',
+                          border: '1px solid var(--border)',
+                          borderRadius: '4px',
+                          fontSize: '0.85rem',
+                          textTransform: 'uppercase',
+                          background: 'transparent'
+                        }}
+                      />
+                      <button
+                        type="submit"
+                        disabled={couponLoading || !couponCode.trim()}
+                        style={{
+                          padding: '10px 16px',
+                          background: 'var(--text-main)',
+                          color: '#fff',
+                          border: 'none',
+                          borderRadius: '4px',
+                          fontSize: '0.8rem',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.05em',
+                          cursor: couponLoading || !couponCode.trim() ? 'not-allowed' : 'pointer'
+                        }}
+                      >
+                        {couponLoading ? '...' : 'Apply'}
+                      </button>
+                    </form>
+                  ) : (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#f0fdf4', padding: '10px 12px', borderRadius: '4px', border: '1px solid #bbf7d0' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#166534' }}>
+                          🏷️ {appliedCoupon.code}
+                        </span>
+                        <span style={{ fontSize: '0.75rem', color: '#15803d' }}>
+                          ({appliedCoupon.discountType === 'PERCENTAGE' ? `${appliedCoupon.discountValue}% off` : `₹${appliedCoupon.discountValue.toLocaleString('en-IN')} off`})
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={removeCoupon}
+                        style={{ background: 'none', border: 'none', color: '#991b1b', cursor: 'pointer', fontSize: '0.75rem', textDecoration: 'underline' }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  )}
+
+                  {couponError && (
+                    <p style={{ color: '#dc2626', fontSize: '0.8rem', marginTop: '6px' }}>
+                      {couponError}
+                    </p>
+                  )}
+                </div>
+
+                {appliedCoupon && (
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px', color: '#166534' }}>
+                    <span>Discount</span>
+                    <span>-₹{appliedCoupon.discountAmount.toLocaleString('en-IN')}</span>
+                  </div>
+                )}
+
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid var(--border)' }}>
                   <Link href="#" style={{ fontSize: '0.9rem', textDecoration: 'underline' }}>
                     Estimate Shipping
@@ -349,7 +464,7 @@ export default function CartPage() {
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.25rem', fontWeight: '500', margin: '32px 0' }}>
                   <span>Total</span>
-                  <span>₹{subtotal.toLocaleString('en-IN')}</span>
+                  <span>₹{finalTotal.toLocaleString('en-IN')}</span>
                 </div>
 
                 {checkoutMessage && (

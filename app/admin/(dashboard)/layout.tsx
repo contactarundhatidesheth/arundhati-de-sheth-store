@@ -19,6 +19,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <Link href="/admin" style={{ textDecoration: 'none', color: '#333', fontSize: '0.95rem' }}>Dashboard</Link>
           <Link href="/admin/orders" style={{ textDecoration: 'none', color: '#000', fontWeight: '500', fontSize: '0.95rem' }}>Orders</Link>
           <Link href="/admin/products" style={{ textDecoration: 'none', color: '#333', fontSize: '0.95rem' }}>Products</Link>
+          <Link href="/admin/banners" style={{ textDecoration: 'none', color: '#333', fontSize: '0.95rem' }}>Banners & Videos</Link>
+          <Link href="/admin/coupons" style={{ textDecoration: 'none', color: '#333', fontSize: '0.95rem' }}>Discount Coupons</Link>
           <Link href="/admin/catalogues" style={{ textDecoration: 'none', color: '#333', fontSize: '0.95rem' }}>Catalogues</Link>
           <Link href="/admin/blogs" style={{ textDecoration: 'none', color: '#333', fontSize: '0.95rem' }}>Press & Blogs</Link>
           <Link href="/admin/testimonials" style={{ textDecoration: 'none', color: '#333', fontSize: '0.95rem' }}>Testimonials</Link>

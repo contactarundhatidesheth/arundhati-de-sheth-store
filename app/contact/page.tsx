@@ -8,8 +8,11 @@ import { Button } from '@/components/ui/Button';
 import { Section } from '@/components/ui/Section';
 import { Container } from '@/components/ui/Container';
 import { FadeInSection } from '@/components/ui/FadeInSection';
+import { useCMSData } from '@/hooks/useCMSData';
 
 export default function ContactPage() {
+  const { data } = useCMSData();
+  const contactBanner = (data?.pageSections || []).find((s: any) => s.id === 'banner_contact')?.image;
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -21,11 +24,21 @@ export default function ContactPage() {
 
   const [honeypot, setHoneypot] = useState('');
   const [formLoadedAt, setFormLoadedAt] = useState<number>(0);
+  const [challenge, setChallenge] = useState<{ challengeId: string; question: string; hash: string } | null>(null);
+  const [challengeAnswer, setChallengeAnswer] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorStatus, setErrorStatus] = useState<string | null>(null);
 
   useEffect(() => {
     setFormLoadedAt(Date.now());
+    fetch('/api/send-email')
+      .then(r => r.json())
+      .then(data => {
+        if (data.challengeId && data.question) {
+          setChallenge(data);
+        }
+      })
+      .catch(e => console.warn('Challenge fetch skipped:', e));
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -40,7 +53,10 @@ export default function ContactPage() {
         body: JSON.stringify({
           ...formData,
           honeypot,
-          formLoadedAt
+          formLoadedAt,
+          challengeId: challenge?.challengeId,
+          challengeAnswer: challengeAnswer.trim(),
+          challengeHash: challenge?.hash
         })
       });
       if (!res.ok) {
@@ -50,6 +66,7 @@ export default function ContactPage() {
       setSubmitted(true);
       setFormData({ name: '', email: '', phone: '', subject: 'General Inquiry', message: '' });
       setHoneypot('');
+      setChallengeAnswer('');
     } catch (err: any) {
       console.error(err);
       setErrorStatus(err.message || 'Something went wrong');
@@ -65,7 +82,7 @@ export default function ContactPage() {
       <section style={{ position: 'relative', width: '100%', height: '85vh', overflow: 'hidden', background: '#000' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
           <img
-            src="/images/contact%20picture%20.jpg"
+            src={contactBanner || '/images/contact%20picture%20.jpg'}
             alt="Arundhati De-Sheth Atelier"
             style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 1 }}
           />
@@ -209,6 +226,23 @@ export default function ContactPage() {
                         <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Message *</label>
                         <textarea required name="message" rows={5} value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })} style={{ width: '100%', padding: '12px', border: '1px solid rgba(0,0,0,0.2)', background: 'transparent', resize: 'vertical' }} />
                       </div>
+
+                      {challenge && (
+                        <div style={{ maxWidth: '280px', background: 'rgba(0,0,0,0.02)', padding: '12px 16px', borderRadius: '4px', border: '1px solid rgba(0,0,0,0.08)' }}>
+                          <label style={{ display: 'block', fontSize: '0.75rem', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-muted)' }}>
+                            Anti-Spam Verification: {challenge.question}
+                          </label>
+                          <input
+                            required
+                            type="text"
+                            placeholder="Your answer"
+                            value={challengeAnswer}
+                            onChange={e => setChallengeAnswer(e.target.value)}
+                            style={{ width: '100%', padding: '8px 12px', border: '1px solid rgba(0,0,0,0.2)', background: '#fff', fontSize: '0.9rem' }}
+                          />
+                        </div>
+                      )}
+
                       <button type="submit" disabled={isSubmitting} style={{ alignSelf: 'center', background: 'var(--text-main)', color: '#fff', padding: '16px 48px', border: 'none', cursor: isSubmitting ? 'not-allowed' : 'pointer', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '16px' }}>
                         {isSubmitting ? 'Sending...' : 'Send Message'}
                       </button>

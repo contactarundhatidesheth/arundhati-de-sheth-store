@@ -1,7 +1,13 @@
 import { NextResponse } from 'next/server';
 import { sendContactNotification, sendContactThankYou } from '@/lib/email';
 import { getSupabaseAdmin } from '@/utils/supabase-admin';
-import { validateInquiry, checkRateLimit, isDuplicateInquiry } from '@/lib/anti-spam';
+import { validateInquiry, checkRateLimit, isDuplicateInquiry, generateChallengeToken, verifyChallengeAnswer } from '@/lib/anti-spam';
+
+export async function GET() {
+    // Provide a cryptographically signed math challenge for human verification
+    const challenge = generateChallengeToken();
+    return NextResponse.json(challenge);
+}
 
 export async function POST(req: Request) {
     try {
@@ -20,7 +26,16 @@ export async function POST(req: Request) {
         }
 
         const body = await req.json().catch(() => ({}));
-        const { name, email, phone, subject, message, honeypot, formLoadedAt } = body;
+        const { name, email, phone, subject, message, honeypot, formLoadedAt, challengeId, challengeAnswer, challengeHash } = body;
+
+        // Verify cryptographic human challenge if present or required
+        if (challengeId && challengeHash) {
+            const isHuman = verifyChallengeAnswer(challengeId, challengeAnswer, challengeHash);
+            if (!isHuman) {
+                console.warn(`[AntiSpam] Failed math challenge from IP ${clientIp} (challengeId: ${challengeId})`);
+                return NextResponse.json({ success: true, messageId: 'received' });
+            }
+        }
 
         // 2. Anti-Spam Validation (Honeypot, Timing, Heuristic, Email syntax)
         const validation = validateInquiry({

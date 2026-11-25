@@ -458,3 +458,95 @@ export async function savePageSection(formData: FormData) {
   revalidatePath('/press');
   redirect('/admin/blogs');
 }
+
+// --- BANNER MANAGEMENT ---
+export async function saveBannerSection(formData: FormData) {
+  const supabase = getAdminClient();
+  const id = formData.get('id') as string;
+
+  const imageFile = formData.get('imageFile') as File | null;
+  let finalImageUrl = formData.get('image') as string;
+  if (imageFile && imageFile.size > 0) {
+    finalImageUrl = await saveUpload(imageFile);
+  }
+
+  const payload = {
+    id: id,
+    title: (formData.get('title') as string) || '',
+    subtitle: (formData.get('subtitle') as string) || '',
+    description: (formData.get('description') as string) || '',
+    image: finalImageUrl || '',
+    link: (formData.get('link') as string) || '',
+  };
+
+  const { error } = await supabase.from('page_sections').upsert(payload);
+  if (error) {
+    console.error('Failed to update banner section:', error);
+    throw new Error(error.message);
+  }
+
+  revalidatePath('/admin/banners');
+  revalidatePath('/about');
+  revalidatePath('/collections');
+  revalidatePath('/category/all-products');
+  revalidatePath('/press');
+  revalidatePath('/contact');
+  revalidatePath('/');
+  redirect('/admin/banners?success=true');
+}
+
+// --- COUPON MANAGEMENT ---
+export async function saveCoupon(formData: FormData) {
+  const supabase = getAdminClient();
+  const rawCode = (formData.get('code') as string || '').trim().toUpperCase();
+  if (!rawCode) throw new Error('Coupon code is required');
+
+  const discountType = (formData.get('discountType') as string) || 'PERCENTAGE'; // PERCENTAGE or FIXED
+  const discountValue = (formData.get('discountValue') as string) || '10';
+  const minOrder = (formData.get('minOrder') as string) || '0';
+  const status = (formData.get('status') as string) || 'active'; // active or inactive
+
+  const couponId = `coupon_${rawCode}`;
+  const metadata = JSON.stringify({
+    minOrder: Number(minOrder) || 0,
+    updatedAt: new Date().toISOString()
+  });
+
+  const payload = {
+    id: couponId,
+    title: rawCode,
+    subtitle: discountType,
+    description: discountValue,
+    link: status,
+    image: metadata
+  };
+
+  const { error } = await supabase.from('page_sections').upsert(payload);
+  if (error) {
+    console.error('Failed to save coupon:', error);
+    throw new Error(error.message);
+  }
+
+  revalidatePath('/admin/coupons');
+  revalidatePath('/cart');
+  redirect('/admin/coupons?success=true');
+}
+
+export async function deleteCoupon(code: string) {
+  const supabase = getAdminClient();
+  const couponId = code.startsWith('coupon_') ? code : `coupon_${code.trim().toUpperCase()}`;
+  await supabase.from('page_sections').delete().eq('id', couponId);
+  revalidatePath('/admin/coupons');
+  revalidatePath('/cart');
+  return { success: true };
+}
+
+export async function toggleCouponStatus(code: string, currentStatus: string) {
+  const supabase = getAdminClient();
+  const couponId = code.startsWith('coupon_') ? code : `coupon_${code.trim().toUpperCase()}`;
+  const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
+  await supabase.from('page_sections').update({ link: newStatus }).eq('id', couponId);
+  revalidatePath('/admin/coupons');
+  revalidatePath('/cart');
+  return { success: true };
+}

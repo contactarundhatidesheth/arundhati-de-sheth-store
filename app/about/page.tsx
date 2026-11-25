@@ -106,6 +106,10 @@ export default function AboutPage() {
     }
   };
 
+  const aboutBanner = (data?.pageSections || []).find(s => s.id === 'banner_about');
+  const aboutVideoUrl = aboutBanner?.link || '/videos/about-video.mp4';
+  const aboutImageUrl = aboutBanner?.image;
+
   return (
     <div style={{ background: 'var(--bg-primary)', color: 'var(--text-main)' }}>
 
@@ -138,33 +142,42 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* ── Hero Video Section (Moved Down) ── */}
+      {/* ── Hero Video / Image Section (Moved Down) ── */}
       <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '120px' }}>
-        {/* Video background — swapped to Drive video once downloaded */}
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          playsInline
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-        >
-          {/* Compressed local video (12.1MB, well under Cloudflare Workers 25MB limit) */}
-          <source src="/videos/about-video.mp4" type="video/mp4" />
-          <source src="https://www.arundhatidesheth.com/cdn/shop/videos/c/vp/bd1c0827a8744a549b5e3e7bc2e9f745/bd1c0827a8744a549b5e3e7bc2e9f745.HD-1080p-7.2Mbps-36693499.mp4" type="video/mp4" />
-        </video>
+        {aboutImageUrl && !aboutBanner?.link ? (
+          <img
+            src={aboutImageUrl}
+            alt="About Arundhati De-Sheth"
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        ) : (
+          <video
+            ref={videoRef}
+            key={aboutVideoUrl}
+            autoPlay
+            loop
+            playsInline
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+          >
+            <source src={aboutVideoUrl} type="video/mp4" />
+            <source src="https://www.arundhatidesheth.com/cdn/shop/videos/c/vp/bd1c0827a8744a549b5e3e7bc2e9f745/bd1c0827a8744a549b5e3e7bc2e9f745.HD-1080p-7.2Mbps-36693499.mp4" type="video/mp4" />
+          </video>
+        )}
 
         {/* Dark overlay - changed to subtle bottom gradient for text readability */}
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 25%)' }} />
 
         {/* Video Playback Controls */}
-        <button
-          onClick={toggleVideo}
-          style={{ position: 'absolute', top: '48px', right: '48px', zIndex: 10, background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(4px)', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: 'pointer', transition: 'background 0.3s' }}
-          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.6)'}
-          onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.3)'}
-        >
-          {isPlaying ? <Pause size={20} strokeWidth={1} /> : <Play size={20} strokeWidth={1} style={{ marginLeft: '2px' }} />}
-        </button>
+        {(!aboutImageUrl || aboutBanner?.link) && (
+          <button
+            onClick={toggleVideo}
+            style={{ position: 'absolute', top: '48px', right: '48px', zIndex: 10, background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(4px)', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: 'pointer', transition: 'background 0.3s' }}
+            onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.6)'}
+            onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.3)'}
+          >
+            {isPlaying ? <Pause size={20} strokeWidth={1} /> : <Play size={20} strokeWidth={1} style={{ marginLeft: '2px' }} />}
+          </button>
+        )}
 
         {/* Hero text - bottom-left */}
         <div className="about-hero-text" style={{ position: 'absolute', bottom: '48px', left: '48px', zIndex: 2, textAlign: 'left', color: '#FFFFFF' }}>

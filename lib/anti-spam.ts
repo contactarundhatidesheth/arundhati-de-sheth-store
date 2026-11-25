@@ -176,10 +176,57 @@ export function validateInquiry(data: InquiryData): ValidationResult {
         return { isValid: false, isSpam: true, reason: 'single_token_gibberish_message' };
     }
 
-    // Check for spam payload markers
-    if (/viagra|cialis|crypto\s*investment|telegram:\s*@|whatsapp\s*me\s*for|online\s*casino|poker\s*bonus/i.test(trimmedMessage)) {
+    // Check for spam payload markers & SEO/crypto/spam links
+    if (/viagra|cialis|crypto|forex|invest\s*in|telegram:\s*@|whatsapp\s*me\s*for|online\s*casino|poker\s*bonus|backlinks|seo\s*rank|guest\s*post|domain\s*authority|ranking\s*first\s*page|traffic\s*boost/i.test(trimmedMessage)) {
         return { isValid: false, isSpam: true, reason: 'spam_keywords' };
     }
 
+    // Bots love inserting multiple external URLs into messages
+    const urlMatches = trimmedMessage.match(/https?:\/\/[^\s]+/gi) || [];
+    if (urlMatches.length > 1) {
+        return { isValid: false, isSpam: true, reason: 'multiple_urls_detected' };
+    }
+
+    // Common disposable / burner email domains used by automated spam networks
+    const DISPOSABLE_DOMAINS = [
+        'mailinator.com', 'tempmail.com', 'guerrillamail.com', '10minutemail.com',
+        'yopmail.com', 'trashmail.com', 'sharklasers.com', 'throwawaymail.com',
+        'getairmail.com', 'dispostable.com', 'fakemailgenerator.com', 'mytemp.email',
+        'burnermail.io', 'dropmail.me', 'temp-mail.org', 'crazymailing.com'
+    ];
+    const emailDomain = trimmedEmail.split('@')[1] || '';
+    if (DISPOSABLE_DOMAINS.includes(emailDomain)) {
+        return { isValid: false, isSpam: true, reason: 'disposable_email_domain' };
+    }
+
     return { isValid: true, isSpam: false };
+}
+
+/**
+ * Generate a cryptographically signed human challenge token for form submissions
+ */
+export function generateChallengeToken(): { challengeId: string; question: string; hash: string } {
+    const num1 = Math.floor(Math.random() * 6) + 2; // 2..7
+    const num2 = Math.floor(Math.random() * 5) + 1; // 1..5
+    const answer = num1 + num2;
+    const challengeId = `${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const secret = process.env.SUPABASE_SERVICE_ROLE_KEY || 'arundhati-atelier-secret-salt';
+    const hash = crypto.createHmac('sha256', secret).update(`${challengeId}:${answer}`).digest('hex');
+
+    return {
+        challengeId,
+        question: `What is ${num1} + ${num2}?`,
+        hash
+    };
+}
+
+/**
+ * Verify human challenge answer against signed hash
+ */
+export function verifyChallengeAnswer(challengeId: string, answer: string | number, expectedHash: string): boolean {
+    if (!challengeId || answer === undefined || answer === null || !expectedHash) return false;
+    const secret = process.env.SUPABASE_SERVICE_ROLE_KEY || 'arundhati-atelier-secret-salt';
+    const cleanAnswer = String(answer).trim();
+    const computedHash = crypto.createHmac('sha256', secret).update(`${challengeId}:${cleanAnswer}`).digest('hex');
+    return computedHash === expectedHash;
 }

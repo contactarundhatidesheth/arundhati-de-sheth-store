@@ -5,7 +5,7 @@ import { RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET } from '@/lib/config/razorpay';
 
 export async function POST(req: Request) {
   try {
-    const { amount, cartItems, guestName, guestEmail, guestPhone, shippingAddress } = await req.json();
+    const { amount, cartItems, guestName, guestEmail, guestPhone, shippingAddress, couponCode, discountAmount } = await req.json();
 
     if (!guestName || !guestEmail || !guestPhone) {
       return NextResponse.json({ error: 'Name, Email and Phone are required for checkout' }, { status: 400 });
@@ -49,7 +49,13 @@ export async function POST(req: Request) {
       razorpay_order_id: data.id,
       amount: amount,
       status: 'Pending',
-      shipping_address: { ...shippingAddress, name: guestName, tracking_number: null },
+      shipping_address: {
+        ...shippingAddress,
+        name: guestName,
+        tracking_number: null,
+        coupon_applied: couponCode || null,
+        discount_amount: discountAmount || 0
+      },
       items: cartItems
     });
 

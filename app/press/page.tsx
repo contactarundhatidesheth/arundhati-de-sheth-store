@@ -14,7 +14,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 export default async function PressPage() {
   const db = await readDB();
   const PRESS = [...db.blogs].sort((a, b) => (a.sequence || 999) - (b.sequence || 999));
-  const heroSection = db.pageSections.find(s => s.id === 'press-hero');
+  const heroSection = db.pageSections.find(s => s.id === 'banner_press') || db.pageSections.find(s => s.id === 'press-hero');
   const quoteSection = db.pageSections.find(s => s.id === 'press-quote');
   const mediaSection = db.pageSections.find(s => s.id === 'press-media');
 
