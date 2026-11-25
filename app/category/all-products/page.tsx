@@ -280,7 +280,7 @@ export default function CategoryAllProductsPage() {
       ══════════════════════════════════ */}
       {step === 'collection' && (
         <div className="step-wrapper" style={{ padding: '48px 40px 80px' }}>
-          <div className="collection-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2px', maxWidth: '1600px', margin: '0 auto' }}>
+          <div className="collection-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 'clamp(20px, 3vw, 40px)', maxWidth: '1400px', margin: '0 auto' }}>
             {COLLECTIONS.map(col => {
               const cardImage = col.id === 'EPHEMERALS'
                 ? (ephemeralsCardImage || ephemeralsHeroBanner || col.image)
@@ -295,13 +295,13 @@ export default function CategoryAllProductsPage() {
                   style={{ border: 'none', padding: 0, cursor: 'pointer', width: '100%', display: 'flex', flexDirection: 'column', background: 'transparent' }}
                   className="collection-card"
                 >
-                  <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', background: '#F9F9F9' }}>
+                  <div style={{ position: 'relative', width: '100%', aspectRatio: '1 / 1', overflow: 'hidden', background: '#F8F8F8', borderRadius: '32px' }}>
                     <Image
                       src={cardImage}
                       alt={col.label}
                       fill
                       sizes="(max-width: 768px) 100vw, 50vw"
-                      style={{ objectFit: 'contain', padding: '24px', transition: 'transform 0.7s ease' }}
+                      style={{ objectFit: 'cover', transition: 'transform 0.7s ease' }}
                       className="collection-img"
                     />
                   </div>
