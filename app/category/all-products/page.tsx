@@ -206,7 +206,21 @@ export default function CategoryAllProductsPage() {
     <div className="shop-wrapper" style={{ minHeight: '100vh', background: '#FFF' }}>
 
       {/* Hero Header */}
-      <section style={{ position: 'relative', height: 'clamp(380px, 60vh, 750px)', minHeight: '380px', display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-start', background: '#000000', overflow: 'hidden' }}>
+      <section
+        className="shop-hero-banner"
+        style={{
+          position: 'relative',
+          width: '100%',
+          aspectRatio: '16 / 9',
+          minHeight: '260px',
+          maxHeight: '82vh',
+          display: 'flex',
+          alignItems: 'flex-end',
+          justifyContent: 'flex-start',
+          background: '#000000',
+          overflow: 'hidden'
+        }}
+      >
         <Image
           src={
             step === 'collection'
@@ -221,16 +235,16 @@ export default function CategoryAllProductsPage() {
           fill
           priority
           sizes="100vw"
-          style={{ objectFit: 'cover', objectPosition: 'center', zIndex: 0 }}
+          style={{ objectFit: 'cover', objectPosition: 'center center', zIndex: 0 }}
         />
         {/* Gradient Overlay for Text Legibility */}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0) 100%)', zIndex: 1, pointerEvents: 'none' }} />
-        <div style={{ position: 'relative', zIndex: 10, padding: '0 clamp(20px, 5vw, 60px) clamp(30px, 5vw, 60px)', width: '100%' }}>
-          <h1 style={{ fontSize: 'clamp(2.5rem, 8vw, 5.5rem)', fontWeight: '300', marginBottom: '0', fontFamily: 'var(--font-serif)', fontStyle: 'italic', lineHeight: '1', letterSpacing: '0.02em', color: '#FFFFFF', textShadow: '0 4px 12px rgba(0,0,0,0.4)' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0) 100%)', zIndex: 1, pointerEvents: 'none' }} />
+        <div style={{ position: 'relative', zIndex: 10, padding: '0 clamp(20px, 5vw, 60px) clamp(24px, 4vw, 48px)', width: '100%' }}>
+          <h1 style={{ fontSize: 'clamp(2.2rem, 7vw, 5rem)', fontWeight: '300', marginBottom: '0', fontFamily: 'var(--font-serif)', fontStyle: 'italic', lineHeight: '1', letterSpacing: '0.02em', color: '#FFFFFF', textShadow: '0 4px 12px rgba(0,0,0,0.4)' }}>
             {step === 'collection' ? 'Explore' : collectionLabel}
           </h1>
           {step === 'products' && (!selectedCollection || selectedCollection === 'ALL') && (
-            <p style={{ color: '#FFFFFF', fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', marginTop: '20px', maxWidth: '600px', lineHeight: '1.6', letterSpacing: '0.05em', fontWeight: 300, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+            <p style={{ color: '#FFFFFF', fontSize: 'clamp(0.95rem, 1.4vw, 1.15rem)', marginTop: '16px', maxWidth: '600px', lineHeight: '1.5', letterSpacing: '0.03em', fontWeight: 300, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
               A collection of fine jewels that includes jewels designed and crafted in-house, along with curated finds.
             </p>
           )}
@@ -291,8 +305,8 @@ export default function CategoryAllProductsPage() {
                       className="collection-img"
                     />
                   </div>
-                  <div style={{ padding: '24px 0 16px', textAlign: 'left', width: '100%' }}>
-                    <h2 style={{ color: 'var(--text-main)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1, margin: 0 }}>
+                  <div style={{ padding: '24px 0 16px', textAlign: 'center', width: '100%' }}>
+                    <h2 style={{ color: 'var(--text-main)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1, margin: 0, textAlign: 'center' }}>
                       {col.label}
                     </h2>
                   </div>
@@ -496,6 +510,7 @@ export default function CategoryAllProductsPage() {
         @media (max-width: 768px) {
           /* Hero is full-bleed under the fixed header — remove extra top padding */
           .shop-wrapper { padding-top: 0 !important; }
+          .shop-hero-banner { min-height: 220px !important; aspect-ratio: 16 / 10 !important; }
           .breadcrumb-wrapper { padding: 24px 16px 16px !important; }
           .step-wrapper { padding: 16px 16px 120px !important; }
           .collection-grid { grid-template-columns: 1fr !important; }

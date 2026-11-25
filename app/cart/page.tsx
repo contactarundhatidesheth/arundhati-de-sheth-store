@@ -26,7 +26,15 @@ export default function CartPage() {
   const [activeStep, setActiveStep] = React.useState(1);
   const [pinLoading, setPinLoading] = React.useState(false);
   const [couponCode, setCouponCode] = React.useState('');
-  const [appliedCoupon, setAppliedCoupon] = React.useState<{ code: string; discountAmount: number; discountValue: number; discountType: string } | null>(null);
+  const [appliedCoupon, setAppliedCoupon] = React.useState<{
+    code: string;
+    discountAmount: number;
+    discountValue: number;
+    discountType: string;
+    appliesTo: string;
+    applicableProducts: string[];
+    applicableProductTitles: string[];
+  } | null>(null);
   const [couponLoading, setCouponLoading] = React.useState(false);
   const [couponError, setCouponError] = React.useState<string | null>(null);
   const router = useRouter();
@@ -78,7 +86,10 @@ export default function CartPage() {
         code: data.code,
         discountAmount: data.discountAmount,
         discountValue: data.discountValue,
-        discountType: data.discountType
+        discountType: data.discountType,
+        appliesTo: data.appliesTo || 'ALL',
+        applicableProducts: Array.isArray(data.applicableProducts) ? data.applicableProducts : [],
+        applicableProductTitles: Array.isArray(data.applicableProductTitles) ? data.applicableProductTitles : []
       });
       setCouponError(null);
     } catch (err: any) {
@@ -212,10 +223,30 @@ export default function CartPage() {
 
                       <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px', gap: '12px' }}>
-                          <h3 style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', fontWeight: '400', fontFamily: 'var(--font-sans)', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
-                            {item.product.title}
-                          </h3>
-                          <p style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', flexShrink: 0 }}>₹{item.product.price.toLocaleString('en-IN')}</p>
+                          <div>
+                            <h3 style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', fontWeight: '400', fontFamily: 'var(--font-sans)', wordWrap: 'break-word', overflowWrap: 'break-word', margin: 0 }}>
+                              {item.product.title}
+                            </h3>
+                            {appliedCoupon && (appliedCoupon.appliesTo === 'ALL' || (Array.isArray(appliedCoupon.applicableProducts) && appliedCoupon.applicableProducts.includes(String(item.product.id)))) && (
+                              <div style={{ marginTop: '6px' }}>
+                                <span style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '4px',
+                                  fontSize: '0.72rem',
+                                  color: '#166534',
+                                  backgroundColor: '#dcfce7',
+                                  padding: '2px 8px',
+                                  borderRadius: '12px',
+                                  fontWeight: 500,
+                                  letterSpacing: '0.02em'
+                                }}>
+                                  🏷️ {appliedCoupon.code} applied
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                          <p style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', flexShrink: 0, margin: 0 }}>₹{item.product.price.toLocaleString('en-IN')}</p>
                         </div>
 
                         <div style={{ display: 'flex', alignItems: 'center', marginTop: 'auto', border: '1px solid var(--border)', width: 'fit-content' }}>
@@ -364,7 +395,28 @@ export default function CartPage() {
                     </div>
                     {activeStep === 3 && (
                       <div style={{ marginTop: '16px', animation: 'fadeIn 0.3s' }}>
-                        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Your shipping details have been securely locked. Please complete your transaction using the Order Summary panel on the right.</p>
+                        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginBottom: appliedCoupon ? '12px' : 0 }}>
+                          Your shipping details have been securely locked. Please complete your transaction using the Order Summary panel on the right.
+                        </p>
+                        {appliedCoupon && (
+                          <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '6px', padding: '12px', fontSize: '0.85rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#166534', fontWeight: 600 }}>
+                              <span>🏷️ Coupon {appliedCoupon.code} Applied</span>
+                              <span>-₹{appliedCoupon.discountAmount.toLocaleString('en-IN')}</span>
+                            </div>
+                            <div style={{ marginTop: '4px', color: '#15803d', fontSize: '0.78rem' }}>
+                              {appliedCoupon.appliesTo === 'SELECTED' ? (
+                                appliedCoupon.applicableProductTitles && appliedCoupon.applicableProductTitles.length > 0 ? (
+                                  <span>Applied to: {appliedCoupon.applicableProductTitles.join(', ')}</span>
+                                ) : (
+                                  <span>Applied to: Selected item(s)</span>
+                                )
+                              ) : (
+                                <span>Applied to: All items in your order</span>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -423,22 +475,35 @@ export default function CartPage() {
                       </button>
                     </form>
                   ) : (
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#f0fdf4', padding: '10px 12px', borderRadius: '4px', border: '1px solid #bbf7d0' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#166534' }}>
-                          🏷️ {appliedCoupon.code}
-                        </span>
-                        <span style={{ fontSize: '0.75rem', color: '#15803d' }}>
-                          ({appliedCoupon.discountType === 'PERCENTAGE' ? `${appliedCoupon.discountValue}% off` : `₹${appliedCoupon.discountValue.toLocaleString('en-IN')} off`})
-                        </span>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#f0fdf4', padding: '10px 12px', borderRadius: '4px', border: '1px solid #bbf7d0' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#166534' }}>
+                            🏷️ {appliedCoupon.code}
+                          </span>
+                          <span style={{ fontSize: '0.75rem', color: '#15803d' }}>
+                            ({appliedCoupon.discountType === 'PERCENTAGE' ? `${appliedCoupon.discountValue}% off` : `₹${appliedCoupon.discountValue.toLocaleString('en-IN')} off`})
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={removeCoupon}
+                          style={{ background: 'none', border: 'none', color: '#991b1b', cursor: 'pointer', fontSize: '0.75rem', textDecoration: 'underline' }}
+                        >
+                          Remove
+                        </button>
                       </div>
-                      <button
-                        type="button"
-                        onClick={removeCoupon}
-                        style={{ background: 'none', border: 'none', color: '#991b1b', cursor: 'pointer', fontSize: '0.75rem', textDecoration: 'underline' }}
-                      >
-                        Remove
-                      </button>
+                      <div style={{ marginTop: '8px', fontSize: '0.75rem', color: '#166534', padding: '0 4px', lineHeight: '1.4' }}>
+                        {appliedCoupon.appliesTo === 'SELECTED' ? (
+                          appliedCoupon.applicableProductTitles && appliedCoupon.applicableProductTitles.length > 0 ? (
+                            <span><strong>Applies to:</strong> {appliedCoupon.applicableProductTitles.join(', ')}</span>
+                          ) : (
+                            <span><strong>Applies to:</strong> Selected item(s)</span>
+                          )
+                        ) : (
+                          <span><strong>Applies to:</strong> All items in cart</span>
+                        )}
+                      </div>
                     </div>
                   )}
 

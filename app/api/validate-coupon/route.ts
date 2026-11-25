@@ -90,6 +90,13 @@ export async function POST(req: Request) {
       discountAmount = Math.min(eligibleTotal, discountVal);
     }
 
+    // Extract product titles for display
+    const applicableProductTitles = appliesTo === 'SELECTED'
+      ? items
+          .filter((item: any) => applicableProducts.includes(String(item?.product?.id || item?.id || '')))
+          .map((item: any) => item?.product?.title || item?.title || 'Selected piece')
+      : [];
+
     return NextResponse.json({
       valid: true,
       code: cleanCode,
@@ -97,6 +104,8 @@ export async function POST(req: Request) {
       discountValue: discountVal,
       discountAmount,
       appliesTo,
+      applicableProducts: appliesTo === 'SELECTED' ? applicableProducts : [],
+      applicableProductTitles,
       finalTotal: Math.max(0, total - discountAmount),
       message: appliesTo === 'SELECTED' 
         ? `Coupon ${cleanCode} applied to eligible items!` 
