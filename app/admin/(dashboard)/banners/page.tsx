@@ -31,16 +31,16 @@ const BANNERS_CONFIG: BannerConfig[] = [
   },
   {
     id: 'banner_shop_ephemerals',
-    label: 'Shop - Ephemerals Imagery',
+    label: 'Shop - Ephemerals Card & Hero Imagery',
     page: 'Shop Ephemerals (/category/all-products?collection=EPHEMERALS)',
-    description: 'Hero cover image when viewing the Ephemerals collection.',
+    description: 'Image displayed for the Ephemerals card on the Explore page and hero banner when viewing the collection.',
     defaultMedia: '/images/Ephemerals%20front%20image%20.png',
   },
   {
     id: 'banner_shop_perennials',
-    label: 'Shop - Perennials Imagery',
+    label: 'Shop - Perennials Card & Hero Imagery',
     page: 'Shop Perennials (/category/all-products?collection=PERENNIALS)',
-    description: 'Hero cover image when viewing the Perennials collection.',
+    description: 'Image displayed for the Perennials card on the Explore page and hero banner when viewing the collection.',
     defaultMedia: '/images/Perennials%20front%20image%20.png',
   },
   {

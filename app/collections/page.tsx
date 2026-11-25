@@ -85,7 +85,7 @@ export default function CollectionsPage() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
       {/* Hero Header */}
-      <section style={{ position: 'relative', width: '100%', height: '85vh', overflow: 'hidden', background: '#000' }}>
+      <section style={{ position: 'relative', width: '100%', height: 'clamp(380px, 60vh, 750px)', minHeight: '380px', overflow: 'hidden', background: '#000' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
           {heroVideo ? (
             <video

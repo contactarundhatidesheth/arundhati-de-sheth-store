@@ -143,7 +143,7 @@ export default function AboutPage() {
       </div>
 
       {/* ── Hero Video / Image Section (Moved Down) ── */}
-      <div style={{ position: 'relative', width: '100%', height: '100vh', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '120px' }}>
+      <div style={{ position: 'relative', width: '100%', height: 'clamp(380px, 70vh, 850px)', minHeight: '380px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 'clamp(60px, 8vw, 120px)' }}>
         {aboutImageUrl && !aboutBanner?.link ? (
           <img
             src={aboutImageUrl}

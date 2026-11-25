@@ -149,12 +149,34 @@ export default function CategoryAllProductsPage() {
   const ephemeralsBanner = (data?.pageSections || []).find((s: any) => s.id === 'banner_shop_ephemerals')?.image;
   const perennialsBanner = (data?.pageSections || []).find((s: any) => s.id === 'banner_shop_perennials')?.image;
 
+  // Build category tabs dynamically from standard tabs + any unique categories from products
+  const categoryTabs = React.useMemo(() => {
+    const existingIds = new Set(CATEGORY_TABS.map(t => normalize(t.id)));
+    const dynamicTabs = [...CATEGORY_TABS];
+
+    (data?.products || []).forEach(p => {
+      const rawCat = (p.category || '').trim();
+      if (!rawCat) return;
+      const norm = normalize(rawCat);
+      if (!existingIds.has(norm)) {
+        existingIds.add(norm);
+        // Format label nicely: e.g. "Collab" -> "Collabs" or raw
+        dynamicTabs.push({
+          id: rawCat.toUpperCase(),
+          label: rawCat
+        });
+      }
+    });
+
+    return dynamicTabs;
+  }, [data?.products]);
+
   /* ── Render ── */
   return (
     <div className="shop-wrapper" style={{ minHeight: '100vh', background: '#FFF' }}>
 
       {/* Hero Header */}
-      <section style={{ position: 'relative', minHeight: '85vh', display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-start', background: '#000000', overflow: 'hidden' }}>
+      <section style={{ position: 'relative', height: 'clamp(380px, 60vh, 750px)', minHeight: '380px', display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-start', background: '#000000', overflow: 'hidden' }}>
         <Image
           src={
             step === 'collection'
@@ -168,6 +190,7 @@ export default function CategoryAllProductsPage() {
           alt={step === 'collection' ? 'Explore Collections' : collectionLabel}
           fill
           priority
+          sizes="100vw"
           style={{ objectFit: 'cover', objectPosition: 'center', zIndex: 0 }}
         />
         {/* Gradient Overlay for Text Legibility */}
@@ -176,16 +199,6 @@ export default function CategoryAllProductsPage() {
           <h1 style={{ fontSize: 'clamp(2.5rem, 8vw, 5.5rem)', fontWeight: '300', marginBottom: '0', fontFamily: 'var(--font-serif)', fontStyle: 'italic', lineHeight: '1', letterSpacing: '0.02em', color: '#FFFFFF', textShadow: '0 4px 12px rgba(0,0,0,0.4)' }}>
             {step === 'collection' ? 'Explore' : collectionLabel}
           </h1>
-          {step === 'products' && selectedCollection === 'EPHEMERALS' && (
-            <p style={{ color: '#FFFFFF', fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', marginTop: '20px', maxWidth: '600px', lineHeight: '1.6', letterSpacing: '0.05em', fontWeight: 300, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
-              One of a kind, Fine Jewellery pieces that are part of our collection for a limited period of time.
-            </p>
-          )}
-          {step === 'products' && selectedCollection === 'PERENNIALS' && (
-            <p style={{ color: '#FFFFFF', fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', marginTop: '20px', maxWidth: '600px', lineHeight: '1.6', letterSpacing: '0.05em', fontWeight: 300, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
-              Fine Jewellery Pieces that are part of our permanent collection
-            </p>
-          )}
           {step === 'products' && (!selectedCollection || selectedCollection === 'ALL') && (
             <p style={{ color: '#FFFFFF', fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', marginTop: '20px', maxWidth: '600px', lineHeight: '1.6', letterSpacing: '0.05em', fontWeight: 300, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
               A collection of fine jewels that includes jewels designed and crafted in-house, along with curated finds.
@@ -224,32 +237,38 @@ export default function CategoryAllProductsPage() {
       {step === 'collection' && (
         <div className="step-wrapper" style={{ padding: '48px 40px 80px' }}>
           <div className="collection-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2px', maxWidth: '1600px', margin: '0 auto' }}>
-            {COLLECTIONS.map(col => (
-              <button
-                key={col.id}
-                onClick={() => pickCollection(col.id)}
-                style={{ border: 'none', padding: 0, cursor: 'pointer', width: '100%', display: 'flex', flexDirection: 'column', background: 'transparent' }}
-                className="collection-card"
-              >
-                <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', background: '#F9F9F9' }}>
-                  <Image
-                    src={col.image}
-                    alt={col.label}
-                    fill
-                    style={{ objectFit: 'contain', padding: '24px', transition: 'transform 0.7s ease' }}
-                    className="collection-img"
-                  />
-                </div>
-                <div style={{ padding: '24px 0 16px', textAlign: 'left', width: '100%' }}>
-                  <h2 style={{ color: 'var(--text-main)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1, margin: '0 0 8px 0' }}>
-                    {col.label}
-                  </h2>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.75rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500 }}>
-                    {col.subtitle}
-                  </p>
-                </div>
-              </button>
-            ))}
+            {COLLECTIONS.map(col => {
+              const cardImage = col.id === 'EPHEMERALS'
+                ? (ephemeralsBanner || col.image)
+                : col.id === 'PERENNIALS'
+                  ? (perennialsBanner || col.image)
+                  : col.image;
+
+              return (
+                <button
+                  key={col.id}
+                  onClick={() => pickCollection(col.id)}
+                  style={{ border: 'none', padding: 0, cursor: 'pointer', width: '100%', display: 'flex', flexDirection: 'column', background: 'transparent' }}
+                  className="collection-card"
+                >
+                  <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3', overflow: 'hidden', background: '#F9F9F9' }}>
+                    <Image
+                      src={cardImage}
+                      alt={col.label}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      style={{ objectFit: 'contain', padding: '24px', transition: 'transform 0.7s ease' }}
+                      className="collection-img"
+                    />
+                  </div>
+                  <div style={{ padding: '24px 0 16px', textAlign: 'left', width: '100%' }}>
+                    <h2 style={{ color: 'var(--text-main)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1, margin: 0 }}>
+                      {col.label}
+                    </h2>
+                  </div>
+                </button>
+              );
+            })}
           </div>
           
           <div style={{ textAlign: 'center', marginTop: '48px' }}>
@@ -344,7 +363,7 @@ export default function CategoryAllProductsPage() {
               >
                 All Pieces
               </button>
-              {CATEGORY_TABS.map(tab => {
+              {categoryTabs.map(tab => {
                 const isSelected = selectedType !== null && matchCategory(tab.id, selectedType);
                 return (
                   <button
