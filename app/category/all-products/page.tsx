@@ -151,18 +151,43 @@ export default function CategoryAllProductsPage() {
   const ephemeralsCardImage = (data?.pageSections || []).find((s: any) => s.id === 'card_shop_ephemerals')?.image;
   const perennialsCardImage = (data?.pageSections || []).find((s: any) => s.id === 'card_shop_perennials')?.image;
 
-  // Build category tabs dynamically from standard tabs + any unique categories from products
+  // Build category tabs dynamically based on products available in the selected collection
   const categoryTabs = React.useMemo(() => {
-    const existingIds = new Set(CATEGORY_TABS.map(t => normalize(t.id)));
-    const dynamicTabs = [...CATEGORY_TABS];
+    // If a specific collection is selected (e.g. EPHEMERALS or PERENNIALS), only show category tabs that actually exist in that collection
+    const activeProducts = (data?.products || []).filter(p => {
+      if (p.isActive === false) return false;
+      if (selectedCollection && selectedCollection !== 'ALL') {
+        return normalize(p.collection).includes(normalize(selectedCollection));
+      }
+      return true;
+    });
 
-    (data?.products || []).forEach(p => {
+    const categoriesInCollection = new Set<string>();
+    activeProducts.forEach(p => {
+      const c = (p.category || '').trim();
+      if (c) categoriesInCollection.add(normalize(c));
+    });
+
+    // Start with default tabs that have products in the current collection (or all default tabs if viewing ALL)
+    const dynamicTabs: { id: string; label: string }[] = [];
+    const addedIds = new Set<string>();
+
+    CATEGORY_TABS.forEach(tab => {
+      const norm = normalize(tab.id);
+      // In ALL view, show all default tabs; in specific collection, show if collection has products matching
+      if (!selectedCollection || selectedCollection === 'ALL' || Array.from(categoriesInCollection).some(c => matchCategory(c, tab.id))) {
+        dynamicTabs.push(tab);
+        addedIds.add(norm);
+      }
+    });
+
+    // Add any custom categories (like "Sunglasses", "Collab") present in the active products
+    activeProducts.forEach(p => {
       const rawCat = (p.category || '').trim();
       if (!rawCat) return;
       const norm = normalize(rawCat);
-      if (!existingIds.has(norm)) {
-        existingIds.add(norm);
-        // Format label nicely: e.g. "Collab" -> "Collabs" or raw
+      if (!addedIds.has(norm) && !Array.from(addedIds).some(id => matchCategory(norm, id))) {
+        addedIds.add(norm);
         dynamicTabs.push({
           id: rawCat.toUpperCase(),
           label: rawCat
@@ -171,7 +196,7 @@ export default function CategoryAllProductsPage() {
     });
 
     return dynamicTabs;
-  }, [data?.products]);
+  }, [data?.products, selectedCollection]);
 
   /* ── Render ── */
   return (
