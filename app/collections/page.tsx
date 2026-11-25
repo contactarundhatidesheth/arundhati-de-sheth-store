@@ -83,10 +83,24 @@ export default function CollectionsPage() {
   const heroVideo = highJewelleryBanner?.link;
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
+    <div className="collections-wrapper" style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
       {/* Hero Header */}
-      <section style={{ position: 'relative', width: '100%', height: 'clamp(380px, 60vh, 750px)', minHeight: '380px', overflow: 'hidden', background: '#000' }}>
-        <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
+      <section
+        className="collections-hero-banner"
+        style={{
+          position: 'relative',
+          width: '100%',
+          aspectRatio: '16 / 9',
+          minHeight: '260px',
+          maxHeight: '82vh',
+          display: 'flex',
+          alignItems: 'flex-end',
+          justifyContent: 'flex-start',
+          background: '#000000',
+          overflow: 'hidden'
+        }}
+      >
+        <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
           {heroVideo ? (
             <video
               autoPlay
@@ -98,25 +112,29 @@ export default function CollectionsPage() {
               <source src={heroVideo} type="video/mp4" />
             </video>
           ) : (
-            <img
+            <Image
               src={heroImage}
               alt="High Jewellery Collection"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 1 }}
+              fill
+              priority
+              sizes="100vw"
+              style={{ objectFit: 'cover', objectPosition: 'center center' }}
             />
           )}
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0) 100%)' }} />
         </div>
-        <div style={{ position: 'absolute', bottom: 'clamp(30px, 5vw, 60px)', left: 'clamp(20px, 5vw, 60px)', right: '20px', zIndex: 10 }}>
-
+        {/* Gradient Overlay for Text Legibility */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0) 100%)', zIndex: 1, pointerEvents: 'none' }} />
+        <div style={{ position: 'relative', zIndex: 10, padding: '0 clamp(20px, 5vw, 60px) clamp(24px, 4vw, 48px)', width: '100%' }}>
           <h1 style={{
-            fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+            fontSize: 'clamp(2.2rem, 7vw, 5rem)',
             fontWeight: '300',
+            marginBottom: '0',
             fontFamily: 'var(--font-serif)',
-            color: '#fff',
-            margin: '0 0 16px 0',
-            lineHeight: 1,
-            letterSpacing: '-0.02em',
-            fontStyle: 'italic'
+            fontStyle: 'italic',
+            lineHeight: '1',
+            letterSpacing: '0.02em',
+            color: '#FFFFFF',
+            textShadow: '0 4px 12px rgba(0,0,0,0.4)'
           }}>
             High Jewellery
           </h1>
@@ -292,6 +310,11 @@ export default function CollectionsPage() {
             gap: 0 !important;
             padding: 0 !important;
           }
+        }
+
+        @media (max-width: 768px) {
+          .collections-wrapper { padding-top: 0 !important; }
+          .collections-hero-banner { min-height: 220px !important; aspect-ratio: 16 / 10 !important; }
         }
       `}</style>
     </div>
