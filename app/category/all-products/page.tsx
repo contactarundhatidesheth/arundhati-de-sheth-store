@@ -193,11 +193,43 @@ export default function CategoryAllProductsPage() {
     ? 'All Pieces'
     : COLLECTIONS.find(c => c.id === selectedCollection)?.label ?? 'All Pieces';
 
-  const exploreBanner = (data?.pageSections || []).find((s: any) => s.id === 'banner_shop_explore')?.image;
-  const ephemeralsHeroBanner = (data?.pageSections || []).find((s: any) => s.id === 'banner_shop_ephemerals')?.image;
-  const perennialsHeroBanner = (data?.pageSections || []).find((s: any) => s.id === 'banner_shop_perennials')?.image;
-  const ephemeralsCardImage = (data?.pageSections || []).find((s: any) => s.id === 'card_shop_ephemerals')?.image;
-  const perennialsCardImage = (data?.pageSections || []).find((s: any) => s.id === 'card_shop_perennials')?.image;
+  // Dynamic media sections from CMS
+  const exploreBannerSection = (data?.pageSections || []).find((s: any) => s.id === 'banner_shop_explore');
+  const exploreBanner = exploreBannerSection?.image;
+  const exploreVideo = exploreBannerSection?.link;
+
+  const ephemeralsHeroSection = (data?.pageSections || []).find((s: any) => s.id === 'banner_shop_ephemerals');
+  const ephemeralsHeroBanner = ephemeralsHeroSection?.image;
+  const ephemeralsHeroVideo = ephemeralsHeroSection?.link;
+
+  const perennialsHeroSection = (data?.pageSections || []).find((s: any) => s.id === 'banner_shop_perennials');
+  const perennialsHeroBanner = perennialsHeroSection?.image;
+  const perennialsHeroVideo = perennialsHeroSection?.link;
+
+  const ephemeralsCardSection = (data?.pageSections || []).find((s: any) => s.id === 'card_shop_ephemerals');
+  const ephemeralsCardImage = ephemeralsCardSection?.image;
+  const ephemeralsCardVideo = ephemeralsCardSection?.link;
+
+  const perennialsCardSection = (data?.pageSections || []).find((s: any) => s.id === 'card_shop_perennials');
+  const perennialsCardImage = perennialsCardSection?.image;
+  const perennialsCardVideo = perennialsCardSection?.link;
+
+  // Active Hero Media
+  const activeHeroVideo = step === 'collection'
+    ? exploreVideo
+    : selectedCollection === 'EPHEMERALS'
+      ? (ephemeralsHeroVideo || exploreVideo)
+      : selectedCollection === 'PERENNIALS'
+        ? (perennialsHeroVideo || exploreVideo)
+        : exploreVideo;
+
+  const activeHeroImage = step === 'collection'
+    ? (exploreBanner || '/images/Explore%20.png')
+    : selectedCollection === 'EPHEMERALS'
+      ? (ephemeralsHeroBanner || '/images/Ephemerals%20.png')
+      : selectedCollection === 'PERENNIALS'
+        ? (perennialsHeroBanner || '/images/Perennials%20.png')
+        : (exploreBanner || '/images/Explore%20.png');
 
 
 
@@ -221,22 +253,26 @@ export default function CategoryAllProductsPage() {
           overflow: 'hidden'
         }}
       >
-        <Image
-          src={
-            step === 'collection'
-              ? (exploreBanner || '/images/Explore%20.png')
-              : selectedCollection === 'EPHEMERALS'
-                ? (ephemeralsHeroBanner || '/images/Ephemerals%20.png')
-                : selectedCollection === 'PERENNIALS'
-                  ? (perennialsHeroBanner || '/images/Perennials%20.png')
-                  : (exploreBanner || '/images/Explore%20.png')
-          }
-          alt={step === 'collection' ? 'Explore Collections' : collectionLabel}
-          fill
-          priority
-          sizes="100vw"
-          style={{ objectFit: 'cover', objectPosition: 'center center', zIndex: 0 }}
-        />
+        {activeHeroVideo ? (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}
+          >
+            <source src={activeHeroVideo} type="video/mp4" />
+          </video>
+        ) : (
+          <Image
+            src={activeHeroImage}
+            alt={step === 'collection' ? 'Explore Collections' : collectionLabel}
+            fill
+            priority
+            sizes="100vw"
+            style={{ objectFit: 'cover', objectPosition: 'center center', zIndex: 0 }}
+          />
+        )}
         {/* Gradient Overlay for Text Legibility */}
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0) 100%)', zIndex: 1, pointerEvents: 'none' }} />
         <div style={{ position: 'relative', zIndex: 10, padding: '0 clamp(20px, 5vw, 60px) clamp(24px, 4vw, 48px)', width: '100%' }}>
@@ -292,6 +328,12 @@ export default function CategoryAllProductsPage() {
                   ? (perennialsCardImage || perennialsHeroBanner || col.image)
                   : col.image;
 
+              const cardVideo = col.id === 'EPHEMERALS'
+                ? ephemeralsCardVideo
+                : col.id === 'PERENNIALS'
+                  ? perennialsCardVideo
+                  : null;
+
               return (
                 <button
                   key={col.id}
@@ -300,14 +342,26 @@ export default function CategoryAllProductsPage() {
                   className="collection-card"
                 >
                   <div style={{ position: 'relative', width: '100%', aspectRatio: '1 / 1', overflow: 'hidden', background: '#F8F8F8', borderRadius: '32px' }}>
-                    <Image
-                      src={cardImage}
-                      alt={col.label}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      style={{ objectFit: 'cover', transition: 'transform 0.7s ease' }}
-                      className="collection-img"
-                    />
+                    {cardVideo ? (
+                      <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      >
+                        <source src={cardVideo} type="video/mp4" />
+                      </video>
+                    ) : (
+                      <Image
+                        src={cardImage}
+                        alt={col.label}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        style={{ objectFit: 'cover', transition: 'transform 0.7s ease' }}
+                        className="collection-img"
+                      />
+                    )}
                   </div>
                   <div style={{ padding: '24px 0 16px', textAlign: 'center', width: '100%' }}>
                     <h2 style={{ color: 'var(--text-main)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontFamily: 'var(--font-serif)', fontWeight: 400, lineHeight: 1.1, margin: 0, textAlign: 'center' }}>
