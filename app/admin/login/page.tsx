@@ -7,8 +7,19 @@ import { Eye, EyeOff, Lock, ArrowRight, Mail } from 'lucide-react';
 export default function AdminLogin() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const passwordInputRef = React.useRef<HTMLInputElement>(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const togglePasswordVisibility = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const nextState = !showPassword;
+    setShowPassword(nextState);
+    if (passwordInputRef.current) {
+      passwordInputRef.current.type = nextState ? 'text' : 'password';
+    }
+  };
 
   // Forgot Password Modal State
   const [isForgotOpen, setIsForgotOpen] = useState(false);
@@ -93,13 +104,17 @@ export default function AdminLogin() {
             </label>
             <div style={{ position: 'relative' }}>
               <input
+                ref={passwordInputRef}
                 type={showPassword ? 'text' : 'password'}
+                name="password"
+                id="admin-password-input"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter admin password"
+                autoComplete="current-password"
                 style={{
                   width: '100%',
-                  padding: '13px 44px 13px 14px',
+                  padding: '13px 48px 13px 14px',
                   border: '1px solid #ddd',
                   borderRadius: '6px',
                   outline: 'none',
@@ -114,25 +129,22 @@ export default function AdminLogin() {
                 type="button"
                 tabIndex={-1}
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setShowPassword((prev) => !prev);
-                }}
+                onClick={togglePasswordVisibility}
                 style={{
                   position: 'absolute',
-                  right: '12px',
+                  right: '8px',
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  background: 'none',
+                  background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
                   color: showPassword ? '#111' : '#888',
-                  padding: '6px',
+                  padding: '8px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  zIndex: 10,
+                  zIndex: 20,
+                  userSelect: 'none',
                 }}
               >
                 {showPassword ? <EyeOff size={19} /> : <Eye size={19} />}
