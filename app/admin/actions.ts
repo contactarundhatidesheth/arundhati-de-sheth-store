@@ -505,10 +505,16 @@ export async function saveCoupon(formData: FormData) {
   const discountValue = (formData.get('discountValue') as string) || '10';
   const minOrder = (formData.get('minOrder') as string) || '0';
   const status = (formData.get('status') as string) || 'active'; // active or inactive
+  const appliesTo = (formData.get('appliesTo') as string) || 'ALL'; // ALL or SELECTED
+
+  // Get selected product IDs
+  const applicableProducts = formData.getAll('applicableProducts').map(v => String(v));
 
   const couponId = `coupon_${rawCode}`;
   const metadata = JSON.stringify({
     minOrder: Number(minOrder) || 0,
+    appliesTo,
+    applicableProducts,
     updatedAt: new Date().toISOString()
   });
 

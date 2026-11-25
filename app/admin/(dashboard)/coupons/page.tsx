@@ -1,6 +1,7 @@
 import React from 'react';
 import { getSupabaseAdmin } from '@/utils/supabase-admin';
-import { saveCoupon, deleteCoupon, toggleCouponStatus } from '@/app/admin/actions';
+import { deleteCoupon, toggleCouponStatus } from '@/app/admin/actions';
+import { CouponCreationForm } from './CouponCreationForm';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,22 +12,37 @@ interface CouponItem {
   discountValue: number;
   status: 'active' | 'inactive';
   minOrder: number;
+  appliesTo: 'ALL' | 'SELECTED';
+  applicableProducts: string[];
   updatedAt?: string;
 }
 
 export default async function AdminCouponsPage() {
   const supabase = getSupabaseAdmin();
-  const { data: sections } = await supabase
-    .from('page_sections')
-    .select('*')
-    .like('id', 'coupon_%');
+  const [
+    { data: sections },
+    { data: products }
+  ] = await Promise.all([
+    supabase.from('page_sections').select('*').like('id', 'coupon_%'),
+    supabase.from('products').select('id, title, price').order('title', { ascending: true })
+  ]);
+
+  const productMap = new Map<string, string>();
+  (products || []).forEach((p: any) => {
+    productMap.set(String(p.id), p.title);
+  });
 
   const coupons: CouponItem[] = (sections || []).map((s: any) => {
     let minOrder = 0;
+    let appliesTo: 'ALL' | 'SELECTED' = 'ALL';
+    let applicableProducts: string[] = [];
+
     try {
       if (s.image) {
         const parsed = JSON.parse(s.image);
         minOrder = parsed.minOrder || 0;
+        appliesTo = parsed.appliesTo === 'SELECTED' ? 'SELECTED' : 'ALL';
+        applicableProducts = Array.isArray(parsed.applicableProducts) ? parsed.applicableProducts : [];
       }
     } catch (e) {}
 
@@ -37,6 +53,8 @@ export default async function AdminCouponsPage() {
       discountValue: parseFloat(s.description) || 0,
       status: (s.link === 'inactive' ? 'inactive' : 'active') as any,
       minOrder,
+      appliesTo,
+      applicableProducts
     };
   });
 
@@ -47,7 +65,7 @@ export default async function AdminCouponsPage() {
           Discount & Coupon Codes
         </h1>
         <p style={{ color: '#666', fontSize: '0.95rem', lineHeight: '1.5' }}>
-          Create and manage promotional discount coupons for the storefront checkout. Customers can enter these codes in their cart to receive instant percentage or flat discounts.
+          Create and manage promotional discount coupons for the storefront checkout. Coupons can apply across all store items or be restricted to specific selected products.
         </p>
       </div>
 
@@ -65,110 +83,7 @@ export default async function AdminCouponsPage() {
         <h2 style={{ fontSize: '1.2rem', fontWeight: 500, marginBottom: '20px' }}>
           Create New Coupon
         </h2>
-        <form action={saveCoupon} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', alignItems: 'flex-end' }}>
-          <div>
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, marginBottom: '6px' }}>
-              Coupon Code *
-            </label>
-            <input
-              required
-              type="text"
-              name="code"
-              placeholder="e.g. FESTIVE10"
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                borderRadius: '4px',
-                border: '1px solid #ccc',
-                fontSize: '0.9rem',
-                textTransform: 'uppercase',
-              }}
-            />
-          </div>
-
-          <div>
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, marginBottom: '6px' }}>
-              Discount Type
-            </label>
-            <select
-              name="discountType"
-              defaultValue="PERCENTAGE"
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                borderRadius: '4px',
-                border: '1px solid #ccc',
-                fontSize: '0.9rem',
-                background: '#fff',
-              }}
-            >
-              <option value="PERCENTAGE">Percentage (%)</option>
-              <option value="FIXED">Flat Amount (₹)</option>
-            </select>
-          </div>
-
-          <div>
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, marginBottom: '6px' }}>
-              Discount Value *
-            </label>
-            <input
-              required
-              type="number"
-              name="discountValue"
-              min="1"
-              step="any"
-              placeholder="e.g. 10 for 10% or 500 for ₹500"
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                borderRadius: '4px',
-                border: '1px solid #ccc',
-                fontSize: '0.9rem',
-              }}
-            />
-          </div>
-
-          <div>
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, marginBottom: '6px' }}>
-              Minimum Cart Order (₹)
-            </label>
-            <input
-              type="number"
-              name="minOrder"
-              defaultValue="0"
-              min="0"
-              placeholder="0"
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                borderRadius: '4px',
-                border: '1px solid #ccc',
-                fontSize: '0.9rem',
-              }}
-            />
-          </div>
-
-          <div>
-            <input type="hidden" name="status" value="active" />
-            <button
-              type="submit"
-              style={{
-                width: '100%',
-                background: '#000',
-                color: '#fff',
-                padding: '12px 24px',
-                borderRadius: '4px',
-                border: 'none',
-                fontSize: '0.85rem',
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                cursor: 'pointer',
-              }}
-            >
-              + Create Coupon
-            </button>
-          </div>
-        </form>
+        <CouponCreationForm products={products || []} />
       </div>
 
       {/* Active Coupons List */}
@@ -178,6 +93,7 @@ export default async function AdminCouponsPage() {
             <tr style={{ borderBottom: '1px solid #eaeaea', background: '#fafafa' }}>
               <th style={{ padding: '16px 24px', fontWeight: 500, fontSize: '0.85rem', color: '#666' }}>Coupon Code</th>
               <th style={{ padding: '16px 24px', fontWeight: 500, fontSize: '0.85rem', color: '#666' }}>Discount</th>
+              <th style={{ padding: '16px 24px', fontWeight: 500, fontSize: '0.85rem', color: '#666' }}>Scope / Products</th>
               <th style={{ padding: '16px 24px', fontWeight: 500, fontSize: '0.85rem', color: '#666' }}>Min Order</th>
               <th style={{ padding: '16px 24px', fontWeight: 500, fontSize: '0.85rem', color: '#666' }}>Status</th>
               <th style={{ padding: '16px 24px', fontWeight: 500, fontSize: '0.85rem', color: '#666', textAlign: 'right' }}>Actions</th>
@@ -186,7 +102,7 @@ export default async function AdminCouponsPage() {
           <tbody>
             {coupons.length === 0 ? (
               <tr>
-                <td colSpan={5} style={{ padding: '48px', textAlign: 'center', color: '#888', fontStyle: 'italic' }}>
+                <td colSpan={6} style={{ padding: '48px', textAlign: 'center', color: '#888', fontStyle: 'italic' }}>
                   No discount coupons created yet. Create your first coupon above!
                 </td>
               </tr>
@@ -198,6 +114,20 @@ export default async function AdminCouponsPage() {
                   </td>
                   <td style={{ padding: '16px 24px', fontSize: '0.9rem' }}>
                     {c.discountType === 'PERCENTAGE' ? `${c.discountValue}% OFF` : `₹${c.discountValue.toLocaleString('en-IN')} OFF`}
+                  </td>
+                  <td style={{ padding: '16px 24px', fontSize: '0.85rem' }}>
+                    {c.appliesTo === 'SELECTED' ? (
+                      <div>
+                        <span style={{ display: 'inline-block', background: '#e0f2fe', color: '#0369a1', padding: '2px 8px', borderRadius: '4px', fontWeight: 500, fontSize: '0.75rem', marginBottom: '4px' }}>
+                          Selected ({c.applicableProducts.length} items)
+                        </span>
+                        <div style={{ color: '#666', fontSize: '0.75rem', maxWidth: '240px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {c.applicableProducts.map(id => productMap.get(id) || id).join(', ')}
+                        </div>
+                      </div>
+                    ) : (
+                      <span style={{ color: '#555' }}>All Store Products</span>
+                    )}
                   </td>
                   <td style={{ padding: '16px 24px', fontSize: '0.9rem', color: '#666' }}>
                     {c.minOrder > 0 ? `₹${c.minOrder.toLocaleString('en-IN')}` : 'None'}

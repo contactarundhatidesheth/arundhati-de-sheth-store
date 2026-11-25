@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
   try {
-    const { code, cartTotal } = await req.json();
+    const { code, cartTotal, cartItems } = await req.json();
     if (!code || typeof code !== 'string') {
       return NextResponse.json({ error: 'Please enter a coupon code' }, { status: 400 });
     }
@@ -32,10 +32,15 @@ export async function POST(req: Request) {
     const discountVal = parseFloat(section.description) || 0;
 
     let minOrder = 0;
+    let appliesTo = 'ALL';
+    let applicableProducts: string[] = [];
+
     try {
       if (section.image) {
         const meta = JSON.parse(section.image);
         minOrder = meta.minOrder || 0;
+        appliesTo = meta.appliesTo || 'ALL';
+        applicableProducts = Array.isArray(meta.applicableProducts) ? meta.applicableProducts : [];
       }
     } catch (e) {}
 
@@ -46,11 +51,43 @@ export async function POST(req: Request) {
       }, { status: 400 });
     }
 
+    // Product eligibility checking
+    const items = Array.isArray(cartItems) ? cartItems : [];
+    let eligibleTotal = total;
+
+    if (appliesTo === 'SELECTED') {
+      if (applicableProducts.length === 0) {
+        return NextResponse.json({
+          error: 'This coupon is not configured for any products currently.'
+        }, { status: 400 });
+      }
+
+      // Check which items in cart match applicable product IDs
+      const matchingItems = items.filter((item: any) => {
+        const pId = String(item?.product?.id || item?.id || '');
+        return applicableProducts.includes(pId);
+      });
+
+      if (matchingItems.length === 0) {
+        return NextResponse.json({
+          error: 'This coupon code is not applicable to any of the items in your cart.'
+        }, { status: 400 });
+      }
+
+      // Calculate total only for eligible products in cart
+      eligibleTotal = matchingItems.reduce((sum: number, item: any) => {
+        const itemPrice = Number(item?.product?.price || item?.price || 0);
+        const itemQty = Number(item?.quantity || 1);
+        return sum + (itemPrice * itemQty);
+      }, 0);
+    }
+
     let discountAmount = 0;
     if (discountType === 'PERCENTAGE') {
-      discountAmount = Math.round((total * discountVal) / 100);
+      discountAmount = Math.round((eligibleTotal * discountVal) / 100);
     } else {
-      discountAmount = Math.min(total, discountVal);
+      // Fixed discount cannot exceed eligible items total
+      discountAmount = Math.min(eligibleTotal, discountVal);
     }
 
     return NextResponse.json({
@@ -59,8 +96,11 @@ export async function POST(req: Request) {
       discountType,
       discountValue: discountVal,
       discountAmount,
+      appliesTo,
       finalTotal: Math.max(0, total - discountAmount),
-      message: `Coupon ${cleanCode} applied successfully!`
+      message: appliesTo === 'SELECTED' 
+        ? `Coupon ${cleanCode} applied to eligible items!` 
+        : `Coupon ${cleanCode} applied successfully!`
     });
   } catch (err: any) {
     console.error('Coupon validation error:', err);
