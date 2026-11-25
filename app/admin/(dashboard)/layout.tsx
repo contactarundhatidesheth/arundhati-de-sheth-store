@@ -14,6 +14,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: '#f5f5f5', color: '#111' }}>
       <aside
+        className="admin-sidebar"
         style={{
           width: '260px',
           minWidth: '260px',
@@ -27,10 +28,19 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           flexDirection: 'column',
           justifyContent: 'space-between',
           overflowY: 'auto',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
           boxSizing: 'border-box',
           zIndex: 40,
         }}
       >
+        <style>{`
+          .admin-sidebar::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+          }
+        `}</style>
         <div>
           <h2 style={{ fontSize: '1.2rem', fontFamily: 'var(--font-serif)', marginBottom: '40px', letterSpacing: '0.05em' }}>
             A.D. Admin
@@ -49,7 +59,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </nav>
         </div>
 
-        <div style={{ paddingTop: '32px', marginTop: '24px', borderTop: '1px solid #f0f0f0', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div style={{ paddingTop: '28px', marginTop: '20px', borderTop: '1px solid #f0f0f0', display: 'flex', flexDirection: 'column', gap: '14px' }}>
           <a href="/api/admin-logout" style={{ textDecoration: 'none', color: '#cc0000', fontSize: '0.95rem', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span>⚿</span> Lock Panel (Logout)
           </a>
