@@ -1,6 +1,6 @@
 import React from 'react';
 import { getSupabaseAdmin } from '@/utils/supabase-admin';
-import { saveBannerSection } from '@/app/admin/actions';
+import { BannerMediaCard } from './BannerMediaCard';
 
 export const dynamic = 'force-dynamic';
 
@@ -109,129 +109,12 @@ export default async function AdminBannersPage() {
           const currentVideo = current?.link || '';
 
           return (
-            <div
+            <BannerMediaCard
               key={banner.id}
-              style={{
-                background: '#fff',
-                borderRadius: '8px',
-                border: '1px solid #eaeaea',
-                padding: '28px 32px',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                <div>
-                  <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#888', fontWeight: 600 }}>
-                    {banner.page}
-                  </span>
-                  <h2 style={{ fontSize: '1.3rem', fontWeight: 500, margin: '4px 0 6px' }}>
-                    {banner.label}
-                  </h2>
-                  <p style={{ fontSize: '0.88rem', color: '#666', margin: 0 }}>
-                    {banner.description}
-                  </p>
-                </div>
-              </div>
-
-              {/* Preview of current media */}
-              <div style={{ marginBottom: '20px', padding: '12px', background: '#fafafa', borderRadius: '6px', border: '1px solid #f0f0f0' }}>
-                <p style={{ fontSize: '0.8rem', color: '#888', margin: '0 0 8px 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  Current Active Source:
-                </p>
-                <div style={{ fontSize: '0.85rem', color: '#111', wordBreak: 'break-all' }}>
-                  {currentImage || currentVideo ? (
-                    <div>
-                      {currentImage && <div><strong>Image:</strong> {currentImage}</div>}
-                      {currentVideo && <div><strong>Video URL:</strong> {currentVideo}</div>}
-                    </div>
-                  ) : (
-                    <span style={{ color: '#999', fontStyle: 'italic' }}>Default: {banner.defaultMedia}</span>
-                  )}
-                </div>
-              </div>
-
-              <form action={saveBannerSection} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <input type="hidden" name="id" value={banner.id} />
-                <input type="hidden" name="title" value={banner.label} />
-
-                <div style={{ display: 'grid', gridTemplateColumns: banner.supportsVideo ? '1fr 1fr' : '1fr', gap: '16px' }}>
-                  {/* Image URL or upload */}
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, marginBottom: '6px' }}>
-                      Image URL (or upload below)
-                    </label>
-                    <input
-                      type="text"
-                      name="image"
-                      defaultValue={currentImage}
-                      placeholder={banner.defaultMedia}
-                      style={{
-                        width: '100%',
-                        padding: '10px 12px',
-                        borderRadius: '4px',
-                        border: '1px solid #ccc',
-                        fontSize: '0.9rem',
-                      }}
-                    />
-                    <div style={{ marginTop: '8px' }}>
-                      <label style={{ fontSize: '0.75rem', color: '#666', display: 'block', marginBottom: '4px' }}>
-                        Or upload new image file:
-                      </label>
-                      <input
-                        type="file"
-                        name="imageFile"
-                        accept="image/*"
-                        style={{ fontSize: '0.85rem' }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Video URL if supported */}
-                  {banner.supportsVideo && (
-                    <div>
-                      <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 500, marginBottom: '6px' }}>
-                        Video URL (.mp4 / stream URL)
-                      </label>
-                      <input
-                        type="text"
-                        name="link"
-                        defaultValue={currentVideo}
-                        placeholder={banner.defaultMedia.endsWith('.mp4') ? banner.defaultMedia : 'https://.../video.mp4'}
-                        style={{
-                          width: '100%',
-                          padding: '10px 12px',
-                          borderRadius: '4px',
-                          border: '1px solid #ccc',
-                          fontSize: '0.9rem',
-                        }}
-                      />
-                      <p style={{ fontSize: '0.75rem', color: '#888', marginTop: '6px', lineHeight: '1.4' }}>
-                        If provided, this video will play in the hero background.
-                      </p>
-                    </div>
-                  )}
-                </div>
-
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
-                  <button
-                    type="submit"
-                    style={{
-                      background: '#000',
-                      color: '#fff',
-                      padding: '10px 24px',
-                      borderRadius: '4px',
-                      border: 'none',
-                      fontSize: '0.85rem',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.08em',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    Save Banner
-                  </button>
-                </div>
-              </form>
-            </div>
+              banner={banner}
+              currentImage={currentImage}
+              currentVideo={currentVideo}
+            />
           );
         })}
       </div>

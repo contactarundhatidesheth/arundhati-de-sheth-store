@@ -463,11 +463,19 @@ export async function savePageSection(formData: FormData) {
 export async function saveBannerSection(formData: FormData) {
   const supabase = getAdminClient();
   const id = formData.get('id') as string;
+  const mediaType = formData.get('mediaType') as string | null;
 
   const imageFile = formData.get('imageFile') as File | null;
-  let finalImageUrl = formData.get('image') as string;
+  let finalImageUrl = (formData.get('image') as string) || '';
   if (imageFile && imageFile.size > 0) {
     finalImageUrl = await saveUpload(imageFile);
+  }
+
+  let finalLink = (formData.get('link') as string) || '';
+
+  // If user explicitly chose Image, clear the video link so video doesn't override image
+  if (mediaType === 'image') {
+    finalLink = '';
   }
 
   const payload = {
@@ -475,8 +483,8 @@ export async function saveBannerSection(formData: FormData) {
     title: (formData.get('title') as string) || '',
     subtitle: (formData.get('subtitle') as string) || '',
     description: (formData.get('description') as string) || '',
-    image: finalImageUrl || '',
-    link: (formData.get('link') as string) || '',
+    image: finalImageUrl,
+    link: finalLink,
   };
 
   const { error } = await supabase.from('page_sections').upsert(payload);
