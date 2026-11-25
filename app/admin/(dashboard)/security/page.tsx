@@ -137,7 +137,13 @@ export default function AdminSecurityPage() {
               />
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
+                tabIndex={-1}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setShowPassword((prev) => !prev);
+                }}
                 style={{
                   position: 'absolute',
                   right: '12px',
@@ -146,13 +152,15 @@ export default function AdminSecurityPage() {
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
-                  color: '#888',
-                  padding: '4px',
+                  color: showPassword ? '#111' : '#888',
+                  padding: '6px',
                   display: 'flex',
-                  alignItems: 'center'
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  zIndex: 10,
                 }}
               >
-                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
               </button>
             </div>
           </div>

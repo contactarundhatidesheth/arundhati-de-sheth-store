@@ -112,7 +112,13 @@ export default function AdminLogin() {
               />
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
+                tabIndex={-1}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setShowPassword((prev) => !prev);
+                }}
                 style={{
                   position: 'absolute',
                   right: '12px',
@@ -121,13 +127,15 @@ export default function AdminLogin() {
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
-                  color: '#888',
-                  padding: '4px',
+                  color: showPassword ? '#111' : '#888',
+                  padding: '6px',
                   display: 'flex',
-                  alignItems: 'center'
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  zIndex: 10,
                 }}
               >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                {showPassword ? <EyeOff size={19} /> : <Eye size={19} />}
               </button>
             </div>
           </div>
