@@ -387,18 +387,18 @@ export default function CategoryAllProductsPage() {
             </div>
 
             {/* Category Tabs — Pixel Perfect to User Design */}
-            <div className="category-tabs" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 'clamp(8px, 2.5vw, 24px)', WebkitOverflowScrolling: 'touch', borderBottom: '1px solid #EAEAEA', paddingBottom: '0px' }}>
+            <div className="category-tabs" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 'clamp(4px, 1.2vw, 16px)', WebkitOverflowScrolling: 'touch', borderBottom: '1px solid #EAEAEA', paddingBottom: '0px' }}>
               <button
                 onClick={() => handleSelectType(null)}
                 style={{
                   background: 'none',
                   border: 'none',
                   fontSize: '0.78rem',
-                  letterSpacing: '0.15em',
+                  letterSpacing: '0.12em',
                   textTransform: 'uppercase',
                   whiteSpace: 'nowrap',
                   cursor: 'pointer',
-                  padding: '10px 14px',
+                  padding: '10px 12px',
                   borderBottom: selectedType === null ? '2px solid #000000' : '2px solid transparent',
                   color: selectedType === null ? '#000000' : '#888888',
                   fontWeight: selectedType === null ? 600 : 400,
@@ -418,11 +418,11 @@ export default function CategoryAllProductsPage() {
                       background: 'none',
                       border: 'none',
                       fontSize: '0.78rem',
-                      letterSpacing: '0.15em',
+                      letterSpacing: '0.12em',
                       textTransform: 'uppercase',
                       whiteSpace: 'nowrap',
                       cursor: 'pointer',
-                      padding: '10px 14px',
+                      padding: '10px 12px',
                       borderBottom: isSelected ? '2px solid #000000' : '2px solid transparent',
                       color: isSelected ? '#000000' : '#888888',
                       fontWeight: isSelected ? 600 : 400,
