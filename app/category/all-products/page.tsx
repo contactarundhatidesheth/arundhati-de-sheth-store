@@ -12,13 +12,13 @@ const COLLECTIONS = [
   {
     id: 'EPHEMERALS',
     label: 'Ephemerals',
-    subtitle: 'Pieces created in limited moments',
+    subtitle: 'One of a kind, Fine Jewellery pieces that are part of our collection for a limited period of time.',
     image: '/images/Ephemerals%20front%20image%20.png',
   },
   {
     id: 'PERENNIALS',
     label: 'Perennials',
-    subtitle: 'Pieces lasting a long time, recurrent',
+    subtitle: 'Fine Jewellery Pieces that are part of our permanent collection',
     image: '/images/Perennials%20front%20image%20.png',
   },
 ];
@@ -178,12 +178,12 @@ export default function CategoryAllProductsPage() {
           </h1>
           {step === 'products' && selectedCollection === 'EPHEMERALS' && (
             <p style={{ color: '#FFFFFF', fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', marginTop: '20px', maxWidth: '600px', lineHeight: '1.6', letterSpacing: '0.05em', fontWeight: 300, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
-              Pieces created in limited moments
+              One of a kind, Fine Jewellery pieces that are part of our collection for a limited period of time.
             </p>
           )}
           {step === 'products' && selectedCollection === 'PERENNIALS' && (
             <p style={{ color: '#FFFFFF', fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', marginTop: '20px', maxWidth: '600px', lineHeight: '1.6', letterSpacing: '0.05em', fontWeight: 300, textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
-              Pieces lasting a long time, recurrent
+              Fine Jewellery Pieces that are part of our permanent collection
             </p>
           )}
           {step === 'products' && (!selectedCollection || selectedCollection === 'ALL') && (
