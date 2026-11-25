@@ -146,8 +146,10 @@ export default function CategoryAllProductsPage() {
     : COLLECTIONS.find(c => c.id === selectedCollection)?.label ?? 'All Pieces';
 
   const exploreBanner = (data?.pageSections || []).find((s: any) => s.id === 'banner_shop_explore')?.image;
-  const ephemeralsBanner = (data?.pageSections || []).find((s: any) => s.id === 'banner_shop_ephemerals')?.image;
-  const perennialsBanner = (data?.pageSections || []).find((s: any) => s.id === 'banner_shop_perennials')?.image;
+  const ephemeralsHeroBanner = (data?.pageSections || []).find((s: any) => s.id === 'banner_shop_ephemerals')?.image;
+  const perennialsHeroBanner = (data?.pageSections || []).find((s: any) => s.id === 'banner_shop_perennials')?.image;
+  const ephemeralsCardImage = (data?.pageSections || []).find((s: any) => s.id === 'card_shop_ephemerals')?.image;
+  const perennialsCardImage = (data?.pageSections || []).find((s: any) => s.id === 'card_shop_perennials')?.image;
 
   // Build category tabs dynamically from standard tabs + any unique categories from products
   const categoryTabs = React.useMemo(() => {
@@ -182,9 +184,9 @@ export default function CategoryAllProductsPage() {
             step === 'collection'
               ? (exploreBanner || '/images/Explore%20.png')
               : selectedCollection === 'EPHEMERALS'
-                ? (ephemeralsBanner || '/images/Ephemerals%20.png')
+                ? (ephemeralsHeroBanner || '/images/Ephemerals%20.png')
                 : selectedCollection === 'PERENNIALS'
-                  ? (perennialsBanner || '/images/Perennials%20.png')
+                  ? (perennialsHeroBanner || '/images/Perennials%20.png')
                   : (exploreBanner || '/images/Explore%20.png')
           }
           alt={step === 'collection' ? 'Explore Collections' : collectionLabel}
@@ -239,9 +241,9 @@ export default function CategoryAllProductsPage() {
           <div className="collection-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '2px', maxWidth: '1600px', margin: '0 auto' }}>
             {COLLECTIONS.map(col => {
               const cardImage = col.id === 'EPHEMERALS'
-                ? (ephemeralsBanner || col.image)
+                ? (ephemeralsCardImage || ephemeralsHeroBanner || col.image)
                 : col.id === 'PERENNIALS'
-                  ? (perennialsBanner || col.image)
+                  ? (perennialsCardImage || perennialsHeroBanner || col.image)
                   : col.image;
 
               return (
