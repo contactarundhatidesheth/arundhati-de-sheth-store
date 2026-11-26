@@ -169,7 +169,7 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
                         className="add-to-cart-btn"
                         onClick={() => addToCart(product)}
                       >
-                        {isMadeToOrderActive ? 'Order — Made to Order' : 'Add to Cart'}
+                        {isMadeToOrderActive ? 'Made to Order' : 'Add to Cart'}
                       </button>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#666', padding: '4px 2px' }}>
                         {isMadeToOrderActive ? (
@@ -188,8 +188,8 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
                   )}
 
                   {isSoldOut && (
-                    <div style={{ padding: '12px 16px', background: '#f9f9f9', border: '1px solid #eee', borderRadius: '4px', fontSize: '13px', color: '#777', textAlign: 'center' }}>
-                      Currently Sold Out · Available for bespoke commission on request
+                    <div style={{ padding: '12px 16px', background: '#f9f9f9', border: '1px solid #eee', borderRadius: '4px', fontSize: '13px', color: '#777', textAlign: 'center', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 500 }}>
+                      Sold Out
                     </div>
                   )}
 
