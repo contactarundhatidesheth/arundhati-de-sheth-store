@@ -22,7 +22,13 @@ export interface Product {
     weight?: string;
     careInstructions?: string;
     customSpecs?: string;
+    stock?: number;
+    isMadeToOrder?: boolean;
+    leadTime?: string;
   };
+  stock?: number;
+  isMadeToOrder?: boolean;
+  leadTime?: string;
   isNew?: boolean;
   isBespoke?: boolean;
   isPriceOnRequest?: boolean;
@@ -143,16 +149,27 @@ export async function readDB(): Promise<Database> {
   ]);
 
   return {
-    products: (products || []).map(p => ({
-      ...p,
-      handle: (p.handle || '').trim(),
-      compareAtPrice: p.compare_at_price,
-      isNew: p.is_new,
-      isBespoke: p.is_bespoke,
-      isPriceOnRequest: Boolean(p.is_price_on_request),
-      inStock: p.in_stock,
-      isActive: !(p.tags || []).includes('_HIDDEN')
-    })),
+    products: (products || []).map(p => {
+      const specs = p.specs || {};
+      const stock = typeof specs.stock === 'number' ? specs.stock : (p.in_stock === false ? 0 : 1);
+      const isMadeToOrder = Boolean(specs.isMadeToOrder);
+      const leadTime = specs.leadTime || '2–3 weeks';
+      const inStock = stock > 0 || isMadeToOrder;
+
+      return {
+        ...p,
+        handle: (p.handle || '').trim(),
+        compareAtPrice: p.compare_at_price,
+        isNew: p.is_new,
+        isBespoke: p.is_bespoke,
+        isPriceOnRequest: Boolean(p.is_price_on_request),
+        inStock,
+        stock,
+        isMadeToOrder,
+        leadTime,
+        isActive: !(p.tags || []).includes('_HIDDEN')
+      };
+    }),
     catalogues: catalogues || [],
     blogs: (blogs || []).map(b => {
       let excerpt = b.excerpt || '';

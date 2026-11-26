@@ -227,6 +227,13 @@ export default function CartPage() {
                             <h3 style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', fontWeight: '400', fontFamily: 'var(--font-sans)', wordWrap: 'break-word', overflowWrap: 'break-word', margin: 0 }}>
                               {item.product.title}
                             </h3>
+                            {item.product.isMadeToOrder && (item.product.stock === 0 || typeof item.product.stock !== 'number') && (
+                              <div style={{ marginTop: '4px' }}>
+                                <span style={{ fontSize: '0.75rem', color: '#854d0e', background: '#fef9c3', padding: '2px 8px', borderRadius: '4px', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                  ⏳ Made to Order · Crafting lead time {item.product.leadTime || '2–3 weeks'}
+                                </span>
+                              </div>
+                            )}
                             {appliedCoupon && (appliedCoupon.appliesTo === 'ALL' || (Array.isArray(appliedCoupon.applicableProducts) && appliedCoupon.applicableProducts.includes(String(item.product.id)))) && (
                               <div style={{ marginTop: '6px' }}>
                                 <span style={{

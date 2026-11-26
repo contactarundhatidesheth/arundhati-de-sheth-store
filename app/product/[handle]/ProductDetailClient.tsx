@@ -154,32 +154,64 @@ export default function ProductDetailClient({ params }: { params: { handle: stri
             </div>
 
             {/* Action Buttons */}
-            <div className="action-buttons-container" style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '32px' }}>
-              {!product.isPriceOnRequest && (
-                <button
-                  className="add-to-cart-btn"
-                  onClick={() => addToCart(product)}
-                >
-                  Add to Cart
-                </button>
-              )}
-              <a
-                href={`https://wa.me/919581822000?text=${whatsappMessage}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={product.isPriceOnRequest ? 'add-to-cart-btn' : 'inquire-btn'}
-                style={product.isPriceOnRequest ? { textDecoration: 'none', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' } : undefined}
-                onClick={() => {
-                  fetch('/api/track', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ type: 'whatsapp_click', id: product.id })
-                  }).catch(() => { });
-                }}
-              >
-                {product.isPriceOnRequest ? 'Inquire for Price' : 'Inquire & Bespoke Commission'}
-              </a>
-            </div>
+            {(() => {
+              const stock = typeof product.stock === 'number' ? product.stock : (product.inStock !== false ? 1 : 0);
+              const isMto = Boolean(product.isMadeToOrder);
+              const isPurchasable = !product.isPriceOnRequest && (stock > 0 || isMto);
+              const isMadeToOrderActive = stock === 0 && isMto;
+              const isSoldOut = !product.isPriceOnRequest && stock === 0 && !isMto;
+
+              return (
+                <div className="action-buttons-container" style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '32px' }}>
+                  {isPurchasable && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <button
+                        className="add-to-cart-btn"
+                        onClick={() => addToCart(product)}
+                      >
+                        {isMadeToOrderActive ? 'Order — Made to Order' : 'Add to Cart'}
+                      </button>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#666', padding: '4px 2px' }}>
+                        {isMadeToOrderActive ? (
+                          <>
+                            <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: '#d4af37' }} />
+                            <span><strong>Bespoke Creation:</strong> Handcrafted to order · Dispatches in {product.leadTime || '2–3 weeks'}</span>
+                          </>
+                        ) : (
+                          <>
+                            <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: '#28a745' }} />
+                            <span><strong>In Vault:</strong> Ready to ship · Dispatches in 24–48 hours</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {isSoldOut && (
+                    <div style={{ padding: '12px 16px', background: '#f9f9f9', border: '1px solid #eee', borderRadius: '4px', fontSize: '13px', color: '#777', textAlign: 'center' }}>
+                      Currently Sold Out · Available for bespoke commission on request
+                    </div>
+                  )}
+
+                  <a
+                    href={`https://wa.me/919581822000?text=${whatsappMessage}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={product.isPriceOnRequest ? 'add-to-cart-btn' : 'inquire-btn'}
+                    style={product.isPriceOnRequest ? { textDecoration: 'none', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' } : undefined}
+                    onClick={() => {
+                      fetch('/api/track', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ type: 'whatsapp_click', id: product.id })
+                      }).catch(() => { });
+                    }}
+                  >
+                    {product.isPriceOnRequest ? 'Inquire for Price' : (isSoldOut ? 'Inquire on WhatsApp' : 'Inquire & Bespoke Commission')}
+                  </a>
+                </div>
+              );
+            })()}
 
             {/* Trust Badges */}
             <div className="trust-badges" style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '48px', padding: '20px', background: 'var(--bg-surface)' }}>

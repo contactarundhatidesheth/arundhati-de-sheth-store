@@ -6,6 +6,39 @@ import { getSupabaseAdmin as getAdminClient } from '@/utils/supabase-admin';
 import { saveUpload } from '@/lib/upload';
 
 // --- PRODUCTS ---
+export async function updateProductInventory(id: string, stock: number, isMadeToOrder?: boolean) {
+  const supabase = getAdminClient();
+  const { data: product } = await supabase.from('products').select('specs, in_stock').eq('id', id).single();
+  const existingSpecs = (product?.specs as Record<string, any>) || {};
+
+  const updatedSpecs = {
+    ...existingSpecs,
+    stock: Number(stock) >= 0 ? Number(stock) : 0,
+    ...(typeof isMadeToOrder === 'boolean' ? { isMadeToOrder } : {})
+  };
+
+  const willBeInStock = (updatedSpecs.stock > 0) || Boolean(updatedSpecs.isMadeToOrder);
+
+  const { error } = await supabase
+    .from('products')
+    .update({
+      specs: updatedSpecs,
+      in_stock: willBeInStock
+    })
+    .eq('id', id);
+
+  if (error) {
+    console.error("Failed to update product inventory:", error);
+    return { success: false, error: error.message };
+  }
+
+  revalidatePath('/admin/products');
+  revalidatePath('/category/[category]');
+  revalidatePath('/collections');
+  revalidatePath('/');
+  return { success: true };
+}
+
 export async function deleteProduct(id: string) {
   const supabase = getAdminClient();
   await supabase.from('products').delete().eq('id', id);
@@ -89,6 +122,12 @@ export async function saveProduct(formData: FormData) {
     if (idx > -1) submittedTags.splice(idx, 1);
   }
 
+  const rawStock = formData.get('stock');
+  const stock = rawStock !== null && rawStock !== '' ? Math.max(0, parseInt(rawStock as string, 10)) : 1;
+  const isMadeToOrder = formData.get('isMadeToOrder') === 'on';
+  const leadTime = (formData.get('leadTime') as string || '2–3 weeks').trim();
+  const inStock = stock > 0 || isMadeToOrder;
+
   const payload = {
     id: id || Date.now().toString(),
     handle: ((formData.get('handle') as string) || Date.now().toString()).trim(),
@@ -102,6 +141,7 @@ export async function saveProduct(formData: FormData) {
     images: parsedImages,
     is_new: formData.get('isNew') === 'on',
     is_price_on_request: formData.get('isPriceOnRequest') === 'on',
+    in_stock: inStock,
     sequence: formData.get('sequence') ? parseInt(formData.get('sequence') as string) : 999,
     specs: {
       purity: formData.get('purity') as string || '',
@@ -109,7 +149,10 @@ export async function saveProduct(formData: FormData) {
       dimensions: formData.get('dimensions') as string || '',
       gemstones: formData.get('gemstones') as string || '',
       careInstructions: formData.get('careInstructions') as string || '',
-      customSpecs: formData.get('customSpecs') as string || ''
+      customSpecs: formData.get('customSpecs') as string || '',
+      stock,
+      isMadeToOrder,
+      leadTime
     }
   };
 

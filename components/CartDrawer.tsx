@@ -78,6 +78,11 @@ export const CartDrawer: React.FC = () => {
                         <Trash2 size={16} />
                       </button>
                     </div>
+                    {item.product.isMadeToOrder && (item.product.stock === 0 || typeof item.product.stock !== 'number') && (
+                      <span style={{ fontSize: '0.72rem', color: '#854d0e', background: '#fef9c3', padding: '1px 6px', borderRadius: '4px', width: 'fit-content', marginTop: '-4px', marginBottom: '4px', fontWeight: 500 }}>
+                        Made to Order (2–3 weeks)
+                      </span>
+                    )}
                     <p style={{ fontSize: '1rem' }}>{item.product.isPriceOnRequest ? 'Price on Request' : `₹${item.product.price.toLocaleString('en-IN')}`}</p>
                     <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', border: '1px solid var(--border)', width: 'fit-content' }}>
                       <button

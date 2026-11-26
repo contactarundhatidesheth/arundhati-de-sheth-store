@@ -4,6 +4,7 @@ import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { deleteProduct } from '@/app/admin/actions';
 import SequenceEditor from '../(dashboard)/SequenceEditor';
+import InventoryEditor from './InventoryEditor';
 
 export default function ProductTableClient({ products }: { products: any[] }) {
     const [searchQuery, setSearchQuery] = useState<string>('');
@@ -107,6 +108,7 @@ export default function ProductTableClient({ products }: { products: any[] }) {
                             <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Metal</th>
                             <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Collection</th>
                             <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Price</th>
+                            <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Inventory</th>
                             <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Actions</th>
                         </tr>
                     </thead>
@@ -137,6 +139,13 @@ export default function ProductTableClient({ products }: { products: any[] }) {
                                         ) : (
                                             `₹${p.price.toLocaleString('en-IN')}`
                                         )}
+                                    </td>
+                                    <td style={{ padding: '16px 24px' }}>
+                                        <InventoryEditor
+                                            id={p.id}
+                                            initialStock={typeof p.stock === 'number' ? p.stock : (p.inStock !== false ? 1 : 0)}
+                                            initialMadeToOrder={Boolean(p.isMadeToOrder)}
+                                        />
                                     </td>
                                     <td style={{ padding: '16px 24px', display: 'flex', gap: '16px' }}>
                                         <Link href={`/admin/products/${p.id}/edit`} style={{ color: '#0066cc', textDecoration: 'underline' }}>Edit</Link>

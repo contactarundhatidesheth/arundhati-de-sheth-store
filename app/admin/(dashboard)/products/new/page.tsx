@@ -46,11 +46,35 @@ export default async function NewProductPage() {
             <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Price (₹)</label>
             <input type="number" name="price" required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="50000" />
           </div>
-          <FilterPills name="category" options={uniqueCategories} label="Category" />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
+            <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Inventory / Stock Count</label>
+            <input type="number" name="stock" defaultValue="1" min="0" style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="1" />
+            <span style={{ fontSize: '0.75rem', color: '#666' }}>Enter 0 if this piece is physically out of vault stock</span>
+          </div>
+        </div>
+
+        <div style={{ padding: '18px', background: '#fcfcfc', border: '1px solid #eaeaea', borderRadius: '6px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <input type="checkbox" name="isMadeToOrder" id="isMadeToOrder" style={{ width: '18px', height: '18px' }} />
+            <label htmlFor="isMadeToOrder" style={{ fontSize: '0.95rem', fontWeight: '600', cursor: 'pointer' }}>
+              Allow &quot;Made to Order&quot; Purchases
+            </label>
+          </div>
+          <p style={{ margin: 0, fontSize: '0.8rem', color: '#666', lineHeight: 1.5 }}>
+            When enabled, customers can still place and pay for orders even if stock is 0. The website button will say <strong>&quot;Order (Made to Order)&quot;</strong> with lead time info instead of &quot;Sold Out&quot;.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '4px', maxWidth: '300px' }}>
+            <label style={{ fontSize: '0.8rem', color: '#555', fontWeight: '500' }}>Estimated Crafting Lead Time</label>
+            <input type="text" name="leadTime" defaultValue="2–3 weeks" style={{ padding: '8px 12px', border: '1px solid #ddd', borderRadius: '4px', fontSize: '0.85rem' }} placeholder="e.g. 2–3 weeks" />
+          </div>
         </div>
 
         <div className="admin-form-grid-2" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
+          <FilterPills name="category" options={uniqueCategories} label="Category" />
           <FilterPills name="metal" options={uniqueMetals} label="Metal" multiple={true} />
+        </div>
+
+        <div>
           <FilterPills name="collection" options={uniqueCollections} label="Collection" />
         </div>
 
