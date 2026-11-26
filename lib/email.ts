@@ -15,9 +15,31 @@ function getEnvVar(key: string): string {
 }
 
 export async function getGraphAccessToken(): Promise<string> {
-    const tenant = getEnvVar('AZURE_TENANT_ID');
-    const clientId = getEnvVar('AZURE_CLIENT_ID');
-    const clientSecret = getEnvVar('AZURE_CLIENT_SECRET');
+    let tenant = getEnvVar('AZURE_TENANT_ID');
+    let clientId = getEnvVar('AZURE_CLIENT_ID');
+    let clientSecret = getEnvVar('AZURE_CLIENT_SECRET');
+
+    // If environment variables are missing in edge/serverless runtime, load from secure Supabase config table
+    if (!clientSecret || !clientId || !tenant) {
+        try {
+            const { getSupabaseAdmin } = await import('@/utils/supabase-admin');
+            const supabase = getSupabaseAdmin();
+            const { data } = await supabase
+                .from('page_sections')
+                .select('*')
+                .eq('id', 'azure_graph_config')
+                .maybeSingle();
+
+            if (data?.description) {
+                const config = JSON.parse(data.description);
+                tenant = tenant || config.tenantId;
+                clientId = clientId || config.clientId;
+                clientSecret = clientSecret || config.clientSecret;
+            }
+        } catch (e) {
+            console.error('Failed to load azure config from DB:', e);
+        }
+    }
 
     const params = new URLSearchParams({
         client_id: clientId,
@@ -49,7 +71,7 @@ export async function getGraphAccessToken(): Promise<string> {
 
 export async function sendGraphEmail(toAddress: string, subject: string, htmlContent: string) {
     const accessToken = await getGraphAccessToken();
-    const fromAddress = getEnvVar('EMAIL_USER');
+    const fromAddress = getEnvVar('EMAIL_USER') || 'arundhati@arundhatidesheth.com';
 
     const response = await fetch(`https://graph.microsoft.com/v1.0/users/${fromAddress}/sendMail`, {
         method: 'POST',

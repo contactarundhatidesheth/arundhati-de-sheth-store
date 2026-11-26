@@ -62,7 +62,7 @@ export async function verifyAdminPassword(password: string) {
 }
 
 /**
- * Send password reset email to contactarundhatidesheth@gmail.com
+ * Send password reset email to contactarundhatidesheth@gmail.com and arundhati@arundhatidesheth.com
  */
 export async function sendAdminResetEmail() {
     try {
@@ -100,15 +100,26 @@ export async function sendAdminResetEmail() {
                 <style>
                     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #fafafa; margin: 0; padding: 40px 20px; color: #111; }
                     .card { max-width: 520px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 8px; border: 1px solid #eaeaea; }
-                    .logo { font-size: 20px; font-weight: 300; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 24px; text-align: center; }
+                    .logo { text-align: center; margin-bottom: 24px; }
                     .btn { display: inline-block; background: #111; color: #fff !important; text-decoration: none; padding: 14px 32px; border-radius: 4px; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; margin: 24px 0; }
                     .footer { font-size: 12px; color: #888; margin-top: 32px; border-top: 1px solid #eee; padding-top: 16px; line-height: 1.5; }
                 </style>
             </head>
-            <body>
-                <div class="card">
-                    <div class="logo">Arundhati De-Sheth</div>
-                    <h2 style="font-size: 1.3rem; margin: 0 0 16px 0; font-weight: 400;">Admin Password Reset</h2>
+            <body style="background: #fafafa; margin: 0; padding: 40px 20px;">
+                <div class="card" style="max-width: 520px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 8px; border: 1px solid #eaeaea;">
+                    <div class="logo" style="text-align: center; margin-bottom: 24px;">
+                        <table cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto; background-color: #FFFFFF;">
+                            <tr>
+                                <td align="center" style="background-color: #FFFFFF; padding: 8px 16px; border: 1px solid #E5E5E5; border-radius: 4px;">
+                                    <img src="https://radmagmbzuubeqjrncot.supabase.co/storage/v1/object/public/media/brand/logo-white-box.png" 
+                                         alt="Arundhati De-Sheth" 
+                                         width="210" 
+                                         style="display: block; width: 210px; max-width: 100%; height: auto; margin: 0 auto; border: 0;" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <h2 style="font-size: 1.3rem; margin: 0 0 16px 0; font-weight: 400; text-align: center;">Admin Password Reset</h2>
                     <p style="font-size: 14px; line-height: 1.6; color: #444;">
                         A password reset was requested for your Arundhati De-Sheth Admin Panel.
                     </p>
@@ -116,13 +127,13 @@ export async function sendAdminResetEmail() {
                         Click the button below to choose a new password. This link is valid for <strong>1 hour</strong>.
                     </p>
                     <div style="text-align: center;">
-                        <a href="${resetUrl}" class="btn">Reset Password</a>
+                        <a href="${resetUrl}" class="btn" style="display: inline-block; background: #111; color: #fff !important; text-decoration: none; padding: 14px 32px; border-radius: 4px; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; margin: 24px 0;">Reset Password</a>
                     </div>
                     <p style="font-size: 12px; color: #777; word-break: break-all;">
                         Or copy this URL into your browser:<br/>
                         <a href="${resetUrl}" style="color: #666;">${resetUrl}</a>
                     </p>
-                    <div class="footer">
+                    <div class="footer" style="font-size: 12px; color: #888; margin-top: 32px; border-top: 1px solid #eee; padding-top: 16px; line-height: 1.5;">
                         If you did not request this reset, you can safely ignore this email. Your current password remains active.
                     </div>
                 </div>
@@ -130,7 +141,21 @@ export async function sendAdminResetEmail() {
             </html>
         `;
 
-        await sendGraphEmail(adminEmail, 'Admin Password Reset Request - Arundhati De-Sheth', html);
+        // Send to configured admin email as well as both primary atelier emails
+        const recipients = Array.from(new Set([
+            adminEmail,
+            'contactarundhatidesheth@gmail.com',
+            'arundhati@arundhatidesheth.com'
+        ])).filter(Boolean);
+
+        for (const recipient of recipients) {
+            try {
+                await sendGraphEmail(recipient, 'Admin Password Reset Request - Arundhati De-Sheth', html);
+            } catch (mailErr) {
+                console.error(`Failed to dispatch reset email to ${recipient}:`, mailErr);
+            }
+        }
+
         return { success: true, email: adminEmail };
     } catch (err: any) {
         console.error('Failed to send reset email:', err);
