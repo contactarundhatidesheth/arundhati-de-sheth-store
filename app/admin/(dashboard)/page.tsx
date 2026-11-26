@@ -84,15 +84,15 @@ export default async function AdminDashboard() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
-        <h1 style={{ fontSize: '2rem', fontFamily: 'var(--font-serif)', color: '#111' }}>Command Center</h1>
+      <div className="admin-page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+        <h1 style={{ fontSize: '2rem', fontFamily: 'var(--font-serif)', color: '#111', margin: 0 }}>Command Center</h1>
         <span style={{ fontSize: '0.85rem', color: '#666', background: '#eaeaea', padding: '6px 12px', borderRadius: '4px' }}>
           Real-time Analytics Active
         </span>
       </div>
 
       {/* Summary Stats Row */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '24px', marginBottom: '40px' }}>
+      <div className="admin-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '20px', marginBottom: '40px' }}>
 
         <div style={{ background: '#fff', padding: '24px', borderRadius: '8px', border: '1px solid #eaeaea', display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <h3 style={{ fontSize: '0.8rem', color: '#666', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0 }}>Total Visitors</h3>

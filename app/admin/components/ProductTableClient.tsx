@@ -49,16 +49,16 @@ export default function ProductTableClient({ products }: { products: any[] }) {
 
     return (
         <div>
-            <div style={{ display: 'flex', gap: '16px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: '1', minWidth: '260px' }}>
+            <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: '1 1 200px', minWidth: '0', width: '100%' }}>
                     <label style={{ fontSize: '0.85rem', fontWeight: '500', color: '#666' }}>Search Products</label>
                     <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                         <input
                             type="text"
-                            placeholder="Search by title, handle, category, metal..."
+                            placeholder="Search title, category, metal..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            style={{ width: '100%', padding: '9px 36px 9px 12px', borderRadius: '4px', border: '1px solid #ddd', background: '#fff', fontSize: '0.9rem', outline: 'none' }}
+                            style={{ width: '100%', boxSizing: 'border-box', padding: '9px 36px 9px 12px', borderRadius: '4px', border: '1px solid #ddd', background: '#fff', fontSize: '0.9rem', outline: 'none' }}
                         />
                         {searchQuery && (
                             <button
@@ -71,24 +71,24 @@ export default function ProductTableClient({ products }: { products: any[] }) {
                         )}
                     </div>
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', minWidth: '160px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: '1 1 140px', minWidth: '0' }}>
                     <label style={{ fontSize: '0.85rem', fontWeight: '500', color: '#666' }}>Filter by Metal</label>
                     <select
                         value={selectedMetal}
                         onChange={(e) => setSelectedMetal(e.target.value)}
-                        style={{ padding: '9px 12px', borderRadius: '4px', border: '1px solid #ddd', background: '#fff', fontSize: '0.9rem' }}
+                        style={{ width: '100%', boxSizing: 'border-box', padding: '9px 12px', borderRadius: '4px', border: '1px solid #ddd', background: '#fff', fontSize: '0.9rem' }}
                     >
                         {uniqueMetals.map(m => (
                             <option key={m} value={m}>{m}</option>
                         ))}
                     </select>
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', minWidth: '180px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: '1 1 140px', minWidth: '0' }}>
                     <label style={{ fontSize: '0.85rem', fontWeight: '500', color: '#666' }}>Filter by Collection</label>
                     <select
                         value={selectedCollection}
                         onChange={(e) => setSelectedCollection(e.target.value)}
-                        style={{ padding: '9px 12px', borderRadius: '4px', border: '1px solid #ddd', background: '#fff', fontSize: '0.9rem' }}
+                        style={{ width: '100%', boxSizing: 'border-box', padding: '9px 12px', borderRadius: '4px', border: '1px solid #ddd', background: '#fff', fontSize: '0.9rem' }}
                     >
                         {uniqueCollections.map(c => (
                             <option key={c} value={c}>{c}</option>

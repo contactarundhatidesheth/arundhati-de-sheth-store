@@ -23,41 +23,44 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           padding: 48px;
           min-width: 0;
           overflow-x: hidden;
+          width: 100%;
+          box-sizing: border-box;
         }
         @media (max-width: 900px) {
           .admin-main-content {
-            padding: 76px 14px 40px !important;
-            width: 100%;
+            padding: 72px 14px 40px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
           }
           /* Universal mobile responsiveness for admin pages */
           .admin-page-header {
             flex-direction: column !important;
             align-items: flex-start !important;
-            gap: 14px !important;
-            margin-bottom: 24px !important;
+            gap: 12px !important;
+            margin-bottom: 20px !important;
           }
           .admin-page-header h1 {
-            font-size: 1.6rem !important;
+            font-size: 1.5rem !important;
+            line-height: 1.2 !important;
           }
           .admin-card-container {
-            padding: 20px 16px !important;
+            padding: 16px 12px !important;
           }
           /* Ensure all tables scroll cleanly horizontally without stretching screen */
           .admin-table-container {
+            width: 100% !important;
+            max-width: 100% !important;
             overflow-x: auto !important;
             -webkit-overflow-scrolling: touch !important;
             border-radius: 8px !important;
-            margin-bottom: 24px !important;
+            margin-bottom: 20px !important;
+            box-sizing: border-box !important;
           }
           .admin-table-container table {
-            min-width: 650px !important;
+            min-width: 580px !important;
           }
           /* Responsive form grid inputs */
-          .admin-form-grid-2 {
-            grid-template-columns: 1fr !important;
-            gap: 14px !important;
-          }
-          .admin-form-grid-3 {
+          .admin-form-grid-2, .admin-form-grid-3 {
             grid-template-columns: 1fr !important;
             gap: 14px !important;
           }
@@ -70,6 +73,24 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           .admin-action-row > * {
             width: 100% !important;
             text-align: center !important;
+          }
+        }
+
+        /* Optimization for compact and ultra-small mobile screens (iPhone SE, Galaxy Fold, 320px - 380px) */
+        @media (max-width: 420px) {
+          .admin-main-content {
+            padding: 68px 10px 30px !important;
+          }
+          .admin-page-header h1 {
+            font-size: 1.3rem !important;
+          }
+          input, select, textarea, button {
+            font-size: 14px !important;
+          }
+          /* Ensure stats cards stack without overflow */
+          .admin-stats-grid {
+            grid-template-columns: 1fr !important;
+            gap: 12px !important;
           }
         }
       `}</style>
