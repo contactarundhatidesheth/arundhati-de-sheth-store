@@ -167,62 +167,22 @@ export function BannerMediaCard({ banner, currentImage, currentVideo }: BannerMe
 
         {banner.supportsVideo && mediaType === 'video' && (
           <div style={{ background: '#fcfcfc', border: '1px solid #ebebeb', borderRadius: '6px', padding: '16px' }}>
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '6px', color: '#222' }}>
+            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '8px', color: '#222' }}>
               Upload Video File (from local drive)
             </label>
-            <div style={{ marginBottom: '14px', background: '#fff', border: '1px dashed #ccc', padding: '12px 14px', borderRadius: '4px' }}>
+            <div style={{ background: '#fff', border: '1px dashed #ccc', padding: '16px', borderRadius: '4px' }}>
               <input
                 type="file"
                 name="videoFile"
                 accept="video/mp4,video/webm,video/quicktime,video/*"
                 style={{ fontSize: '0.85rem', width: '100%' }}
               />
-              <p style={{ fontSize: '0.75rem', color: '#888', margin: '6px 0 0 0' }}>
-                Select an .mp4 or .webm video from your computer. It will be uploaded and stored securely in backend storage.
+              <p style={{ fontSize: '0.75rem', color: '#888', margin: '8px 0 0 0' }}>
+                Choose an .mp4 or .webm video from your computer. It will be uploaded and saved to backend storage, immediately replacing the video.
               </p>
             </div>
-
-            <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 500, color: '#555', marginBottom: '6px' }}>
-              Or Video URL (.mp4 or stream URL):
-            </label>
-            <input
-              type="text"
-              name="link"
-              defaultValue={currentVideo}
-              placeholder={banner.defaultMedia.endsWith('.mp4') ? banner.defaultMedia : 'https://.../video.mp4'}
-              style={{
-                width: '100%',
-                padding: '9px 12px',
-                borderRadius: '4px',
-                border: '1px solid #ccc',
-                fontSize: '0.88rem',
-                background: '#fff'
-              }}
-            />
-            <p style={{ fontSize: '0.75rem', color: '#888', marginTop: '6px', lineHeight: '1.4' }}>
-              When a new video file is uploaded, it replaces the default video immediately on the live site.
-            </p>
-
-            {/* Optional Fallback Poster image for video */}
-            <div style={{ borderTop: '1px dashed #e0e0e0', paddingTop: '12px', marginTop: '12px' }}>
-              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, color: '#666', marginBottom: '4px' }}>
-                Optional Fallback Poster / Preview Image URL:
-              </label>
-              <input
-                type="text"
-                name="image"
-                defaultValue={currentImage}
-                placeholder="https://.../fallback-poster.jpg"
-                style={{
-                  width: '100%',
-                  padding: '8px 12px',
-                  borderRadius: '4px',
-                  border: '1px solid #ddd',
-                  fontSize: '0.85rem',
-                  background: '#fff'
-                }}
-              />
-            </div>
+            {/* Retain current video link in hidden input so it is preserved if no new file is uploaded */}
+            <input type="hidden" name="link" value={currentVideo} />
           </div>
         )}
 
