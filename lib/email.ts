@@ -14,13 +14,16 @@ function getEnvVar(key: string): string {
     return '';
 }
 
+const DEFAULT_TENANT_ID = 'f34be15a-388a-4c46-a924-75a4f52575fd';
+const DEFAULT_CLIENT_ID = '92d23dd8-0297-4164-a32a-b03a494e4976';
+
 export async function getGraphAccessToken(): Promise<string> {
-    let tenant = getEnvVar('AZURE_TENANT_ID');
-    let clientId = getEnvVar('AZURE_CLIENT_ID');
+    let tenant = getEnvVar('AZURE_TENANT_ID') || DEFAULT_TENANT_ID;
+    let clientId = getEnvVar('AZURE_CLIENT_ID') || DEFAULT_CLIENT_ID;
     let clientSecret = getEnvVar('AZURE_CLIENT_SECRET');
 
-    // If environment variables are missing in edge/serverless runtime, load from secure Supabase config table
-    if (!clientSecret || !clientId || !tenant) {
+    // If clientSecret is missing in edge/serverless runtime, load from secure Supabase config table
+    if (!clientSecret) {
         try {
             const { getSupabaseAdmin } = await import('@/utils/supabase-admin');
             const supabase = getSupabaseAdmin();
@@ -32,13 +35,17 @@ export async function getGraphAccessToken(): Promise<string> {
 
             if (data?.description) {
                 const config = JSON.parse(data.description);
-                tenant = tenant || config.tenantId;
-                clientId = clientId || config.clientId;
-                clientSecret = clientSecret || config.clientSecret;
+                tenant = config.tenantId || tenant;
+                clientId = config.clientId || clientId;
+                clientSecret = config.clientSecret || clientSecret;
             }
         } catch (e) {
             console.error('Failed to load azure config from DB:', e);
         }
+    }
+
+    if (!tenant || !clientId || !clientSecret) {
+        throw new Error('Azure Graph credentials incomplete (missing tenant, client ID, or secret)');
     }
 
     const params = new URLSearchParams({
@@ -48,7 +55,8 @@ export async function getGraphAccessToken(): Promise<string> {
         scope: 'https://graph.microsoft.com/.default'
     });
 
-    const response = await fetch(`https://login.microsoftonline.com/${tenant}/oauth2/v2.0/token`, {
+    const tokenUrl = `https://login.microsoftonline.com/${tenant.trim()}/oauth2/v2.0/token`;
+    const response = await fetch(tokenUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: params.toString()
@@ -59,7 +67,7 @@ export async function getGraphAccessToken(): Promise<string> {
     try {
         data = JSON.parse(responseText);
     } catch (err) {
-        data = { error: 'Invalid JSON response from Graph API token endpoint', text: responseText };
+        data = { error: 'Invalid JSON response from Graph API token endpoint', text: responseText, url: tokenUrl, status: response.status };
     }
 
     if (!response.ok) {
