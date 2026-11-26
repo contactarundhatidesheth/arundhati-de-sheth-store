@@ -138,11 +138,11 @@ export function BannerMediaCard({ banner, currentImage, currentVideo }: BannerMe
       </div>
 
       {/* Preview of current media */}
-      <div style={{ marginBottom: '20px', padding: '14px 16px', background: '#fafafa', borderRadius: '6px', border: '1px solid #f0f0f0' }}>
+      <div style={{ marginBottom: '20px', padding: '16px', background: '#fafafa', borderRadius: '6px', border: '1px solid #f0f0f0' }}>
         <p style={{ fontSize: '0.75rem', color: '#888', margin: '0 0 8px 0', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>
           Current Active Source:
         </p>
-        <div style={{ fontSize: '0.85rem', color: '#111', wordBreak: 'break-all' }}>
+        <div style={{ fontSize: '0.85rem', color: '#111', wordBreak: 'break-all', marginBottom: currentVideo || currentImage ? '12px' : '0' }}>
           {currentVideo ? (
             <div>
               <span style={{ display: 'inline-block', padding: '2px 8px', borderRadius: '4px', background: '#000', color: '#fff', fontSize: '0.72rem', letterSpacing: '0.06em', textTransform: 'uppercase', marginRight: '8px' }}>
@@ -161,6 +161,29 @@ export function BannerMediaCard({ banner, currentImage, currentVideo }: BannerMe
             <span style={{ color: '#999', fontStyle: 'italic' }}>Default: {banner.defaultMedia}</span>
           )}
         </div>
+
+        {/* Live Visual Preview Player */}
+        {currentVideo ? (
+          <div style={{ maxWidth: '400px', borderRadius: '6px', overflow: 'hidden', border: '1px solid #e0e0e0', background: '#000' }}>
+            <video
+              src={currentVideo}
+              autoPlay
+              loop
+              muted
+              playsInline
+              controls
+              style={{ width: '100%', maxHeight: '220px', objectFit: 'contain', display: 'block' }}
+            />
+          </div>
+        ) : currentImage ? (
+          <div style={{ maxWidth: '300px', borderRadius: '6px', overflow: 'hidden', border: '1px solid #e0e0e0', background: '#f5f5f5' }}>
+            <img
+              src={currentImage}
+              alt="Banner Preview"
+              style={{ width: '100%', maxHeight: '180px', objectFit: 'cover', display: 'block' }}
+            />
+          </div>
+        ) : null}
       </div>
 
       {errorMessage && (

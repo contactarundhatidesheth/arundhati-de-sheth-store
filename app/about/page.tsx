@@ -91,9 +91,20 @@ export default function AboutPage() {
 
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.play().catch(e => console.error("Video autoplay failed:", e));
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(e => {
+          console.log("Initial autoplay was prevented, retrying with muted:", e);
+          if (videoRef.current) {
+            videoRef.current.muted = true;
+            videoRef.current.play().catch(() => {});
+          }
+        });
+      }
     }
-  }, []);
+  }, [aboutVideoUrl]);
 
   const toggleVideo = () => {
     if (videoRef.current) {
@@ -193,6 +204,7 @@ export default function AboutPage() {
             key={aboutVideoUrl}
             autoPlay
             loop
+            muted
             playsInline
             style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
           >
