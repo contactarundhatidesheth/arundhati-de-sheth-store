@@ -87,10 +87,7 @@ export const Footer: React.FC = () => {
               <a href="mailto:contact@arundhatidesheth.com" style={{ textDecoration: 'none', color: 'inherit', whiteSpace: 'nowrap' }} className="nav-link">contact@arundhatidesheth.com</a>
               <p>+91 95818 22000</p>
               <div style={{ display: 'flex', gap: '20px', marginTop: '24px' }}>
-                <a href="#" style={{ color: 'var(--text-main)', transition: 'opacity 0.3s' }} className="hover-opacity" aria-label="Facebook">
-                  <Facebook size={20} strokeWidth={1.5} />
-                </a>
-                <a href="#" style={{ color: 'var(--text-main)', transition: 'opacity 0.3s' }} className="hover-opacity" aria-label="Instagram">
+                <a href="https://www.instagram.com/arundhatidesheth" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-main)', transition: 'opacity 0.3s' }} className="hover-opacity" aria-label="Instagram">
                   <Instagram size={20} strokeWidth={1.5} />
                 </a>
               </div>
