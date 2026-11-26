@@ -134,34 +134,22 @@ export function BannerMediaCard({ banner, currentImage, currentVideo }: BannerMe
         {/* Conditionally rendered inputs based on choice */}
         {(!banner.supportsVideo || mediaType === 'image') && (
           <div style={{ background: '#fcfcfc', border: '1px solid #ebebeb', borderRadius: '6px', padding: '16px' }}>
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '6px', color: '#222' }}>
-              Image URL (or upload image file below)
+            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '8px', color: '#222' }}>
+              Upload Image File (from local drive)
             </label>
-            <input
-              type="text"
-              name="image"
-              defaultValue={currentImage}
-              placeholder={banner.defaultMedia.endsWith('.mp4') ? 'https://.../hero.jpg' : banner.defaultMedia}
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                borderRadius: '4px',
-                border: '1px solid #ccc',
-                fontSize: '0.9rem',
-                background: '#fff'
-              }}
-            />
-            <div style={{ marginTop: '12px' }}>
-              <label style={{ fontSize: '0.78rem', color: '#555', display: 'block', marginBottom: '4px', fontWeight: 500 }}>
-                Or upload new image file:
-              </label>
+            <div style={{ background: '#fff', border: '1px dashed #ccc', padding: '16px', borderRadius: '4px' }}>
               <input
                 type="file"
                 name="imageFile"
                 accept="image/*"
-                style={{ fontSize: '0.85rem' }}
+                style={{ fontSize: '0.85rem', width: '100%' }}
               />
+              <p style={{ fontSize: '0.75rem', color: '#888', margin: '8px 0 0 0' }}>
+                Choose an image (.jpg, .png, .webp) from your computer. It will be uploaded and saved to backend storage, immediately replacing the image.
+              </p>
             </div>
+            {/* Retain current image in hidden input so it is preserved if no new file is selected */}
+            <input type="hidden" name="image" value={currentImage} />
           </div>
         )}
 
