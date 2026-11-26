@@ -89,6 +89,35 @@ export default function AboutPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
 
+  // Format Drive and CDN video links for direct streaming in <video> elements
+  const formatVideoUrl = (url: string) => {
+    if (!url) return '';
+    const fileIdMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (fileIdMatch && fileIdMatch[1]) {
+      return `https://drive.google.com/uc?export=download&id=${fileIdMatch[1]}`;
+    }
+    const openIdMatch = url.match(/drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/);
+    if (openIdMatch && openIdMatch[1]) {
+      return `https://drive.google.com/uc?export=download&id=${openIdMatch[1]}`;
+    }
+    return url;
+  };
+
+  const aboutBanner = (data?.pageSections || []).find(s => s.id === 'banner_about');
+  const rawAboutVideoUrl = aboutBanner?.link || '/videos/about-video.mp4';
+  const aboutVideoUrl = formatVideoUrl(rawAboutVideoUrl);
+  const aboutImageUrl = aboutBanner?.image;
+
+  // Her Story Portrait section media
+  const portraitBanner = (data?.pageSections || []).find(s => s.id === 'banner_about_portrait');
+  const portraitVideoUrl = formatVideoUrl(portraitBanner?.link || '');
+  const portraitImageUrl = portraitBanner?.image || '/images/arundhati-portrait.webp';
+
+  // Jewellery Confluence section media
+  const confluenceBanner = (data?.pageSections || []).find(s => s.id === 'banner_about_confluence');
+  const confluenceVideoUrl = formatVideoUrl(confluenceBanner?.link || '');
+  const confluenceImageUrl = confluenceBanner?.image || '/images/WhatsApp%20Image%202026-08-31%20at%203.11.01%20PM.jpeg';
+
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.defaultMuted = true;
@@ -116,36 +145,6 @@ export default function AboutPage() {
       setIsPlaying(!isPlaying);
     }
   };
-
-  const aboutBanner = (data?.pageSections || []).find(s => s.id === 'banner_about');
-  const rawAboutVideoUrl = aboutBanner?.link || '/videos/about-video.mp4';
-  
-  // Format Drive and CDN video links for direct streaming in <video> elements
-  const formatVideoUrl = (url: string) => {
-    if (!url) return '';
-    const fileIdMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
-    if (fileIdMatch && fileIdMatch[1]) {
-      return `https://drive.google.com/uc?export=download&id=${fileIdMatch[1]}`;
-    }
-    const openIdMatch = url.match(/drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/);
-    if (openIdMatch && openIdMatch[1]) {
-      return `https://drive.google.com/uc?export=download&id=${openIdMatch[1]}`;
-    }
-    return url;
-  };
-
-  const aboutVideoUrl = formatVideoUrl(rawAboutVideoUrl);
-  const aboutImageUrl = aboutBanner?.image;
-
-  // Her Story Portrait section media
-  const portraitBanner = (data?.pageSections || []).find(s => s.id === 'banner_about_portrait');
-  const portraitVideoUrl = formatVideoUrl(portraitBanner?.link || '');
-  const portraitImageUrl = portraitBanner?.image || '/images/arundhati-portrait.webp';
-
-  // Jewellery Confluence section media
-  const confluenceBanner = (data?.pageSections || []).find(s => s.id === 'banner_about_confluence');
-  const confluenceVideoUrl = formatVideoUrl(confluenceBanner?.link || '');
-  const confluenceImageUrl = confluenceBanner?.image || '/images/WhatsApp%20Image%202026-08-31%20at%203.11.01%20PM.jpeg';
 
   return (
     <div style={{ background: 'var(--bg-primary)', color: 'var(--text-main)' }}>
