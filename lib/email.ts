@@ -84,16 +84,16 @@ export function getPremiumEmailTemplate(content: string): string {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.arundhatidesheth.com';
     return `
     <!DOCTYPE html>
-    <html lang="en">
+    <html lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="color-scheme" content="light">
-        <meta name="supported-color-schemes" content="light">
+        <meta name="color-scheme" content="light dark">
+        <meta name="supported-color-schemes" content="light dark">
         <style>
             :root {
-                color-scheme: light;
-                supported-color-schemes: light;
+                color-scheme: light dark;
+                supported-color-schemes: light dark;
             }
             body { margin: 0; padding: 0; background-color: #FAFAFA; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
             table { border-collapse: collapse; }
@@ -109,6 +109,16 @@ export function getPremiumEmailTemplate(content: string): string {
             .receipt-table th { text-align: left; padding-bottom: 10px; border-bottom: 1px solid #EAEAEA; font-weight: normal; font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
             .receipt-table td { padding: 15px 0; border-bottom: 1px solid #F5F5F5; }
             .receipt-total { border-top: 1px solid #111; padding-top: 15px; margin-top: 15px; text-align: right; }
+
+            /* Dark mode overrides for modern email clients */
+            @media (prefers-color-scheme: dark) {
+                .brand-logo-img {
+                    filter: invert(1) brightness(1.2) drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)) !important;
+                }
+            }
+            [data-ogsc] .brand-logo-img {
+                filter: invert(1) brightness(1.2) drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)) !important;
+            }
         </style>
     </head>
     <body style="margin: 0; padding: 0; background-color: #FAFAFA;">
@@ -120,10 +130,13 @@ export function getPremiumEmailTemplate(content: string): string {
                         <tr>
                             <td class="header" align="center" style="padding: 36px 20px; text-align: center; border-bottom: 1px solid #EAEAEA; background-color: #FFFFFF;">
                                 <a href="https://www.arundhatidesheth.com" class="logo-link" target="_blank" style="text-decoration: none; display: inline-block;">
-                                    <img src="${baseUrl}/brand/logo.png" 
-                                         alt="Arundhati De-Sheth" 
-                                         width="210" 
-                                         style="display: block; width: 210px; max-width: 100%; height: auto; margin: 0 auto; border: 0; outline: none; text-decoration: none;" />
+                                    <div style="background-color: #FFFFFF; padding: 12px 24px; border-radius: 6px; display: inline-block;">
+                                        <img src="${baseUrl}/brand/logo.png" 
+                                             class="brand-logo-img"
+                                             alt="Arundhati De-Sheth" 
+                                             width="210" 
+                                             style="display: block; width: 210px; max-width: 100%; height: auto; margin: 0 auto; border: 0; outline: none; text-decoration: none; filter: drop-shadow(0 0 1px rgba(255,255,255,0.8));" />
+                                    </div>
                                 </a>
                             </td>
                         </tr>
