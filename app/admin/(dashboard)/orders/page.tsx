@@ -55,7 +55,7 @@ export default async function OrdersAdminPage() {
           await supabaseAdmin.from('orders').insert({ ...manualOrder });
           revalidatePath('/admin/orders');
         }} style={{ marginTop: '24px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+          <div className="admin-form-grid-2" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
             <input name="name" placeholder="Guest Full Name" required style={{ padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }} />
             <input name="email" type="email" placeholder="Guest Email" required style={{ padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }} />
             <input name="phone" placeholder="Guest Phone" required style={{ padding: '12px', border: '1px solid #ccc', borderRadius: '4px' }} />

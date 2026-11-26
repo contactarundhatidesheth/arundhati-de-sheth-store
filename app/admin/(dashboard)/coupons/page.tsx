@@ -87,8 +87,8 @@ export default async function AdminCouponsPage() {
       </div>
 
       {/* Active Coupons List */}
-      <div style={{ background: '#fff', borderRadius: '8px', border: '1px solid #eaeaea', overflow: 'hidden' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+      <div className="admin-table-container" style={{ background: '#fff', borderRadius: '8px', border: '1px solid #eaeaea', overflowX: 'auto' }}>
+        <table style={{ width: '100%', minWidth: '650px', borderCollapse: 'collapse', textAlign: 'left' }}>
           <thead>
             <tr style={{ borderBottom: '1px solid #eaeaea', background: '#fafafa' }}>
               <th style={{ padding: '16px 24px', fontWeight: 500, fontSize: '0.85rem', color: '#666' }}>Coupon Code</th>

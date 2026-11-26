@@ -51,14 +51,14 @@ export default async function AdminBlogs() {
 
       {/* SECTION 1: ARTICLES */}
       <div style={{ marginBottom: '64px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-          <h2 style={{ fontSize: '1.5rem', fontFamily: 'var(--font-serif)' }}>Articles (In The News)</h2>
+        <div className="admin-page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+          <h2 style={{ fontSize: '1.5rem', fontFamily: 'var(--font-serif)', margin: 0 }}>Articles (In The News)</h2>
           <Link href="/admin/blogs/new" style={{ background: '#111', color: '#fff', padding: '8px 16px', borderRadius: '4px', textDecoration: 'none', fontSize: '0.8rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
             Add Article
           </Link>
         </div>
-        <div style={{ background: '#fff', borderRadius: '8px', border: '1px solid #eaeaea', overflow: 'hidden' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+        <div className="admin-table-container" style={{ background: '#fff', borderRadius: '8px', border: '1px solid #eaeaea', overflowX: 'auto' }}>
+          <table style={{ width: '100%', minWidth: '600px', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid #eaeaea', background: '#fafafa' }}>
                 <th style={{ padding: '16px 24px', fontWeight: '500', fontSize: '0.9rem', color: '#666' }}>Seq</th>

@@ -49,7 +49,7 @@ export default async function EditProductPage({ params }: { params: { id: string
           <input type="text" name="handle" defaultValue={product.handle} required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="e.g. the-gatsby-earrings" />
         </div>
 
-        <div style={{ display: 'flex', gap: '24px' }}>
+        <div className="admin-form-grid-2" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
             <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Price (₹)</label>
             <input type="number" name="price" defaultValue={product.price} required style={{ padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }} placeholder="50000" />
@@ -57,7 +57,7 @@ export default async function EditProductPage({ params }: { params: { id: string
           <FilterPills name="category" options={uniqueCategories} defaultValue={product.category} label="Category" />
         </div>
 
-        <div style={{ display: 'flex', gap: '24px' }}>
+        <div className="admin-form-grid-2" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
           <FilterPills name="metal" options={uniqueMetals} defaultValue={product.metal} label="Metal" multiple={true} />
           <FilterPills name="collection" options={uniqueCollections} defaultValue={product.collection} label="Collection" />
         </div>
