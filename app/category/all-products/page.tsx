@@ -40,10 +40,8 @@ const matchCategory = (prodCategory: string | null | undefined, targetType: stri
   const p = normalize(prodCategory);
   const t = normalize(targetType);
   if (p === t) return true;
-  // Singular / Plural matching (e.g. RING vs RINGS, EARRING vs EARRINGS, NECKLACE vs NECKLACES)
+  // Singular / Plural matching (e.g. RING vs RINGS, EARRING vs EARRINGS, NECKLACE vs NECKLACES, CUFF vs CUFFS)
   if (p.replace(/S$/, '') === t.replace(/S$/, '')) return true;
-  // Also treat CUFF as BRACELET
-  if ((p.includes('BRACELET') || p.includes('CUFF')) && (t.includes('BRACELET') || t.includes('CUFF'))) return true;
   return false;
 };
 
@@ -106,16 +104,20 @@ export default function CategoryAllProductsPage() {
       }
     });
 
-    // Add any custom categories (like "Sunglasses", "Collab") present in the active products
+    // Add any custom categories (like "Cuff", "Sunglass Chains", "Collab") present in the active products
     activeProducts.forEach(p => {
       const rawCat = (p.category || '').trim();
       if (!rawCat) return;
       const norm = normalize(rawCat);
       if (!addedIds.has(norm) && !Array.from(addedIds).some(id => matchCategory(norm, id))) {
         addedIds.add(norm);
+        // Format label nicely: e.g. "cuff" -> "Cuffs", "sunglass chains" -> "Sunglass Chains"
+        const formattedLabel = rawCat.toLowerCase() === 'cuff'
+          ? 'Cuffs'
+          : rawCat.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
         dynamicTabs.push({
           id: rawCat.toUpperCase(),
-          label: rawCat
+          label: formattedLabel
         });
       }
     });
