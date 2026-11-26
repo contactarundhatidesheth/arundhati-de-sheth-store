@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { saveBannerSection } from '@/app/admin/actions';
+import React, { useState, useRef } from 'react';
+import { saveBannerSection, getDirectUploadUrl } from '@/app/admin/actions';
 
 interface BannerConfig {
   id: string;
@@ -19,11 +19,87 @@ interface BannerMediaCardProps {
 }
 
 export function BannerMediaCard({ banner, currentImage, currentVideo }: BannerMediaCardProps) {
-  // Determine initial media type: if banner supports video and has a video set, or defaults to video
   const initialType: 'image' | 'video' =
     banner.supportsVideo && (currentVideo ? 'video' : currentImage ? 'image' : banner.defaultMedia.endsWith('.mp4') ? 'video' : 'image');
 
   const [mediaType, setMediaType] = useState<'image' | 'video'>(initialType);
+  const [uploading, setUploading] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setErrorMessage('');
+    setUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.set('id', banner.id);
+      formData.set('title', banner.label);
+      if (banner.supportsVideo) {
+        formData.set('mediaType', mediaType);
+      }
+
+      let activeImageUrl = currentImage;
+      let activeVideoUrl = currentVideo;
+
+      // 1. Direct upload video file if selected
+      const videoFile = videoInputRef.current?.files?.[0];
+      if (banner.supportsVideo && mediaType === 'video' && videoFile) {
+        setUploadStatus(`Uploading video "${videoFile.name}" directly to storage...`);
+        const { signedUrl, publicUrl } = await getDirectUploadUrl(videoFile.name, videoFile.type);
+
+        const uploadRes = await fetch(signedUrl, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': videoFile.type || 'video/mp4',
+          },
+          body: videoFile,
+        });
+
+        if (!uploadRes.ok) {
+          throw new Error(`Video upload failed (${uploadRes.status}): ${await uploadRes.text()}`);
+        }
+
+        activeVideoUrl = publicUrl;
+      }
+
+      // 2. Direct upload image file if selected
+      const imageFile = imageInputRef.current?.files?.[0];
+      if ((!banner.supportsVideo || mediaType === 'image') && imageFile) {
+        setUploadStatus(`Uploading image "${imageFile.name}" directly to storage...`);
+        const { signedUrl, publicUrl } = await getDirectUploadUrl(imageFile.name, imageFile.type);
+
+        const uploadRes = await fetch(signedUrl, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': imageFile.type || 'image/jpeg',
+          },
+          body: imageFile,
+        });
+
+        if (!uploadRes.ok) {
+          throw new Error(`Image upload failed (${uploadRes.status}): ${await uploadRes.text()}`);
+        }
+
+        activeImageUrl = publicUrl;
+      }
+
+      // Set media values
+      setUploadStatus('Saving banner configuration...');
+      formData.set('image', activeImageUrl);
+      formData.set('link', mediaType === 'image' ? '' : activeVideoUrl);
+
+      await saveBannerSection(formData);
+    } catch (err: any) {
+      console.error('Banner upload error:', err);
+      setErrorMessage(err.message || 'Failed to upload media. Please try again.');
+      setUploading(false);
+    }
+  };
 
   return (
     <div
@@ -75,11 +151,19 @@ export function BannerMediaCard({ banner, currentImage, currentVideo }: BannerMe
         </div>
       </div>
 
-      <form action={saveBannerSection} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <input type="hidden" name="id" value={banner.id} />
-        <input type="hidden" name="title" value={banner.label} />
-        {banner.supportsVideo && <input type="hidden" name="mediaType" value={mediaType} />}
+      {errorMessage && (
+        <div style={{ padding: '12px 16px', background: '#fee2e2', color: '#991b1b', border: '1px solid #f87171', borderRadius: '6px', fontSize: '0.85rem', marginBottom: '16px' }}>
+          {errorMessage}
+        </div>
+      )}
 
+      {uploading && uploadStatus && (
+        <div style={{ padding: '12px 16px', background: '#f0f9ff', color: '#0369a1', border: '1px solid #bae6fd', borderRadius: '6px', fontSize: '0.85rem', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span>⏳</span> {uploadStatus}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {/* Media Type Selector if banner supports video */}
         {banner.supportsVideo && (
           <div style={{ marginBottom: '6px' }}>
@@ -139,17 +223,16 @@ export function BannerMediaCard({ banner, currentImage, currentVideo }: BannerMe
             </label>
             <div style={{ background: '#fff', border: '1px dashed #ccc', padding: '16px', borderRadius: '4px' }}>
               <input
+                ref={imageInputRef}
                 type="file"
                 name="imageFile"
                 accept="image/*"
                 style={{ fontSize: '0.85rem', width: '100%' }}
               />
               <p style={{ fontSize: '0.75rem', color: '#888', margin: '8px 0 0 0' }}>
-                Choose an image (.jpg, .png, .webp) from your computer. It will be uploaded and saved to backend storage, immediately replacing the image.
+                Choose an image (.jpg, .png, .webp) from your computer. It will be uploaded directly to storage, immediately replacing the image.
               </p>
             </div>
-            {/* Retain current image in hidden input so it is preserved if no new file is selected */}
-            <input type="hidden" name="image" value={currentImage} />
           </div>
         )}
 
@@ -160,23 +243,23 @@ export function BannerMediaCard({ banner, currentImage, currentVideo }: BannerMe
             </label>
             <div style={{ background: '#fff', border: '1px dashed #ccc', padding: '16px', borderRadius: '4px' }}>
               <input
+                ref={videoInputRef}
                 type="file"
                 name="videoFile"
                 accept="video/mp4,video/webm,video/quicktime,video/*"
                 style={{ fontSize: '0.85rem', width: '100%' }}
               />
               <p style={{ fontSize: '0.75rem', color: '#888', margin: '8px 0 0 0' }}>
-                Choose an .mp4 or .webm video from your computer. It will be uploaded and saved to backend storage, immediately replacing the video.
+                Choose an .mp4 or .webm video from your computer. It will be uploaded directly to storage, immediately replacing the video.
               </p>
             </div>
-            {/* Retain current video link in hidden input so it is preserved if no new file is uploaded */}
-            <input type="hidden" name="link" value={currentVideo} />
           </div>
         )}
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
           <button
             type="submit"
+            disabled={uploading}
             style={{
               background: '#000',
               color: '#fff',
@@ -186,10 +269,11 @@ export function BannerMediaCard({ banner, currentImage, currentVideo }: BannerMe
               fontSize: '0.85rem',
               textTransform: 'uppercase',
               letterSpacing: '0.08em',
-              cursor: 'pointer',
+              cursor: uploading ? 'not-allowed' : 'pointer',
+              opacity: uploading ? 0.7 : 1,
             }}
           >
-            Save Banner
+            {uploading ? 'Uploading...' : 'Save Banner'}
           </button>
         </div>
       </form>

@@ -459,6 +459,31 @@ export async function savePageSection(formData: FormData) {
   redirect('/admin/blogs');
 }
 
+// Generate presigned upload URL to allow direct client upload of large media (e.g. videos) bypassing Cloudflare 100MB / worker limits
+export async function getDirectUploadUrl(filename: string, fileType: string) {
+  const supabase = getAdminClient();
+  const safeFilename = `${Date.now()}-${filename.replace(/[^a-zA-Z0-9.\-_]/g, '')}`;
+
+  const { data, error } = await supabase.storage
+    .from('media')
+    .createSignedUploadUrl(safeFilename);
+
+  if (error || !data) {
+    throw new Error(error?.message || 'Failed to generate signed upload URL');
+  }
+
+  const { data: { publicUrl } } = supabase.storage
+    .from('media')
+    .getPublicUrl(safeFilename);
+
+  return {
+    signedUrl: data.signedUrl,
+    token: data.token,
+    path: data.path,
+    publicUrl
+  };
+}
+
 // --- BANNER MANAGEMENT ---
 export async function saveBannerSection(formData: FormData) {
   const supabase = getAdminClient();
