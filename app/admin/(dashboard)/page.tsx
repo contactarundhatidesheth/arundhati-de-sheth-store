@@ -94,41 +94,41 @@ export default async function AdminDashboard() {
       {/* Summary Stats Row */}
       <div className="admin-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '20px', marginBottom: '40px' }}>
 
-        <div style={{ background: '#fff', padding: '24px', borderRadius: '8px', border: '1px solid #eaeaea', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div className="admin-dashboard-card" style={{ background: '#fff', padding: '24px', borderRadius: '8px', border: '1px solid #eaeaea', display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <h3 style={{ fontSize: '0.8rem', color: '#666', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0 }}>Total Visitors</h3>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
-            <p style={{ fontSize: '2.5rem', fontWeight: '300', margin: 0, color: '#111' }}>{analytics.visitors.toLocaleString()}</p>
+            <p className="admin-dashboard-stat-val" style={{ fontSize: '2.5rem', fontWeight: '300', margin: 0, color: '#111' }}>{analytics.visitors.toLocaleString()}</p>
           </div>
         </div>
 
-        <div style={{ background: '#fff', padding: '24px', borderRadius: '8px', border: '1px solid #eaeaea', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div className="admin-dashboard-card" style={{ background: '#fff', padding: '24px', borderRadius: '8px', border: '1px solid #eaeaea', display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <h3 style={{ fontSize: '0.8rem', color: '#666', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0 }}>WhatsApp Inquiries</h3>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
-            <p style={{ fontSize: '2.5rem', fontWeight: '300', margin: 0, color: '#111' }}>{analytics.whatsappClicks.toLocaleString()}</p>
+            <p className="admin-dashboard-stat-val" style={{ fontSize: '2.5rem', fontWeight: '300', margin: 0, color: '#111' }}>{analytics.whatsappClicks.toLocaleString()}</p>
           </div>
         </div>
 
-        <div style={{ background: '#fff', padding: '24px', borderRadius: '8px', border: '1px solid #eaeaea', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div className="admin-dashboard-card" style={{ background: '#fff', padding: '24px', borderRadius: '8px', border: '1px solid #eaeaea', display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <h3 style={{ fontSize: '0.8rem', color: '#666', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0 }}>Active Products</h3>
-          <p style={{ fontSize: '2.5rem', fontWeight: '300', margin: 0, color: '#111' }}>{totalProducts}</p>
+          <p className="admin-dashboard-stat-val" style={{ fontSize: '2.5rem', fontWeight: '300', margin: 0, color: '#111' }}>{totalProducts}</p>
         </div>
 
-        <div style={{ background: '#fff', padding: '24px', borderRadius: '8px', border: '1px solid #eaeaea', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div className="admin-dashboard-card" style={{ background: '#fff', padding: '24px', borderRadius: '8px', border: '1px solid #eaeaea', display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <h3 style={{ fontSize: '0.8rem', color: '#666', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0 }}>Catalogues & Press</h3>
-          <p style={{ fontSize: '2.5rem', fontWeight: '300', margin: 0, color: '#111' }}>{totalCatalogues + totalBlogs}</p>
+          <p className="admin-dashboard-stat-val" style={{ fontSize: '2.5rem', fontWeight: '300', margin: 0, color: '#111' }}>{totalCatalogues + totalBlogs}</p>
         </div>
 
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px', marginBottom: '40px' }}>
+      <div className="admin-dashboard-chart-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px', marginBottom: '40px' }}>
 
         {/* Line Chart Section */}
-        <div style={{ background: '#fff', padding: '32px', borderRadius: '8px', border: '1px solid #eaeaea' }}>
+        <div className="admin-dashboard-card" style={{ background: '#fff', padding: '32px', borderRadius: '8px', border: '1px solid #eaeaea', overflow: 'hidden' }}>
           <h3 style={{ fontSize: '1.2rem', fontFamily: 'var(--font-serif)', color: '#111', margin: '0 0 24px 0' }}>Visitor Traffic (7 Days)</h3>
 
-          <div style={{ height: '300px', position: 'relative', width: '100%', borderBottom: '1px solid #eaeaea', borderLeft: '1px solid #eaeaea' }}>
+          <div style={{ height: '260px', position: 'relative', width: '100%', borderBottom: '1px solid #eaeaea', borderLeft: '1px solid #eaeaea' }}>
             {/* SVG Line Chart */}
-            <svg viewBox="0 0 1000 300" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
+            <svg viewBox="0 0 1000 300" preserveAspectRatio="none" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
               <defs>
                 <linearGradient id="lineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
                   <stop offset="0%" stopColor="rgba(17,17,17,0.15)" />
@@ -161,20 +161,20 @@ export default async function AdminDashboard() {
             </svg>
 
             {/* X-Axis Labels */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '12px', color: '#888', fontSize: '0.75rem' }}>
-              {last7Days.map((d, i) => <span key={i}>{d.label}</span>)}
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '12px', color: '#888', fontSize: '0.75rem', overflowX: 'auto', gap: '4px' }}>
+              {last7Days.map((d, i) => <span key={i} style={{ whiteSpace: 'nowrap' }}>{d.label}</span>)}
             </div>
           </div>
         </div>
 
         {/* Donut Chart Section */}
-        <div style={{ background: '#fff', padding: '32px', borderRadius: '8px', border: '1px solid #eaeaea', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div className="admin-dashboard-card" style={{ background: '#fff', padding: '32px', borderRadius: '8px', border: '1px solid #eaeaea', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <h3 style={{ fontSize: '1.2rem', fontFamily: 'var(--font-serif)', color: '#111', margin: '0 0 32px 0', width: '100%' }}>Traffic Sources</h3>
 
           {/* CSS Donut Chart */}
           <div style={{
-            width: '200px',
-            height: '200px',
+            width: '180px',
+            height: '180px',
             borderRadius: '50%',
             background: `conic-gradient(#111 0% ${igEnd}%, #666 ${igEnd}% ${googleEnd}%, #d4af37 ${googleEnd}% 100%)`,
             position: 'relative',
@@ -183,32 +183,32 @@ export default async function AdminDashboard() {
             justifyContent: 'center'
           }}>
             <div style={{
-              width: '130px',
-              height: '130px',
+              width: '116px',
+              height: '116px',
               borderRadius: '50%',
               background: '#fff'
             }} />
           </div>
 
           {/* Legend */}
-          <div style={{ width: '100%', marginTop: '48px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div style={{ width: '100%', marginTop: '36px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.85rem', color: '#333' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <div style={{ width: '12px', height: '12px', borderRadius: '2px', background: '#111' }} />
+                <div style={{ width: '12px', height: '12px', borderRadius: '2px', background: '#111', flexShrink: 0 }} />
                 <span>Instagram (Direct)</span>
               </div>
               <span style={{ fontWeight: '500' }}>{igPct}%</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.85rem', color: '#333' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <div style={{ width: '12px', height: '12px', borderRadius: '2px', background: '#666' }} />
+                <div style={{ width: '12px', height: '12px', borderRadius: '2px', background: '#666', flexShrink: 0 }} />
                 <span>Google Search</span>
               </div>
               <span style={{ fontWeight: '500' }}>{googlePct}%</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.85rem', color: '#333' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <div style={{ width: '12px', height: '12px', borderRadius: '2px', background: '#d4af37' }} />
+                <div style={{ width: '12px', height: '12px', borderRadius: '2px', background: '#d4af37', flexShrink: 0 }} />
                 <span>Direct / Other</span>
               </div>
               <span style={{ fontWeight: '500' }}>{directPct}%</span>
@@ -219,32 +219,34 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Top Performing Pieces */}
-      <div style={{ background: '#fff', padding: '32px', borderRadius: '8px', border: '1px solid #eaeaea' }}>
+      <div className="admin-dashboard-card" style={{ background: '#fff', padding: '32px', borderRadius: '8px', border: '1px solid #eaeaea' }}>
         <h3 style={{ fontSize: '1.2rem', fontFamily: 'var(--font-serif)', color: '#111', margin: '0 0 24px 0' }}>Top Performing Pieces</h3>
 
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-          <thead>
-            <tr style={{ borderBottom: '1px solid #eaeaea', color: '#888', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              <th style={{ padding: '0 0 16px 0', fontWeight: '500' }}>Product</th>
-              <th style={{ padding: '0 0 16px 0', fontWeight: '500' }}>Collection</th>
-              <th style={{ padding: '0 0 16px 0', fontWeight: '500' }}>Page Views</th>
-              <th style={{ padding: '0 0 16px 0', fontWeight: '500', textAlign: 'right' }}>WhatsApp Inquiries</th>
-            </tr>
-          </thead>
-          <tbody>
-            {topProducts.map((p, idx) => (
-              <tr key={p.id} style={{ borderBottom: '1px solid #eaeaea' }}>
-                <td style={{ padding: '20px 0', display: 'flex', alignItems: 'center', gap: '16px' }}>
-                  <img src={p.images?.[0] || '/placeholder.png'} alt={p.title} style={{ width: '48px', height: '48px', objectFit: 'cover', borderRadius: '4px' }} />
-                  <span style={{ fontWeight: '500', color: '#111' }}>{p.title}</span>
-                </td>
-                <td style={{ padding: '20px 0', color: '#666', fontSize: '0.9rem' }}>{p.collection}</td>
-                <td style={{ padding: '20px 0', color: '#666', fontSize: '0.9rem' }}>{analytics.productViews[p.handle] || 0}</td>
-                <td style={{ padding: '20px 0', color: '#111', fontSize: '0.9rem', textAlign: 'right', fontWeight: '500' }}>-</td>
+        <div className="admin-table-container">
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '520px' }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid #eaeaea', color: '#888', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <th style={{ padding: '0 0 16px 0', fontWeight: '500' }}>Product</th>
+                <th style={{ padding: '0 0 16px 0', fontWeight: '500' }}>Collection</th>
+                <th style={{ padding: '0 0 16px 0', fontWeight: '500' }}>Page Views</th>
+                <th style={{ padding: '0 0 16px 0', fontWeight: '500', textAlign: 'right' }}>WhatsApp Inquiries</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {topProducts.map((p, idx) => (
+                <tr key={p.id} style={{ borderBottom: '1px solid #eaeaea' }}>
+                  <td style={{ padding: '16px 0', display: 'flex', alignItems: 'center', gap: '14px' }}>
+                    <img src={p.images?.[0] || '/placeholder.png'} alt={p.title} style={{ width: '44px', height: '44px', objectFit: 'cover', borderRadius: '4px', flexShrink: 0 }} />
+                    <span style={{ fontWeight: '500', color: '#111' }}>{p.title}</span>
+                  </td>
+                  <td style={{ padding: '16px 0', color: '#666', fontSize: '0.9rem' }}>{p.collection}</td>
+                  <td style={{ padding: '16px 0', color: '#666', fontSize: '0.9rem' }}>{analytics.productViews[p.handle] || 0}</td>
+                  <td style={{ padding: '16px 0', color: '#111', fontSize: '0.9rem', textAlign: 'right', fontWeight: '500' }}>-</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         <div style={{ marginTop: '24px', textAlign: 'center' }}>
           <Link href="/admin/products" style={{ fontSize: '0.85rem', color: '#0066cc', textDecoration: 'underline' }}>View Full Inventory</Link>

@@ -33,6 +33,16 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             box-sizing: border-box !important;
           }
           /* Universal mobile responsiveness for admin pages */
+          .admin-dashboard-chart-grid {
+            grid-template-columns: 1fr !important;
+            gap: 20px !important;
+          }
+          .admin-dashboard-card {
+            padding: 20px 16px !important;
+          }
+          .admin-dashboard-stat-val {
+            font-size: 2rem !important;
+          }
           .admin-page-header {
             flex-direction: column !important;
             align-items: flex-start !important;
@@ -83,6 +93,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           }
           .admin-page-header h1 {
             font-size: 1.3rem !important;
+          }
+          .admin-dashboard-card {
+            padding: 16px 12px !important;
+          }
+          .admin-dashboard-stat-val {
+            font-size: 1.7rem !important;
           }
           input, select, textarea, button {
             font-size: 14px !important;
