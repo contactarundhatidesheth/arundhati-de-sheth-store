@@ -507,13 +507,27 @@ export async function saveBannerSection(formData: FormData) {
     finalLink = '';
   }
 
+  // Format Google Drive links into streamable direct download URLs if entered
+  const formatMediaUrl = (url: string) => {
+    if (!url) return '';
+    const fileIdMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (fileIdMatch && fileIdMatch[1]) {
+      return `https://drive.google.com/uc?export=download&id=${fileIdMatch[1]}`;
+    }
+    const openIdMatch = url.match(/drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/);
+    if (openIdMatch && openIdMatch[1]) {
+      return `https://drive.google.com/uc?export=download&id=${openIdMatch[1]}`;
+    }
+    return url;
+  };
+
   const payload = {
     id: id,
     title: (formData.get('title') as string) || '',
     subtitle: (formData.get('subtitle') as string) || '',
     description: (formData.get('description') as string) || '',
-    image: finalImageUrl,
-    link: finalLink,
+    image: formatMediaUrl(finalImageUrl),
+    link: formatMediaUrl(finalLink),
   };
 
   const { error } = await supabase.from('page_sections').upsert(payload);

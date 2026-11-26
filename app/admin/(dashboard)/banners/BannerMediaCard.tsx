@@ -49,6 +49,12 @@ export function BannerMediaCard({ banner, currentImage, currentVideo }: BannerMe
       // 1. Direct upload video file if selected
       const videoFile = videoInputRef.current?.files?.[0];
       if (banner.supportsVideo && mediaType === 'video' && videoFile) {
+        if (videoFile.size > 52428800) {
+          throw new Error(
+            `Video file "${videoFile.name}" is ${(videoFile.size / (1024 * 1024)).toFixed(1)}MB, which exceeds the 50MB storage limit. Please compress it or use a hosted video URL.`
+          );
+        }
+
         setUploadStatus(`Uploading video "${videoFile.name}" directly to storage...`);
         const { signedUrl, publicUrl } = await getDirectUploadUrl(videoFile.name, videoFile.type);
 
@@ -70,6 +76,12 @@ export function BannerMediaCard({ banner, currentImage, currentVideo }: BannerMe
       // 2. Direct upload image file if selected
       const imageFile = imageInputRef.current?.files?.[0];
       if ((!banner.supportsVideo || mediaType === 'image') && imageFile) {
+        if (imageFile.size > 52428800) {
+          throw new Error(
+            `Image file "${imageFile.name}" is ${(imageFile.size / (1024 * 1024)).toFixed(1)}MB, which exceeds the 50MB limit.`
+          );
+        }
+
         setUploadStatus(`Uploading image "${imageFile.name}" directly to storage...`);
         const { signedUrl, publicUrl } = await getDirectUploadUrl(imageFile.name, imageFile.type);
 
