@@ -24,6 +24,9 @@ export interface Product {
   isBespoke?: boolean;
   isPriceOnRequest?: boolean;
   inStock: boolean;
+  stock?: number;
+  isMadeToOrder?: boolean;
+  leadTime?: string;
 }
 
 export const PRODUCTS: Product[] = [
