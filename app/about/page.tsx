@@ -282,9 +282,6 @@ export default function AboutPage() {
             Arundhati<br />De-Sheth
           </h2>
           <div style={{ width: '32px', height: '1px', background: '#d4af37', marginBottom: '16px' }} />
-          <p style={{ fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', opacity: 0.6 }}>
-            Video Credits: Only Natural Diamonds
-          </p>
         </div>
       </div>
 
