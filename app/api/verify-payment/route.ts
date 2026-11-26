@@ -22,8 +22,8 @@ export async function POST(req: Request) {
     }
 
     // Fetch the order to get full details for notifications and avoid double sends
-    const { createClient: createSupabaseAdmin } = await import('@supabase/supabase-js');
-    const supabase = createSupabaseAdmin(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+    const { getSupabaseAdmin } = await import('@/utils/supabase-admin');
+    const supabase = getSupabaseAdmin();
     
     const { data: existingOrder, error: fetchError } = await supabase
       .from('orders')
