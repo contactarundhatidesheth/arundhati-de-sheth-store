@@ -33,6 +33,15 @@ export async function POST(req: Request) {
             const orderId = paymentEntity.order_id;
             const paymentId = paymentEntity.id;
 
+            // Fetch existing order to check status and data
+            const { data: existingOrder } = await supabase
+                .from('orders')
+                .select('*')
+                .eq('razorpay_order_id', orderId)
+                .maybeSingle();
+
+            const wasAlreadyPaid = existingOrder?.status === 'Paid';
+
             // Update the database
             const { error } = await supabase
                 .from('orders')
@@ -45,6 +54,31 @@ export async function POST(req: Request) {
             if (error) {
                 console.error('Webhook Db Error:', error);
                 return NextResponse.json({ error: 'Failed DB Update' }, { status: 500 });
+            }
+
+            // If verify-payment didn't fire first (e.g. user closed window immediately), dispatch emails from webhook
+            if (!wasAlreadyPaid && existingOrder) {
+                try {
+                    const { sendOrderConfirmation, sendAdminOrderAlert } = await import('@/lib/email');
+                    const orderDetails = {
+                        orderId: existingOrder.id,
+                        razorpayOrderId: orderId,
+                        razorpayPaymentId: paymentId,
+                        customerEmail: existingOrder.user_email,
+                        customerPhone: existingOrder.user_phone,
+                        customerName: existingOrder.shipping_address?.name || '',
+                        amount: existingOrder.amount,
+                        shippingAddress: existingOrder.shipping_address,
+                        items: existingOrder.items
+                    };
+
+                    await Promise.allSettled([
+                        sendOrderConfirmation(orderDetails),
+                        sendAdminOrderAlert(orderDetails)
+                    ]);
+                } catch (emailErr) {
+                    console.error('Email dispatch error in Razorpay webhook:', emailErr);
+                }
             }
         }
 

@@ -162,30 +162,235 @@ export async function sendNewsletterWelcome(email: string) {
     await sendGraphEmail(email, 'Welcome to Arundhati De-Sheth', html);
 }
 
-export async function sendOrderConfirmation(email: string, orderId: string, totalAmount: number) {
+export interface OrderEmailDetails {
+    orderId: string;
+    razorpayOrderId?: string;
+    razorpayPaymentId?: string;
+    customerEmail: string;
+    customerPhone?: string;
+    customerName?: string;
+    amount: number;
+    shippingAddress?: {
+        name?: string;
+        address?: string;
+        city?: string;
+        state?: string;
+        postal_code?: string;
+        country?: string;
+        phone?: string;
+        coupon_applied?: string;
+        discount_amount?: number;
+    } | any;
+    items?: Array<{
+        product?: {
+            title?: string;
+            price?: number;
+            selectedMetal?: string;
+            selectedSize?: string;
+            images?: string[];
+            image?: string;
+        };
+        quantity?: number;
+        title?: string;
+        price?: number;
+        metal?: string;
+        size?: string;
+    }>;
+}
+
+export async function sendOrderConfirmation(orderData: OrderEmailDetails | string, legacyOrderId?: string, legacyAmount?: number) {
+    // Support backwards compatibility if called with (email, orderId, amount)
+    let details: OrderEmailDetails;
+    if (typeof orderData === 'string') {
+        details = {
+            customerEmail: orderData,
+            orderId: legacyOrderId || 'Bespoke',
+            amount: legacyAmount || 0
+        };
+    } else {
+        details = orderData;
+    }
+
+    const { orderId, amount, customerEmail, shippingAddress, items, razorpayPaymentId } = details;
+    const clientName = shippingAddress?.name || details.customerName || 'Valued Client';
+
+    // Format items table rows
+    let itemsHtml = '';
+    if (items && Array.isArray(items) && items.length > 0) {
+        itemsHtml = items.map(item => {
+            const product = item.product || item;
+            const title = product.title || (item as any).title || 'Bespoke Jewellery';
+            const price = Number(product.price || (item as any).price || 0);
+            const qty = Number(item.quantity || 1);
+            const metal = product.selectedMetal || (product as any).metal || '';
+            const size = product.selectedSize || (product as any).size || '';
+            const image = (product.images && product.images[0]) || product.image || (item as any).image;
+
+            const specs = [metal, size ? `Size: ${size}` : ''].filter(Boolean).join(' • ');
+
+            return `
+            <tr>
+                <td style="padding: 14px 0; border-bottom: 1px solid #F0F0F0; vertical-align: top;">
+                    ${image ? `<img src="${image}" alt="${title}" width="54" height="54" style="object-fit: cover; border-radius: 4px; float: left; margin-right: 14px; border: 1px solid #EAEAEA;" />` : ''}
+                    <div>
+                        <strong style="color: #111; font-size: 13.5px; display: block;">${title}</strong>
+                        ${specs ? `<span style="color: #777; font-size: 12px; display: block; margin-top: 2px;">${specs}</span>` : ''}
+                        <span style="color: #999; font-size: 12px; display: block; margin-top: 2px;">Qty: ${qty}</span>
+                    </div>
+                </td>
+                <td style="text-align: right; padding: 14px 0; border-bottom: 1px solid #F0F0F0; vertical-align: top; font-size: 14px; font-weight: 500; color: #111;">
+                    Rs. ${(price * qty).toLocaleString('en-IN')}
+                </td>
+            </tr>
+            `;
+        }).join('');
+    } else {
+        itemsHtml = `
+            <tr>
+                <td style="padding: 14px 0; border-bottom: 1px solid #F0F0F0; font-size: 14px;">Bespoke Acquisition</td>
+                <td style="text-align: right; padding: 14px 0; border-bottom: 1px solid #F0F0F0; font-size: 14px;">Rs. ${amount.toLocaleString('en-IN')}</td>
+            </tr>
+        `;
+    }
+
+    // Format address
+    let addressHtml = '';
+    if (shippingAddress && (shippingAddress.address || shippingAddress.city)) {
+        addressHtml = `
+            <div style="background-color: #FAFAFA; border: 1px solid #EAEAEA; padding: 18px 20px; margin-top: 28px; border-radius: 4px;">
+                <p style="margin: 0 0 8px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #888; font-weight: 600;">Delivery Address</p>
+                <p style="margin: 0; font-size: 13px; color: #333; line-height: 1.6;">
+                    <strong>${shippingAddress.name || clientName}</strong><br/>
+                    ${shippingAddress.address || ''}<br/>
+                    ${[shippingAddress.city, shippingAddress.state, shippingAddress.postal_code].filter(Boolean).join(', ')}<br/>
+                    ${shippingAddress.country || 'India'}<br/>
+                    ${shippingAddress.phone ? `Phone: ${shippingAddress.phone}` : ''}
+                </p>
+            </div>
+        `;
+    }
+
     const html = getPremiumEmailTemplate(`
         <h1>Order Confirmation</h1>
-        <p>Thank you for entrusting Arundhati De-Sheth with your acquisition. Your order has been successfully placed and is currently being processed by our atelier.</p>
+        <p>Dear ${clientName},</p>
+        <p>Thank you for entrusting Arundhati De-Sheth with your acquisition. Your payment has been received and verified successfully. Your bespoke fine jewellery order is now being processed by our master atelier.</p>
         
-        <table class="receipt-table" cellpadding="0" cellspacing="0">
-            <tr>
-                <th>Order Reference</th>
-                <th style="text-align: right;">Amount</th>
-            </tr>
-            <tr>
-                <td>#${orderId}</td>
-                <td style="text-align: right;">Rs. ${totalAmount.toLocaleString('en-IN')}</td>
-            </tr>
+        <div style="background-color: #FAFAFA; border-left: 2px solid #111; padding: 12px 16px; margin: 20px 0;">
+            <p style="margin: 0; font-size: 12.5px; color: #444;">
+                <strong>Order Reference:</strong> #${orderId.slice(0, 12)}<br/>
+                ${razorpayPaymentId ? `<strong>Payment Reference:</strong> ${razorpayPaymentId}<br/>` : ''}
+                <strong>Status:</strong> Confirmed & Paid
+            </p>
+        </div>
+
+        <table class="receipt-table" cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-top: 24px;">
+            <thead>
+                <tr>
+                    <th style="text-align: left; padding-bottom: 10px; border-bottom: 1px solid #DDD; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #777;">Item Details</th>
+                    <th style="text-align: right; padding-bottom: 10px; border-bottom: 1px solid #DDD; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #777;">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${itemsHtml}
+            </tbody>
         </table>
         
-        <div class="receipt-total">
-            <p style="margin:0; font-size: 16px;"><strong>Total: Rs. ${totalAmount.toLocaleString('en-IN')}</strong></p>
+        <div class="receipt-total" style="border-top: 1px solid #111; padding-top: 14px; margin-top: 16px; text-align: right;">
+            <p style="margin: 0; font-size: 16px; color: #111;"><strong>Grand Total: Rs. ${amount.toLocaleString('en-IN')}</strong></p>
         </div>
+
+        ${addressHtml}
         
-        <p style="margin-top: 30px;">Our client advisory team will gently notify you the moment your piece has been dispatched.</p>
+        <p style="margin-top: 32px; font-size: 13.5px; color: #555;">
+            Our client advisory team will notify you the moment your piece is securely packaged and dispatched with its secure transit tracking docket.
+        </p>
     `);
 
-    await sendGraphEmail(email, `Order Confirmation - #${orderId}`, html);
+    await sendGraphEmail(customerEmail, `Order Confirmation - #${orderId.slice(0, 8)} | Arundhati De-Sheth`, html);
+}
+
+export async function sendAdminOrderAlert(details: OrderEmailDetails) {
+    const { orderId, amount, customerEmail, customerPhone, shippingAddress, items, razorpayPaymentId, razorpayOrderId } = details;
+    const clientName = shippingAddress?.name || details.customerName || 'Client';
+
+    // Format items
+    let itemsSummary = '';
+    if (items && Array.isArray(items)) {
+        itemsSummary = items.map(item => {
+            const product = item.product || item;
+            const title = product.title || (item as any).title || 'Bespoke Item';
+            const price = Number(product.price || (item as any).price || 0);
+            const qty = Number(item.quantity || 1);
+            const metal = product.selectedMetal || (product as any).metal || '';
+            const size = product.selectedSize || (product as any).size || '';
+            const specs = [metal, size ? `Size: ${size}` : ''].filter(Boolean).join(' | ');
+
+            return `<tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #EEE; font-size: 13px;">
+                    <strong>${title}</strong> (x${qty})<br/>
+                    ${specs ? `<span style="color: #666; font-size: 12px;">${specs}</span>` : ''}
+                </td>
+                <td style="text-align: right; padding: 10px 0; border-bottom: 1px solid #EEE; font-size: 13px;">
+                    Rs. ${(price * qty).toLocaleString('en-IN')}
+                </td>
+            </tr>`;
+        }).join('');
+    }
+
+    const fullAddress = shippingAddress ? `
+        ${shippingAddress.address || ''}<br/>
+        ${[shippingAddress.city, shippingAddress.state, shippingAddress.postal_code].filter(Boolean).join(', ')}<br/>
+        ${shippingAddress.country || 'India'}
+    ` : 'Not provided';
+
+    const phone = shippingAddress?.phone || customerPhone || 'Not provided';
+
+    const htmlContent = getPremiumEmailTemplate(`
+        <h1 style="color: #111;">New Order Received (Paid)</h1>
+        <p style="font-size: 14px; color: #222;">A new order has been successfully placed and paid online on Arundhati De-Sheth.</p>
+        
+        <div style="background-color: #FAFAFA; border: 1px solid #EAEAEA; padding: 18px 20px; margin: 20px 0;">
+            <p style="margin: 0 0 6px 0;"><strong>Order ID:</strong> #${orderId}</p>
+            <p style="margin: 0 0 6px 0;"><strong>Total Paid:</strong> Rs. ${amount.toLocaleString('en-IN')}</p>
+            <p style="margin: 0 0 6px 0;"><strong>Payment ID:</strong> ${razorpayPaymentId || 'N/A'}</p>
+            <p style="margin: 0 0 6px 0;"><strong>Razorpay Order:</strong> ${razorpayOrderId || 'N/A'}</p>
+            <hr style="border: none; border-top: 1px solid #EAEAEA; margin: 12px 0;" />
+            <p style="margin: 0 0 6px 0;"><strong>Customer Name:</strong> ${clientName}</p>
+            <p style="margin: 0 0 6px 0;"><strong>Email:</strong> <a href="mailto:${customerEmail}">${customerEmail}</a></p>
+            <p style="margin: 0 0 6px 0;"><strong>Phone:</strong> <a href="tel:${phone}">${phone}</a></p>
+            <p style="margin: 0;"><strong>Shipping Destination:</strong><br/>${fullAddress}</p>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            <thead>
+                <tr>
+                    <th style="text-align: left; padding-bottom: 8px; border-bottom: 1px solid #111; font-size: 11px; text-transform: uppercase;">Purchased Items</th>
+                    <th style="text-align: right; padding-bottom: 8px; border-bottom: 1px solid #111; font-size: 11px; text-transform: uppercase;">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${itemsSummary}
+            </tbody>
+        </table>
+
+        <div style="margin-top: 20px; text-align: right;">
+            <p style="margin: 0; font-size: 15px; font-weight: bold;">Total: Rs. ${amount.toLocaleString('en-IN')}</p>
+        </div>
+
+        <p style="margin-top: 30px; text-align: center;">
+            <a href="https://www.arundhatidesheth.com/ad-admin/orders" style="display: inline-block; padding: 12px 24px; background-color: #111; color: #fff; text-decoration: none; text-transform: uppercase; font-size: 11px; letter-spacing: 1px;">View in Admin Panel</a>
+        </p>
+    `);
+
+    // Notify primary atelier email & secondary email
+    const recipients = ['arundhati@arundhatidesheth.com', 'contactarundhatidesheth@gmail.com'];
+    for (const recipient of recipients) {
+        try {
+            await sendGraphEmail(recipient, `New Order Received: #${orderId.slice(0, 8)} (Rs. ${amount.toLocaleString('en-IN')})`, htmlContent);
+        } catch (e) {
+            console.error(`Failed to alert admin at ${recipient}:`, e);
+        }
+    }
 }
 
 export async function sendOrderTrackingEmail(recipientEmail: string, recipientName: string, orderId: string, trackingNumber: string) {

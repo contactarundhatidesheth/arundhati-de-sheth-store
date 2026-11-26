@@ -21,10 +21,24 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid Payment Signature' }, { status: 400 });
     }
 
-    // Update the order in Supabase
+    // Fetch the order to get full details for notifications and avoid double sends
     const { createClient: createSupabaseAdmin } = await import('@supabase/supabase-js');
     const supabase = createSupabaseAdmin(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
-    const { error } = await supabase
+    
+    const { data: existingOrder, error: fetchError } = await supabase
+      .from('orders')
+      .select('*')
+      .eq('razorpay_order_id', razorpay_order_id)
+      .maybeSingle();
+
+    if (fetchError) {
+      console.error('Error fetching order before verification update:', fetchError);
+    }
+
+    const wasAlreadyPaid = existingOrder?.status === 'Paid';
+
+    // Update the order in Supabase
+    const { error: updateError } = await supabase
       .from('orders')
       .update({
         razorpay_payment_id: razorpay_payment_id,
@@ -32,11 +46,35 @@ export async function POST(req: Request) {
       })
       .eq('razorpay_order_id', razorpay_order_id);
 
-    if (error) {
-      console.error('Failed to update order status:', error);
-      // We still return success to the client because the payment was actually successful,
-      // but ideally we should have a retry mechanism or alert the admin.
+    if (updateError) {
+      console.error('Failed to update order status:', updateError);
       return NextResponse.json({ error: 'Payment verified, but database update failed' }, { status: 500 });
+    }
+
+    // Trigger emails only if this is the first time the order is marked Paid
+    if (!wasAlreadyPaid && existingOrder) {
+      try {
+        const { sendOrderConfirmation, sendAdminOrderAlert } = await import('@/lib/email');
+        const orderDetails = {
+          orderId: existingOrder.id,
+          razorpayOrderId: razorpay_order_id,
+          razorpayPaymentId: razorpay_payment_id,
+          customerEmail: existingOrder.user_email,
+          customerPhone: existingOrder.user_phone,
+          customerName: existingOrder.shipping_address?.name || '',
+          amount: existingOrder.amount,
+          shippingAddress: existingOrder.shipping_address,
+          items: existingOrder.items
+        };
+
+        // Fire both emails asynchronously
+        await Promise.allSettled([
+          sendOrderConfirmation(orderDetails),
+          sendAdminOrderAlert(orderDetails)
+        ]);
+      } catch (emailErr) {
+        console.error('Email dispatch error in verify-payment:', emailErr);
+      }
     }
 
     return NextResponse.json({ success: true, message: 'Payment verified successfully' });

@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
-import { sendOrderConfirmation } from '@/lib/email';
 import { RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET } from '@/lib/config/razorpay';
 
 export async function POST(req: Request) {
@@ -66,12 +65,6 @@ export async function POST(req: Request) {
 
     // Flag any pending abandoned carts for this email as 'recovered' to halt automated emails
     await supabase.from('abandoned_carts').update({ status: 'recovered', updated_at: new Date().toISOString() }).eq('email', guestEmail);
-
-    try {
-      await sendOrderConfirmation(guestEmail, data.id, amount);
-    } catch (e) {
-      console.error('Failed to send order confirmation: ', e);
-    }
 
     return NextResponse.json({ orderId: data.id, keyId: RAZORPAY_KEY_ID });
   } catch (error: any) {
