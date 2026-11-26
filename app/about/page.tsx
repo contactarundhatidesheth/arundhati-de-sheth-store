@@ -1,7 +1,7 @@
 'use client';
 import React, { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Play, Pause } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { useCMSData } from '@/hooks/useCMSData';
 import { getOptimizedImageUrl } from '@/lib/images';
 
@@ -88,6 +88,7 @@ export default function AboutPage() {
   const { data, loading } = useCMSData();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
 
   // Format Drive and CDN video links for direct streaming in <video> elements
   const formatVideoUrl = (url: string) => {
@@ -120,20 +121,43 @@ export default function AboutPage() {
 
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.defaultMuted = true;
-      videoRef.current.muted = true;
+      videoRef.current.muted = false;
       const playPromise = videoRef.current.play();
       if (playPromise !== undefined) {
-        playPromise.catch(e => {
-          console.log("Initial autoplay was prevented, retrying with muted:", e);
+        playPromise.catch(() => {
+          // If browser policy prevents unmuted autoplay on initial page load, start muted then unmute on first user interaction
           if (videoRef.current) {
             videoRef.current.muted = true;
+            setIsMuted(true);
             videoRef.current.play().catch(() => {});
           }
         });
       }
     }
   }, [aboutVideoUrl]);
+
+  // Global unmute on user's first interaction anywhere on page if muted by browser policy
+  useEffect(() => {
+    const handleFirstInteraction = () => {
+      if (videoRef.current && videoRef.current.muted) {
+        videoRef.current.muted = false;
+        setIsMuted(false);
+      }
+      window.removeEventListener('click', handleFirstInteraction);
+      window.removeEventListener('scroll', handleFirstInteraction);
+      window.removeEventListener('touchstart', handleFirstInteraction);
+    };
+
+    window.addEventListener('click', handleFirstInteraction, { once: true });
+    window.addEventListener('scroll', handleFirstInteraction, { once: true });
+    window.addEventListener('touchstart', handleFirstInteraction, { once: true });
+
+    return () => {
+      window.removeEventListener('click', handleFirstInteraction);
+      window.removeEventListener('scroll', handleFirstInteraction);
+      window.removeEventListener('touchstart', handleFirstInteraction);
+    };
+  }, []);
 
   const toggleVideo = () => {
     if (videoRef.current) {
@@ -143,6 +167,14 @@ export default function AboutPage() {
         videoRef.current.play();
       }
       setIsPlaying(!isPlaying);
+    }
+  };
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      const nextMuted = !videoRef.current.muted;
+      videoRef.current.muted = nextMuted;
+      setIsMuted(nextMuted);
     }
   };
 
@@ -203,7 +235,6 @@ export default function AboutPage() {
             key={aboutVideoUrl}
             autoPlay
             loop
-            muted
             playsInline
             style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
           >
@@ -215,16 +246,31 @@ export default function AboutPage() {
         {/* Dark overlay - changed to subtle bottom gradient for text readability */}
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 25%)' }} />
 
-        {/* Video Playback Controls */}
+        {/* Video Playback & Audio Controls */}
         {(!aboutImageUrl || aboutBanner?.link) && (
-          <button
-            onClick={toggleVideo}
-            style={{ position: 'absolute', top: '48px', right: '48px', zIndex: 10, background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(4px)', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: 'pointer', transition: 'background 0.3s' }}
-            onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.6)'}
-            onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.3)'}
-          >
-            {isPlaying ? <Pause size={20} strokeWidth={1} /> : <Play size={20} strokeWidth={1} style={{ marginLeft: '2px' }} />}
-          </button>
+          <div style={{ position: 'absolute', top: '48px', right: '48px', zIndex: 10, display: 'flex', gap: '12px' }}>
+            <button
+              onClick={toggleMute}
+              title={isMuted ? "Unmute Video Audio" : "Mute Video Audio"}
+              aria-label={isMuted ? "Unmute" : "Mute"}
+              style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(4px)', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: 'pointer', transition: 'background 0.3s' }}
+              onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.6)'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.3)'}
+            >
+              {isMuted ? <VolumeX size={20} strokeWidth={1} /> : <Volume2 size={20} strokeWidth={1} />}
+            </button>
+
+            <button
+              onClick={toggleVideo}
+              title={isPlaying ? "Pause Video" : "Play Video"}
+              aria-label={isPlaying ? "Pause" : "Play"}
+              style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(4px)', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: 'pointer', transition: 'background 0.3s' }}
+              onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.6)'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.3)'}
+            >
+              {isPlaying ? <Pause size={20} strokeWidth={1} /> : <Play size={20} strokeWidth={1} style={{ marginLeft: '2px' }} />}
+            </button>
+          </div>
         )}
 
         {/* Hero text - bottom-left */}
