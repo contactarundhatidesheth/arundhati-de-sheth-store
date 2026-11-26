@@ -103,6 +103,14 @@ export function getPremiumEmailTemplate(content: string): string {
             .receipt-table th { text-align: left; padding-bottom: 10px; border-bottom: 1px solid #EAEAEA; font-weight: normal; font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
             .receipt-table td { padding: 15px 0; border-bottom: 1px solid #F5F5F5; }
             .receipt-total { border-top: 1px solid #111; padding-top: 15px; margin-top: 15px; text-align: right; }
+
+            /* Ensure text contrast in dark mode clients */
+            @media (prefers-color-scheme: dark) {
+                .product-title { color: #FFFFFF !important; }
+                .product-specs { color: #CCCCCC !important; }
+                .product-price { color: #FFFFFF !important; }
+                .order-heading { color: #FFFFFF !important; }
+            }
         </style>
     </head>
     <body style="margin: 0; padding: 0; background-color: #FAFAFA;">
@@ -230,15 +238,15 @@ export async function sendOrderConfirmation(orderData: OrderEmailDetails | strin
 
             return `
             <tr>
-                <td style="padding: 14px 0; border-bottom: 1px solid #F0F0F0; vertical-align: top;">
-                    ${image ? `<img src="${image}" alt="${title}" width="54" height="54" style="object-fit: cover; border-radius: 4px; float: left; margin-right: 14px; border: 1px solid #EAEAEA;" />` : ''}
+                <td style="padding: 16px 0; border-bottom: 1px solid #EAEAEA; vertical-align: top;">
+                    ${image ? `<img src="${image}" alt="${title}" width="56" height="56" style="object-fit: cover; border-radius: 4px; float: left; margin-right: 14px; border: 1px solid #CCC;" />` : ''}
                     <div>
-                        <strong style="color: #111; font-size: 13.5px; display: block;">${title}</strong>
-                        ${specs ? `<span style="color: #777; font-size: 12px; display: block; margin-top: 2px;">${specs}</span>` : ''}
-                        <span style="color: #999; font-size: 12px; display: block; margin-top: 2px;">Qty: ${qty}</span>
+                        <span class="product-title" style="color: #111111; font-weight: bold; font-size: 15px; display: block; line-height: 1.4;">${title}</span>
+                        ${specs ? `<span class="product-specs" style="color: #666666; font-size: 12px; display: block; margin-top: 3px;">${specs}</span>` : ''}
+                        <span class="product-specs" style="color: #888888; font-size: 12px; display: block; margin-top: 3px;">Qty: ${qty}</span>
                     </div>
                 </td>
-                <td style="text-align: right; padding: 14px 0; border-bottom: 1px solid #F0F0F0; vertical-align: top; font-size: 14px; font-weight: 500; color: #111;">
+                <td class="product-price" style="text-align: right; padding: 16px 0; border-bottom: 1px solid #EAEAEA; vertical-align: top; font-size: 14px; font-weight: bold; color: #111111;">
                     Rs. ${(price * qty).toLocaleString('en-IN')}
                 </td>
             </tr>
