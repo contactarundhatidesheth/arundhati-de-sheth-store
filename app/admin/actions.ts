@@ -471,7 +471,11 @@ export async function saveBannerSection(formData: FormData) {
     finalImageUrl = await saveUpload(imageFile);
   }
 
+  const videoFile = formData.get('videoFile') as File | null;
   let finalLink = (formData.get('link') as string) || '';
+  if (videoFile && videoFile.size > 0) {
+    finalLink = await saveUpload(videoFile);
+  }
 
   // If user explicitly chose Image, clear the video link so video doesn't override image
   if (mediaType === 'image') {
