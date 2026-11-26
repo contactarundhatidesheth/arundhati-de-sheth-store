@@ -81,24 +81,18 @@ export async function sendGraphEmail(toAddress: string, subject: string, htmlCon
 }
 
 export function getPremiumEmailTemplate(content: string): string {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.arundhatidesheth.com';
+    const logoUrl = 'https://radmagmbzuubeqjrncot.supabase.co/storage/v1/object/public/media/brand/logo-white-box.png';
     return `
     <!DOCTYPE html>
-    <html lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+    <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="color-scheme" content="light dark">
-        <meta name="supported-color-schemes" content="light dark">
         <style>
-            :root {
-                color-scheme: light dark;
-                supported-color-schemes: light dark;
-            }
             body { margin: 0; padding: 0; background-color: #FAFAFA; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
             table { border-collapse: collapse; }
             .container { max-width: 600px; margin: 0 auto; background-color: #FFFFFF; }
-            .header { padding: 36px 20px; text-align: center; border-bottom: 1px solid #EAEAEA; }
+            .header { padding: 32px 20px; text-align: center; border-bottom: 1px solid #EAEAEA; }
             .logo-link { text-decoration: none; display: inline-block; }
             .content { padding: 48px 40px; color: #333333; line-height: 1.8; font-size: 14px; }
             .content h1 { font-family: 'Times New Roman', Times, serif; font-size: 22px; font-weight: normal; color: #111111; margin-top: 0; margin-bottom: 24px; letter-spacing: 0.5px; }
@@ -109,16 +103,6 @@ export function getPremiumEmailTemplate(content: string): string {
             .receipt-table th { text-align: left; padding-bottom: 10px; border-bottom: 1px solid #EAEAEA; font-weight: normal; font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
             .receipt-table td { padding: 15px 0; border-bottom: 1px solid #F5F5F5; }
             .receipt-total { border-top: 1px solid #111; padding-top: 15px; margin-top: 15px; text-align: right; }
-
-            /* Dark mode overrides for modern email clients */
-            @media (prefers-color-scheme: dark) {
-                .brand-logo-img {
-                    filter: invert(1) brightness(1.2) drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)) !important;
-                }
-            }
-            [data-ogsc] .brand-logo-img {
-                filter: invert(1) brightness(1.2) drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)) !important;
-            }
         </style>
     </head>
     <body style="margin: 0; padding: 0; background-color: #FAFAFA;">
@@ -128,15 +112,18 @@ export function getPremiumEmailTemplate(content: string): string {
                     <table class="container" width="100%" cellpadding="0" cellspacing="0" role="presentation" style="max-width: 600px; width: 100%; margin: 0 auto; background-color: #FFFFFF; border: 1px solid #EAEAEA;">
                         <!-- Header with Brand Logo -->
                         <tr>
-                            <td class="header" align="center" style="padding: 36px 20px; text-align: center; border-bottom: 1px solid #EAEAEA; background-color: #FFFFFF;">
+                            <td class="header" align="center" style="padding: 32px 20px; text-align: center; border-bottom: 1px solid #EAEAEA; background-color: #FFFFFF;">
                                 <a href="https://www.arundhatidesheth.com" class="logo-link" target="_blank" style="text-decoration: none; display: inline-block;">
-                                    <div style="background-color: #FFFFFF; padding: 12px 24px; border-radius: 6px; display: inline-block;">
-                                        <img src="${baseUrl}/brand/logo.png" 
-                                             class="brand-logo-img"
-                                             alt="Arundhati De-Sheth" 
-                                             width="210" 
-                                             style="display: block; width: 210px; max-width: 100%; height: auto; margin: 0 auto; border: 0; outline: none; text-decoration: none; filter: drop-shadow(0 0 1px rgba(255,255,255,0.8));" />
-                                    </div>
+                                    <table cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto; background-color: #FFFFFF;">
+                                        <tr>
+                                            <td align="center" style="background-color: #FFFFFF; padding: 6px 16px; border: 1px solid #E5E5E5; border-radius: 4px;">
+                                                <img src="${logoUrl}" 
+                                                     alt="Arundhati De-Sheth" 
+                                                     width="230" 
+                                                     style="display: block; width: 230px; max-width: 100%; height: auto; margin: 0 auto; border: 0; outline: none; background-color: #FFFFFF;" />
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </a>
                             </td>
                         </tr>
