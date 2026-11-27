@@ -79,7 +79,25 @@ export async function getGraphAccessToken(): Promise<string> {
 
 export async function sendGraphEmail(toAddress: string, subject: string, htmlContent: string) {
     const accessToken = await getGraphAccessToken();
-    const fromAddress = getEnvVar('EMAIL_USER') || 'arundhati@arundhatidesheth.com';
+    let fromAddress = getEnvVar('EMAIL_USER');
+
+    if (!fromAddress) {
+        try {
+            const { getSupabaseAdmin } = await import('@/utils/supabase-admin');
+            const supabase = getSupabaseAdmin();
+            const { data } = await supabase
+                .from('page_sections')
+                .select('*')
+                .eq('id', 'azure_graph_config')
+                .maybeSingle();
+
+            if (data?.description) {
+                const config = JSON.parse(data.description);
+                fromAddress = config.emailUser || config.sender_email;
+            }
+        } catch (e) { }
+    }
+    fromAddress = fromAddress || 'arundhati@arundhatidesheth.com';
 
     const response = await fetch(`https://graph.microsoft.com/v1.0/users/${fromAddress}/sendMail`, {
         method: 'POST',
@@ -293,16 +311,21 @@ export async function sendOrderConfirmation(orderData: OrderEmailDetails | strin
 
     // Format address
     let addressHtml = '';
-    if (shippingAddress && (shippingAddress.address || shippingAddress.city)) {
+    if (shippingAddress && (shippingAddress.address || shippingAddress.line1 || shippingAddress.city)) {
+        const line1 = shippingAddress.address || shippingAddress.line1 || '';
+        const line2 = shippingAddress.line2 ? `${shippingAddress.line2}<br/>` : '';
+        const cityStateZip = [shippingAddress.city, shippingAddress.state, shippingAddress.postal_code || shippingAddress.zip].filter(Boolean).join(', ');
+
         addressHtml = `
             <div style="background-color: #FAFAFA; border: 1px solid #EAEAEA; padding: 18px 20px; margin-top: 28px; border-radius: 4px;">
                 <p style="margin: 0 0 8px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #888; font-weight: 600;">Delivery Address</p>
                 <p style="margin: 0; font-size: 13px; color: #333; line-height: 1.6;">
                     <strong>${shippingAddress.name || clientName}</strong><br/>
-                    ${shippingAddress.address || ''}<br/>
-                    ${[shippingAddress.city, shippingAddress.state, shippingAddress.postal_code].filter(Boolean).join(', ')}<br/>
+                    ${line1 ? `${line1}<br/>` : ''}
+                    ${line2}
+                    ${cityStateZip ? `${cityStateZip}<br/>` : ''}
                     ${shippingAddress.country || 'India'}<br/>
-                    ${shippingAddress.phone ? `Phone: ${shippingAddress.phone}` : ''}
+                    ${shippingAddress.phone || details.customerPhone ? `Phone: ${shippingAddress.phone || details.customerPhone}` : ''}
                 </p>
             </div>
         `;
@@ -376,8 +399,9 @@ export async function sendAdminOrderAlert(details: OrderEmailDetails) {
     }
 
     const fullAddress = shippingAddress ? `
-        ${shippingAddress.address || ''}<br/>
-        ${[shippingAddress.city, shippingAddress.state, shippingAddress.postal_code].filter(Boolean).join(', ')}<br/>
+        ${shippingAddress.address || shippingAddress.line1 || ''}<br/>
+        ${shippingAddress.line2 ? `${shippingAddress.line2}<br/>` : ''}
+        ${[shippingAddress.city, shippingAddress.state, shippingAddress.postal_code || shippingAddress.zip].filter(Boolean).join(', ')}<br/>
         ${shippingAddress.country || 'India'}
     ` : 'Not provided';
 
